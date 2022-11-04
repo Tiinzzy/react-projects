@@ -1,0 +1,182 @@
+{
+    "women": [
+        {
+            "Name": "Dress",
+            "Unit": "-",
+            "Size": "Small",
+            "Price": "$60",
+            "Available units": "10"
+        },
+        {
+            "Name": "Top",
+            "Unit": "-",
+            "Size": "Small",
+            "Price": "$25",
+            "Available units": "20"
+        },
+        {
+            "Name": "Pants",
+            "Unit": "-",
+            "Size": "Medium",
+            "Price": "$70",
+            "Available units": "120"
+        },
+        {
+            "Name": "Shoes",
+            "Unit": "-",
+            "Size": "8",
+            "Price": "$90",
+            "Available units": "15"
+        }
+    ],
+    "men": [
+        {
+            "Name": "Jacket",
+            "Unit": "-",
+            "Size": "Large",
+            "Price": "$80",
+            "Available units": "26"
+        },
+        {
+            "Name": "T-Shirt",
+            "Unit": "-",
+            "Size": "Extra-Large",
+            "Price": "$50",
+            "Available units": "30"
+        },
+        {
+            "Name": "Jeans",
+            "Unit": "-",
+            "Size": "Large",
+            "Price": "$90",
+            "Available units": "45"
+        },
+        {
+            "Name": "Sneakers",
+            "Unit": "-",
+            "Size": "12",
+            "Price": "$120",
+            "Available units": "35"
+        }
+    ],
+    "kids": [
+        {
+            "Name": "T-Shirt",
+            "Unit": "-",
+            "Size": "Small",
+            "Price": "$25",
+            "Available units": "20"
+        },
+        {
+            "Name": "Trousers",
+            "Unit": "-",
+            "Size": "Medium",
+            "Price": "$45",
+            "Available units": "18"
+        },
+        {
+            "Name": "Sneakers",
+            "Unit": "-",
+            "Size": "9",
+            "Price": "$75",
+            "Available units": "36"
+        },
+        {
+            "Name": "Backpack",
+            "Unit": "-",
+            "Size": "-",
+            "Price": "$65",
+            "Available units": "26"
+        }
+    ],
+    "home": [
+        {
+            "Name": "Dining Table",
+            "Unit": "-",
+            "Size": "-",
+            "Price": "$150",
+            "Available units": "10"
+        },
+        {
+            "Name": "Dining Chairs",
+            "Unit": "-",
+            "Size": "-",
+            "Price": "$100",
+            "Available units": "50"
+        },
+        {
+            "Name": "Television Stand",
+            "Unit": "-",
+            "Size": "-",
+            "Price": "$250",
+            "Available units": "24"
+        },
+        {
+            "Name": "Bed Frame",
+            "Unit": "-",
+            "Size": "-",
+            "Price": "$179",
+            "Available units": "32"
+        }
+    ],
+    "beauty": [
+        {
+            "Name": "Lipstick",
+            "Unit": "-",
+            "Size": "-",
+            "Price": "$20",
+            "Available units": "10"
+        },
+        {
+            "Name": "Eyeshadow",
+            "Unit": "-",
+            "Size": "-",
+            "Price": "$35",
+            "Available units": "20"
+        },
+        {
+            "Name": "Blush",
+            "Unit": "-",
+            "Size": "-",
+            "Price": "$38",
+            "Available units": "19"
+        },
+        {
+            "Name": "Mascara",
+            "Unit": "-",
+            "Size": "-",
+            "Price": "$36",
+            "Available units": "14"
+        }
+    ],
+    "sports": [
+        {
+            "Name": "5Kg Kettle Bell",
+            "Unit": "-",
+            "Size": "-",
+            "Price": "$45",
+            "Available units": "10"
+        },
+        {
+            "Name": "10Kg Kettle Bell",
+            "Unit": "-",
+            "Size": "-",
+            "Price": "$55",
+            "Available units": "15"
+        },
+        {
+            "Name": "15Kg Kettle Bell",
+            "Unit": "-",
+            "Size": "-",
+            "Price": "$65",
+            "Available units": "20"
+        },
+        {
+            "Name": "20Kg Kettle Bell",
+            "Unit": "-",
+            "Size": "-",
+            "Price": "$80",
+            "Available units": "25"
+        }
+    ]
+}
