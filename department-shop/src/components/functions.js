@@ -59,3 +59,40 @@ export async function submitOrder(query) {
             return null;
         });
 }
+
+export async function getAllOrderLists() {
+    return axios.get('/data/select-all-orders', { params: {} })
+        .then(response => {
+            if (response.status === 200) {
+                return response.data;
+            } else {
+                return null;
+            }
+        })
+        .catch(error => {
+            return null;
+        });
+}
+
+export function orderColumns(row) {
+    var columns = [];
+    var maxCol = 10;
+    let id = 1;
+
+    for (var c in row) {
+        if (maxCol > 0) {
+            columns.push({ id: id, field: c, headerName: capitalizeFirst(c), width: 200 });
+            id += 1;
+        }
+    }
+    return columns;
+}
+
+export function capitalizeFirst(str) {
+    const words = str.split(' ');
+    for (var w in words) {
+        words[w] = words[w][0].toUpperCase() + words[w].substring(1);
+    }
+    return words.join(' ');
+}
+
