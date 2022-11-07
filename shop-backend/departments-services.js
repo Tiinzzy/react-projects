@@ -58,3 +58,24 @@ exports.orderSubmit = (req) => {
         return { success: false }
     }
 }
+
+exports.selectAllOrders = () => {
+    let jOrder = orderDb.JSON();
+    let result = [];
+    for (let d in jOrder) {
+        jOrder[d].date = d;
+        result.push(jOrder[d]);
+    }
+    return result;
+}
+
+
+// if (jDepartments.hasOwnProperty(time)) {
+//     result = jDepartments[time];
+// } else {
+//     for (let d in jDepartments) {
+//         for (let p in jDepartments[d]) {
+//             result.push(jDepartments[d][p])
+//         }
+//     }
+// }
