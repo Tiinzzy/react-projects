@@ -6,7 +6,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { getShopDepartments } from './functions.js';
 
 import ProductGrid from "./ProductGrid.js";
-
+import OrdersList from "./OrdersList.js";
 
 class DropDownMenu extends React.Component {
 
@@ -16,9 +16,11 @@ class DropDownMenu extends React.Component {
             anchorEl: null,
             open: false,
             departments: [],
-            showGrid: false
+            showGrid: false,
+            showOrderList: false,
         }
         this.handleClose = this.handleClose.bind(this);
+        // this.handleListClick = this.handleListClick.bind(this);
     }
 
     async componentDidMount() {
@@ -27,15 +29,24 @@ class DropDownMenu extends React.Component {
     }
 
     handleClose(i) {
-        this.setState({ showGrid: false }, function () {
+        this.setState({ showOrderList: false, showGrid: false }, function () {
             this.setState({ open: false, showGrid: true, selected: this.state.departments[i] });
         });
     }
 
+    // handleListClick() {
+    //     this.setState({ showOrderList: false, showGrid: false }, function () {
+    //         this.setState({ showOrderList: true });
+    //     })
+    // }
+
     render() {
         return (
             <>
-                <Button id="basic-button" onClick={(e) => this.setState({ open: true, anchorEl: e.target })} >Dashboard</Button>
+                <Button id="basic-button" onClick={(e) => this.setState({ open: true, anchorEl: e.target })} >Departments</Button>
+                {/* <Button id="basic-button" onClick={this.handleListClick} >Orders List</Button> */}
+
+
                 <Menu
                     id="basic-menu"
                     anchorEl={this.state.anchorEl}
@@ -46,7 +57,10 @@ class DropDownMenu extends React.Component {
                     ))}
                 </Menu>
 
-                {this.state.showGrid !== false && <ProductGrid departments={this.state.departments} selected={this.state.selected} />}
+                {this.state.showGrid && <ProductGrid departments={this.state.departments} selected={this.state.selected} />}
+                {this.state.showOrderList && <OrdersList />}
+
+
             </>
         );
     }
