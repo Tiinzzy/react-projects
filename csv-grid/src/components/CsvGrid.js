@@ -1,23 +1,53 @@
 import React from "react";
+import { useEffect, useRef } from "react";
 
-class CsvGrid extends React.Component {
+import { Grid } from "gridjs";
+import "gridjs/dist/theme/mermaid.css";
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            jCsv: props.jCsv
-        }
+
+function getColumns(jCsv) {
+    let row = jCsv[0];
+    let columns = [];
+    for (let c in row) {
+        columns.push(c);
     }
-
-    render() {
-        return (
-            <>
-                hello
-                {this.state.jCsv.map((e, i) => (<div key={i}>
-                    {this.state.jCsv[i].W1}
-                </div>))}
-            </>
-        );
-    }
+    return columns;
 }
-export default CsvGrid;
+
+function getData(jCsv) {
+    let data = [];
+    for (let r in jCsv) {
+        let row = [];
+        for (let c in jCsv[r]) {
+            row.push(jCsv[r][c])
+        }
+        data.push(row);
+    }
+    return data;
+}
+
+export default function CsvGrid(props) {
+    const wrapperRef = useRef(null);
+
+    // console.log(props.jCsv);
+    // console.log(getColumns(props.jCsv));
+    // console.log(getData(props.jCsv));
+
+    const grid = new Grid({
+        columns: getColumns(props.jCsv),
+        data: getData(props.jCsv)
+    });
+
+    useEffect(() => {
+        grid.render(wrapperRef.current);
+
+    });
+
+    return (<>
+        <div ref={wrapperRef} />
+    </>);
+}
+
+
+
+
