@@ -10,6 +10,18 @@ import { getShopDepartments } from './functions.js';
 import ProductGrid from "./ProductGrid.js";
 import OrdersList from "./OrdersList.js";
 
+const menuStyle = {
+    display: 'flex',
+    border: 'solid 1px black',
+    color: 'white',
+    backgroundColor: '#1c4966',
+    cursor: 'pointer',
+    textDecoration: 'none',
+    padding: 1,
+    marginBottom: 10,
+    justifyContent: 'flex-start'
+}
+
 class DropDownMenu extends React.Component {
 
     constructor(props) {
@@ -47,9 +59,10 @@ class DropDownMenu extends React.Component {
             <>
                 {/* <Button id="basic-button" onClick={this.handleListClick} >Orders List</Button> */}
 
-                <Box display="flex">
-
-                    <Button id="basic-button" onClick={(e) => this.setState({ open: true, anchorEl: e.target })} >ALL</Button>
+                <Box style={menuStyle}>
+              
+                        <Button id="basic-button" onClick={(e) => this.setState({ open: true, anchorEl: e.target })} style={{ color: '#2196f3' }}>ALL</Button>
+                
                     <Menu
                         id="basic-menu"
                         anchorEl={this.state.anchorEl}
