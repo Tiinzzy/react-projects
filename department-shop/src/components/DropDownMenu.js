@@ -1,7 +1,9 @@
 import React from "react";
+
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import Box from '@mui/material/Box';
 
 import { getShopDepartments } from './functions.js';
 
@@ -43,19 +45,26 @@ class DropDownMenu extends React.Component {
     render() {
         return (
             <>
-                <Button id="basic-button" onClick={(e) => this.setState({ open: true, anchorEl: e.target })} >Departments</Button>
                 {/* <Button id="basic-button" onClick={this.handleListClick} >Orders List</Button> */}
 
+                <Box display="flex">
 
-                <Menu
-                    id="basic-menu"
-                    anchorEl={this.state.anchorEl}
-                    open={this.state.open}
-                    onClose={() => this.handleClose()}>
+                    <Button id="basic-button" onClick={(e) => this.setState({ open: true, anchorEl: e.target })} >ALL</Button>
+                    <Menu
+                        id="basic-menu"
+                        anchorEl={this.state.anchorEl}
+                        open={this.state.open}
+                        onClose={() => this.handleClose()}>
+                        {this.state.departments.map((e, i) => (
+                            <MenuItem key={i} onClick={() => this.handleClose(i)} >{this.state.departments[i]}</MenuItem>
+                        ))}
+                    </Menu>
+
                     {this.state.departments.map((e, i) => (
                         <MenuItem key={i} onClick={() => this.handleClose(i)} >{this.state.departments[i]}</MenuItem>
                     ))}
-                </Menu>
+                </Box>
+
 
                 {this.state.showGrid && <ProductGrid departments={this.state.departments} selected={this.state.selected} />}
                 {this.state.showOrderList && <OrdersList />}
