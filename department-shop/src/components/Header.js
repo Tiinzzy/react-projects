@@ -9,7 +9,7 @@ const headerStyle = {
     color: '#1c4966'
 }
 
-class DropDownMenu extends React.Component {
+class Header extends React.Component {
 
     constructor(props) {
         super(props);
@@ -33,4 +33,4 @@ class DropDownMenu extends React.Component {
         );
     }
 }
-export default DropDownMenu;
+export default Header;
