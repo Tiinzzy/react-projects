@@ -2,7 +2,7 @@ import React from "react";
 
 import { DataGrid } from "@mui/x-data-grid";
 
-import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 
 import { getAllOrderLists, orderColumns } from './functions';
 
@@ -40,6 +40,7 @@ class OrdersList extends React.Component {
     render() {
         return (
             <>
+            <Box style={{display: 'flex', justifyContent: 'center', marginBottom: 5, fontSize: '20px'}}>Orders </Box>
                 <DataGrid style={gridStyle}
                     hideFooterPagination={true}
                     hideFooter={true}
