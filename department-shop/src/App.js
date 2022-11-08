@@ -1,13 +1,27 @@
 import './App.css';
 
-import DropDownMenu from './components/DropDownMenu';
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-function App() {
+import OrdersList from './components/OrdersList';
+import DropDownMenu from './components/DropDownMenu';
+import Header from './components/Header';
+import Home from './components/Home';
+
+export default function App() {
+
   return (
     <>
-      <DropDownMenu />
+      <Header />
+
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home/>} />
+          <Route path="/add-order" element={<DropDownMenu />} />
+          <Route path="/list-orders" element={<OrdersList />} />
+          <Route path='*' element={<h3>Error</h3>} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
-}
-
-export default App;
+};

@@ -58,3 +58,13 @@ exports.orderSubmit = (req) => {
         return { success: false }
     }
 }
+
+exports.selectAllOrders = () => {
+    let jOrder = orderDb.JSON();
+    let result = [];
+    for (let d in jOrder) {
+        jOrder[d].date = d;
+        result.push(jOrder[d]);
+    }
+    return result;
+}

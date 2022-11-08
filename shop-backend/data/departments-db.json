@@ -1,5 +1,5 @@
 {
-    "women": [
+    "Women": [
         {
             "Name": "Dress",
             "Unit": "-",
@@ -29,7 +29,7 @@
             "Available units": "15"
         }
     ],
-    "men": [
+    "Men": [
         {
             "Name": "Jacket",
             "Unit": "-",
@@ -59,7 +59,7 @@
             "Available units": "35"
         }
     ],
-    "kids": [
+    "Kids": [
         {
             "Name": "T-Shirt",
             "Unit": "-",
@@ -89,7 +89,7 @@
             "Available units": "26"
         }
     ],
-    "home": [
+    "Home": [
         {
             "Name": "Dining Table",
             "Unit": "-",
@@ -119,7 +119,7 @@
             "Available units": "32"
         }
     ],
-    "beauty": [
+    "Beauty": [
         {
             "Name": "Lipstick",
             "Unit": "-",
@@ -149,7 +149,7 @@
             "Available units": "14"
         }
     ],
-    "sports": [
+    "Sports": [
         {
             "Name": "5Kg Kettle Bell",
             "Unit": "-",

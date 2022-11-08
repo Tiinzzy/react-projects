@@ -40,6 +40,10 @@ app.listen(PORT, () => {
     app.get("/data/submit-users-order", (req, res) => {
         res.json(departmentsServices.orderSubmit(req));
     })
+
+    app.get("/data/select-all-orders", (req, res) => {
+        res.json(departmentsServices.selectAllOrders(req));
+    })
 });
 
 
