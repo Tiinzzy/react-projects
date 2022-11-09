@@ -12,6 +12,30 @@ function convertNumberToWords(num) {
     let output = '';
     let numToString = num.toString();
 
+    if (num === 0) {
+        return 'zero';
+    }
+
+    if (num === 100) {
+        return 'hundred';
+    }
+
+    if (num < 20) {
+        output = single[num];
+        return output;
+    }
+
+    if (numToString.length === 3) {
+        output = single[parseInt(numToString.charAt(0))] + triple;
+        output += couple[parseInt(numToString.charAt(1))];
+        output += single[parseInt(numToString.charAt(2))];
+        return output;
+    }
+
+    output += couple[parseInt(numToString.charAt(0))];
+    output += single[parseInt(numToString.charAt(1))];
+    return output;
+
 }
 
 
@@ -32,15 +56,15 @@ class NumToWord extends React.Component {
 
     handleClick() {
 
-        console.log(this.state.number);
+        console.log(convertNumberToWords(this.state.number));
     }
 
     render() {
         return (
             <>
                 <Box margin={5}>
-                    <TextField label="Enter your number" variant="outlined" value={this.state.number} onChange={(e) => this.handleChange(e)} />
-                    <Button variant="contained" onClick={() => this.handleClick()}>Convert</Button>
+                    <TextField label="Enter your number" variant="outlined" value={this.state.number} onChange={(e) => this.handleChange(e)}/>
+                    <Button variant="contained" onClick={() => this.handleClick()} style={{margin: 10}}>Convert</Button>
                 </Box>
 
             </>
