@@ -19,7 +19,7 @@ const NUMBER_TO_TEXT = {
     '17': 'seventeen',
     '18': 'eighteen',
     '19': 'nineteen',
-
+    
     '20': 'twenty',
     '30': 'thirty',
     '40': 'fourty',
@@ -47,7 +47,11 @@ export function readNumber(n) {
         let order1 = n % 10;
         let order10 = Math.floor(n / 10) * 10;
 
-        let text = NUMBER_TO_TEXT[order10] + ' ' + NUMBER_TO_TEXT[order1];
+        let text = NUMBER_TO_TEXT[order10];
+        if (order1 > 0) {
+            text += ' ' + NUMBER_TO_TEXT[order1];
+        }
+
         return text;
     }
 
