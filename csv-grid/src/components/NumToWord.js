@@ -5,6 +5,16 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
 
+function convertNumberToWords(num) {
+    let single = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+    let couple = ['', '', 'twenty', 'thirty', 'fourty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninty'];
+    let triple = ['hundred'];
+    let output = '';
+    let numToString = num.toString();
+
+}
+
+
 class NumToWord extends React.Component {
 
     constructor(props) {
