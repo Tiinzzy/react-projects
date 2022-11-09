@@ -4,6 +4,18 @@ import { useEffect, useRef } from "react";
 import { Grid } from "gridjs";
 import "gridjs/dist/theme/mermaid.css";
 
+import Box from "@mui/material/Box";
+
+const gridSyle = {
+    width: 570
+}
+
+const bodyStyle = {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    margin: 10
+}
 
 function getColumns(jCsv) {
     let row = jCsv[0];
@@ -29,10 +41,6 @@ function getData(jCsv) {
 export default function CsvGrid(props) {
     const wrapperRef = useRef(null);
 
-    // console.log(props.jCsv);
-    // console.log(getColumns(props.jCsv));
-    // console.log(getData(props.jCsv));
-
     const grid = new Grid({
         columns: getColumns(props.jCsv),
         data: getData(props.jCsv)
@@ -44,7 +52,11 @@ export default function CsvGrid(props) {
     });
 
     return (<>
-        <div ref={wrapperRef} />
+        <Box style={bodyStyle}>
+            <Box ref={wrapperRef} style={gridSyle} />
+        </Box>
+
+
     </>);
 }
 
