@@ -1,23 +1,65 @@
 import React from "react";
+import { useEffect, useRef } from "react";
 
-class CsvGrid extends React.Component {
+import { Grid } from "gridjs";
+import "gridjs/dist/theme/mermaid.css";
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            jCsv: props.jCsv
-        }
-    }
+import Box from "@mui/material/Box";
 
-    render() {
-        return (
-            <>
-                hello
-                {this.state.jCsv.map((e, i) => (<div key={i}>
-                    {this.state.jCsv[i].W1}
-                </div>))}
-            </>
-        );
-    }
+const gridSyle = {
+    width: 570
 }
-export default CsvGrid;
+
+const bodyStyle = {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    margin: 10
+}
+
+function getColumns(jCsv) {
+    let row = jCsv[0];
+    let columns = [];
+    for (let c in row) {
+        columns.push(c);
+    }
+    return columns;
+}
+
+function getData(jCsv) {
+    let data = [];
+    for (let r in jCsv) {
+        let row = [];
+        for (let c in jCsv[r]) {
+            row.push(jCsv[r][c])
+        }
+        data.push(row);
+    }
+    return data;
+}
+
+export default function CsvGrid(props) {
+    const wrapperRef = useRef(null);
+
+    const grid = new Grid({
+        columns: getColumns(props.jCsv),
+        data: getData(props.jCsv)
+    });
+
+    useEffect(() => {
+        grid.render(wrapperRef.current);
+
+    });
+
+    return (<>
+        <Box style={bodyStyle}>
+            <Box ref={wrapperRef} style={gridSyle} />
+        </Box>
+
+
+    </>);
+}
+
+
+
+

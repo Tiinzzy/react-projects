@@ -4,6 +4,7 @@ import React from 'react';
 import { getData } from './components/CsvParse';
 
 import CsvGrid from './components/CsvGrid'
+import NumToWord from './components/NumToWord';
 
 class App extends React.Component {
 
@@ -22,7 +23,8 @@ class App extends React.Component {
   render() {
     return (
       <>
-        {this.state.jCsv !== null && <CsvGrid jCsv={this.state.jCsv} />}
+        {/* {this.state.jCsv !== null && <CsvGrid jCsv={this.state.jCsv} />} */}
+        <NumToWord/>
       </>
     );
   }
