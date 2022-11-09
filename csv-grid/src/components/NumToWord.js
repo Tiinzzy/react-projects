@@ -4,6 +4,8 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
+import { readNumber } from './read_numbers';
+
 
 function convertNumberToWords(num) {
     let single = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
@@ -55,16 +57,16 @@ class NumToWord extends React.Component {
     }
 
     handleClick() {
-
-        console.log(convertNumberToWords(this.state.number));
+        console.log();
     }
 
     render() {
         return (
             <>
                 <Box margin={5}>
-                    <TextField label="Enter your number" variant="outlined" value={this.state.number} onChange={(e) => this.handleChange(e)}/>
-                    <Button variant="contained" onClick={() => this.handleClick()} style={{margin: 10}}>Convert</Button>
+                    <TextField label="Enter your number" variant="outlined" value={this.state.number} onChange={(e) => this.handleChange(e)} />
+                    <Button variant="contained" onClick={() => this.handleClick()} style={{ margin: 10 }}>Convert</Button>
+                    <h2>{readNumber(this.state.number)}</h2>
                 </Box>
 
             </>
@@ -72,4 +74,10 @@ class NumToWord extends React.Component {
     }
 }
 export default NumToWord;
+
+
+
+
+
+
 
