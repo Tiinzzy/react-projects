@@ -31,18 +31,19 @@ const NUMBER_TO_TEXT = {
 
 }
 
-export function readNumber(n) {
+
+function read3Digit(n) {
     n = n * 1;
     if (isNaN(n)) {
         return 'PLEASE, ONLY NUMBERS';
     }
 
+    // 0..19
     if (n < 20) {
         return NUMBER_TO_TEXT[n];
     }
 
-    // now we know n is larger than 19
-
+    // 20..99
     if (n < 100) {
         let order1 = n % 10;
         let order10 = Math.floor(n / 10) * 10;
@@ -55,60 +56,31 @@ export function readNumber(n) {
         return text;
     }
 
-    // now we know n is larger than 99
-
+    // 100..999
     if (n < 1000) {
         let order100 = Math.floor(n / 100);
         let hudredStart = NUMBER_TO_TEXT[order100] + ' hundred';
         let rest = n - order100 * 100;
 
-        return hudredStart + ' & ' + readNumber(rest);
+        return hudredStart + (rest > 0 ? ' & ' + readNumber(rest) : '');
     }
 
-    // now we know n is larger than 1000
+    return 'ERROR'
+}
 
-    if (n < 10000) {
-        let order1000 = Math.floor(n / 1000);
-        let thousandStart = NUMBER_TO_TEXT[order1000] + ' thousand';
-        let restNum = n - order1000 * 1000;
+export function readNumber(n) {
+    n = n * 1;
+    if (n < 1000) {
+        return read3Digit(n);
+    }   
 
-        return thousandStart + ' & ' + readNumber(restNum);
+    // 1,000..999,000
+    if (n < 1000000) {
+        let first3Digits = Math.floor(n / 1000);
+        let second3Digits = n - first3Digits * 1000;
+
+        return read3Digit(first3Digits) + ' thousand ' + (second3Digits > 0 ? ' & ' + read3Digit(second3Digits) : '');
     }
-
-    // now we know n is larger than 10000
-
-    if (n < 20000) {
-        let order10000 = Math.floor(n / 1000);
-        let hundredThousandStart = NUMBER_TO_TEXT[order10000] + ' thousand';
-        let restNumb = n - order10000 * 1000;
-
-        return hundredThousandStart + ' & ' + readNumber(restNumb);
-    }
-
-    // now we know n is larger than 20000
-
-    if (n < 100000) {
-        let firstOrder = Math.floor(n / 10000) * 10;
-        let secondOrder = Math.floor((n % 10000) / 1000);
-        let hundredThousandStarter = NUMBER_TO_TEXT[firstOrder] + NUMBER_TO_TEXT[secondOrder] + ' thousand';
-        let result = Math.floor(n % 1000);
-
-        if (secondOrder === 0) {
-            hundredThousandStarter = NUMBER_TO_TEXT[firstOrder] + ' thousand';
-        }
-
-        return hundredThousandStarter + ' & ' + readNumber(result);
-    }
-
-    if (n < 120000) {
-        let firstHOrder = Math.floor((n % 100000) / 1000);
-        let hundredThousandHStarter = 'hundred ' + ' & ' + NUMBER_TO_TEXT[firstHOrder] + ' thousand ';
-        let finalResult = Math.floor(n % 1000);
-
-        return hundredThousandHStarter + ' & ' + readNumber(finalResult);
-    }
-
-
-
+   
     return 'I STILL DO NOT KNOW HOW TO READ THIS NUMBER!'
 }
