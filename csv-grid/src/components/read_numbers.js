@@ -93,6 +93,10 @@ export function readNumber(n) {
         let hundredThousandStarter = NUMBER_TO_TEXT[firstOrder] + NUMBER_TO_TEXT[secondOrder] + ' thousand';
         let result = Math.floor(n % 1000);
 
+        if (secondOrder === 0) {
+            hundredThousandStarter = NUMBER_TO_TEXT[firstOrder] + ' thousand';
+        }
+      
         return hundredThousandStarter + ' & ' + readNumber(result);
     }
 
