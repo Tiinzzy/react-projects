@@ -19,7 +19,7 @@ const NUMBER_TO_TEXT = {
     '17': 'seventeen',
     '18': 'eighteen',
     '19': 'nineteen',
-    
+
     '20': 'twenty',
     '30': 'thirty',
     '40': 'fourty',
@@ -75,12 +75,25 @@ export function readNumber(n) {
         return thousandStart + ' & ' + readNumber(restNum);
     }
 
+    // now we know n is larger than 10000
+
     if (n < 20000) {
         let order10000 = Math.floor(n / 1000);
         let hundredThousandStart = NUMBER_TO_TEXT[order10000] + ' thousand';
         let restNumb = n - order10000 * 1000;
 
         return hundredThousandStart + ' & ' + readNumber(restNumb);
+    }
+
+    // now we know n is larger than 20000
+
+    if (n < 100000) {
+        let firstOrder = Math.floor(n / 10000) * 10;
+        let secondOrder = Math.floor((n % 10000) / 1000);
+        let hundredThousandStarter = NUMBER_TO_TEXT[firstOrder] + NUMBER_TO_TEXT[secondOrder] + ' thousand';
+        let result = Math.floor(n % 1000);
+
+        return hundredThousandStarter + ' & ' + readNumber(result);
     }
 
     return 'I STILL DO NOT KNOW HOW TO READ THIS NUMBER!'
