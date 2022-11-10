@@ -96,9 +96,19 @@ export function readNumber(n) {
         if (secondOrder === 0) {
             hundredThousandStarter = NUMBER_TO_TEXT[firstOrder] + ' thousand';
         }
-      
+
         return hundredThousandStarter + ' & ' + readNumber(result);
     }
+
+    if (n < 120000) {
+        let firstHOrder = Math.floor((n % 100000) / 1000);
+        let hundredThousandHStarter = 'hundred ' + ' & ' + NUMBER_TO_TEXT[firstHOrder] + ' thousand ';
+        let finalResult = Math.floor(n % 1000);
+
+        return hundredThousandHStarter + ' & ' + readNumber(finalResult);
+    }
+
+
 
     return 'I STILL DO NOT KNOW HOW TO READ THIS NUMBER!'
 }
