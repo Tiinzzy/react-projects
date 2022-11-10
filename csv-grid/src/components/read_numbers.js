@@ -19,7 +19,7 @@ const NUMBER_TO_TEXT = {
     '17': 'seventeen',
     '18': 'eighteen',
     '19': 'nineteen',
-    
+
     '20': 'twenty',
     '30': 'thirty',
     '40': 'fourty',
@@ -31,18 +31,19 @@ const NUMBER_TO_TEXT = {
 
 }
 
-export function readNumber(n) {
+
+function read3Digit(n) {
     n = n * 1;
     if (isNaN(n)) {
         return 'PLEASE, ONLY NUMBERS';
     }
 
+    // 0..19
     if (n < 20) {
         return NUMBER_TO_TEXT[n];
     }
 
-    // now we know n is larger than 19
-
+    // 20..99
     if (n < 100) {
         let order1 = n % 10;
         let order10 = Math.floor(n / 10) * 10;
@@ -55,33 +56,31 @@ export function readNumber(n) {
         return text;
     }
 
-    // now we know n is larger than 99
-
+    // 100..999
     if (n < 1000) {
         let order100 = Math.floor(n / 100);
         let hudredStart = NUMBER_TO_TEXT[order100] + ' hundred';
         let rest = n - order100 * 100;
 
-        return hudredStart + ' & ' + readNumber(rest);
+        return hudredStart + (rest > 0 ? ' & ' + readNumber(rest) : '');
     }
 
-    // now we know n is larger than 1000
+    return 'ERROR'
+}
 
-    if (n < 10000) {
-        let order1000 = Math.floor(n / 1000);
-        let thousandStart = NUMBER_TO_TEXT[order1000] + ' thousand';
-        let restNum = n - order1000 * 1000;
+export function readNumber(n) {
+    n = n * 1;
+    if (n < 1000) {
+        return read3Digit(n);
+    }   
 
-        return thousandStart + ' & ' + readNumber(restNum);
+    // 1,000..999,000
+    if (n < 1000000) {
+        let first3Digits = Math.floor(n / 1000);
+        let second3Digits = n - first3Digits * 1000;
+
+        return read3Digit(first3Digits) + ' thousand ' + (second3Digits > 0 ? ' & ' + read3Digit(second3Digits) : '');
     }
-
-    if (n < 20000) {
-        let order10000 = Math.floor(n / 1000);
-        let hundredThousandStart = NUMBER_TO_TEXT[order10000] + ' thousand';
-        let restNumb = n - order10000 * 1000;
-
-        return hundredThousandStart + ' & ' + readNumber(restNumb);
-    }
-
+   
     return 'I STILL DO NOT KNOW HOW TO READ THIS NUMBER!'
 }
