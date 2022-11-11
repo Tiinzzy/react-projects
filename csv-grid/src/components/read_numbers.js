@@ -90,5 +90,13 @@ export function readNumber(n) {
         return read3Digit(first3Digit) + ' million ' + (second3Digit > 0 ? ' & ' + readNumber(second3Digit) : '');
     }
 
+    // 999,999,999..999,999,999,999
+    if (n < 1000000000000) {
+        let firstThreeDigits = Math.floor(n/1000000000)  ;      ;
+        let secondThreeDigit = n - firstThreeDigits * 1000000000;
+
+        return read3Digit(firstThreeDigits) + ' billion ' + (secondThreeDigit > 0 ? ' & ' + readNumber(secondThreeDigit) : '');
+    }
+
     return 'I STILL DO NOT KNOW HOW TO READ THIS NUMBER!'
 }
