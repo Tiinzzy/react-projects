@@ -19,7 +19,6 @@ const NUMBER_TO_TEXT = {
     '17': 'Seventeen',
     '18': 'Eighteen',
     '19': 'Nineteen',
-
     '20': 'Twenty',
     '30': 'Thirty',
     '40': 'Fourty',
@@ -28,9 +27,7 @@ const NUMBER_TO_TEXT = {
     '70': 'Seventy',
     '80': 'Eighty',
     '90': 'Ninty',
-
 }
-
 
 function read3Digit(n) {
     n = n * 1;
@@ -79,7 +76,7 @@ export function readNumber(n) {
         let first3Digits = Math.floor(n / 1000);
         let second3Digits = n - first3Digits * 1000;
 
-        return read3Digit(first3Digits) + ' Thousand ' + '\n' + (second3Digits > 0 ? ' & ' + read3Digit(second3Digits) : '');
+        return read3Digit(first3Digits) + ' Thousand ' + (second3Digits > 0 ? ' break ' + read3Digit(second3Digits) : '');
     }
 
     // 999,000..999,999,999
@@ -87,7 +84,7 @@ export function readNumber(n) {
         let first3Digit = Math.floor(n / 1000000);
         let second3Digit = n - first3Digit * 1000000;
 
-        return read3Digit(first3Digit) + ' Million ' + '\n' + (second3Digit > 0 ? ' & ' + readNumber(second3Digit) : '');
+        return read3Digit(first3Digit) + ' Million ' + (second3Digit > 0 ? ' break ' + readNumber(second3Digit) : '');
     }
 
     // 999,999,999..999,999,999,999
@@ -95,7 +92,7 @@ export function readNumber(n) {
         let firstThreeDigits = Math.floor(n / 1000000000);;
         let secondThreeDigit = n - firstThreeDigits * 1000000000;
 
-        return read3Digit(firstThreeDigits) + ' Billion ' + '\n' + (secondThreeDigit > 0 ? ' & ' + readNumber(secondThreeDigit) : '');
+        return read3Digit(firstThreeDigits) + ' Billion ' + (secondThreeDigit > 0 ? ' break ' + readNumber(secondThreeDigit) : '');
     }
 
     // 999,999,999,999..999,999,999,999,999
@@ -103,7 +100,7 @@ export function readNumber(n) {
         let firstThreeDigits = Math.floor(n / 1000000000000);;
         let secondThreeDigit = n - firstThreeDigits * 1000000000000;
 
-        return read3Digit(firstThreeDigits) + ' Trillion ' + '\n' + (secondThreeDigit > 0 ? ' & ' + readNumber(secondThreeDigit) : '');
+        return read3Digit(firstThreeDigits) + ' Trillion ' + (secondThreeDigit > 0 ? ' break ' + readNumber(secondThreeDigit) : '');
     }
     return 'I STILL DO NOT KNOW HOW TO READ THIS NUMBER!'
 }
