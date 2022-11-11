@@ -72,7 +72,7 @@ export function readNumber(n) {
     n = n * 1;
     if (n < 1000) {
         return read3Digit(n);
-    }   
+    }
 
     // 1,000..999,000
     if (n < 1000000) {
@@ -81,6 +81,14 @@ export function readNumber(n) {
 
         return read3Digit(first3Digits) + ' thousand ' + (second3Digits > 0 ? ' & ' + read3Digit(second3Digits) : '');
     }
-   
+
+    // 999,000..999,999,999
+    if (n < 1000000000) {
+        let first3Digit = Math.floor(n / 1000000);
+        let second3Digit = n - first3Digit * 1000000;
+
+        return read3Digit(first3Digit) + ' million ' + (second3Digit > 0 ? ' & ' + readNumber(second3Digit) : '');
+    }
+
     return 'I STILL DO NOT KNOW HOW TO READ THIS NUMBER!'
 }
