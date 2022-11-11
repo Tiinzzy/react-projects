@@ -92,11 +92,18 @@ export function readNumber(n) {
 
     // 999,999,999..999,999,999,999
     if (n < 1000000000000) {
-        let firstThreeDigits = Math.floor(n/1000000000)  ;      ;
+        let firstThreeDigits = Math.floor(n / 1000000000);;
         let secondThreeDigit = n - firstThreeDigits * 1000000000;
 
         return read3Digit(firstThreeDigits) + ' billion ' + (secondThreeDigit > 0 ? ' & ' + readNumber(secondThreeDigit) : '');
     }
 
+    // 999,999,999,999..999,999,999,999,999
+    if (n < 1000000000000000) {
+        let firstThreeDigits = Math.floor(n / 1000000000000);;
+        let secondThreeDigit = n - firstThreeDigits * 1000000000000;
+
+        return read3Digit(firstThreeDigits) + ' trillion ' + (secondThreeDigit > 0 ? ' & ' + readNumber(secondThreeDigit) : '');
+    }
     return 'I STILL DO NOT KNOW HOW TO READ THIS NUMBER!'
 }
