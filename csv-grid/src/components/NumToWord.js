@@ -6,7 +6,6 @@ import Button from '@mui/material/Button';
 
 import { readNumber } from './read_numbers';
 
-
 function convertNumberToWords(num) {
     let single = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
     let couple = ['', '', 'twenty', 'thirty', 'fourty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninty'];
@@ -40,7 +39,6 @@ function convertNumberToWords(num) {
 
 }
 
-
 class NumToWord extends React.Component {
 
     constructor(props) {
@@ -60,13 +58,22 @@ class NumToWord extends React.Component {
         console.log();
     }
 
+
     render() {
         return (
             <>
                 <Box margin={5}>
                     <TextField label="Enter your number" variant="outlined" value={this.state.number} onChange={(e) => this.handleChange(e)} />
-                    <Button variant="contained" onClick={() => this.handleClick()} style={{ margin: 10 }}>Convert</Button>
-                    <h2>{readNumber(this.state.number)}</h2>
+                    {/* <Button variant="contained" onClick={() => this.handleClick()} style={{ margin: 10 }}>Convert</Button> */}
+                    <Box style={{ marginTop: 25, fontSize: 20, border: 'solid 1px #eaeaea', width: '600px', borderRadius: 3, color: '#36454F' }}>
+                        <Box style={{ marginTop: 10, marginBottom: 10, marginLeft: 10 }}>
+                            {(this.state.number * 1).toLocaleString()}
+                        </Box>
+
+                        <Box style={{ marginTop: 10, marginBottom: 10, marginLeft: 10 }}>
+                            {readNumber(this.state.number)}
+                        </Box>
+                    </Box>
                 </Box>
 
             </>
