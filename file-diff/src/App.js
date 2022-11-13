@@ -26,14 +26,12 @@ function fileViewer3CallBack(file) {
   console.log(allfiles);
 }
 
-
 function App() {
   return (
     <div className="App">
       <Header />
-      <FileViewer width='30%' id='file #1' callback={fileViewer1CallBack} />
-      <FileViewer width='30%' id='file #2' callback={fileViewer2CallBack} /> 
-      <FileViewer width='30%' id='file #3' callback={fileViewer3CallBack} /> 
+      <FileViewer id='file #1' callback={fileViewer1CallBack} />
+      <FileViewer id='file #2' callback={fileViewer2CallBack} />
       <Footer />
     </div>
   );
