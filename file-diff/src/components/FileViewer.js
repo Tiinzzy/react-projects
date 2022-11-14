@@ -37,6 +37,7 @@ import Typography from '@mui/material/Typography';
 
 export default function FileViewer(props) {
     const [openFileSelector, { filesContent, loading }] = useFilePicker({
+        multiple: false,
         accept: '.txt',
     });
 
@@ -44,23 +45,27 @@ export default function FileViewer(props) {
         return <Box>Loading...</Box>;
     }
 
+    function callBackIfRequired(len) {
+        if (len > 0) {
+            props.callback(filesContent[0].content);
+        }
+        return len > 0;
+    }
+
     return (
         <Box style={{ width: 400, border: 'solid 1px #eaeaea', display: 'inline-block', height: '100%' }}>
             <Box style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-                <Typography variant="h6" component="h5" style={{ marginTop: 10, marginBottom: 10, color: '#34344A' }}>  Upload {props.id}</Typography>
                 <Box>
-                    <Button onClick={() => openFileSelector()} variant="outlined" style={{ marginBottom: 10 }} size="small">Select file </Button>
-                    <br />
-                    {filesContent.map((file, index) => (
-                        <Box>
+                    <Button onClick={() => openFileSelector()} variant="outlined" style={{ marginBottom: 10 }} size="small">Select {props.id}</Button>
+                </Box>
+                <Box>
+                    {filesContent.slice(0,1).map((file, index) => (
+                        <Box key={index}>
                             <Box style={{ marginBottom: 6 }} >
-                                <Typography variant="body2" component="body2" styel={{ color: '#34344A' }} >File Name: {file.name}
-                                </Typography>
+                                <Typography variant="body2" component="div" styel={{ color: '#34344A' }} >File Name: {file.name}</Typography>
                             </Box>
-                            <textarea id="w3review" name="w3review" rows="30" cols="45" key={index} style={{ resize: 'none', marginBottom: 6 }}>
-                                {file.content}
-                            </textarea>
-                            <br />
+                            {callBackIfRequired(filesContent.length) && <textarea readOnly={true} aid="w3review" name="w3review" rows="15" cols="45"
+                                defaultValue={file.content} style={{ resize: 'none', marginBottom: 6 }} />}
                         </Box>
                     ))}
                 </Box>
