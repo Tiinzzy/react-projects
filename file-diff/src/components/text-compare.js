@@ -6,17 +6,15 @@
 
 */
 
-import { TireRepair } from "@mui/icons-material";
-
 export function compareTexts(text1, text2) {
 
-    let lines1 = text1.spilit('\n');
-    let lines2 = text2.spilit('\n');
+    let lines1 = text1.split('\n');
+    let lines2 = text2.split('\n');
 
     let result = {};
 
-    result.text1Diffs = getTextDiff(lines1, lines2);
-    result.text2Diffs = getTextDiff(lines2, lines1);
+    result.diff1 = getTextDiff(lines1, lines2);
+    result.diff2 = getTextDiff(lines2, lines1);
 
     return result;
 }
@@ -25,25 +23,38 @@ export function compareTexts(text1, text2) {
 function getTextDiff(sourceLines, destinationLines) {
     let diffs = [];
     for (let l in sourceLines) {
-        let diff = getLineDiff(sourceLines[l], destinationLines[l]);
-        diffs.push(diff)
+        if (l < destinationLines.length) {
+            let diff = getLineDiff(sourceLines[l], destinationLines[l]);
+            diffs.push(diff)
+        }
     }
     return diffs;
 }
 
 
 function getLineDiff(sourceLine, destinationLine) {
+    let sourceWords = sourceLine.split(" ");
+    let destinationWords = destinationLine.split(" ");
 
-    // sourceLine       : "hello my baby, hello my honey"
-    // destinationLine  : "hello my honey, hello my babay"
     // + means source has it but destination doesn't 
     // - means source doesn't have it but destination has it
     // return: [ { sign: '+', word: 'baby',  position: 3 }, { sign: '-', word: 'honey',  position: 3 }, .... ]
 
     // you choose your own easy to implement comparison algorithm
-
     let diffrences = [];
 
+    for (let s = 0; s < sourceWords.length; s++) {
+        let sw = sourceWords[s];
+        if (s < destinationWords.length) {
+            let dw = destinationWords[s];
+            if (dw !== sw) {
+                diffrences.push({ 'sign': '-', 'word': dw, 'position': s });
+                diffrences.push({ 'sign': '+', 'word': sw, 'position': s });
+            }
+        } else {
+            diffrences.push({ 'sign': '+', 'word': sw, 'position': s });
+        }
+    }
 
     return diffrences;
 }
