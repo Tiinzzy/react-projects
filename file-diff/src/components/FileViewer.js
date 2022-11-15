@@ -34,7 +34,6 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-
 export default function FileViewer(props) {
     const [openFileSelector, { filesContent, loading }] = useFilePicker({
         multiple: false,
@@ -53,13 +52,13 @@ export default function FileViewer(props) {
     }
 
     return (
-        <Box style={{ width: 400, border: 'solid 1px #eaeaea', display: 'inline-block', height: '100%' }}>
+        <Box style={{ width: 400, border: 'solid 1px #eaeaea', display: 'inline-block', height: '100%', marginRight: 10 }}>
             <Box style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
                 <Box>
-                    <Button onClick={() => openFileSelector()} variant="outlined" style={{ marginBottom: 10 }} size="small">Select {props.id}</Button>
+                    <Button onClick={() => openFileSelector()} variant="outlined" style={{ marginBottom: 10, marginTop: 10 }} color="primary" size="small">Select {props.id}</Button>
                 </Box>
                 <Box>
-                    {filesContent.slice(0,1).map((file, index) => (
+                    {filesContent.slice(0, 1).map((file, index) => (
                         <Box key={index}>
                             <Box style={{ marginBottom: 6 }} >
                                 <Typography variant="body2" component="div" styel={{ color: '#34344A' }} >File Name: {file.name}</Typography>
