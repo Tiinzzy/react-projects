@@ -24,7 +24,7 @@ function getTextDiff(sourceLines, destinationLines) {
     let diffs = [];
     for (let l in sourceLines) {
         if (l < destinationLines.length) {
-            let diff = getLineDiff(sourceLines[l], destinationLines[l]);
+            let diff = getLineDiff(sourceLines[l], destinationLines[l], l);
             diffs.push(diff)
         }
     }
@@ -32,7 +32,7 @@ function getTextDiff(sourceLines, destinationLines) {
 }
 
 
-function getLineDiff(sourceLine, destinationLine) {
+function getLineDiff(sourceLine, destinationLine, lineNo) {
     let sourceWords = sourceLine.split(" ");
     let destinationWords = destinationLine.split(" ");
 
@@ -48,11 +48,11 @@ function getLineDiff(sourceLine, destinationLine) {
         if (s < destinationWords.length) {
             let dw = destinationWords[s];
             if (dw !== sw) {
-                diffrences.push({ 'sign': '-', 'word': dw, 'position': s });
-                diffrences.push({ 'sign': '+', 'word': sw, 'position': s });
+                diffrences.push({ sign: '-', word: dw, position: s, lineNo });
+                diffrences.push({ sign: '+', word: sw, position: s, lineNo });
             }
         } else {
-            diffrences.push({ 'sign': '+', 'word': sw, 'position': s });
+            diffrences.push({ sign: '+', word: sw, position: s, lineNo });
         }
     }
 
