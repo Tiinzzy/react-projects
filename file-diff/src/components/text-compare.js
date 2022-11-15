@@ -11,7 +11,7 @@ export function compareTexts(text1, text2) {
     let lines1 = text1.split('\n');
     let lines2 = text2.split('\n');
 
-    let result = {};
+    let result = [];
 
     result.diff1 = getTextDiff(lines1, lines2);
     result.diff2 = getTextDiff(lines2, lines1);
