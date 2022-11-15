@@ -31,33 +31,27 @@ function fileViewer2CallBack(file) {
   allfiles.f2 = file;
 }
 
+
+function cleanDiff(diff) {
+  let clean = [];
+  for (let i = 0; i < diff.length; i++) {
+    for (let j = 0; j < diff[i].length; j++) {
+      if (typeof diff[j] !== 'undefined' && diff[j] !== null && diff[j].length > 0) {
+        clean.push(diff[j]);
+      }
+    }
+  }
+  return clean;
+}
+
 function App() {
   const [diff1, setDiff1] = useState([]);
   const [diff2, setDiff2] = useState([]);
 
   function compare() {
     let result = compareTexts(allfiles.f1, allfiles.f2);
-                    
-    let displayDiff1 = [];
-    for (let i = 0; i < result.diff1.length; i++) {
-      for (let j = 0; j < result.diff1[i].length; j++) {
-        if (typeof result.diff1[j] !== 'undefined' && result.diff1[j] !== null && result.diff1[j].length > 0) {
-          displayDiff1.push(result.diff1[j]);
-        }
-      }
-    }
-
-    let displayDiff2 = [];
-    for (let m = 0; m < result.diff2.length; m++) {
-      for (let n = 0; n < result.diff2[m].length; n++) {
-        if (typeof result.diff2[n] !== 'undefined' && result.diff2[n] !== null && result.diff2[n].length > 0) {
-          displayDiff2.push(result.diff2[n]);
-        }
-      }
-    }
-
-    setDiff1(displayDiff1);
-    setDiff2(displayDiff2);
+    setDiff1(cleanDiff(result.diff1));
+    setDiff2(cleanDiff(result.diff2));
   }
 
   return (
