@@ -31,7 +31,6 @@ function fileViewer2CallBack(file) {
   allfiles.f2 = file;
 }
 
-
 function cleanDiff(diff) {
   let clean = [];
   for (let i = 0; i < diff.length; i++) {
