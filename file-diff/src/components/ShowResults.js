@@ -31,11 +31,21 @@ export default function ShowResults(props) {
     }
 
     let allWords = [];
-    let splitText = props.text.split(' ');
-    for (let w in splitText) {
-        allWords.push(splitText[w].replace('\n', ''))
+    let splitLine = props.text.split("\n").filter(e => e.length > 0);
+    // console.log(splitLine);
+    for (let l in splitLine) {
+        // console.log('lines >>', splitLine[l]);
+        // console.log(splitLine[l].split(" "));
+        let lines = splitLine[l].split(" ");
+        let wordsInLines = [];
+        for (let w in lines) {
+            wordsInLines.push(lines[w]);
+            // console.log(' words >>', lines[w]);
+            // console.log(wordsInLines);
+        }
+        allWords.push(wordsInLines);
+        // console.log(wordsInLines);
     }
-
 
     return (
         <Box style={{ width: '100%', textAlign: 'left', height: '100%', paddingTop: 10, paddingLeft: 10, paddingBottom: 10 }}>
