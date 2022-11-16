@@ -50,9 +50,11 @@ export default function ShowResults(props) {
     return (
         <Box style={{ width: '100%', textAlign: 'left', height: '100%', paddingTop: 10, paddingLeft: 10, paddingBottom: 10 }}>
             <Box style={{ marginBottom: 10 }}>
-                {allWords.map((w, i) => (<span key={i} style={{ color: positives.includes(w) ? '#08B500' : ' #353535', backgroundColor: positives.includes(w) && '#CEFFD3' }}>
-                    {negatives.hasOwnProperty(i + '') ? <span style={{ color: '#FF0000', backgroundColor: '#FFD9D9' }}>{negatives[i + ''] + ' '}</span> : null}
-                    {w + ' '}
+                {allWords.map((line, i) => (<span key={i}>
+                    {line.map((word, w) => (<span key={w} style={{ color: positives.includes(word) ? '#08B500' : ' #353535', backgroundColor: positives.includes(word) && '#CEFFD3' }}>
+                        {negatives.hasOwnProperty(w + '') ? <span style={{ color: '#FF0000', backgroundColor: '#FFD9D9' }}>{negatives[w + ''] + ' '}</span> : null}
+                        {word + ' '}
+                    </span>))}
                 </span>))}
             </Box>
 
