@@ -36,17 +36,20 @@ export default function ShowResults(props) {
         allWords.push(splitText[w].replace('\n', ''))
     }
 
+
     return (
         <Box style={{ width: '100%', textAlign: 'left', height: '100%', paddingTop: 10, paddingLeft: 10, paddingBottom: 10 }}>
-            {allWords.map((w, i) => (<span key={i} style={{ color: positives.includes(w) ? 'green' : ' #353535' }}>
-                {negatives.hasOwnProperty(i + '') ? <span style={{ color: 'red' }}>{negatives[i + ''] + ' '}</span> : null}
-                {w + ' '}
-            </span>))}
+            <Box style={{ marginBottom: 10 }}>
+                {allWords.map((w, i) => (<span key={i} style={{ color: positives.includes(w) ? '#08B500' : ' #353535', backgroundColor: positives.includes(w) && '#CEFFD3' }}>
+                    {negatives.hasOwnProperty(i + '') ? <span style={{ color: '#FF0000', backgroundColor: '#FFD9D9' }}>{negatives[i + ''] + ' '}</span> : null}
+                    {w + ' '}
+                </span>))}
+            </Box>
 
-            <Divider />
-            <Divider />
+            <Divider style={{ marginRight: 10, marginLeft: 2 }} color="#c2185b" />
+            <Divider style={{ marginRight: 10, marginLeft: 2 }} />
 
-            <Typography variant="body2" component="div">
+            <Typography variant="body2" component="div" style={{ marginTop: 10 }}>
                 {props.diff.map((line, l) => (<div key={l}>
                     {line.map((diff, d) => (<div key={d}>
                         {diff.sign} {diff.word} @line {diff.lineNo} @position {diff.position}
@@ -54,17 +57,13 @@ export default function ShowResults(props) {
                 </div>))}
             </Typography>
 
-
-            {/* 
-            <Divider />
+            {/* <Divider />
             {JSON.stringify(negatives)}
             <Divider />
             {JSON.stringify(positives)}
             <Divider />
-            {JSON.stringify(allWords)} 
-            */}
+            {JSON.stringify(allWords)} */}
+
         </Box>
     );
 }
-
-
