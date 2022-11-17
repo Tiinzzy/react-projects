@@ -63,7 +63,7 @@ export default function ShowResults(props) {
         <Box style={{ width: '100%', textAlign: 'left', height: '100%', paddingTop: 10, paddingLeft: 10, paddingBottom: 10 }}>
             {allWords.length > 0 && <>
                 <Box style={{ marginBottom: 10 }}>
-                    {allWords.map((line, l) => (<div key={l}>
+                    {allWords.map((line, l) => (<Box key={l}>
                         {line.map((word, w) => (<span key={w} style={{ color: getPositiveColor(l, w, word), backgroundColor: getBackColor(l, w, word) }}>
                             <span style={{ color: '#FF0000', backgroundColor: '#FFD9D9' }}> {getNegativeWord(l, w)} </span>
                             {word + ' '}
@@ -71,18 +71,18 @@ export default function ShowResults(props) {
                         {props.diff[l].filter((e) => e.extra).map((diff, d) => (<span key={d}>
                             <span style={{ color: '#0041E2', backgroundColor: "#C6DCFF" }}>{diff.word + ' '}</span>
                         </span>))}
-                    </div>))}
+                    </Box>))}
                 </Box>
 
                 <Divider style={{ marginRight: 10, marginLeft: 2 }} color="#c2185b" />
                 <Divider style={{ marginRight: 10, marginLeft: 2 }} />
 
                 <Typography variant="body2" component="div" style={{ marginTop: 10 }}>
-                    {props.diff.map((line, l) => (<div key={l}>
-                        {line.map((diff, d) => (<div key={d}>
+                    {props.diff.map((line, l) => (<Box key={l}>
+                        {line.map((diff, d) => (<Box key={d}>
                             {diff.sign} {diff.word} @line {diff.lineNo} @position {diff.position}
-                        </div>))}
-                    </div>))}
+                        </Box>))}
+                    </Box>))}
                 </Typography>
             </>}
         </Box>
