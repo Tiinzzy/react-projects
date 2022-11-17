@@ -48,11 +48,19 @@ function getLineDiff(sourceLine, destinationLine, lineNo) {
         if (s < destinationWords.length) {
             let dw = destinationWords[s];
             if (dw !== sw) {
-                diffrences.push({ sign: '-', word: dw, position: s, lineNo });
-                diffrences.push({ sign: '+', word: sw, position: s, lineNo });
+                diffrences.push({ sign: '-', extra: false, word: dw, position: s, lineNo });
+                diffrences.push({ sign: '+', extra: false, word: sw, position: s, lineNo });
             }
         } else {
             diffrences.push({ sign: '+', word: sw, position: s, lineNo });
+        }
+    }
+
+    let lengthDiff = destinationWords.length - sourceWords.length;
+    if (lengthDiff > 0) {
+        for (let i = 0; i < lengthDiff; i++) {
+            let p = sourceWords.length + i;
+            diffrences.push({ sign: '-', extra: true, word: destinationWords[p], position: p, lineNo });
         }
     }
 
