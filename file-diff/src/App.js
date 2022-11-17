@@ -36,10 +36,13 @@ function cleanDiff(diff) {
   for (let i = 0; i < diff.length; i++) {
     for (let j = 0; j < diff[i].length; j++) {
       if (typeof diff[j] !== 'undefined' && diff[j] !== null && diff[j].length > 0) {
-        clean.push(diff[j]);
+        if (diff[j][0].lineNo * 1 === i) {
+          clean.push(diff[j]);
+        }
       }
     }
   }
+  console.log("clean version >>", clean)
   return clean;
 }
 
