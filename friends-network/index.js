@@ -1,17 +1,22 @@
 const fs = require("fs");
 var args = process.argv.slice(2);
 
-main(args[0], args[1]);
+if (args.length >= 1) {
+  main(args[0], args[1], args[2]);
+} else {
+  console.log('Syntax: node index.js user [level] [filename]')
+}
 
 //----------------------------------------------
-function main(user, file) {
+function main(user, level, file) {
   user = user || null;
   file = file || null;
+  level = level || 0;
 
   let data = readData("./users.txt")
 
   if (user !== null) {
-    let friends = getFriends(data, user, 0);
+    let friends = getFriends(data, user, level);
     showFriends(friends);
     if (file !== null) {
       saveAsJsonFriends(file + '-friends.json', friends);
@@ -44,12 +49,22 @@ function getFriends(data, user, level) {
       }
     });
   } else if (level > 0) {
-
+    data.forEach(p => {
+      if (p.user === user) {
+        let friends = p.friends;
+        for (let e in friends) {
+          result = result.concat(getFriends(data, friends[e], 0));
+        }
+      }
+    }
+    );
   }
+
+  result = [...new Set(result)];
+  result = result.filter(e => e !== user);
 
   return result;
 }
-
 
 //----------------------------------------------
 function readData(filename) {
