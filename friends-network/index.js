@@ -48,7 +48,8 @@ function getFriends(data, user, level) {
         result = result.concat(p.friends);
       }
     });
-  } else if (level > 0) {
+  }
+  else if (level > 0) {
     data.forEach(p => {
       if (p.user === user) {
         let friends = p.friends;
