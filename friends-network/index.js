@@ -1,11 +1,48 @@
 const fs = require("fs");
+var args = process.argv.slice(2);
 
-main();
+main(args[0]);
 
 //----------------------------------------------
-function main() {
+function main(user) {
+  user = user || null;
   let data = readData("./users.txt")
+
+  let friends = getFriends(data, user, 0);
+  showFriends(friends);
+  saveAsJsonFriends('friends.json', friends);
 }
+
+//----------------------------------------------
+function showFriends(friends) {
+  friends.forEach((e,i) => {
+    console.log(1+i, e);
+  });
+}
+
+
+//----------------------------------------------
+function saveAsJsonFriends(file, friends) {
+
+}
+
+
+//----------------------------------------------
+function getFriends(data, user, level) {
+  let result = [];
+  if (level === 0) {
+    data.forEach(p => {
+      if (p.user === user) {
+        result = result.concat(p.friends);                
+      }
+    });
+  } else {
+
+  }
+
+  return result;
+}
+
 
 //----------------------------------------------
 function readData(filename) {
