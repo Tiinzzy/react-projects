@@ -1,0 +1,41 @@
+1) this is only a javascript application. no ui. just a back-end.
+
+
+2) you can run it like => npm start
+
+   or if your main application is main.js  =>  node main.js
+
+3) there is file named friendship.txt like this:
+
+kamran:tina,amir,sarah,ilan
+tina:kamran,kiana,mamad,jafar,amy,shayan
+shayan:tina,amy,mateo,kamran
+amy:glen,jona,hasan
+sarah:jafar,tina,james
+
+a hint is that you can use fs to read files. if you remember it was not working on front-end but it works in back-end. if you don't want to "npm install fs" you can also use javascripts low levelr readfile things.
+
+
+4) you have to read this file and write a function to answer these kind of questions for now: who are the nth level friend of a person.
+
+
+a fucntion that returns first, second, ... level of persons friends
+
+showFriends('kamran', 0)
+[tina,amir,sarah,ilan]
+
+showFrieds('kamran', 1)
+[kiana,mamad,jafar,amy,shayan,james]
+
+showFrieds('tina', 0)
+[kamran,kiana,mamad,jafar,amy,shayan]
+
+showFrieds('tina', 1)
+[amir,sarah,ilan,glen,jona,hasan,,amy,mateo]
+
+showFrieds('tina', 5)
+[]
+
+
+
+https://medium.com/@ja3606/using-facebook-to-learn-some-basics-about-graph-theory-ecadb31cd127
