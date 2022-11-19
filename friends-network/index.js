@@ -11,7 +11,7 @@ if (args.length >= 1) {
 function main(user, level, file) {
   user = user || null;
   file = file || null;
-  level = level || 0;
+  level = (level || 0) * 1;
 
   let data = readData("./users.txt")
 
@@ -26,9 +26,10 @@ function main(user, level, file) {
 
 //----------------------------------------------
 function showFriends(friends) {
-  friends.forEach((e, i) => {
-    console.log(1 + i, e);
-  });
+  console.log(friends);
+  // friends.forEach((e, i) => {
+  //   console.log(1 + i, e);
+  // });
 }
 
 //----------------------------------------------
@@ -41,29 +42,48 @@ function saveAsJsonFriends(file, friends) {
 
 //----------------------------------------------
 function getFriends(data, user, level) {
-  let result = [];
-  if (level === 0) {
-    data.forEach(p => {
-      if (p.user === user) {
-        result = result.concat(p.friends);
-      }
-    });
-  }
-  else if (level > 0) {
-    data.forEach(p => {
-      if (p.user === user) {
-        let friends = p.friends;
-        for (let e in friends) {
-          result = result.concat(getFriends(data, friends[e], 0));
-        }
+  let result = {};
+  let alreadySeen = new Set();
+
+  for (let l = 0; l <= level; l++) {
+    if (l === 0) {
+      let zeroLevelFriends = getL0Friends(data, user);
+      result[l.toString()] = zeroLevelFriends;
+      alreadySeen = new Set([...zeroLevelFriends]);
+    } else {
+      let nextLevelFriends = [];
+      result[(l - 1).toString()].forEach(f => {
+        let tempResult = getL0Friends(data, f);
+        nextLevelFriends = nextLevelFriends.concat(tempResult);
+      });
+      nextLevelFriends = cleanResult(nextLevelFriends, user);
+      result[l.toString()] = nextLevelFriends;
+      if (l < level) {
+        alreadySeen = new Set([...alreadySeen, ...nextLevelFriends]);
       }
     }
-    );
   }
 
-  result = [...new Set(result)];
-  result = result.filter(e => e !== user);
+  result = result[level.toString()];
+  result = result.filter(f => !alreadySeen.has(f));
+  return result;
+}
 
+function cleanResult(array, user) {
+  let result = [... new Set(array)];
+  result = result.filter(e => e !== user);
+  return result;
+}
+
+//----------------------------------------------
+function getL0Friends(data, user) {
+  let result = [];
+  data.forEach(p => {
+    if (p.user === user) {
+      result = result.concat(p.friends);
+    }
+  });
+  result = cleanResult(result, user);
   return result;
 }
 

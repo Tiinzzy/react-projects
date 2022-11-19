@@ -3,6 +3,8 @@ tina:kamran,kiana,jafar,amy,shayan
 shayan  :tina,amy,,,mateo,   kamran
 amy:glen,jona,hasan
 sarah:jafar,tina,james,amy
-dualipa,brintney
+cristal:dualipa,brintney
 kamran:corry
 kiana: sarah, amy
+corry:agnes, kamran
+agnes:tina, cristal
