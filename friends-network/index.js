@@ -11,7 +11,7 @@ if (args.length >= 1) {
 function main(user, level, file) {
   user = user || null;
   file = file || null;
-  level = level || 0;
+  level = (level || 0) * 1;
 
   let data = readData("./users.txt")
 
