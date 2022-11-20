@@ -2,10 +2,29 @@ const fs = require("fs");
 var args = process.argv.slice(2);
 
 if (args.length >= 1) {
-  main(args[0], args[1], args[2]);
+  // console.log('Recursivce Version Result ------------------------')
+  // mainRecursive(args[0], args[1], args[2]);
+
+  console.log('Loop Version Result ------------------------------')
+  main(args[0], args[1], args[2]); 
 } else {
   console.log('Syntax: node index.js user [level] [filename]')
 }
+
+//----------------------------------------------
+function mainRecursive(user, level, file) {
+  user = user || null;
+  file = file || null;
+  level = (level || 0) * 1;
+
+  let data = readData("./users.txt")
+
+  if (user !== null) {
+    let friends = getFriendsRecursive(data, user, level);
+    console.log(friends);
+  }
+}
+
 
 //----------------------------------------------
 function main(user, level, file) {
@@ -65,13 +84,19 @@ function getFriends(data, user, level) {
   }
 
   result = result[level.toString()];
-  result = result.filter(f => !alreadySeen.has(f));
+  if (level > 0) {
+    result = result.filter(f => !alreadySeen.has(f));
+  }
   return result;
 }
 
 function cleanResult(array, user) {
+  if (typeof user === 'string') {
+    user = [user];
+  }
+
   let result = [... new Set(array)];
-  result = result.filter(e => e !== user);
+  result = result.filter(e => !user.includes(e)).sort();
   return result;
 }
 
@@ -108,3 +133,35 @@ function readData(filename) {
 }
 
 
+//----------------------------------------------
+function getFriendsRecursive(data, users, level, targetLevel) {
+  targetLevel = targetLevel || 0;
+  if (typeof users === 'string') {
+    users = [users]
+  }
+
+  function getFriends(users) {
+    let allFriends = [];
+    users.forEach(u => {
+      let friends = getL0Friends(data, u);
+      allFriends = allFriends.concat(friends);
+      allFriends = cleanResult(allFriends, u);
+    });
+    allFriends = cleanResult(allFriends, users);
+    return allFriends;
+  }
+
+
+  let friends = getFriends(users);
+  console.log(targetLevel, friends);
+  if (targetLevel === level) {
+    friends = cleanResult(friends , users);
+    console.log(friends)
+  } else {
+    getFriendsRecursive(data, friends, level, targetLevel + 1);
+  }
+
+
+  return [-1];
+
+}
