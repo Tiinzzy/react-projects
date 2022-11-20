@@ -1,0 +1,41 @@
+https://graphviz.readthedocs.io/en/stable/index.html
+
+https://graphviz.org/
+
+https://dreampuf.github.io/GraphvizOnline
+
+https://renenyffenegger.ch/notes/tools/Graphviz/examples/index
+
+
+digraph G {
+	kamran -> tina
+	kamran -> amir
+	kamran -> sarah
+	kamran -> ilan
+	tina -> kamran
+	tina -> kiana
+	tina -> jafar
+	tina -> amy
+	tina -> shayan
+	shayan -> tina
+	shayan -> amy
+	shayan -> mateo
+	shayan -> kamran
+	amy -> glen
+	amy -> jona
+	amy -> hasan
+	sarah -> jafar
+	sarah -> tina
+	sarah -> james
+	sarah -> amy
+	cristal -> dualipa
+	cristal -> brintney
+	kamran -> corry
+	kiana -> sarah
+	kiana -> amy
+	corry -> agnes
+	corry -> kamran
+	agnes -> tina
+	agnes -> cristal
+}
+
