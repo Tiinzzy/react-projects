@@ -1,0 +1,33 @@
+You need to create a nice application witch which you can analyze costs.
+
+At the moment, I think it should have two menu options: “Load & Clean Data” and “Analysis”.
+
+Here is how “Load & Clean Data” works.
+
+1) When selecting the “Load & Clean Data” option, you need to load the data from a csv file - like the attached one - and store it in a json database. (simple-json-db)
+
+2) When you store the data in database, you need to add two more fields, first an id, and second a category, initially the value for that is ’None'
+
+3) So, for example first couple of rows of the attached csv will be like the below:
+[
+{
+ID: 0,
+DATE: "2022-09-29",
+DESC: "LLS CANADA TORONTO ON",
+AMOUNT: 102,
+CATEGORY: "None"
+},
+{
+ID:1,
+DATE: "2022-09-30",
+DESC: "PHARMAPRIX #0022 MONTREAL QC",
+AMOUNT: 22.52,
+CATEGORY: "None"
+}, ...
+]
+
+4) Show the data in a grid having the sort option over the columns.
+
+5) When user clicks on a row, you open a pop up and show the detail in a dialog and allow user to select the CATEGORY from a select box. The select box have options like: Groceries, Restaurant, Internet and Phone, others
+
+6) Note that if you already loaded the data and suddenly want to load it again, the application should give a warning that this process will overwrite your already created data.
