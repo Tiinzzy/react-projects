@@ -21,7 +21,7 @@ export function getColumns(row) {
     let category = '';
 
     for (var c in row) {
-        columns.push({ id: id, field: c, headerName: c, category: category, width: 200 });
+        columns.push({ field: c, headerName: c, id: id, category: category, width: 200 });
         id += 1;
     }
     return columns;
