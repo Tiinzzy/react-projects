@@ -1,11 +1,11 @@
 import './App.css';
-import CsvGrid from './components/CsvGrid';
+import DisplayGrid from './components/DisplayGrid';
 
 function App() {
   return (
     <div className="App">
       hello world
-      <CsvGrid/>
+      <DisplayGrid/>
     </div>
   );
 }
