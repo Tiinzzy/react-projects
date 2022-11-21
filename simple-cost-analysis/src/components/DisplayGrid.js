@@ -4,6 +4,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import Box from '@mui/material/Box';
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
+import Typography from "@mui/material/Typography";
 
 import { getData, getColumns } from './functions'
 
@@ -26,7 +27,6 @@ class DisplayGrid extends React.Component {
 
     async componentDidMount() {
         let data = await getData();
-        // console.log(data);
 
         let columns = getColumns(data[0]);
 
@@ -42,15 +42,12 @@ class DisplayGrid extends React.Component {
         columns.unshift({ field: 'id', headerName: 'Id' });
         columns.push({ field: 'category', headerName: 'Category' });
 
-
-        // console.log(columns);
-
         this.setState({ rows: data, columns: columns });
-        // console.log(rows);
     }
 
-    handleClick(d, e) {
-        this.setState({ dialogOpen: true, clickedRow: d.row });
+    handleClick(e) {
+        this.setState({ dialogOpen: true, clickedRow: e.row });
+        console.log(this.state.clickedRow);
     }
 
     handleCloseDialog() {
@@ -67,12 +64,29 @@ class DisplayGrid extends React.Component {
                         hideFooter={true}
                         rows={this.state.rows}
                         columns={this.state.columns}
-                        onCellDoubleClick={(d, e) => this.handleClick(d, e)}
+                        onCellDoubleClick={(e) => this.handleClick(e)}
                     />
 
                     {this.state.dialogOpen && <Dialog onClose={(e) => this.handleCloseDialog(e)} open={this.state.dialogOpen} maxWidth='sm' fullWidth={true}>
                         <DialogTitle>Details</DialogTitle>
-                        {/* {this.state.clickedRow} */}
+                        <Box style={{ display: 'flex', flexDirection: 'column', justifyContent: 'left', marginLeft: 30, paddingBottom: 10 }}>
+                            <Typography>
+                                Id: {this.state.clickedRow.id}
+                            </Typography>
+
+                            <Typography>  Date: {this.state.clickedRow.DATE}
+                            </Typography>
+
+                            <Typography>  Description: {this.state.clickedRow.DESC}
+                            </Typography>
+
+                            <Typography>  Amount: ${this.state.clickedRow.AMONT}
+                            </Typography>
+
+                            <Typography>  Category: {this.state.clickedRow.category}
+                            </Typography>
+                        </Box>
+
                     </Dialog>}
 
                 </Box>
