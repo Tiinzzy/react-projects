@@ -26,26 +26,27 @@ class DisplayGrid extends React.Component {
 
     async componentDidMount() {
         let data = await getData();
-        let columns = getColumns(data[0]);
-        //console.log(data);
-        // console.log(columns);
+        // console.log(data);
 
-        let rows = [];
-        let id = 0;
-        let category = '';
+        let columns = getColumns(data[0]);
+
+        let id = 1;
+        let category = 'None';
 
         for (var k in data) {
-            let value = data[k];
-            for (let i in value) {
-                let val = value[i];
-                data[k].id = id;
-                id += 1;
-                data[k].category = category;
-                rows.push({ key: i, val, id, category })
-            }
+            data[k].id = id;
+            data[k].category = category;
+            id += 1;
         }
-        this.setState({ rows: rows, columns: columns });
-        console.log(rows);
+
+        columns.unshift({ field: 'id', headerName: 'Id' });
+        columns.push({ field: 'category', headerName: 'Category' });
+
+
+        // console.log(columns);
+
+        this.setState({ rows: data, columns: columns });
+        // console.log(rows);
     }
 
     handleClick(d, e) {
