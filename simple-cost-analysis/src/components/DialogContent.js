@@ -2,14 +2,23 @@ import React from "react";
 
 import Box from '@mui/material/Box';
 import Typography from "@mui/material/Typography";
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 class DialogContent extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            clickedRow: props.clickedRow
+            clickedRow: props.clickedRow,
+            category: props.clickedRow.category
         }
+    }
+
+    handleChangeCategory(e) {
+        this.setState({ category: e.target.value });
     }
 
     render() {
@@ -29,8 +38,22 @@ class DialogContent extends React.Component {
                     <Typography>  Amount: ${this.state.clickedRow.AMONT}
                     </Typography>
 
-                    <Typography>  Category: {this.state.clickedRow.category}
-                    </Typography>
+                    <Box style={{ width: 200 }} mb={2}>
+                        <FormControl fullWidth>
+                            <InputLabel id="demo-simple-select-label">category</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={this.state.category}
+                                onChange={this.handleChangeCategory}
+                            >
+                                <MenuItem value={'Groceries'}>Groceries</MenuItem>
+                                <MenuItem value={'Entertainment'}>Entertainment</MenuItem>
+                                <MenuItem value={'Utilities'}>Utilities</MenuItem>
+                                <MenuItem value={'Personal'}>Personal</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Box>
                 </Box>
 
             </>
