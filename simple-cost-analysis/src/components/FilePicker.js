@@ -2,10 +2,11 @@ import React from "react";
 
 import Box from '@mui/material/Box';
 import Button from "@mui/material/Button";
+import  Typography  from "@mui/material/Typography";
 
 import { useFilePicker } from 'use-file-picker';
 
-export default function App() {
+export default function FilePicker() {
     const [openFileSelector, { filesContent, loading }] = useFilePicker({
         accept: '.CSV',
     });
@@ -16,11 +17,11 @@ export default function App() {
 
     return (
         <Box>
-            <Button onClick={() => openFileSelector()}>Select files </Button>
+            <Button onClick={() => openFileSelector()} variant="outlined">Select files </Button>
             <br />
             {filesContent.map((file, index) => (
                 <Box>
-                    <h2>{file.name}</h2>
+                    <Typography>{file.name}</Typography>
                     <Box key={index}>{file.content}</Box>
                     <br />
                 </Box>
