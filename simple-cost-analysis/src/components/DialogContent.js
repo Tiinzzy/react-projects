@@ -6,6 +6,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import { Divider } from "@mui/material";
 
 class DialogContent extends React.Component {
 
@@ -24,21 +25,22 @@ class DialogContent extends React.Component {
     render() {
         return (
             <>
-                <Box style={{ display: 'flex', flexDirection: 'column', justifyContent: 'left', marginLeft: 30, paddingBottom: 10 }}>
-                    <Typography>
+                <Divider />
+                <Box style={{ display: 'flex', flexDirection: 'column', justifyContent: 'left', marginLeft: 30, paddingBottom: 15, paddingTop: 15 }}>
+                    <Typography variant="h6">
                         Id: {this.state.clickedRow.id}
                     </Typography>
 
-                    <Typography>  Date: {this.state.clickedRow.DATE}
+                    <Typography variant="h6">  Date: {this.state.clickedRow.DATE}
                     </Typography>
 
-                    <Typography>  Description: {this.state.clickedRow.DESC}
+                    <Typography variant="h6">  Description: {this.state.clickedRow.DESC}
                     </Typography>
 
-                    <Typography>  Amount: ${this.state.clickedRow.AMONT}
+                    <Typography variant="h6">  Amount: ${this.state.clickedRow.AMONT}
                     </Typography>
 
-                    <Box style={{ width: 200 }} mb={2}>
+                    <Box style={{ width: 200, marginTop: 10, marginBottom: 10 }} >
                         <FormControl fullWidth>
                             <InputLabel id="demo-simple-select-label">category</InputLabel>
                             <Select
