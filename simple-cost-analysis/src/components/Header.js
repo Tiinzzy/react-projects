@@ -1,11 +1,11 @@
 import React from "react";
 
 import Box from '@mui/material/Box';
-import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
 
 import FilePicker from './FilePicker'
 
-class DialogContent extends React.Component {
+class Header extends React.Component {
 
     constructor(props) {
         super(props);
@@ -16,12 +16,13 @@ class DialogContent extends React.Component {
     render() {
         return (
             <>
-                <Box style={{ display: 'flex', flexDirection: 'column', justifyContent: 'left', marginLeft: 30, paddingBottom: 10 }}>
-                    <FilePicker />
+                <Box style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginLeft: 10, marginTop: 10, marginBottom: 10 }}>
+                    <Box style={{marginRight: 10}}> <FilePicker /> </Box>
+                    <Box style={{marginRight: 10}}> <Button variant="outlined">Save Data</Button> </Box>
                 </Box>
 
             </>
         );
     }
 }
-export default DialogContent;
+export default Header;
