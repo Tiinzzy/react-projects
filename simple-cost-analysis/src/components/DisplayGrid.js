@@ -32,8 +32,7 @@ class DisplayGrid extends React.Component {
         let columns = getColumns(data[0]);
 
         let id = 1;
-        let category = 'None';
-
+        let category = 'none';
         for (var k in data) {
             data[k].id = id;
             data[k].category = category;
