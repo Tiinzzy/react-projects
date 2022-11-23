@@ -13,3 +13,12 @@ exports.saveCsv = (req) => {
         return { success: false }
     }
 }
+
+exports.getAllData = () => {
+    let jData = db.JSON();
+    let result = [];
+    for (let r in jData) {
+        result.push(jData[r]);
+    }
+    return result;
+}
