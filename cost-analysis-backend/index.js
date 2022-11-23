@@ -17,7 +17,7 @@ app.listen(PORT, () => {
     res.json(dataServices.getAllData(req));
   })
 
-  app.get("/edit-data", (req, res) => {
+  app.post("/edit-data", (req, res) => {
     res.json(dataServices.editData(req));
   })
   
