@@ -27,21 +27,8 @@ class DisplayGrid extends React.Component {
     }
 
     async componentDidMount() {
-        let data = await getData();
-
+        let data = await getData();    
         let columns = getColumns(data[0]);
-
-        let id = 1;
-        let category = 'none';
-        for (var k in data) {
-            data[k].id = id;
-            data[k].category = category;
-            id += 1;
-        }
-
-        columns.unshift({ field: 'id', headerName: 'Id' });
-        columns.push({ field: 'category', headerName: 'Category' });
-
         this.setState({ rows: data, columns: columns });
     }
 
@@ -68,7 +55,7 @@ class DisplayGrid extends React.Component {
 
                     {this.state.dialogOpen && <Dialog onClose={(e) => this.handleCloseDialog(e)} open={this.state.dialogOpen} maxWidth='sm' fullWidth={true}>
                         <DialogTitle>Details</DialogTitle>
-                        <DialogContent clickedRow={this.state.clickedRow} />
+                        <DialogContent clickedRow={this.state.clickedRow} close={this.handleCloseDialog} />
                     </Dialog>}
 
                 </Box>
