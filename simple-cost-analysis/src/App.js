@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import DisplayGrid from './components/DisplayGrid';
 import Header from './components/Header';
-import FilePicker from './components/FilePicker';
+import SaveFile from './components/SaveFile';
 import Home from './components/Home';
 
 function App() {
@@ -16,9 +16,9 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route paath="/upload-file" element={<FilePicker />} />
+          <Route path="/upload-save-file" element={<SaveFile />} />
           <Route path="/display-grid" element={<DisplayGrid />} />
-          <Route path='*' element={<h3>Error</h3>} />
+          {/* <Route path='*' element={<h3>Error</h3>} /> */}
         </Routes>
       </BrowserRouter>
 

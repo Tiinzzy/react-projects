@@ -1,20 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
+import Button from '@mui/material/Button';
 
 import { useFilePicker } from 'use-file-picker';
 
 import { saveCsv } from './functions';
 
-
 const csv = require('csvtojson')
-
-
-const headerStyle = {
-    cursor: 'pointer',
-    color: '#1c4966'
-}
 
 export default function FilePicker() {
     const [openFileSelector, { filesContent }] = useFilePicker({
@@ -23,7 +16,7 @@ export default function FilePicker() {
 
     async function convertToCsv(content) {
         let csvData = await csv().fromString(content);
-        let id = 1000;
+        let id = 1;
         let data = {};
 
         csvData.forEach(row => {
@@ -34,9 +27,9 @@ export default function FilePicker() {
 
         saveCsv(data);
 
-        console.log(data);
-        console.log(Object.values(data));
-        console.log(Object.keys(data));
+        //console.log(data);
+        // console.log(Object.values(data));
+        // console.log(Object.keys(data));
 
         // Todo tomorrow
         // 1) write a function that returns number of rows stored in the backend!?
@@ -52,7 +45,7 @@ export default function FilePicker() {
 
     return (
         <Box>
-            <Link onClick={() => openFileSelector()} style={headerStyle}>Select CSV File </Link>
+            <Button onClick={() => openFileSelector()} variant="contained">Select CSV File </Button>
             <br />
             {filesContent.map((file, i) => (<span key={i}>{processContent(file.content)}</span>))}
         </Box>
