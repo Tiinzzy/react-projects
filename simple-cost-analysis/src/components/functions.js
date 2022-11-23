@@ -2,7 +2,7 @@ import axios from "axios";
 
 const csv = require('csvtojson')
 
-export async function getData() {
+export async function getDataFromPublic() {
     return axios('http://localhost:3000/some-costs.csv').then(result => {
         if (result.status === 200) {
             return csv().fromString(result.data)
@@ -13,6 +13,20 @@ export async function getData() {
             return null;
         }
     });
+}
+
+export async function getData() {
+    return axios.get('/get-all-data', { params: {} })
+        .then(response => {
+            if (response.status === 200) {
+                return response.data;
+            } else {
+                return null;
+            }
+        })
+        .catch(error => {
+            return null;
+        });
 }
 
 export function getColumns(row) {
@@ -40,3 +54,16 @@ export async function saveCsv(data) {
         });
 }
 
+export async function editData(query) {
+    return axios.post('/edit-data', {}, { params: { query: query } })
+        .then(response => {
+            if (response.status === 200) {
+                return response.data.success;
+            } else {
+                return false;
+            }
+        })
+        .catch(error => {
+            return false;
+        });
+}
