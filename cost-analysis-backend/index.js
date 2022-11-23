@@ -11,5 +11,14 @@ app.listen(PORT, () => {
   app.post("/save-csv", (req, res) => {
     console.log('Saving CSV');
     res.json(dataServices.saveCsv(req));
-})
+  })
+
+  app.get("/get-all-data", (req, res) => {
+    res.json(dataServices.getAllData(req));
+  })
+
+  app.post("/edit-data", (req, res) => {
+    res.json(dataServices.editData(req));
+  })
+  
 });

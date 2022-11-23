@@ -1,22 +1,16 @@
 import React, { useState } from 'react';
 
 import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
+import Button from '@mui/material/Button';
 
 import { useFilePicker } from 'use-file-picker';
 
 import { saveCsv } from './functions';
 
-
 const csv = require('csvtojson')
 
-
-const headerStyle = {
-    cursor: 'pointer',
-    color: '#1c4966'
-}
-
 export default function FilePicker() {
+    const [jCsv, setJCsv] = useState(null);
     const [openFileSelector, { filesContent }] = useFilePicker({
         accept: '.CSV',
     });
@@ -26,23 +20,16 @@ export default function FilePicker() {
         let id = 1000;
         let data = {};
 
-        csvData.forEach(row => {
+        let saveData = {};
+        csvData.forEach(row => {            
             row.id = id++;
-            row.category = 'None';
+            row.CATEGORY = 'None';            
             data[row.id] = row;
-        })
+            row.AMOUNT = (row.AMOUNT*1).toFixed(2);
+            saveData[row.id] = row;
+        });
 
-        saveCsv(data);
-
-        console.log(data);
-        console.log(Object.values(data));
-        console.log(Object.keys(data));
-
-        // Todo tomorrow
-        // 1) write a function that returns number of rows stored in the backend!?
-        // 2) if the number of the rows are not zero ask user would you like to replace the alreadly stored data 
-        // 3) if user says yes to 2) or the backend data is nothing save the data to the backend as it IS WORKING NOW
-
+        setJCsv(saveData);
     }
 
     function processContent(content) {
@@ -50,11 +37,27 @@ export default function FilePicker() {
         return null;
     }
 
-    return (
-        <Box>
-            <Link onClick={() => openFileSelector()} style={headerStyle}>Select CSV File </Link>
-            <br />
-            {filesContent.map((file, i) => (<span key={i}>{processContent(file.content)}</span>))}
+    async function handleSave() {
+        console.log(jCsv);
+        return await saveCsv(jCsv);
+    }
+
+    return (<>
+        <Box style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 20, marginTop: 30, marginLeft: 20 }}>
+            Would you like to save the files?
+            <Box style={{ marginLeft: 20, display: 'inline-block' }}>
+                <Button onClick={() => handleSave()} variant="contained">Save File</Button>
+            </Box>
         </Box>
+        <br />
+        <Box style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 20, marginLeft: 20 }}>
+            Click to open CSV file
+            <Box style={{ marginLeft: 20, display: 'inline-block' }}>
+                <Button onClick={() => openFileSelector()} variant="contained">Select CSV File </Button>
+                <br />
+                {filesContent.map((file, i) => (<span key={i}>{processContent(file.content)}</span>))}
+            </Box>
+        </Box>
+    </>
     );
 }
