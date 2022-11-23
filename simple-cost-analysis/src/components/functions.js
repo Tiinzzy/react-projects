@@ -3,7 +3,7 @@ import axios from "axios";
 const csv = require('csvtojson')
 
 export async function getDataFromPublic() {
-    return axios('http://localhost:3000/some-costs.csv').then(result => {
+    return axios('/some-costs.csv').then(result => {
         if (result.status === 200) {
             return csv().fromString(result.data)
                 .then((jCsv) => {
@@ -30,17 +30,30 @@ export async function getData() {
 }
 
 export function getColumns(row) {
-    var columns = [];
+    var defaultColumns = [];
 
-    for (var c in row) {
-        columns.push({ field: c, headerName: c, width: 300 });
+    for (var c in row) {        
+        let col = { field: c, headerName: c, width: 180 };
+        if (col.field === 'AMOUNT') {
+            col.type = 'number';
+            col.align = 'right';
+        }
+        defaultColumns.push(col);
     }
+
+    let columns = [];
+    defaultColumns.forEach(c => {
+        if (c.field === 'id') {
+            columns.unshift(c);
+        } else {
+            columns.push(c);
+        }
+    });
 
     return columns;
 }
 
 export async function saveCsv(data) {
-    console.log(data);
     return axios.post('/save-csv', {}, { params: { data: data } })
         .then(response => {
             if (response.status === 200) {
