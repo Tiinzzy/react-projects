@@ -16,4 +16,9 @@ app.listen(PORT, () => {
   app.get("/get-all-data", (req, res) => {
     res.json(dataServices.getAllData(req));
   })
+
+  app.get("/edit-data", (req, res) => {
+    res.json(dataServices.editData(req));
+  })
+  
 });

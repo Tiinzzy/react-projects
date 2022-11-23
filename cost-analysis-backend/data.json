@@ -1,663 +1,663 @@
 {
-    "1": {
+    "0": {
         "DATE": "2022-09-29",
         "DESC": "LLS CANADA TORONTO ON",
         "AMONT": "102",
         "id": "1",
         "category": "None"
     },
-    "2": {
+    "1": {
         "DATE": "2022-09-30",
         "DESC": "PHARMAPRIX #0022 MONTREAL QC",
         "AMONT": "22.52",
         "id": "2",
         "category": "None"
     },
-    "3": {
+    "2": {
         "DATE": "2022-09-30",
         "DESC": "MAGASIN CDN TIRE #0043 WESTMOUNT QC",
         "AMONT": "182.8",
         "id": "3",
         "category": "None"
     },
-    "4": {
+    "3": {
         "DATE": "2022-10-01",
         "DESC": "TOM-Burger T Montreal QC",
         "AMONT": "59.7",
         "id": "4",
         "category": "None"
     },
-    "5": {
+    "4": {
         "DATE": "2022-10-01",
         "DESC": "COSTCO WHOLESALE W515 MONTREAL QC",
         "AMONT": "130.88",
         "id": "5",
         "category": "None"
     },
-    "6": {
+    "5": {
         "DATE": "2022-10-01",
         "DESC": "BUDGET RENT-A-CAR DORVAL ON",
         "AMONT": "145.89",
         "id": "6",
         "category": "None"
     },
-    "7": {
+    "6": {
         "DATE": "2022-10-03",
         "DESC": "IGA 8093",
         "AMONT": "29.56",
         "id": "7",
         "category": "None"
     },
-    "8": {
+    "7": {
         "DATE": "2022-10-04",
         "DESC": "MAGASIN CDN TIRE #0043 WESTMOUNT QC",
         "AMONT": "61.24",
         "id": "8",
         "category": "None"
     },
-    "9": {
+    "8": {
         "DATE": "2022-10-05",
         "DESC": "METRO ETS  2416",
         "AMONT": "19.84",
         "id": "9",
         "category": "None"
     },
-    "10": {
+    "9": {
         "DATE": "2022-10-06",
         "DESC": "PROVIGO LE MARCHE AVE",
         "AMONT": "26.4",
         "id": "10",
         "category": "None"
     },
-    "11": {
+    "10": {
         "DATE": "2022-10-07",
         "DESC": "DOLLARAMA # 314 MONTREAL QC",
         "AMONT": "7.9",
         "id": "11",
         "category": "None"
     },
-    "12": {
+    "11": {
         "DATE": "2022-10-07",
         "DESC": "ADONIS GRIFFINTOWN",
         "AMONT": "25.58",
         "id": "12",
         "category": "None"
     },
-    "13": {
+    "12": {
         "DATE": "2022-10-08",
         "DESC": "PROVIGO LE MARCHE AVE SHERBROOKE QC",
         "AMONT": "40.31",
         "id": "13",
         "category": "None"
     },
-    "14": {
+    "13": {
         "DATE": "2022-10-09",
         "DESC": "IGA 8217 MONTREAL QC",
         "AMONT": "18.75",
         "id": "14",
         "category": "None"
     },
-    "15": {
+    "14": {
         "DATE": "2022-10-10",
         "DESC": "PHARMAPRIX #1937",
         "AMONT": "22.82",
         "id": "15",
         "category": "None"
     },
-    "16": {
+    "15": {
         "DATE": "2022-10-10",
         "DESC": "FAMOUS PLAYER 9406QPS MONTREAL QC",
         "AMONT": "34.74",
         "id": "16",
         "category": "None"
     },
-    "17": {
+    "16": {
         "DATE": "2022-10-10",
         "DESC": "TOM-Burger T",
         "AMONT": "58.2",
         "id": "17",
         "category": "None"
     },
-    "18": {
+    "17": {
         "DATE": "2022-10-10",
         "DESC": "BELL CANADA (OB)",
         "AMONT": "149.86",
         "id": "18",
         "category": "None"
     },
-    "19": {
+    "18": {
         "DATE": "2022-10-11",
         "DESC": "ADONIS GRIFFINTOWN",
         "AMONT": "38.35",
         "id": "19",
         "category": "None"
     },
-    "20": {
+    "19": {
         "DATE": "2022-10-12",
         "DESC": "ADONIS GRIFFINTOWN MONTREAL QC",
         "AMONT": "8.06",
         "id": "20",
         "category": "None"
     },
-    "21": {
+    "20": {
         "DATE": "2022-10-12",
         "DESC": "PROVIGO LE MARCHE AVE SHERBROOKE QC",
         "AMONT": "10.98",
         "id": "21",
         "category": "None"
     },
-    "22": {
+    "21": {
         "DATE": "2022-10-14",
         "DESC": "PHARMAPRIX #1825 MONTREAL QC",
         "AMONT": "10.33",
         "id": "22",
         "category": "None"
     },
-    "23": {
+    "22": {
         "DATE": "2022-10-14",
         "DESC": "DOLLARAMA # 450",
         "AMONT": "10.63",
         "id": "23",
         "category": "None"
     },
-    "24": {
+    "23": {
         "DATE": "2022-10-14",
         "DESC": "OLD NAVY CANADA 3788",
         "AMONT": "28.73",
         "id": "24",
         "category": "None"
     },
-    "25": {
+    "24": {
         "DATE": "2022-10-15",
         "DESC": "CAFE DES AMIS PAVILLON MONTREAL QC",
         "AMONT": "10.91",
         "id": "25",
         "category": "None"
     },
-    "26": {
+    "25": {
         "DATE": "2022-10-15",
         "DESC": "PROVIGO LE MARCHE AVE",
         "AMONT": "25.66",
         "id": "26",
         "category": "None"
     },
-    "27": {
+    "26": {
         "DATE": "2022-10-15",
         "DESC": "IGA 8253",
         "AMONT": "38.18",
         "id": "27",
         "category": "None"
     },
-    "28": {
+    "27": {
         "DATE": "2022-10-16",
         "DESC": "IGA 8253",
         "AMONT": "5.27",
         "id": "28",
         "category": "None"
     },
-    "29": {
+    "28": {
         "DATE": "2022-10-16",
         "DESC": "PROVIGO LE MARCHE AVE",
         "AMONT": "22.8",
         "id": "29",
         "category": "None"
     },
-    "30": {
+    "29": {
         "DATE": "2022-10-16",
         "DESC": "MAGASIN CDN TIRE #00435",
         "AMONT": "51.73",
         "id": "30",
         "category": "None"
     },
-    "31": {
+    "30": {
         "DATE": "2022-10-17",
         "DESC": "ADONIS GRIFFINTOWN",
         "AMONT": "14.48",
         "id": "31",
         "category": "None"
     },
-    "32": {
+    "31": {
         "DATE": "2022-10-17",
         "DESC": "AMZN Mktp CA*HT6RD9UP0",
         "AMONT": "21.94",
         "id": "32",
         "category": "None"
     },
-    "33": {
+    "32": {
         "DATE": "2022-10-17",
         "DESC": "AMZN Mktp CA*HT10J26V1",
         "AMONT": "31.03",
         "id": "33",
         "category": "None"
     },
-    "34": {
+    "33": {
         "DATE": "2022-10-17",
         "DESC": "AMZN Mktp CA*HT3250Z52",
         "AMONT": "110.36",
         "id": "34",
         "category": "None"
     },
-    "35": {
+    "34": {
         "DATE": "2022-10-18",
         "DESC": "METRO ETS  2416",
         "AMONT": "25.95",
         "id": "35",
         "category": "None"
     },
-    "36": {
+    "35": {
         "DATE": "2022-10-20",
         "DESC": "IGA 8093",
         "AMONT": "29.66",
         "id": "36",
         "category": "None"
     },
-    "37": {
+    "36": {
         "DATE": "2022-10-21",
         "DESC": "LA BAIE D'HUDSON #1601 MONTREAL QC",
         "AMONT": "339.18",
         "id": "37",
         "category": "None"
     },
-    "38": {
+    "37": {
         "DATE": "2022-10-22",
         "DESC": "PHARMAPRIX #1937",
         "AMONT": "21.45",
         "id": "38",
         "category": "None"
     },
-    "39": {
+    "38": {
         "DATE": "2022-10-22",
         "DESC": "IGA 8253 WESTMOUNT QC",
         "AMONT": "29.96",
         "id": "39",
         "category": "None"
     },
-    "40": {
+    "39": {
         "DATE": "2022-10-22",
         "DESC": "PROVIGO LE MARCHE AVE SHERBROOKE QC",
         "AMONT": "35.39",
         "id": "40",
         "category": "None"
     },
-    "41": {
+    "40": {
         "DATE": "2022-10-22",
         "DESC": "TOM-Burger T",
         "AMONT": "58.19",
         "id": "41",
         "category": "None"
     },
-    "42": {
+    "41": {
         "DATE": "2022-10-23",
         "DESC": "NETFLIX.COM",
         "AMONT": "11.49",
         "id": "42",
         "category": "None"
     },
-    "43": {
+    "42": {
         "DATE": "2022-10-23",
         "DESC": "IGA 8217",
         "AMONT": "23.2",
         "id": "43",
         "category": "None"
     },
-    "44": {
+    "43": {
         "DATE": "2022-10-24",
         "DESC": "BUREAU EN GROS #22",
         "AMONT": "9.48",
         "id": "44",
         "category": "None"
     },
-    "45": {
+    "44": {
         "DATE": "2022-10-24",
         "DESC": "IGA 8093 MONTREAL QC",
         "AMONT": "16.86",
         "id": "45",
         "category": "None"
     },
-    "46": {
+    "45": {
         "DATE": "2022-10-25",
         "DESC": "ROSETTI",
         "AMONT": "14.5",
         "id": "46",
         "category": "None"
     },
-    "47": {
+    "46": {
         "DATE": "2022-10-25",
         "DESC": "PHARMAPRIX #0045",
         "AMONT": "27.08",
         "id": "47",
         "category": "None"
     },
-    "48": {
+    "47": {
         "DATE": "2022-10-26",
         "DESC": "FIDO Mobile ******9102 888-764-3771 ON",
         "AMONT": "260.53",
         "id": "48",
         "category": "None"
     },
-    "49": {
+    "48": {
         "DATE": "2022-10-27",
         "DESC": "PHARMAPRIX #1912 MONTREAL QC",
         "AMONT": "12.03",
         "id": "49",
         "category": "None"
     },
-    "50": {
+    "49": {
         "DATE": "2022-10-27",
         "DESC": "ADONIS GRIFFINTOWN MONTREAL QC",
         "AMONT": "27.88",
         "id": "50",
         "category": "None"
     },
-    "51": {
+    "50": {
         "DATE": "2022-10-28",
         "DESC": "BMO CC BAL INS TAX",
         "AMONT": "0.7",
         "id": "51",
         "category": "None"
     },
-    "52": {
+    "51": {
         "DATE": "2022-10-28",
         "DESC": "BMO CC BAL INS",
         "AMONT": "7.73",
         "id": "52",
         "category": "None"
     },
-    "53": {
+    "52": {
         "DATE": "2022-10-28",
         "DESC": "IGA 8217 MONTREAL QC",
         "AMONT": "29.44",
         "id": "53",
         "category": "None"
     },
-    "54": {
+    "53": {
         "DATE": "2022-10-28",
         "DESC": "AMZN Mktp CA*H82M867S2",
         "AMONT": "224.19",
         "id": "54",
         "category": "None"
     },
-    "55": {
+    "54": {
         "DATE": "2022-10-29",
         "DESC": "PROVIGO LE MARCHE AVE",
         "AMONT": "16.98",
         "id": "55",
         "category": "None"
     },
-    "56": {
+    "55": {
         "DATE": "2022-10-29",
         "DESC": "LA MAISON SIMONS INC ( MONTREAL QC",
         "AMONT": "28.74",
         "id": "56",
         "category": "None"
     },
-    "57": {
+    "56": {
         "DATE": "2022-10-29",
         "DESC": "FIDO STORE 5238",
         "AMONT": "40.24",
         "id": "57",
         "category": "None"
     },
-    "58": {
+    "57": {
         "DATE": "2022-10-29",
         "DESC": "DECATHLON MONTREAL EAT MONTREAL QC",
         "AMONT": "45.99",
         "id": "58",
         "category": "None"
     },
-    "59": {
+    "58": {
         "DATE": "2022-10-30",
         "DESC": "CORA MONTREAL CENTRE MONTREAL QC",
         "AMONT": "65.05",
         "id": "59",
         "category": "None"
     },
-    "60": {
+    "59": {
         "DATE": "2022-10-31",
         "DESC": "ADONIS GRIFFINTOWN MONTREAL QC",
         "AMONT": "56.11",
         "id": "60",
         "category": "None"
     },
-    "61": {
+    "60": {
         "DATE": "2022-11-01",
         "DESC": "PHARMAPRIX 42 MONTREAL QC",
         "AMONT": "11.52",
         "id": "61",
         "category": "None"
     },
-    "62": {
+    "61": {
         "DATE": "2022-11-01",
         "DESC": "IGA 8253 WESTMOUNT QC",
         "AMONT": "11.67",
         "id": "62",
         "category": "None"
     },
-    "63": {
+    "62": {
         "DATE": "2022-11-01",
         "DESC": "BUREAU EN GROS #22 MONTREAL QC",
         "AMONT": "15.17",
         "id": "63",
         "category": "None"
     },
-    "64": {
+    "63": {
         "DATE": "2022-11-01",
         "DESC": "WINNERS 366",
         "AMONT": "45.98",
         "id": "64",
         "category": "None"
     },
-    "65": {
+    "64": {
         "DATE": "2022-11-02",
         "DESC": "PHARMAPRIX #1912",
         "AMONT": "22.94",
         "id": "65",
         "category": "None"
     },
-    "66": {
+    "65": {
         "DATE": "2022-11-02",
         "DESC": "IGA 8217 MONTREAL QC",
         "AMONT": "23.05",
         "id": "66",
         "category": "None"
     },
-    "67": {
+    "66": {
         "DATE": "2022-11-03",
         "DESC": "ADONIS GRIFFINTOWN MONTREAL QC",
         "AMONT": "30.21",
         "id": "67",
         "category": "None"
     },
-    "68": {
+    "67": {
         "DATE": "2022-11-04",
         "DESC": "BALANCE PROTECTION TAX",
         "AMONT": "0.86",
         "id": "68",
         "category": "None"
     },
-    "69": {
+    "68": {
         "DATE": "2022-11-04",
         "DESC": "BALANCE PROTECTION INS",
         "AMONT": "9.58",
         "id": "69",
         "category": "None"
     },
-    "70": {
+    "69": {
         "DATE": "2022-11-04",
         "DESC": "PHARMAPRIX 42 MONTREAL QC",
         "AMONT": "14.06",
         "id": "70",
         "category": "None"
     },
-    "71": {
+    "70": {
         "DATE": "2022-11-04",
         "DESC": "STATION 10 MONTREAL QC",
         "AMONT": "26.38",
         "id": "71",
         "category": "None"
     },
-    "72": {
+    "71": {
         "DATE": "2022-11-04",
         "DESC": "OLLY FRESCO'S CIA MONTREAL QC",
         "AMONT": "31.99",
         "id": "72",
         "category": "None"
     },
-    "73": {
+    "72": {
         "DATE": "2022-11-05",
         "DESC": "SUPER C ATWATER 5952 MONTREAL QC",
         "AMONT": "29.49",
         "id": "73",
         "category": "None"
     },
-    "74": {
+    "73": {
         "DATE": "2022-11-05",
         "DESC": "WINNERS 340",
         "AMONT": "45.97",
         "id": "74",
         "category": "None"
     },
-    "75": {
+    "74": {
         "DATE": "2022-11-06",
         "DESC": "PROVIGO MICHEL LEFEBVR",
         "AMONT": "42.59",
         "id": "75",
         "category": "None"
     },
-    "76": {
+    "75": {
         "DATE": "2022-11-07",
         "DESC": "PROVIGO LE MARCHE AVE SHERBROOKE QC",
         "AMONT": "16.04",
         "id": "76",
         "category": "None"
     },
-    "77": {
+    "76": {
         "DATE": "2022-11-07",
         "DESC": "VIA RAIL CANADA #33004 MONTREAL QC",
         "AMONT": "449.55",
         "id": "77",
         "category": "None"
     },
-    "78": {
+    "77": {
         "DATE": "2022-11-08",
         "DESC": "ADONIS GRIFFINTOWN MONTREAL QC",
         "AMONT": "20.79",
         "id": "78",
         "category": "None"
     },
-    "79": {
+    "78": {
         "DATE": "2022-11-09",
         "DESC": "ADONIS GRIFFINTOWN MONTREAL QC",
         "AMONT": "17.14",
         "id": "79",
         "category": "None"
     },
-    "80": {
+    "79": {
         "DATE": "2022-11-09",
         "DESC": "BELL CANADA (OB) MONTREAL QC",
         "AMONT": "147.17",
         "id": "80",
         "category": "None"
     },
-    "81": {
+    "80": {
         "DATE": "2022-11-10",
         "DESC": "LA FABRIQUE DE BAGEL MONTREAL QC",
         "AMONT": "11.59",
         "id": "81",
         "category": "None"
     },
-    "82": {
+    "81": {
         "DATE": "2022-11-10",
         "DESC": "PROVIGO LE MARCHE AVE",
         "AMONT": "21.6",
         "id": "82",
         "category": "None"
     },
-    "83": {
+    "82": {
         "DATE": "2022-11-11",
         "DESC": "DOLLARAMA # 410",
         "AMONT": "8.63",
         "id": "83",
         "category": "None"
     },
-    "84": {
+    "83": {
         "DATE": "2022-11-11",
         "DESC": "IGA 8093",
         "AMONT": "12.99",
         "id": "84",
         "category": "None"
     },
-    "85": {
+    "84": {
         "DATE": "2022-11-12",
         "DESC": "MUFFIN PLUS DESJARDINS MONTREAL QC",
         "AMONT": "7.36",
         "id": "85",
         "category": "None"
     },
-    "86": {
+    "85": {
         "DATE": "2022-11-12",
         "DESC": "JEAN COUTU 350 MONTREAL QC",
         "AMONT": "15.86",
         "id": "86",
         "category": "None"
     },
-    "87": {
+    "86": {
         "DATE": "2022-11-12",
         "DESC": "PROVIGO LE MARCHE AVE",
         "AMONT": "22.89",
         "id": "87",
         "category": "None"
     },
-    "88": {
+    "87": {
         "DATE": "2022-11-12",
         "DESC": "WINNERS 470 MONTREAL QC",
         "AMONT": "34.48",
         "id": "88",
         "category": "None"
     },
-    "89": {
+    "88": {
         "DATE": "2022-11-12",
         "DESC": "STH #221 COMPLEXE DESJ MONTREAL QC",
         "AMONT": "74.29",
         "id": "89",
         "category": "None"
     },
-    "90": {
+    "89": {
         "DATE": "2022-11-13",
         "DESC": "DOLLARAMA # 314",
         "AMONT": "7.18",
         "id": "90",
         "category": "None"
     },
-    "91": {
+    "90": {
         "DATE": "2022-11-13",
         "DESC": "POPEYE'S MONTREAL MONTREAL QC",
         "AMONT": "137.96",
         "id": "91",
         "category": "None"
     },
-    "92": {
+    "91": {
         "DATE": "2022-11-14",
         "DESC": "IGA 8093 MONTREAL QC",
         "AMONT": "17.1",
         "id": "92",
         "category": "None"
     },
-    "93": {
+    "92": {
         "DATE": "2022-11-15",
         "DESC": "AU PAIN DORE MONTREAL QC",
         "AMONT": "12.24",
         "id": "93",
         "category": "None"
     },
-    "94": {
+    "93": {
         "DATE": "2022-11-15",
         "DESC": "PHARMAPRIX 42 MONTREAL QC",
         "AMONT": "19.23",
         "id": "94",
         "category": "None"
     },
-    "95": {
+    "94": {
         "DATE": "2022-11-16",
         "DESC": "METRO ETS  2416",
         "AMONT": "42.88",
