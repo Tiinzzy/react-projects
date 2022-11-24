@@ -52,18 +52,18 @@ class DialogContent extends React.Component {
             <>
                 <Divider />
                 <Box style={{ display: 'flex', flexDirection: 'column', justifyContent: 'left', marginLeft: 30, paddingBottom: 15, paddingTop: 15 }}>
-                    <Typography variant="h6">
-                        Id: {this.state.clickedRow.id}
+                    <Typography variant="body1">
+                    <span style={{fontWeight: 'bold'}}>Id:</span> {this.state.clickedRow.id}
                     </Typography>
 
-                    <Typography variant="h6">  Date: {this.state.clickedRow.DATE}</Typography>
+                    <Typography variant="body1">  <span style={{fontWeight: 'bold'}}>Date:</span> {this.state.clickedRow.DATE}</Typography>
 
-                    <Typography variant="h6">  Description: {this.state.clickedRow.DESC}</Typography>
+                    <Typography variant="body1">  <span style={{fontWeight: 'bold'}}>Description:</span> {this.state.clickedRow.DESC}</Typography>
 
-                    <Typography variant="h6">  Amount: ${(this.state.clickedRow.AMOUNT * 1).toFixed(2)}</Typography>
+                    <Typography variant="body1">  <span style={{fontWeight: 'bold'}}>Amount:</span>  ${(this.state.clickedRow.AMOUNT * 1).toFixed(2)}</Typography>
 
                     <Box display='flex' alignItems='center' style={{ marginTop: 10, marginBottom: 10 }} >
-                        <Typography variant="h6"> Category: </Typography>
+                        <Typography variant="body1"> <span style={{fontWeight: 'bold'}}>Category:</span> </Typography>
                         <Select
                             style={{ width: 300, marginLeft: 10 }}
                             labelId="demo-simple-select-label"
