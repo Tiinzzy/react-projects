@@ -11,7 +11,7 @@ import { getData, getColumns } from './functions';
 import DialogContent from './DialogContent';
 
 const gridStyle = {
-    height: 600
+    height: 700
 }
 
 class DisplayGrid extends React.Component {
@@ -56,16 +56,17 @@ class DisplayGrid extends React.Component {
     render() {
         return (
             <>
-                <Box>
-                    <DataGrid
-                        style={gridStyle}
-                        hideFooterPagination={true}
-                        hideFooter={true}
-                        rows={this.state.rows}
-                        columns={this.state.columns}
-                        onCellDoubleClick={(e) => this.handleClick(e)}
-                    />
-
+                <Box style={{width: 1500, marginTop: 20, marginRight: 20 }} >
+                    <Box>
+                        <DataGrid
+                            style={gridStyle}
+                            hideFooterPagination={true}
+                            hideFooter={true}
+                            rows={this.state.rows}
+                            columns={this.state.columns}
+                            onCellDoubleClick={(e) => this.handleClick(e)}
+                        />
+                    </Box>
                     {this.state.dialogOpen && <Dialog onClose={(e) => this.handleCloseDialog(e)} open={this.state.dialogOpen} maxWidth='sm' fullWidth={true}>
                         <DialogTitle>Details</DialogTitle>
                         <DialogContent clickedRow={this.state.clickedRow} close={this.handleCloseDialog} />
