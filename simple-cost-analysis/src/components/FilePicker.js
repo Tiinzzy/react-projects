@@ -4,17 +4,25 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
+import { DataGrid } from '@mui/x-data-grid';
 
 import { useFilePicker } from 'use-file-picker';
+import DisplayUploadGrid from './DisplayUploadGrid';
 
-import { saveCsv } from './functions';
+import { getColumns, saveCsv } from './functions';
 
-const csv = require('csvtojson')
+const csv = require('csvtojson');
+
+const gridStyle = {
+    height: 700
+}
 
 export default function FilePicker() {
     const [jCsv, setJCsv] = useState(null);
     const [openSnack, setOpenSnack] = useState(false);
     const [message, setMessage] = useState(null);
+    const [gridColumns, setGridColumns] = useState([]);
+    const [gridRows, setGridRows] = useState([]);
     const [openFileSelector, { filesContent }] = useFilePicker({
         accept: '.CSV',
     });
@@ -53,7 +61,7 @@ export default function FilePicker() {
     }
 
     return (<>
-        <Box style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 20, marginTop: 30, marginLeft: 20, alignItems: 'center'}}>
+        <Box style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 20, marginTop: 30, marginLeft: 20, alignItems: 'center' }}>
             Click to open CSV file
             <Box style={{ marginLeft: 20, display: 'flex', flexDirection: 'row' }}>
                 <Button onClick={() => openFileSelector()} variant="outlined">Select CSV File </Button>
@@ -67,12 +75,15 @@ export default function FilePicker() {
         </Box>
         <br />
 
-        <Box style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 20, marginLeft: 20, alignItems: 'center'}}>
+        <Box style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 20, marginLeft: 20, alignItems: 'center' }}>
             Would you like to save the files?
             <Box style={{ marginLeft: 20, display: 'inline-block' }}>
                 <Button onClick={() => handleSave()} variant="outlined">Save File</Button>
             </Box>
         </Box>
+
+
+        {jCsv && <DisplayUploadGrid jCsv={jCsv} />}
 
         <Snackbar
             anchorOrigin={{ vertical: 'top', horizontal: 'center', }}
