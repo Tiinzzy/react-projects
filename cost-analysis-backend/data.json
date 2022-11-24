@@ -35,11 +35,11 @@
         "CATEGORY": "None"
     },
     "1005": {
+        "id": "1005",
         "DATE": "2022-10-01",
         "DESC": "BUDGET RENT-A-CAR DORVAL ON",
         "AMOUNT": "145.89",
-        "id": "1005",
-        "CATEGORY": "None"
+        "CATEGORY": "Commute"
     },
     "1006": {
         "DATE": "2022-10-03",
@@ -56,11 +56,11 @@
         "CATEGORY": "None"
     },
     "1008": {
+        "id": "1008",
         "DATE": "2022-10-05",
         "DESC": "METRO ETS  2416",
         "AMOUNT": "19.84",
-        "id": "1008",
-        "CATEGORY": "None"
+        "CATEGORY": "Groceries"
     },
     "1009": {
         "DATE": "2022-10-06",
@@ -70,11 +70,11 @@
         "CATEGORY": "None"
     },
     "1010": {
+        "id": "1010",
         "DATE": "2022-10-07",
         "DESC": "DOLLARAMA # 314 MONTREAL QC",
         "AMOUNT": "7.90",
-        "id": "1010",
-        "CATEGORY": "None"
+        "CATEGORY": "Groceries"
     },
     "1011": {
         "DATE": "2022-10-07",
@@ -98,11 +98,11 @@
         "CATEGORY": "None"
     },
     "1014": {
+        "id": "1014",
         "DATE": "2022-10-10",
         "DESC": "PHARMAPRIX #1937",
         "AMOUNT": "22.82",
-        "id": "1014",
-        "CATEGORY": "None"
+        "CATEGORY": "Groceries"
     },
     "1015": {
         "DATE": "2022-10-10",
@@ -119,11 +119,11 @@
         "CATEGORY": "None"
     },
     "1017": {
+        "id": "1017",
         "DATE": "2022-10-10",
         "DESC": "BELL CANADA (OB)",
         "AMOUNT": "149.86",
-        "id": "1017",
-        "CATEGORY": "None"
+        "CATEGORY": "Utilities"
     },
     "1018": {
         "DATE": "2022-10-11",

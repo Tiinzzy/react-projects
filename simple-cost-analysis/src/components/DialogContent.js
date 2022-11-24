@@ -28,7 +28,7 @@ class DialogContent extends React.Component {
         this.setState({ CATEGORY: e.target.value });
     }
 
-    async submitEdit() {
+    async submitEdit(e) {
         let query = {
             id: this.state.clickedRow.id,
             DATE: this.state.clickedRow.DATE,
@@ -38,7 +38,9 @@ class DialogContent extends React.Component {
         };
 
         await editData(query);
-        this.state.close(true);
+        this.state.close(e, 'Category Changed Successfully');
+
+        setTimeout(function () { window.location.reload(); }, 3000);
     }
 
     cancelAndClose(e) {
