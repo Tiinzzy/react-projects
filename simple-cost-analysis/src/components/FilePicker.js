@@ -11,6 +11,8 @@ import DisplayUploadGrid from './DisplayUploadGrid';
 import DisplayGrid from './DisplayGrid';
 import SaveUpload from './SaveUpload';
 
+import './style.css';
+
 const csv = require('csvtojson');
 
 export default function FilePicker() {
@@ -65,31 +67,29 @@ export default function FilePicker() {
     }
 
     return (<>
-        <Box style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 20, marginTop: 30, marginLeft: 20, alignItems: 'center' }}>
+        <Box className='FilePickerButtonBoxes'>
             Click to open CSV file
-            <Box style={{ marginLeft: 20, display: 'flex', flexDirection: 'row' }}>
+            <Box className='FilePickerButtonBoxes2'>
                 <Button onClick={() => openFileSelector()} variant="outlined">Select CSV File </Button>
                 <br />
-                <span style={{ marginLeft: 30, paddingTop: 10, fontWeight: 'bold' }}>File Name:</span>
+                <span className='FilePickerFileName'>File Name:</span>
                 {filesContent.map((file, i) => (
-                    <Box key={i} style={{ marginLeft: 20, paddingTop: 10 }}>{processContent(file.content, i)}</Box>))}
+                    <Box key={i} className='FilePickerFileName2 '>{processContent(file.content, i)}</Box>))}
             </Box>
         </Box>
 
         <br />
 
-        <Box style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 20, marginLeft: 20, alignItems: 'center' }}>
+        <Box className='FilePickerSaveTex'>
             Would you like to save the files?
-            <Box style={{ marginLeft: 20, display: 'inline-block' }}>
+            <Box className='FilePickerSaveButton'>
                 <Button onClick={() => handleSave()} variant="outlined">Save File</Button>
             </Box>
         </Box>
 
-        <Box style={{ width: '100%', display: 'flex', flexDirection: ' row', marginTop: 50 }}>
-            <Box width={jCsv ? '50%' : '100%'} style={{
-                display: 'flex', flexDirection: ' column', marginLeft: 20
-            }}> Previous Data <DisplayGrid /></Box>
-            {jCsv && <Box style={{ display: 'flex', flexDirection: ' column' }}> Uploaded Data  <DisplayUploadGrid ref={gridRef} jCsv={jCsv} /> </Box>}
+        <Box className='FilePickerGridMainBox'>
+            <Box width={jCsv ? '50%' : '100%'} className="FilePickerOldData"> Previous Data <DisplayGrid /></Box>
+            {jCsv && <Box className="FilePickerNewData"> Uploaded Data  <DisplayUploadGrid ref={gridRef} jCsv={jCsv} /> </Box>}
         </Box>
 
         {dialogOpen && <Dialog onClose={() => handleCloseDialog()} open={dialogOpen} maxWidth='sm' fullWidth={true}>

@@ -10,9 +10,7 @@ import SnackbarContent from '@mui/material/SnackbarContent';
 import { getData, getColumns } from './functions';
 import DialogContent from './DialogContent';
 
-const gridStyle = {
-    height: 600
-}
+import './style.css';
 
 class DisplayGrid extends React.Component {
 
@@ -56,10 +54,10 @@ class DisplayGrid extends React.Component {
     render() {
         return (
             <>
-                <Box style={{  marginTop: 20, marginRight: 20 }} >
+                <Box ClassName="DisplayGridBox">
                     <Box>
                         <DataGrid
-                            style={gridStyle}
+                            style={{ height: 500 }}
                             hideFooterPagination={true}
                             hideFooter={true}
                             rows={this.state.rows}
@@ -78,7 +76,7 @@ class DisplayGrid extends React.Component {
                         autoHideDuration={2000}
                         onClose={this.handleCloseSnack}>
 
-                        <SnackbarContent style={{ backgroundColor: '#63A355', color: 'white', textAlign: 'center', fontWeight: 'bold' }}
+                        <SnackbarContent ClassName="DisplayGridSnack" style={{ backgroundColor: '#63A355', color: 'white', fontWeight: 'bold' }}
                             message={this.state.message} />
                     </Snackbar>
 
