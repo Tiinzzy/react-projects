@@ -76,7 +76,6 @@
     display: flex;
     flex-direction: row;
     margin-top: 50px;
-    border: solid 1px red;
     margin-bottom: 0px;
 }
 
@@ -84,11 +83,9 @@
     display: flex;
     flex-direction: column;
     margin-left: 20px;
-    border: solid 1px green;
 }
 
 .FilePickerNewData {
-    border: solid 1px blue;
     display: flex;
     flex-direction: column;
     margin-left: 20px;
