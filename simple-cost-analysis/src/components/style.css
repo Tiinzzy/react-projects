@@ -4,12 +4,6 @@
     margin-right: 20px;
 }
 
-.DisplayGridBox {
-    width: 850px;
-    margin-top: 20px;
-    margin-right: 20px;
-}
-
 .DialogContentMainBox {
     display: flex;
     flex-direction: column;
@@ -57,7 +51,7 @@
     padding-top: 10px;
 }
 
-.FilePickerSaveTex {
+.FilePickerSaveText {
     display: flex;
     flex-direction: row;
     justify-content: left;
@@ -83,12 +77,14 @@
     display: flex;
     flex-direction: column;
     margin-left: 20px;
+    text-align: center;
 }
 
 .FilePickerNewData {
     display: flex;
     flex-direction: column;
     margin-left: 20px;
+    text-align: center;
 }
 
 .HeaderMainBox {
@@ -98,4 +94,12 @@
     margin-left: 10px;
     margin-top: 10px;
     margin-bottom: 10px;
+}
+
+.HomeBox{
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    margin-top: 30px;
+    margin-left: 20px;
 }

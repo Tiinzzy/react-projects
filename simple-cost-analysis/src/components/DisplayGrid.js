@@ -54,7 +54,7 @@ class DisplayGrid extends React.Component {
     render() {
         return (
             <>
-                <Box ClassName="DisplayGridBox">
+                <Box style={{marginTop: 20}}>
                     <Box>
                         <DataGrid
                             style={{ height: 500 }}
@@ -76,7 +76,7 @@ class DisplayGrid extends React.Component {
                         autoHideDuration={2000}
                         onClose={this.handleCloseSnack}>
 
-                        <SnackbarContent ClassName="DisplayGridSnack" style={{ backgroundColor: '#63A355', color: 'white', fontWeight: 'bold' }}
+                        <SnackbarContent style={{ backgroundColor: '#63A355', color: 'white', fontWeight: 'bold' }}
                             message={this.state.message} />
                     </Snackbar>
 
