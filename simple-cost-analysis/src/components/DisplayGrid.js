@@ -11,7 +11,7 @@ import { getData, getColumns } from './functions';
 import DialogContent from './DialogContent';
 
 const gridStyle = {
-    height: 700
+    height: 600
 }
 
 class DisplayGrid extends React.Component {
@@ -56,7 +56,7 @@ class DisplayGrid extends React.Component {
     render() {
         return (
             <>
-                <Box style={{width: 1500, marginTop: 20, marginRight: 20 }} >
+                <Box style={{  marginTop: 20, marginRight: 20 }} >
                     <Box>
                         <DataGrid
                             style={gridStyle}
