@@ -18,24 +18,30 @@ class DisplayUploadGrid extends React.Component {
             rows: [],
             jCsv: props.jCsv,
             refresh: null
-        }
+        }        
+        this.refreshGrid = this.refreshGrid.bind(this);
     }
 
     componentDidMount() {
-        let data = this.state.jCsv;
+        this.setState({ setRefereshGrid: this.refreshGrid });
+        this.refreshGrid(this.state.jCsv);
+    }
+
+    refreshGrid(jCsv) {
+        let data = jCsv;
         if (typeof data === 'object') {
             data = Object.values(data);
         }
         if (data && data.length > 0) {
             let columns = getColumns(data[0]);
-            this.setState({ rows: data, columns: columns });
+            this.setState({ rows: data, columns, jCsv });
         }
     }
 
     render() {
         return (
             <>
-                <Box>
+                <Box style={{ width: 850, marginTop: 20, marginRight: 20 }}>
                     <DataGrid
                         style={gridStyle}
                         hideFooterPagination={true}
