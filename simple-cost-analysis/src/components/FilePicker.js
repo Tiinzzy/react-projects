@@ -2,20 +2,21 @@ import React, { useState } from 'react';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Dialog from "@mui/material/Dialog";
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
 
 import { useFilePicker } from 'use-file-picker';
 import DisplayUploadGrid from './DisplayUploadGrid';
 import DisplayGrid from './DisplayGrid';
-
-import { saveCsv } from './functions';
+import SaveUpload from './SaveUpload';
 
 const csv = require('csvtojson');
 
 export default function FilePicker() {
     const [jCsv, setJCsv] = useState(null);
     const [openSnack, setOpenSnack] = useState(false);
+    const [dialogOpen, setDialogOpen] = useState(false);
     const [gridRef, setGridRef] = useState(React.createRef());
 
     const [openFileSelector, { filesContent, clear }] = useFilePicker({
@@ -51,9 +52,12 @@ export default function FilePicker() {
     }
 
     async function handleSave() {
+        setDialogOpen(true);
+    }
+
+    function handleCloseDialog() {
         setOpenSnack(true);
-        let result = await saveCsv(jCsv);
-        return result
+        setDialogOpen(false);
     }
 
     function handleCloseSnack() {
@@ -88,15 +92,20 @@ export default function FilePicker() {
             {jCsv && <Box style={{ display: 'flex', flexDirection: ' column' }}> Uploaded Data  <DisplayUploadGrid ref={gridRef} jCsv={jCsv} /> </Box>}
         </Box>
 
+        {dialogOpen && <Dialog onClose={() => handleCloseDialog()} open={dialogOpen} maxWidth='sm' fullWidth={true}>
+            <SaveUpload jCsv={jCsv} handleCloseDialog={handleCloseDialog} />
+        </Dialog>}
+
         <Snackbar
             anchorOrigin={{ vertical: 'top', horizontal: 'center', }}
             open={openSnack}
             autoHideDuration={2000}
-            onClose={() => handleCloseSnack()}>
+            onClose={handleCloseSnack}>
 
             <SnackbarContent style={{ backgroundColor: '#63A355', color: 'white', textAlign: 'center', fontWeight: 'bold' }}
                 message='File Saved Sucessfully' />
         </Snackbar>
+
     </>
     );
 }
