@@ -28,6 +28,7 @@ class Header extends React.Component {
                     <Divider orientation="vertical" variant="middle" flexItem sx={{ ml: 2, mr: 2 }} />
                     <Link href="/display-grid" style={headerStyle}>Show Data</Link>
                 </Box>
+                <Divider flexItem sx={{ borderRightWidth: 5 }} color="#1c4966"/>
 
             </>
         );
