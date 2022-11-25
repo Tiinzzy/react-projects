@@ -40,13 +40,11 @@ class DialogContent extends React.Component {
         };
 
         await editData(query);
-        this.state.close(e, 'Category Changed Successfully');
-
-        setTimeout(function () { window.location.reload(); }, 3000);
+        this.state.close(true, query);
     }
 
     cancelAndClose(e) {
-        this.state.close(e);
+        this.state.close(false);
     }
 
     render() {
@@ -87,9 +85,9 @@ class DialogContent extends React.Component {
 
                     <Divider />
 
-                    <DialogActions style={{marginTop: 20, marginRight: 20}}>
-                            <Button onClick={(e) => this.cancelAndClose(e)} variant="outlined" color="error"> Cancel </Button>
-                            <Button disabled={this.state.CATEGORY === 'None'} onClick={() => this.submitEdit()} variant="outlined" color="success">Update</Button>
+                    <DialogActions style={{ marginTop: 20, marginRight: 20 }}>
+                        <Button onClick={(e) => this.cancelAndClose(e)} variant="outlined" color="error"> Cancel </Button>
+                        <Button disabled={this.state.CATEGORY === 'None'} onClick={() => this.submitEdit()} variant="outlined" color="success">Update</Button>
                     </DialogActions>
                 </Box>
             </>
