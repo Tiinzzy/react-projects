@@ -20,6 +20,7 @@ export default function FilePicker() {
     const [openSnack, setOpenSnack] = useState(false);
     const [dialogOpen, setDialogOpen] = useState(false);
     const [gridRef, setGridRef] = useState(React.createRef());
+    const [showSaveMessage, setShowSaveMessage] = useState(false);
 
     const [openFileSelector, { filesContent, clear }] = useFilePicker({
         accept: '.CSV',
@@ -66,45 +67,50 @@ export default function FilePicker() {
         setOpenSnack(false);
     }
 
+    function saveCallBack(saved) {
+        setShowSaveMessage(saved);
+    }
+
     return (<>
-        <Box className='FilePickerButtonBoxes'>
-            Click to open CSV file
-            <Box className='FilePickerButtonBoxes2'>
-                <Button onClick={() => openFileSelector()} variant="outlined">Select CSV File </Button>
-                <br />
-                <span className='FilePickerFileName'>File Name:</span>
-                {filesContent.map((file, i) => (
-                    <Box key={i} className='FilePickerFileName2 '>{processContent(file.content, i)}</Box>))}
+        <Box>
+            <Box className='FilePickerButtonBoxes'>
+                Click to open CSV file
+                <Box className='FilePickerButtonBoxes2'>
+                    <Button onClick={() => openFileSelector()} variant="outlined">Select CSV File </Button>
+                    <br />
+                    <span className='FilePickerFileName'>File Name:</span>
+                    {filesContent.map((file, i) => (
+                        <Box key={i} className='FilePickerFileName2 '>{processContent(file.content, i)}</Box>))}
+                </Box>
             </Box>
-        </Box>
 
-        <br />
+            <br />
 
-        <Box className='FilePickerSaveTex'>
-            Would you like to save the files?
-            <Box className='FilePickerSaveButton'>
-                <Button onClick={() => handleSave()} variant="outlined">Save File</Button>
+            <Box className='FilePickerSaveText'>
+                Would you like to save the files?
+                <Box style={{ display: 'flex', flexDirection: 'column', marginLeft: 10 }}>
+                    <Button onClick={() => handleSave()} variant="outlined">Save File</Button>
+                </Box>
             </Box>
-        </Box>
 
-        <Box className='FilePickerGridMainBox'>
-            <Box width={jCsv ? '50%' : '100%'} className="FilePickerOldData"> Previous Data <DisplayGrid /></Box>
-            {jCsv && <Box className="FilePickerNewData"> Uploaded Data  <DisplayUploadGrid ref={gridRef} jCsv={jCsv} /> </Box>}
+            <Box className='FilePickerGridMainBox'>
+                <Box width={jCsv ? '50%' : '100%'} className="FilePickerOldData"> Previous Data <DisplayGrid /></Box>
+                {jCsv && <Box className="FilePickerNewData"> Uploaded Data  <DisplayUploadGrid ref={gridRef} jCsv={jCsv} /> </Box>}
+            </Box>
         </Box>
 
         {dialogOpen && <Dialog onClose={() => handleCloseDialog()} open={dialogOpen} maxWidth='sm' fullWidth={true}>
-            <SaveUpload jCsv={jCsv} handleCloseDialog={handleCloseDialog} />
+            <SaveUpload jCsv={jCsv} handleCloseDialog={handleCloseDialog} callback={saveCallBack} />
         </Dialog>}
 
-        <Snackbar
+        {showSaveMessage && <Snackbar
             anchorOrigin={{ vertical: 'top', horizontal: 'center', }}
             open={openSnack}
             autoHideDuration={2000}
             onClose={handleCloseSnack}>
-
             <SnackbarContent style={{ backgroundColor: '#63A355', color: 'white', textAlign: 'center', fontWeight: 'bold' }}
                 message='File Saved Sucessfully' />
-        </Snackbar>
+        </Snackbar>}
 
     </>
     );

@@ -15,24 +15,21 @@ class SaveUpload extends React.Component {
         this.state = {
             jCsv: props.jCsv,
             handleCloseDialog: props.handleCloseDialog,
-            openSnack: false
+            callback: props.callback
         }
         this.cancelAndClose = this.cancelAndClose.bind(this);
         this.save = this.save.bind(this);
-        this.handleCloseSnack = this.handleCloseSnack.bind(this);
     }
 
     async save(e) {
         await saveCsv(this.state.jCsv);
         this.state.handleCloseDialog();
+        this.state.callback(true);
     }
 
     cancelAndClose(e) {
         this.state.handleCloseDialog();
-    }
-
-    handleCloseSnack() {
-        this.setState({ openSnack: false })
+        this.state.callback(false);
     }
 
     render() {
