@@ -7,12 +7,11 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
 
-import { getData, getColumns } from './functions';
 import DialogContent from './DialogContent';
 
-const gridStyle = {
-    height: 600
-}
+import { getData, getColumns } from './functions';
+
+import './style.css';
 
 class DisplayGrid extends React.Component {
 
@@ -41,11 +40,21 @@ class DisplayGrid extends React.Component {
         this.setState({ dialogOpen: true, clickedRow: e.row });
     }
 
-    handleCloseDialog(e, message) {
-        let openSnack = false;
-        if (message) {
-            openSnack = true;
+    handleCloseDialog(isUpdated, row) {
+        let openSnack = isUpdated;
+        let message = isUpdated ? 'Category Changed Successfully' : null;
+
+        if (isUpdated) {
+            let rows = this.state.rows;
+            for (let i in rows) {
+                if (rows[i].id === row.id) {
+                    rows[i].CATEGORY = row.CATEGORY;
+                    this.setState({ rows });
+                    break;
+                }
+            }
         }
+
         this.setState({ dialogOpen: false, message, openSnack, clickedRow: null });
     }
 
@@ -56,10 +65,10 @@ class DisplayGrid extends React.Component {
     render() {
         return (
             <>
-                <Box style={{  marginTop: 20, marginRight: 20 }} >
+                <Box style={{ marginTop: 20 }}>
                     <Box>
                         <DataGrid
-                            style={gridStyle}
+                            style={{ height: 500 }}
                             hideFooterPagination={true}
                             hideFooter={true}
                             rows={this.state.rows}
@@ -78,12 +87,10 @@ class DisplayGrid extends React.Component {
                         autoHideDuration={2000}
                         onClose={this.handleCloseSnack}>
 
-                        <SnackbarContent style={{ backgroundColor: '#63A355', color: 'white', textAlign: 'center', fontWeight: 'bold' }}
+                        <SnackbarContent style={{ backgroundColor: '#63A355', color: 'white', fontWeight: 'bold' }}
                             message={this.state.message} />
                     </Snackbar>
-
                 </Box>
-
             </>
         );
     }

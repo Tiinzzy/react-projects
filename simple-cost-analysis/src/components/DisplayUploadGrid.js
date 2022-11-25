@@ -4,10 +4,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import Box from '@mui/material/Box';
 
 import { getColumns } from './functions';
-
-const gridStyle = {
-    height: 600
-}
+import './style.css';
 
 class DisplayUploadGrid extends React.Component {
 
@@ -18,7 +15,7 @@ class DisplayUploadGrid extends React.Component {
             rows: [],
             jCsv: props.jCsv,
             refresh: null
-        }        
+        }
         this.refreshGrid = this.refreshGrid.bind(this);
     }
 
@@ -41,9 +38,9 @@ class DisplayUploadGrid extends React.Component {
     render() {
         return (
             <>
-                <Box style={{ width: 850, marginTop: 20, marginRight: 20 }}>
+                <Box className="DisplayUploadGridBox" >
                     <DataGrid
-                        style={gridStyle}
+                        style={{ height: 500 }}
                         hideFooterPagination={true}
                         hideFooter={true}
                         rows={this.state.rows}

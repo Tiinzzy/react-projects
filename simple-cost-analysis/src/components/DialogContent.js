@@ -6,9 +6,11 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import Divider from "@mui/material/Divider";
+import DialogActions from "@mui/material/DialogActions";
 
 import { editData } from "./functions";
-import { DialogActions } from "@mui/material";
+
+import './style.css';
 
 class DialogContent extends React.Component {
 
@@ -38,32 +40,30 @@ class DialogContent extends React.Component {
         };
 
         await editData(query);
-        this.state.close(e, 'Category Changed Successfully');
-
-        setTimeout(function () { window.location.reload(); }, 3000);
+        this.state.close(true, query);
     }
 
     cancelAndClose(e) {
-        this.state.close(e);
+        this.state.close(false);
     }
 
     render() {
         return (
             <>
                 <Divider />
-                <Box style={{ display: 'flex', flexDirection: 'column', justifyContent: 'left', marginLeft: 30, paddingBottom: 15, paddingTop: 15 }}>
+                <Box className="DialogContentMainBox">
                     <Typography variant="body1">
-                    <span style={{fontWeight: 'bold'}}>Id:</span> {this.state.clickedRow.id}
+                        <span className="DialogContentTexts">Id:</span> {this.state.clickedRow.id}
                     </Typography>
 
-                    <Typography variant="body1">  <span style={{fontWeight: 'bold'}}>Date:</span> {this.state.clickedRow.DATE}</Typography>
+                    <Typography variant="body1">  <span className="DialogContentTexts">Date:</span> {this.state.clickedRow.DATE}</Typography>
 
-                    <Typography variant="body1">  <span style={{fontWeight: 'bold'}}>Description:</span> {this.state.clickedRow.DESC}</Typography>
+                    <Typography variant="body1">  <span className="DialogContentTexts" >Description:</span> {this.state.clickedRow.DESC}</Typography>
 
-                    <Typography variant="body1">  <span style={{fontWeight: 'bold'}}>Amount:</span>  ${(this.state.clickedRow.AMOUNT * 1).toFixed(2)}</Typography>
+                    <Typography variant="body1">  <span className="DialogContentTexts" >Amount:</span>  ${(this.state.clickedRow.AMOUNT * 1).toFixed(2)}</Typography>
 
-                    <Box display='flex' alignItems='center' style={{ marginTop: 10, marginBottom: 10 }} >
-                        <Typography variant="body1"> <span style={{fontWeight: 'bold'}}>Category:</span> </Typography>
+                    <Box className="DialogContentMenuBox">
+                        <Typography variant="body1"> <span className="DialogContentTexts" >Category:</span> </Typography>
                         <Select
                             style={{ width: 300, marginLeft: 10 }}
                             labelId="demo-simple-select-label"
@@ -85,7 +85,7 @@ class DialogContent extends React.Component {
 
                     <Divider />
 
-                    <DialogActions>
+                    <DialogActions style={{ marginTop: 20, marginRight: 20 }}>
                         <Button onClick={(e) => this.cancelAndClose(e)} variant="outlined" color="error"> Cancel </Button>
                         <Button disabled={this.state.CATEGORY === 'None'} onClick={() => this.submitEdit()} variant="outlined" color="success">Update</Button>
                     </DialogActions>

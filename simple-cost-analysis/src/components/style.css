@@ -1,0 +1,109 @@
+.DisplayUploadGridBox {
+    width: 850px;
+    margin-top: 20px;
+    margin-right: 20px;
+}
+
+.DialogContentMainBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    margin-left: 30px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.DialogContentTexts {
+    font-weight: bold;
+}
+
+.DialogContentMenuBox {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.FilePickerButtonBoxes {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    margin-bottom: 20px;
+    margin-top: 30px;
+    margin-left: 20px;
+    align-items: center;
+}
+
+.FilePickerButtonBoxes2 {
+    display: flex;
+    flex-direction: row;
+    margin-left: 20px;
+}
+
+.FilePickerFileName {
+    font-weight: bold;
+    margin-left: 30px;
+    padding-top: 10px;
+}
+
+.FilePickerFileName2 {
+    margin-left: 20px;
+    padding-top: 10px;
+}
+
+.FilePickerSaveText {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    align-items: center;
+}
+
+.FilePickerSaveButton {
+    margin-left: 20px;
+    display: inline-block;
+}
+
+.FilePickerGridMainBox {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin-top: 50px;
+    margin-bottom: 0px;
+}
+
+.FilePickerOldData {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+    text-align: center;
+}
+
+.FilePickerNewData {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+    text-align: center;
+}
+
+.HeaderMainBox {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.HomeBox{
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    margin-top: 30px;
+    margin-left: 20px;
+}
+
+.HomeBox li{
+    padding-bottom: 10px;
+}
