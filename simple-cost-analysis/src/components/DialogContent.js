@@ -6,9 +6,9 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import Divider from "@mui/material/Divider";
+import  DialogActions  from "@mui/material/DialogActions";
 
 import { editData } from "./functions";
-import { DialogActions } from "@mui/material";
 
 class DialogContent extends React.Component {
 
