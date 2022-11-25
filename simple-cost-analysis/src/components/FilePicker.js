@@ -4,26 +4,21 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
-import { DataGrid } from '@mui/x-data-grid';
 
 import { useFilePicker } from 'use-file-picker';
 import DisplayUploadGrid from './DisplayUploadGrid';
+import DisplayGrid from './DisplayGrid';
 
-import { getColumns, saveCsv } from './functions';
+import { saveCsv } from './functions';
 
 const csv = require('csvtojson');
-
-const gridStyle = {
-    height: 700
-}
 
 export default function FilePicker() {
     const [jCsv, setJCsv] = useState(null);
     const [openSnack, setOpenSnack] = useState(false);
-    const [message, setMessage] = useState(null);
-    const [gridColumns, setGridColumns] = useState([]);
-    const [gridRows, setGridRows] = useState([]);
-    const [openFileSelector, { filesContent }] = useFilePicker({
+    const [gridRef, setGridRef] = useState(React.createRef());
+
+    const [openFileSelector, { filesContent, clear }] = useFilePicker({
         accept: '.CSV',
     });
 
@@ -42,6 +37,12 @@ export default function FilePicker() {
         });
 
         setJCsv(saveData);
+
+        if (gridRef.current !== null) {
+            gridRef.current.refreshGrid(saveData);
+        }
+
+        clear();
     }
 
     function processContent(content) {
@@ -50,14 +51,13 @@ export default function FilePicker() {
     }
 
     async function handleSave() {
-        console.log(jCsv);
         setOpenSnack(true);
-        return await saveCsv(jCsv);
+        let result = await saveCsv(jCsv);
+        return result
     }
 
     function handleCloseSnack() {
         setOpenSnack(false);
-        setMessage(null);
     }
 
     return (<>
@@ -68,11 +68,10 @@ export default function FilePicker() {
                 <br />
                 <span style={{ marginLeft: 30, paddingTop: 10, fontWeight: 'bold' }}>File Name:</span>
                 {filesContent.map((file, i) => (
-                    <Box key={i} style={{ marginLeft: 20, paddingTop: 10 }}>{processContent(file.content)}
-                        {file.name}
-                    </Box>))}
+                    <Box key={i} style={{ marginLeft: 20, paddingTop: 10 }}>{processContent(file.content, i)}</Box>))}
             </Box>
         </Box>
+
         <br />
 
         <Box style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', marginBottom: 20, marginLeft: 20, alignItems: 'center' }}>
@@ -82,8 +81,12 @@ export default function FilePicker() {
             </Box>
         </Box>
 
-
-        {jCsv && <DisplayUploadGrid jCsv={jCsv} />}
+        <Box style={{ width: '100%', display: 'flex', flexDirection: ' row', marginTop: 50 }}>
+            <Box width={jCsv ? '50%' : '100%'} style={{
+                display: 'flex', flexDirection: ' column', marginLeft: 20
+            }}> Previous Data <DisplayGrid /></Box>
+            {jCsv && <Box style={{ display: 'flex', flexDirection: ' column' }}> Uploaded Data  <DisplayUploadGrid ref={gridRef} jCsv={jCsv} /> </Box>}
+        </Box>
 
         <Snackbar
             anchorOrigin={{ vertical: 'top', horizontal: 'center', }}
