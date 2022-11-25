@@ -1,0 +1,59 @@
+import React from "react";
+
+import Box from '@mui/material/Box';
+import Typography from "@mui/material/Typography";
+import Button from '@mui/material/Button';
+import DialogTitle from "@mui/material/DialogTitle";
+import Divider from "@mui/material/Divider";
+import DialogActions from "@mui/material/DialogActions";
+
+import { saveCsv } from './functions';
+
+class SaveUpload extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            jCsv: props.jCsv,
+            handleCloseDialog: props.handleCloseDialog,
+            openSnack: false
+        }
+        this.cancelAndClose = this.cancelAndClose.bind(this);
+        this.save = this.save.bind(this);
+        this.handleCloseSnack = this.handleCloseSnack.bind(this);
+    }
+
+    async save(e) {
+        await saveCsv(this.state.jCsv);
+        this.state.handleCloseDialog();
+    }
+
+    cancelAndClose(e) {
+        this.state.handleCloseDialog();
+    }
+
+    handleCloseSnack() {
+        this.setState({ openSnack: false })
+    }
+
+    render() {
+        return (
+            <>
+                <Box>
+                    <DialogTitle>Would you like to save the uploaded file?</DialogTitle>
+                    <Divider />
+
+                    <Typography variant="body1">
+                        Saving the new file will remove any pre existing data
+                    </Typography>
+                    <DialogActions>
+                        <Button onClick={(e) => this.cancelAndClose(e)} variant="outlined" color="error"> Cancel </Button>
+                        <Button onClick={(e) => this.save(e)} variant="outlined" color="success">Save</Button>
+                    </DialogActions>
+
+                </Box>
+            </>
+        );
+    }
+}
+export default SaveUpload;
