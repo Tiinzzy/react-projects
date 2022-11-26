@@ -1,12 +1,14 @@
 const fs = require("fs");
+
 var args = process.argv.slice(2);
+
 
 if (args.length >= 1) {
   // console.log('Recursivce Version Result ------------------------')
   // mainRecursive(args[0], args[1], args[2]);
 
   console.log('Loop Version Result ------------------------------')
-  main(args[0], args[1], args[2]); 
+  main(args[0], args[1], args[2]);
 } else {
   console.log('Syntax: node index.js user [level] [filename]')
 }
@@ -155,7 +157,7 @@ function getFriendsRecursive(data, users, level, targetLevel) {
   let friends = getFriends(users);
   console.log(targetLevel, friends);
   if (targetLevel === level) {
-    friends = cleanResult(friends , users);
+    friends = cleanResult(friends, users);
     console.log(friends)
   } else {
     getFriendsRecursive(data, friends, level, targetLevel + 1);
