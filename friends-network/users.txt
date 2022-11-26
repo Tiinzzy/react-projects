@@ -8,3 +8,4 @@ kamran:corry
 kiana: sarah, amy
 corry:agnes, kamran
 agnes:tina, cristal
+jafar:dualipa,corry
