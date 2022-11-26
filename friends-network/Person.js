@@ -1,30 +1,31 @@
-module.exports = function Person(name) {
-  this.name = name;
-  this.friends = [];
-  this.state = 'normal';
-
-  this.getName = function () {
+module.exports = class Person {
+  constructor(name) {
+    this.name = name;
+    this.friends = [];
+    this.state = 'normal';
+  }
+  getName() {
     return this.name;
   }
 
-  this.getFriends = function () {
+  getFriends() {
     return this.friends;
   }
 
-  this.getState = function () {
+  getState() {
     return this.state;
   }
 
-  this.setState = function (state) {
+  setState(state) {
     console.log('SETTING ' + this.name + ' TO ' + state);
     this.state = state;
   }
 
-  this.addFriend = function (friendObject) {
+  addFriend(friendObject) {
     this.friends.push(friendObject);
   }
 
-  this.show = function () {
+  show() {
     console.log(this.name, '(' + this.state + ')', ' => ', this.friends.map(e => (e.getName() + '[' + e.getState() + ']')).join(','));
   }
 }
