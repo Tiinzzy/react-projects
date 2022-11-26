@@ -1,39 +1,7 @@
 const fs = require("fs");
+const Person = require('./Person');
 
 var people = [];
-
-// ---------------------------------------------------------------
-class Person {
-  constructor(name) {
-    this.name = name;
-    this.friends = [];
-    this.state = 'normal';
-  }
-
-  getName() {
-    return this.name;
-  }
-
-  getFriends() {
-    return this.friends;
-  }
-
-  getState() {
-    return this.state;
-  }
-
-  setState(state) {
-    this.state = state;
-  }
-
-  addFriend(friendObject) {
-    this.friends.push(friendObject);
-  }
-
-  show() {
-    console.log(this.name, '(' + this.state + ')', ' => ', this.friends.map(e => (e.getName() + '[' + e.getState() + ']')).join(','));
-  }
-}
 
 // ---------------------------------------------------------------
 console.log('Create Linked List -------------------------------')
@@ -48,12 +16,25 @@ function mainLinkedList() {
 
   setPeopleFriends();
   showPeople();
- 
+
+  // someTests();
+
+  getDotGraphData();
+}
+
+// -------------------------------------------------------------------------------
+// some manula test to understand the connections 
+// we need to understand the difference between class and instance (object)
+// -------------------------------------------------------------------------------
+function someTests() {
   let t = getPerson('tina');
   t.setState('HAPPY');
-  
+
   t.getFriends()[0].getFriends()[1].setState('Angry');
   t.getFriends()[0].getFriends()[1].show();
+
+  let k = getPerson('kamran');
+  k.show();
 }
 
 // ----------------------------------------------------------------------------
@@ -118,7 +99,6 @@ function nameExist(name) {
   return result;
 }
 
-
 //-----------------------------------------------------------------------------
 function getPerson(name) {
   let result = null;
@@ -138,8 +118,32 @@ function showPeople() {
   console.log('\n**********************************************\n');
 }
 
-
 //-----------------------------------------------------------------------------
 function getDotGraphData() {
+  let relationship = getAllRelationships();
+  let dg = '';
+
+  relationship.forEach(r => {
+    dg = dg + ' ' + r[0] + ' -> ' + r[1] + ';\n';
+  });
+
+
+  dg = 'digraph Frineds {\n' + dg + '}';
+  console.log(dg);
+
   return null;
+}
+
+//-----------------------------------------------------------------------------
+function getAllRelationships() {
+  let relationship = [];
+  people.forEach(p => {
+    let fromPerson = p.getName();
+    p.getFriends().forEach(f => {
+      let toPerson = f.getName();
+      relationship.push([fromPerson, toPerson]);
+    });
+  });
+
+  return relationship;
 }
