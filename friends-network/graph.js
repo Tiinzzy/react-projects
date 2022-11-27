@@ -1,10 +1,14 @@
 const fs = require("fs");
 const Person = require('./Person');
 
+var util = require('util');
+var graphviz = require('graphviz');
+
 var people = [];
 
 // ---------------------------------------------------------------
 mainLinkedList();
+
 
 // --------------------------------------------------------------------------------
 function mainLinkedList() {
@@ -17,8 +21,9 @@ function mainLinkedList() {
   showPeople();
 
   // someTests();
+  // let networkAsText = getDotGraphDataAsText();
 
-  getDotGraphData();
+  saveRelatinshipAsSvg();
 }
 
 // -------------------------------------------------------------------------------
@@ -118,7 +123,7 @@ function showPeople() {
 }
 
 //-----------------------------------------------------------------------------
-function getDotGraphData() {
+function getDotGraphDataAsText() {
   let relationship = getAllRelationships();
   let dg = '';
 
@@ -126,11 +131,8 @@ function getDotGraphData() {
     dg = dg + ' ' + r[0] + ' -> ' + r[1] + ';\n';
   });
 
-
   dg = 'digraph Frineds {\n' + dg + '}';
-  console.log(dg);
-
-  return null;
+  return dg;
 }
 
 //-----------------------------------------------------------------------------
@@ -145,4 +147,42 @@ function getAllRelationships() {
   });
 
   return relationship;
+}
+
+
+//-----------------------------------------------------------------------------
+function testGraphvis() {
+  var g = graphviz.digraph("G");
+  var n1 = g.addNode("Hello", { "color": "blue" });
+  n1.set("style", "filled");
+  g.addNode("World");
+  var e = g.addEdge(n1, "World");
+  e.set("color", "red");
+  console.log(g.to_dot());
+  g.setGraphVizPath("/usr/bin");
+  g.output("svg", "/home/tina/Downloads/test01.svg");
+}
+
+//-----------------------------------------------------------------------------
+function saveRelatinshipAsSvg() {
+  var g = graphviz.digraph("G");
+
+  people.map(p => p.getName()).forEach(n => {
+    var style = {};
+    if (n === 'tina') {
+      style = { "shape": "hexagon" };
+    }
+    g.addNode(n, style);
+  });
+
+  people.forEach(p => {
+    let fromPerson = p.getName();
+    p.getFriends().forEach(f => {
+      let toPerson = f.getName();
+      g.addEdge(fromPerson, toPerson, { "minlen": 2 });
+    });
+  });
+
+  g.setGraphVizPath("/usr/bin");
+  g.output("svg", "/home/tina/Downloads/wirkshop.svg");
 }
