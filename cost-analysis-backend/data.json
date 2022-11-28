@@ -1,45 +1,45 @@
 {
     "1000": {
+        "id": "1000",
         "DATE": "2022-09-29",
         "DESC": "LLS CANADA TORONTO ON",
         "AMOUNT": "102.00",
-        "id": "1000",
-        "CATEGORY": "None"
+        "CATEGORY": "Outfits"
     },
     "1001": {
+        "id": "1001",
         "DATE": "2022-09-30",
         "DESC": "PHARMAPRIX #0022 MONTREAL QC",
         "AMOUNT": "22.52",
-        "id": "1001",
-        "CATEGORY": "None"
+        "CATEGORY": "Entertainment"
     },
     "1002": {
+        "id": "1002",
         "DATE": "2022-09-30",
         "DESC": "MAGASIN CDN TIRE #0043 WESTMOUNT QC",
         "AMOUNT": "182.80",
-        "id": "1002",
-        "CATEGORY": "None"
+        "CATEGORY": "Houseware"
     },
     "1003": {
+        "id": "1003",
         "DATE": "2022-10-01",
         "DESC": "TOM-Burger T Montreal QC",
         "AMOUNT": "59.70",
-        "id": "1003",
-        "CATEGORY": "None"
+        "CATEGORY": "Groceries"
     },
     "1004": {
         "id": "1004",
         "DATE": "2022-10-01",
         "DESC": "COSTCO WHOLESALE W515 MONTREAL QC",
         "AMOUNT": "130.88",
-        "CATEGORY": "Outfits"
+        "CATEGORY": "Groceries"
     },
     "1005": {
+        "id": "1005",
         "DATE": "2022-10-01",
         "DESC": "BUDGET RENT-A-CAR DORVAL ON",
         "AMOUNT": "145.89",
-        "id": "1005",
-        "CATEGORY": "None"
+        "CATEGORY": "Commute"
     },
     "1006": {
         "id": "1006",
@@ -49,11 +49,11 @@
         "CATEGORY": "Groceries"
     },
     "1007": {
+        "id": "1007",
         "DATE": "2022-10-04",
         "DESC": "MAGASIN CDN TIRE #0043 WESTMOUNT QC",
         "AMOUNT": "61.24",
-        "id": "1007",
-        "CATEGORY": "None"
+        "CATEGORY": "Houseware"
     },
     "1008": {
         "DATE": "2022-10-05",
