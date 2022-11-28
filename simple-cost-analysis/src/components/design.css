@@ -1,3 +1,4 @@
+/*Header---------------------------------------------------------*/
 .HeaderBox {
     margin-top: 15px;
     margin-bottom: 15px;
@@ -7,6 +8,26 @@
     justify-content: left;
 }
 
+/*Footer---------------------------------------------------------*/
+.FooterBox {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    text-align: center;
+    font-size: 12px;
+    border-top: solid 1px #1c4966;
+    padding-top: 10px;
+}
+
+/*Home-----------------------------------------------------------*/
+.HomeBox {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    padding-top: 10px;
+}
+
+/*FileDisplay----------------------------------------------------*/
 .FileDisplayBox {
     display: flex;
     flex-direction: column;
@@ -18,38 +39,102 @@
     display: flex;
     flex-direction: row;
     /* border: solid 1px black; */
-    padding: 10px;
+    padding: 20px;
     justify-content: center;
 }
 
 .FileDisplayRow2 {
     display: flex;
     flex-direction: row;
-    border: solid 2px #d5d5d5;
+    /* border: solid 2px black; */
     border-radius: 4px;
-    padding: 10px;
+    padding: 5px;
     justify-content: center;
 }
 
 .FileDisplayCol1 {
+    width: 50%;
     display: flex;
     flex-direction: column;
     border: solid 2px #d5d5d5;
     border-radius: 4px;
-    padding: 10px;
+    padding: 2px;
 }
 
 .FileDisplayCol2 {
+    width: 50%;
     display: flex;
     flex-direction: column;
     border: solid 2px #d5d5d5;
     border-radius: 4px;
-    padding: 10px;
+    padding: 2px;
     margin-left: 20px;
 }
 
-.HomeBox {
+/*FilePicker-----------------------------------------------------*/
+.FilePickerBox {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    align-content: flex-start;
+}
+
+.FilePickerButton {
     display: flex;
     flex-direction: row;
+    margin-bottom: 30px;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+.FilePickerName {
+    display: flex;
+    flex-direction: row;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+/*Save-----------------------------------------------------------*/
+.SaveBox {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    align-content: flex-start;
+}
+
+.SaveText {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 30px;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+.SaveButton {
+    display: flex;
+    flex-direction: row;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+/*GridDialogContent----------------------------------------------*/
+.GridDialogContentBox {
+    display: flex;
+    flex-direction: column;
     justify-content: left;
+    margin-left: 30px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.GridDialogText {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.GridDialogMenuBox {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
