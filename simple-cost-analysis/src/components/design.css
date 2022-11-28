@@ -1,7 +1,54 @@
-.HeaderBox{
+.HeaderBox {
     margin-top: 15px;
     margin-bottom: 15px;
     margin-left: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+}
+
+.FileDisplayBox {
+    display: flex;
+    flex-direction: column;
+    /* border: solid 1px black; */
+    padding: 10px;
+}
+
+.FileDisplayRow1 {
+    display: flex;
+    flex-direction: row;
+    /* border: solid 1px black; */
+    padding: 10px;
+    justify-content: center;
+}
+
+.FileDisplayRow2 {
+    display: flex;
+    flex-direction: row;
+    border: solid 2px #d5d5d5;
+    border-radius: 4px;
+    padding: 10px;
+    justify-content: center;
+}
+
+.FileDisplayCol1 {
+    display: flex;
+    flex-direction: column;
+    border: solid 2px #d5d5d5;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.FileDisplayCol2 {
+    display: flex;
+    flex-direction: column;
+    border: solid 2px #d5d5d5;
+    border-radius: 4px;
+    padding: 10px;
+    margin-left: 20px;
+}
+
+.HomeBox {
     display: flex;
     flex-direction: row;
     justify-content: left;
