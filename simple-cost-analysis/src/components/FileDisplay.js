@@ -2,6 +2,10 @@ import React from "react";
 
 import Box from '@mui/material/Box';
 
+import FilePicker from "./FilePicker";
+import Save from "./Save";
+import DisplayGrid from "./DisplayGrid";
+
 import './design.css';
 
 class FileDisplay extends React.Component {
@@ -9,7 +13,14 @@ class FileDisplay extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            callback: props.callback
         }
+
+        this.callback = this.callback.bind(this);
+    }
+
+    callback(file) {
+        this.state.callback(file);
     }
 
     render() {
@@ -18,14 +29,14 @@ class FileDisplay extends React.Component {
                 <Box className="FileDisplayBox">
                     <Box className="FileDisplayRow1">
                         <Box className="FileDisplayCol1">
-                            this is a test file display row1, column 1
+                            <FilePicker callFileDisplay={this.callback} date='2022-10-10'/>
                         </Box>
                         <Box className="FileDisplayCol2">
-                            this is a test file display row1, column 2
+                        <Save />
                         </Box>
                     </Box>
                     <Box className="FileDisplayRow2">
-                    this is a test for where grid will be
+                        <DisplayGrid />
                     </Box>
                 </Box>
             </>
