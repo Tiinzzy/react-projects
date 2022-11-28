@@ -4,12 +4,11 @@ import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import Divider from '@mui/material/Divider';
 
-import './design.css';
+import './style.css';
 
 const headerStyle = {
     cursor: 'pointer',
-    color: '#1c4966',
-    TextDecoder: 'none'
+    color: '#1c4966'
 }
 
 class Header extends React.Component {
@@ -23,12 +22,15 @@ class Header extends React.Component {
     render() {
         return (
             <>
-                <Box className="HeaderBox">
-                    <Link href="/home" style={headerStyle}>Home</Link>
+                <Box className="HeaderMainBox">
+                    <Link href="/" style={headerStyle}>Home</Link>
                     <Divider orientation="vertical" variant="middle" flexItem sx={{ ml: 2, mr: 2 }} />
-                    <Link href="/upload-save-display-file" style={headerStyle}> Upload</Link>
+                    <Link href="/upload-save-file" style={headerStyle}> Upload File</Link>
+                    <Divider orientation="vertical" variant="middle" flexItem sx={{ ml: 2, mr: 2 }} />
+                    <Link href="/display-grid" style={headerStyle}>Show Data</Link>
                 </Box>
                 <Divider flexItem sx={{ borderRightWidth: 5 }} color="#1c4966" />
+
             </>
         );
     }

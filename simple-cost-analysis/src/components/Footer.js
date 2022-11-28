@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 
 import './design.css';
 
-class Home extends React.Component {
+class Footer extends React.Component {
 
     constructor(props) {
         super(props);
@@ -15,11 +15,11 @@ class Home extends React.Component {
     render() {
         return (
             <>
-                <Box className="HomeBox">
-                    this will be home section
+                <Box className="FooterBox">
+                    Proudly designed by Tina Vatanabadi, Copyright 2022.
                 </Box>
             </>
         );
     }
 }
-export default Home;
+export default Footer;

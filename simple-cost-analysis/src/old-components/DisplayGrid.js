@@ -7,9 +7,11 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
 
-import GridDialogContent from "./GridDialogContent";
+import DialogContent from './DialogContent';
 
 import { getData, getColumns } from './functions';
+
+import './style.css';
 
 class DisplayGrid extends React.Component {
 
@@ -63,31 +65,32 @@ class DisplayGrid extends React.Component {
     render() {
         return (
             <>
-                <Box>
-                    <DataGrid
-                        style={{ height: 600, width: 1235 }}
-                        hideFooterPagination={true}
-                        hideFooter={true}
-                        rows={this.state.rows}
-                        columns={this.state.columns}
-                        onCellDoubleClick={(e) => this.handleClick(e)}
-                    />
+                <Box style={{ marginTop: 20 }}>
+                    <Box>
+                        <DataGrid
+                            style={{ height: 500 }}
+                            hideFooterPagination={true}
+                            hideFooter={true}
+                            rows={this.state.rows}
+                            columns={this.state.columns}
+                            onCellDoubleClick={(e) => this.handleClick(e)}
+                        />
+                    </Box>
+                    {this.state.dialogOpen && <Dialog onClose={(e) => this.handleCloseDialog(e)} open={this.state.dialogOpen} maxWidth='sm' fullWidth={true}>
+                        <DialogTitle>Details</DialogTitle>
+                        <DialogContent clickedRow={this.state.clickedRow} close={this.handleCloseDialog} />
+                    </Dialog>}
+
+                    <Snackbar
+                        anchorOrigin={{ vertical: 'top', horizontal: 'center', }}
+                        open={this.state.openSnack}
+                        autoHideDuration={2000}
+                        onClose={this.handleCloseSnack}>
+
+                        <SnackbarContent style={{ backgroundColor: '#63A355', color: 'white', fontWeight: 'bold' }}
+                            message={this.state.message} />
+                    </Snackbar>
                 </Box>
-
-                {this.state.dialogOpen && <Dialog onClose={(e) => this.handleCloseDialog(e)} open={this.state.dialogOpen} maxWidth='sm' fullWidth={true}>
-                    <DialogTitle>Details</DialogTitle>
-                    <GridDialogContent clickedRow={this.state.clickedRow} close={this.handleCloseDialog} />
-                </Dialog>}
-
-                <Snackbar
-                    anchorOrigin={{ vertical: 'top', horizontal: 'center', }}
-                    open={this.state.openSnack}
-                    autoHideDuration={2000}
-                    onClose={this.handleCloseSnack}>
-
-                    <SnackbarContent style={{ backgroundColor: '#63A355', color: 'white', fontWeight: 'bold' }}
-                        message={this.state.message} />
-                </Snackbar>
             </>
         );
     }
