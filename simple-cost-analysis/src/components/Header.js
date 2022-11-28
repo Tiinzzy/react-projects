@@ -26,7 +26,7 @@ class Header extends React.Component {
                 <Box className="HeaderBox">
                     <Link href="/home" style={headerStyle}>Home</Link>
                     <Divider orientation="vertical" variant="middle" flexItem sx={{ ml: 2, mr: 2 }} />
-                    <Link href="/upload-save-display-file" style={headerStyle}> Files</Link>
+                    <Link href="/upload-save-display-file" style={headerStyle}> Upload</Link>
                 </Box>
                 <Divider flexItem sx={{ borderRightWidth: 5 }} color="#1c4966" />
             </>
