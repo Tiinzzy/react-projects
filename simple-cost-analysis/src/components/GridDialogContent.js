@@ -56,15 +56,16 @@ class GridDialogContent extends React.Component {
                         <span className="GridDialogText">Id:</span> {this.state.clickedRow.id}
                     </Typography>
 
-                    <Typography variant="body1">  <span className="GridDialogText">Date:</span> {this.state.clickedRow.DATE}</Typography>
+                    <Typography sx={{ mt: 1 }} variant="body1">  <span className="GridDialogText">Date:</span> {this.state.clickedRow.DATE}</Typography>
 
-                    <Typography variant="body1">  <span className="GridDialogText">Description:</span> {this.state.clickedRow.DESC}</Typography>
+                    <Typography sx={{ mt: 1 }} variant="body1">  <span className="GridDialogText">Description:</span> {this.state.clickedRow.DESC}</Typography>
 
-                    <Typography variant="body1">  <span className="GridDialogText">Amount:</span>  ${(this.state.clickedRow.AMOUNT * 1).toFixed(2)}</Typography>
+                    <Typography sx={{ mt: 1 }} variant="body1">  <span className="GridDialogText">Amount:</span>  ${(this.state.clickedRow.AMOUNT * 1).toFixed(2)}</Typography>
 
                     <Box className="GridDialogMenuBox">
                         <Typography variant="body1"> <span className="GridDialogText">Category:</span> </Typography>
                         <Select
+                            size='small'
                             style={{ width: 300, marginLeft: 10 }}
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
@@ -86,8 +87,8 @@ class GridDialogContent extends React.Component {
                     <Divider />
 
                     <DialogActions style={{ marginTop: 20, marginRight: 20 }}>
-                        <Button onClick={(e) => this.cancelAndClose(e)} variant="outlined" color="error"> Cancel </Button>
-                        <Button disabled={this.state.CATEGORY === 'None'} onClick={() => this.submitEdit()} variant="outlined" color="success">Update</Button>
+                        <Button size='small' onClick={(e) => this.cancelAndClose(e)} variant="outlined" color="error"> Cancel </Button>
+                        <Button size='small' disabled={this.state.CATEGORY === 'None'} onClick={() => this.submitEdit()} variant="outlined" color="success">Update</Button>
                     </DialogActions>
                 </Box>
             </>
