@@ -1,6 +1,6 @@
 const MyStack = require('./my-stack');
 
-var stack = new MyStack(4);
+var stack = new MyStack();
 
 console.log(stack.size());
 
