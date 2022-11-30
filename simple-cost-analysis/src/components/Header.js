@@ -4,6 +4,8 @@ import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import Divider from '@mui/material/Divider';
 
+import FilePicker from './FilePicker';
+
 import './design.css';
 
 const headerStyle = {
@@ -26,7 +28,7 @@ class Header extends React.Component {
                 <Box className="HeaderBox">
                     <Link href="/home" style={headerStyle}>Home</Link>
                     <Divider orientation="vertical" variant="middle" flexItem sx={{ ml: 2, mr: 2 }} />
-                    <Link href="/upload-save-display-file" style={headerStyle}> Upload</Link>
+                    <FilePicker />
                 </Box>
                 <Divider flexItem sx={{ borderRightWidth: 5 }} color="#1c4966" />
             </>
