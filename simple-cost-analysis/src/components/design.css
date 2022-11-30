@@ -1,11 +1,22 @@
 /*Header---------------------------------------------------------*/
 .HeaderBox {
-    margin-top: 15px;
-    margin-bottom: 15px;
-    margin-left: 15px;
+    padding: 15px;
     display: flex;
     flex-direction: row;
     justify-content: left;
+    background-color: #796bac;
+    border-bottom: solid 2px #695e90;
+}
+
+.HeaderBox a {
+    color: #ffffff !important;
+    font-size: 16px;
+    text-decoration: none !important;
+}
+
+.HeaderBox a:hover {
+    text-decoration: underline !important;
+    cursor: pointer;
 }
 
 /*Footer---------------------------------------------------------*/
@@ -14,9 +25,11 @@
     flex-direction: row;
     justify-content: center;
     text-align: center;
-    font-size: 12px;
-    border-top: solid 1px #1c4966;
-    padding-top: 10px;
+    font-size: 10px;
+    border-top: solid 1px rgb(208, 205, 205);
+    padding-top: 5px;
+    margin: 10px 300px 10px 300px;
+    color: #999;
 }
 
 /*Home-----------------------------------------------------------*/
@@ -98,6 +111,7 @@
 .GridDialogMenuBox {
     display: flex;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 10px;
     margin-bottom: 20px;
 }
+

@@ -15,7 +15,6 @@ exports.saveCsv = (req) => {
 
 exports.getAllData = () => {
     let jData = db.JSON();
-    console.log(jData);
     let result = [];
     for (let r in jData) {
         result.push(jData[r]);

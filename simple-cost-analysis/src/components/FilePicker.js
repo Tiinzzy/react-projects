@@ -73,11 +73,9 @@ export default function FilePicker(props) {
 
     return (
         <>
-            <Box>
-                <Link variant="text" onClick={() => openFileSelector()} style={headerStyle}>Select File </Link>
-                {filesContent.map((file, i) => (
-                    <Box key={i} className='FilePickerFileName2 '>{processContent(file.content, i)}</Box>))}
-            </Box>
+            <Link variant="text" onClick={() => openFileSelector()}>Select File </Link>
+            {filesContent.map((file, i) => (
+                <Box key={i} className='FilePickerFileName2 '>{processContent(file.content, i)}</Box>))}
 
             {dialogOpen && <Dialog onClose={() => handleCloseDialog()} open={dialogOpen} maxWidth="lg" fullWidth={true}>
                 <Save jCsv={jCsv} handleCloseDialog={handleCloseDialog} callback={saveCallBack} />

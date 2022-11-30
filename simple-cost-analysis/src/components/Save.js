@@ -62,8 +62,10 @@ class Save extends React.Component {
                     />
                 </Box>
 
-                <Box variant="body1" style={{ marginLeft: 30, marginTop: 20, fontWeight: 'bold', marginBottom: 20 }}>
-                    * Saving the new file will remove any pre existing data.
+                <Box variant="body1" style={{ marginLeft: 30, marginTop: 20, marginBottom: 20 }}>
+                    <span style={{ fontWeight: 'bold', marginRight:2 }}> * Number of rows in the following data:</span>  {this.state.rows.length}
+                    <br />
+                    <span style={{ fontWeight: 'bold' }}> * Saving the new file will remove any pre existing data.</span>
                 </Box>
                 <Divider />
 

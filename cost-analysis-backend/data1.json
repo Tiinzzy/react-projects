@@ -1,0 +1,107 @@
+{
+    "1000": {
+        "DATE": "2022-09-29",
+        "DESC": "LLS CANADA TORONTO ON",
+        "AMOUNT": "102.00",
+        "id": "1000",
+        "CATEGORY": "None"
+    },
+    "1001": {
+        "DATE": "2022-09-30",
+        "DESC": "PHARMAPRIX #0022 MONTREAL QC",
+        "AMOUNT": "22.52",
+        "id": "1001",
+        "CATEGORY": "None"
+    },
+    "1002": {
+        "id": "1002",
+        "DATE": "2022-09-30",
+        "DESC": "MAGASIN CDN TIRE #0043 WESTMOUNT QC",
+        "AMOUNT": "182.80",
+        "CATEGORY": "Houseware"
+    },
+    "1003": {
+        "DATE": "2022-10-01",
+        "DESC": "TOM-Burger T Montreal QC",
+        "AMOUNT": "59.70",
+        "id": "1003",
+        "CATEGORY": "None"
+    },
+    "1004": {
+        "id": "1004",
+        "DATE": "2022-10-01",
+        "DESC": "COSTCO WHOLESALE W515 MONTREAL QC",
+        "AMOUNT": "130.88",
+        "CATEGORY": "Entertainment"
+    },
+    "1005": {
+        "DATE": "2022-10-01",
+        "DESC": "BUDGET RENT-A-CAR DORVAL ON",
+        "AMOUNT": "145.89",
+        "id": "1005",
+        "CATEGORY": "None"
+    },
+    "1006": {
+        "DATE": "2022-10-03",
+        "DESC": "IGA 8093",
+        "AMOUNT": "29.56",
+        "id": "1006",
+        "CATEGORY": "None"
+    },
+    "1007": {
+        "DATE": "2022-10-04",
+        "DESC": "MAGASIN CDN TIRE #0043 WESTMOUNT QC",
+        "AMOUNT": "61.24",
+        "id": "1007",
+        "CATEGORY": "None"
+    },
+    "1008": {
+        "DATE": "2022-10-05",
+        "DESC": "METRO ETS  2416",
+        "AMOUNT": "19.84",
+        "id": "1008",
+        "CATEGORY": "None"
+    },
+    "1009": {
+        "DATE": "2022-10-06",
+        "DESC": "PROVIGO LE MARCHE AVE",
+        "AMOUNT": "26.40",
+        "id": "1009",
+        "CATEGORY": "None"
+    },
+    "1010": {
+        "DATE": "2022-10-07",
+        "DESC": "DOLLARAMA # 314 MONTREAL QC",
+        "AMOUNT": "7.90",
+        "id": "1010",
+        "CATEGORY": "None"
+    },
+    "1011": {
+        "DATE": "2022-10-07",
+        "DESC": "ADONIS GRIFFINTOWN",
+        "AMOUNT": "25.58",
+        "id": "1011",
+        "CATEGORY": "None"
+    },
+    "1012": {
+        "DATE": "2022-10-08",
+        "DESC": "PROVIGO LE MARCHE AVE SHERBROOKE QC",
+        "AMOUNT": "40.31",
+        "id": "1012",
+        "CATEGORY": "None"
+    },
+    "1013": {
+        "DATE": "2022-10-09",
+        "DESC": "IGA 8217 MONTREAL QC",
+        "AMOUNT": "18.75",
+        "id": "1013",
+        "CATEGORY": "None"
+    },
+    "1014": {
+        "DATE": "2022-10-10",
+        "DESC": "PHARMAPRIX #1937",
+        "AMOUNT": "22.82",
+        "id": "1014",
+        "CATEGORY": "None"
+    }
+}

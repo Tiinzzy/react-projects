@@ -8,12 +8,6 @@ import FilePicker from './FilePicker';
 
 import './design.css';
 
-const headerStyle = {
-    cursor: 'pointer',
-    color: '#1c4966',
-    TextDecoder: 'none'
-}
-
 class Header extends React.Component {
 
     constructor(props) {
@@ -24,14 +18,11 @@ class Header extends React.Component {
 
     render() {
         return (
-            <>
-                <Box className="HeaderBox">
-                    <Link href="/home" style={headerStyle}>Home</Link>
-                    <Divider orientation="vertical" variant="middle" flexItem sx={{ ml: 2, mr: 2 }} />
-                    <FilePicker />
-                </Box>
-                <Divider flexItem sx={{ borderRightWidth: 5 }} color="#1c4966" />
-            </>
+            <Box className="HeaderBox">
+                <Link href="/home">Home</Link>
+                <Divider orientation="vertical" variant="middle" flexItem sx={{ ml: 2, mr: 2 }} />
+                <FilePicker />
+            </Box>
         );
     }
 }
