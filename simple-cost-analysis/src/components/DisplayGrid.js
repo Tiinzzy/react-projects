@@ -97,16 +97,15 @@ class DisplayGrid extends React.Component {
         return (
             <>
                 {this.state.rows && this.state.rows.length > 0 &&
-                    <Box style={{ width: '100%' }}>
                         <DataGrid
-                            style={{ margin: 1, height: this.state.height, width: this.state.width }}
+                            style={{ height: this.state.height, width: this.state.width }}
                             hideFooterPagination={true}
                             hideFooter={true}
                             rows={this.state.rows}
                             columns={this.state.columns}
                             onCellDoubleClick={(e) => this.handleClick(e)}
                         />
-                    </Box>}
+                    }
                 {this.state.rows && this.state.rows.length === 0 &&
                     <Box>
                         <ol>
