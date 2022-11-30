@@ -1,6 +1,7 @@
 import React from "react";
 
 import Box from '@mui/material/Box';
+import DisplayGrid from "./DisplayGrid";
 
 import './design.css';
 
@@ -16,7 +17,7 @@ class Home extends React.Component {
         return (
             <>
                 <Box className="HomeBox">
-                    this will be home section
+                <DisplayGrid />
                 </Box>
             </>
         );
