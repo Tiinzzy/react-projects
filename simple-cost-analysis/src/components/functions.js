@@ -32,7 +32,7 @@ export async function getData() {
 export function getColumns(row) {
     var defaultColumns = [];
 
-    for (var c in row) {        
+    for (var c in row) {
         let col = { field: c, headerName: c, width: 180 };
         if (col.field === 'AMOUNT') {
             col.type = 'number';
@@ -79,4 +79,20 @@ export async function editData(query) {
         .catch(error => {
             return false;
         });
+}
+
+export function getGridHeight() {
+    let height = window.innerHeight - 150;
+    if (height < 100) {
+        height = 100;
+    }
+    return height;
+}
+
+export function getGridWidth() {
+    let width = window.innerWidth - 30;
+    if (width < 20) {
+        width = 20;
+    }
+    return width;
 }
