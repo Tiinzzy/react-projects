@@ -23,8 +23,8 @@
 .HomeBox {
     display: flex;
     flex-direction: row;
-    justify-content: left;
-    padding-top: 10px;
+    justify-content: center;
+    margin: 20px;
 }
 
 /*FileDisplay----------------------------------------------------*/
@@ -71,52 +71,15 @@
     margin-left: 20px;
 }
 
-/*FilePicker-----------------------------------------------------*/
-.FilePickerBox {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    align-content: flex-start;
-}
-
-.FilePickerButton {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 30px;
-    margin-left: 20px;
-    margin-top: 20px;
-}
-
-.FilePickerName {
-    display: flex;
-    flex-direction: row;
-    margin-left: 20px;
-    margin-bottom: 20px;
-}
-
 /*Save-----------------------------------------------------------*/
-.SaveBox {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    align-content: flex-start;
-}
-
-.SaveText {
+.SaveBoxGrid {
+    height: 400px;
     display: flex;
     flex-direction: row;
-    margin-bottom: 30px;
-    margin-left: 20px;
-    margin-top: 20px;
+    align-items: center;
+    align-content: center;
+    margin: 15px;
 }
-
-.SaveButton {
-    display: flex;
-    flex-direction: row;
-    margin-left: 20px;
-    margin-bottom: 20px;
-}
-
 /*GridDialogContent----------------------------------------------*/
 .GridDialogContentBox {
     display: flex;
