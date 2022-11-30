@@ -9,7 +9,7 @@ import SnackbarContent from '@mui/material/SnackbarContent';
 
 import GridDialogContent from "./GridDialogContent";
 
-import { getData, getColumns } from './functions';
+import { getData, getColumns, getGridHeight, getGridWidth } from './functions';
 
 var _displatGrid = null;
 
@@ -38,20 +38,23 @@ class DisplayGrid extends React.Component {
             clickedRow: null,
             message: null,
             openSnack: false,
-            gridheight: window.innerHeight - 150,
-            gridWidth: window.innerWidth - 40
+            height: getGridHeight(),
+            width: getGridWidth()
         }
         this.handleClick = this.handleClick.bind(this);
         this.handleCloseDialog = this.handleCloseDialog.bind(this);
         this.handleCloseSnack = this.handleCloseSnack.bind(this);
         this.setNewData = this.setNewData.bind(this);
         _displatGrid = this;
+        this.handleScreenResize = this.handleScreenResize.bind(this);
     }
 
     async componentDidMount() {
         let data = await getData();
         let columns = getColumns(data[0]);
         this.setState({ rows: data, columns: columns });
+
+        window.addEventListener("resize", this.handleScreenResize);
     }
 
 
@@ -86,13 +89,17 @@ class DisplayGrid extends React.Component {
         this.setState({ rows: Object.values(data) });
     }
 
+    handleScreenResize() {
+        this.setState({ height: getGridHeight(), width: getGridWidth() });
+    }
+
     render() {
         return (
             <>
                 {this.state.rows && this.state.rows.length > 0 &&
-                    <Box>
+                    <Box style={{ width: '100%' }}>
                         <DataGrid
-                            style={{ height: this.state.gridheight, margin: '0 20px 0 20px', width: this.state.gridWidth }}
+                            style={{ margin: 1, height: this.state.height, width: this.state.width }}
                             hideFooterPagination={true}
                             hideFooter={true}
                             rows={this.state.rows}
@@ -100,7 +107,7 @@ class DisplayGrid extends React.Component {
                             onCellDoubleClick={(e) => this.handleClick(e)}
                         />
                     </Box>}
-                {this.state.rows && this.state.rows.length == 0 &&
+                {this.state.rows && this.state.rows.length === 0 &&
                     <Box>
                         <ol>
                             {HELP.map((e, i) => (
@@ -120,7 +127,7 @@ class DisplayGrid extends React.Component {
                     autoHideDuration={2000}
                     onClose={this.handleCloseSnack}>
                     <SnackbarContent style={{ backgroundColor: '#63A355', color: 'white', fontWeight: 'bold' }}
-                        message={<div style={{ textAlign: 'center', width: 400 }}>{this.state.message}</div>}/>
+                        message={<div style={{ textAlign: 'center', width: 400 }}>{this.state.message}</div>} />
                 </Snackbar>
             </>
         );
