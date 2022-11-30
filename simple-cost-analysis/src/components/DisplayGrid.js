@@ -11,21 +11,41 @@ import GridDialogContent from "./GridDialogContent";
 
 import { getData, getColumns } from './functions';
 
+var _displatGrid = null;
+
+export function setNewData(data) {
+    _displatGrid.setNewData(data);
+}
+
+const HELP = [
+    "First go to Upload File",
+    "Select a file to uploead using the button",
+    "The file must be CSV to be read",
+    "When your file is uploaded, you will see a display of it",
+    "There is also a display of any pervious data if it existed from before",
+    "If youre satisfied with your file click on save button",
+    "Once the pop-up comes up, you will be notified that saving new file will remove any previous data",
+    "AFter saving the file new data will be available and you can see them in Show Data"
+];
+
 class DisplayGrid extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
             columns: [],
-            rows: [],
             dialogOpen: false,
             clickedRow: null,
             message: null,
-            openSnack: false
+            openSnack: false,
+            gridheight: window.innerHeight - 150,
+            gridWidth: window.innerWidth - 40
         }
         this.handleClick = this.handleClick.bind(this);
         this.handleCloseDialog = this.handleCloseDialog.bind(this);
         this.handleCloseSnack = this.handleCloseSnack.bind(this);
+        this.setNewData = this.setNewData.bind(this);
+        _displatGrid = this;
     }
 
     async componentDidMount() {
@@ -33,6 +53,7 @@ class DisplayGrid extends React.Component {
         let columns = getColumns(data[0]);
         this.setState({ rows: data, columns: columns });
     }
+
 
     handleClick(e) {
         this.setState({ dialogOpen: true, clickedRow: e.row });
@@ -60,21 +81,35 @@ class DisplayGrid extends React.Component {
         this.setState({ openSnack: false, message: null });
     }
 
+    setNewData(data) {
+        console.log(data);
+        this.setState({ rows: Object.values(data) });
+    }
+
     render() {
         return (
             <>
-                <Box>
-                    <DataGrid
-                        style={{ height: 600, width: 1235 }}
-                        hideFooterPagination={true}
-                        hideFooter={true}
-                        rows={this.state.rows}
-                        columns={this.state.columns}
-                        onCellDoubleClick={(e) => this.handleClick(e)}
-                    />
-                </Box>
+                {this.state.rows && this.state.rows.length > 0 &&
+                    <Box>
+                        <DataGrid
+                            style={{ height: this.state.gridheight, margin: '0 20px 0 20px', width: this.state.gridWidth }}
+                            hideFooterPagination={true}
+                            hideFooter={true}
+                            rows={this.state.rows}
+                            columns={this.state.columns}
+                            onCellDoubleClick={(e) => this.handleClick(e)}
+                        />
+                    </Box>}
+                {this.state.rows && this.state.rows.length == 0 &&
+                    <Box>
+                        <ol>
+                            {HELP.map((e, i) => (
+                                <li key={i}>{e}</li>
+                            ))}
+                        </ol>
+                    </Box>}
 
-                {this.state.dialogOpen && <Dialog onClose={(e) => this.handleCloseDialog(e)} open={this.state.dialogOpen} maxWidth='sm' fullWidth={true}>
+                {this.state.dialogOpen && <Dialog onClose={() => this.handleCloseDialog(false)} open={this.state.dialogOpen} maxWidth='sm' fullWidth={true}>
                     <DialogTitle>Details</DialogTitle>
                     <GridDialogContent clickedRow={this.state.clickedRow} close={this.handleCloseDialog} />
                 </Dialog>}
@@ -84,9 +119,8 @@ class DisplayGrid extends React.Component {
                     open={this.state.openSnack}
                     autoHideDuration={2000}
                     onClose={this.handleCloseSnack}>
-
                     <SnackbarContent style={{ backgroundColor: '#63A355', color: 'white', fontWeight: 'bold' }}
-                        message={this.state.message} />
+                        message={<div style={{ textAlign: 'center', width: 400 }}>{this.state.message}</div>}/>
                 </Snackbar>
             </>
         );

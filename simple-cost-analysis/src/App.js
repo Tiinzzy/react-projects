@@ -1,8 +1,6 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Header from "./components/Header";
-import FileDisplay from "./components/FileDisplay";
 import Home from "./components/Home";
 import Footer from "./components/Footer";
 
@@ -17,21 +15,22 @@ function callback(file) {
   console.log(file);
 }
 
-function App() {
-  return (
-    <>
-      <Header />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/upload-save-display-file" element={<FileDisplay callback={callback} />} />
-          <Route path='*' element={<h3>Error</h3>} />
-        </Routes>
-      </BrowserRouter>
-      <Footer />
-    </>
-  );
-}
+class App extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+    }
+  }
+
+  render() {
+    return (
+      <>
+        <Header />
+        <Home callback={callback} />
+        <Footer />
+      </>
+    );
+  }
+}
 export default App;
