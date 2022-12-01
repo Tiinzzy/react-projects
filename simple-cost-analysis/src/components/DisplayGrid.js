@@ -6,15 +6,19 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 import GridDialogContent from "./GridDialogContent";
 
 import { getData, getColumns, getGridHeight, getGridWidth } from './functions';
 
 var _displatGrid = null;
+var _rowData = null;
 
 export function setNewData(data) {
     _displatGrid.setNewData(data);
+    _rowData.setNewData(data);
 }
 
 const HELP = [
@@ -28,6 +32,8 @@ const HELP = [
     "AFter saving the file new data will be available and you can see them in Show Data"
 ];
 
+const CATEGORIES = ['All', 'None', 'Commute', 'Entertainment', 'Groceries', 'Houseware', 'Outfits', 'Utilities', 'Misc'];
+
 class DisplayGrid extends React.Component {
 
     constructor(props) {
@@ -39,14 +45,17 @@ class DisplayGrid extends React.Component {
             message: null,
             openSnack: false,
             height: getGridHeight(),
-            width: getGridWidth()
+            width: getGridWidth(),
+            category: ''
         }
         this.handleClick = this.handleClick.bind(this);
         this.handleCloseDialog = this.handleCloseDialog.bind(this);
         this.handleCloseSnack = this.handleCloseSnack.bind(this);
         this.setNewData = this.setNewData.bind(this);
-        _displatGrid = this;
         this.handleScreenResize = this.handleScreenResize.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleToggle = this.handleToggle.bind(this);
+        _displatGrid = this;
     }
 
     async componentDidMount() {
@@ -93,42 +102,72 @@ class DisplayGrid extends React.Component {
         this.setState({ height: getGridHeight(), width: getGridWidth() });
     }
 
+    async handleChange(e) {
+        let data = await getData();
+
+        this.setState({ category: e.target.value });
+
+        let rows = [];
+
+        if (this.state.category === 'All') {
+            this.setState({ rows: data });
+        } else {
+            rows = data.filter((e) => (e.CATEGORY === this.state.category));
+            this.setState({ rows: rows });
+        }
+    }
+
+    handleToggle(e) {
+        this.setState({ category: e.target.value });
+        console.log('clicked');
+    }
+
     render() {
         return (
-            <>
-                {this.state.rows && this.state.rows.length > 0 &&
+            <Box className="GridMainBox">
+                <Box className="ToggleBox">
+                    <ToggleButtonGroup
+                        size="small"
+                        color="primary"
+                        value={this.state.category}
+                        exclusive
+                        onChange={(e) => this.handleChange(e)}>
+                        {CATEGORIES.map((e, i) => (<ToggleButton onClick={(e) => this.handleToggle(e)} style={{ fontSize: 8, padding: 4 }} key={i} value={e}>{e}</ToggleButton>))}
+                    </ToggleButtonGroup>
+                </Box>
+                <Box className="GridTextBox">
+                    {this.state.rows && this.state.rows.length > 0 &&
                         <DataGrid
                             style={{ height: this.state.height, width: this.state.width }}
                             hideFooterPagination={true}
                             hideFooter={true}
                             rows={this.state.rows}
                             columns={this.state.columns}
-                            onCellDoubleClick={(e) => this.handleClick(e)}
-                        />
-                    }
-                {this.state.rows && this.state.rows.length === 0 &&
-                    <Box>
-                        <ol>
-                            {HELP.map((e, i) => (
-                                <li key={i}>{e}</li>
-                            ))}
-                        </ol>
-                    </Box>}
+                            onCellDoubleClick={(e) => this.handleClick(e)} />}
+                    {this.state.rows && this.state.rows.length === 0 &&
+                        <Box>
+                            <ol>
+                                {HELP.map((e, i) => (
+                                    <li key={i}>{e}</li>
+                                ))}
+                            </ol>
+                        </Box>}
 
-                {this.state.dialogOpen && <Dialog onClose={() => this.handleCloseDialog(false)} open={this.state.dialogOpen} maxWidth='sm' fullWidth={true}>
-                    <DialogTitle>Details</DialogTitle>
-                    <GridDialogContent clickedRow={this.state.clickedRow} close={this.handleCloseDialog} />
-                </Dialog>}
+                    {this.state.dialogOpen && <Dialog onClose={() => this.handleCloseDialog(false)} open={this.state.dialogOpen} maxWidth='sm' fullWidth={true}>
+                        <DialogTitle>Details</DialogTitle>
+                        <GridDialogContent clickedRow={this.state.clickedRow} close={this.handleCloseDialog} />
+                    </Dialog>}
 
-                <Snackbar
-                    anchorOrigin={{ vertical: 'top', horizontal: 'center', }}
-                    open={this.state.openSnack}
-                    autoHideDuration={2000}
-                    onClose={this.handleCloseSnack}>
-                    <SnackbarContent style={{ backgroundColor: '#63A355', color: 'white', fontWeight: 'bold' }}
-                        message={<div style={{ textAlign: 'center', width: 400 }}>{this.state.message}</div>} />
-                </Snackbar>
-            </>
+                    <Snackbar
+                        anchorOrigin={{ vertical: 'top', horizontal: 'center', }}
+                        open={this.state.openSnack}
+                        autoHideDuration={2000}
+                        onClose={this.handleCloseSnack}>
+                        <SnackbarContent style={{ backgroundColor: '#63A355', color: 'white', fontWeight: 'bold' }}
+                            message={<div style={{ textAlign: 'center', width: 400 }}>{this.state.message}</div>} />
+                    </Snackbar>
+                </Box>
+            </Box>
         );
     }
 }
