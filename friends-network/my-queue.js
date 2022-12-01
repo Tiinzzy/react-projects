@@ -1,31 +1,33 @@
 module.exports = class MyQueue {
-    constructor() {
+    constructor(maxSize) {
+        this.maxSize = maxSize || 1000;
         this.items = [];
-        this.front = 0;
-        this.rear = 0;
     }
 
-    enqueue(item) {
-        this.items[this.rear] = item;
-        this.rear += 1;
+    push(obj) {
+        if (this.items.length < this.maxSize) {
+            this.items.push(obj);
+            return obj;
+        } else {
+            return null;
+        }
     }
 
-    dequeue() {
-        const item = this.items[this.front];
-        delete this.items[this.front];
-        this.front += 1;
-        return item;
+    shift() {
+        this.items.shift();
     }
 
-    peek() {
-        return this.items[this.front];
+    unshift(obj) {
+        if (this.items.length < this.maxSize) {
+            this.items.unshift(obj);
+            return obj;
+        } else {
+            return null;
+        }
     }
 
     size() {
-        return this.rear - this.front;
+        return this.items.length;
     }
 
-    isEmpty() {
-        return this.rear === 0;
-    }
 }
