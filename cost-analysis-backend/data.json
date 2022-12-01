@@ -7,11 +7,11 @@
         "CATEGORY": "None"
     },
     "1001": {
+        "id": "1001",
         "DATE": "2022-09-30",
         "DESC": "PHARMAPRIX #0022 MONTREAL QC",
         "AMOUNT": "22.52",
-        "id": "1001",
-        "CATEGORY": "None"
+        "CATEGORY": "Houseware"
     },
     "1002": {
         "DATE": "2022-09-30",
