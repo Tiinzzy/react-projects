@@ -1,6 +1,8 @@
 /*Header---------------------------------------------------------*/
 .HeaderBox {
-    padding: 15px;
+    padding-left: 12px;
+    padding-top: 15px;
+    padding-bottom: 15px;
     display: flex;
     flex-direction: row;
     justify-content: left;
@@ -93,6 +95,27 @@
     align-content: center;
     margin: 15px;
 }
+
+/*DisplayGrid----------------------------------------------------*/
+.GridMainBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: left;
+    align-content: left;
+}
+
+.ToggleBox {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+}
+
+.GridTextBox {
+    display: flex;
+    flex-direction: row;
+}
+
 /*GridDialogContent----------------------------------------------*/
 .GridDialogContentBox {
     display: flex;
@@ -114,4 +137,3 @@
     margin-top: 10px;
     margin-bottom: 20px;
 }
-
