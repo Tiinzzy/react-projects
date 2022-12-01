@@ -26,10 +26,10 @@
     justify-content: center;
     text-align: center;
     font-size: 10px;
-    border-top: solid 1px rgb(208, 205, 205);
+    border-top: solid 1px #a694e8;
     padding-top: 5px;
     margin: 10px 300px 10px 300px;
-    color: #999;
+    color: rgb(187, 187, 187);
 }
 
 /*Home-----------------------------------------------------------*/
