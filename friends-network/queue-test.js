@@ -2,32 +2,17 @@ const MyQueue = require('./my-queue');
 
 var queue = new MyQueue();
 
-queue.push(1);
-queue.push(2);
-queue.push(3);
-queue.push(4);
-queue.push(5);
+queue.add(100);
+queue.add(2);
+queue.add(3);
+queue.add(4);
+queue.add(5);
 
 console.log(queue.size());
 console.log(queue);
 
 console.log('-----------')
 
-queue.shift();
+let a = queue.remove();
+console.log(a);
 console.log(queue);
-
-console.log('-----------')
-
-queue.shift();
-console.log(queue);
-
-console.log('-----------')
-
-queue.shift();
-console.log(queue);
-
-// console.log('-----------')
-
-// queue.unshift(1);
-// console.log(queue);
-
