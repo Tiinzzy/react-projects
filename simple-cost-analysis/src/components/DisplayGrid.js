@@ -14,11 +14,9 @@ import GridDialogContent from "./GridDialogContent";
 import { getData, getColumns, getGridHeight, getGridWidth } from './functions';
 
 var _displatGrid = null;
-var _rowData = null;
 
 export function setNewData(data) {
     _displatGrid.setNewData(data);
-    _rowData.setNewData(data);
 }
 
 const HELP = [
@@ -46,7 +44,8 @@ class DisplayGrid extends React.Component {
             openSnack: false,
             height: getGridHeight(),
             width: getGridWidth(),
-            category: ''
+            category: 'All',
+            showHelp: false
         }
         this.handleClick = this.handleClick.bind(this);
         this.handleCloseDialog = this.handleCloseDialog.bind(this);
@@ -55,17 +54,16 @@ class DisplayGrid extends React.Component {
         this.handleScreenResize = this.handleScreenResize.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleToggle = this.handleToggle.bind(this);
+        this.refreshData = this.refreshData.bind(this);
+        this.updateDistribution = this.updateDistribution.bind(this);
         _displatGrid = this;
     }
 
     async componentDidMount() {
         let data = await getData();
-        let columns = getColumns(data[0]);
-        this.setState({ rows: data, columns: columns });
-
+        this.refreshData(data);
         window.addEventListener("resize", this.handleScreenResize);
     }
-
 
     handleClick(e) {
         this.setState({ dialogOpen: true, clickedRow: e.row });
@@ -80,7 +78,9 @@ class DisplayGrid extends React.Component {
             for (let i in rows) {
                 if (rows[i].id === row.id) {
                     rows[i].CATEGORY = row.CATEGORY;
-                    this.setState({ rows });
+                    this.setState({ rows }, function () {
+                        this.updateDistribution();
+                    });
                     break;
                 }
             }
@@ -94,8 +94,27 @@ class DisplayGrid extends React.Component {
     }
 
     setNewData(data) {
-        console.log(data);
-        this.setState({ rows: Object.values(data) });
+        this.setState({ rows: null, showHelp: true }, function () {
+            this.refreshData(Object.values(data), function () {
+                this.updateDistribution();
+            });
+        });
+    }
+
+    refreshData(data) {
+        let columns = getColumns(data[0]);
+        this.setState({ rows: data, columns: columns, showHelp: (columns.length === 0) }, function () {
+            this.updateDistribution();
+        });
+    }
+
+    updateDistribution() {
+        let distribution = {};
+        CATEGORIES.forEach(c => {
+            distribution[c] = this.state.rows.filter(d => d.CATEGORY === c).length
+        });
+        distribution.All = this.state.rows.length;
+        this.setState({ distribution });
     }
 
     handleScreenResize() {
@@ -104,10 +123,9 @@ class DisplayGrid extends React.Component {
 
     async handleChange(e) {
         let data = await getData();
+        let rows = [];
 
         this.setState({ category: e.target.value });
-
-        let rows = [];
 
         if (this.state.category === 'All') {
             this.setState({ rows: data });
@@ -119,13 +137,12 @@ class DisplayGrid extends React.Component {
 
     handleToggle(e) {
         this.setState({ category: e.target.value });
-        console.log('clicked');
     }
 
     render() {
         return (
             <Box className="GridMainBox">
-                <Box className="ToggleBox">
+                {this.state.rows && !this.state.showHelp && <Box className="ToggleBox" w={1}>
                     <ToggleButtonGroup
                         size="small"
                         color="primary"
@@ -134,9 +151,9 @@ class DisplayGrid extends React.Component {
                         onChange={(e) => this.handleChange(e)}>
                         {CATEGORIES.map((e, i) => (<ToggleButton onClick={(e) => this.handleToggle(e)} style={{ fontSize: 8, padding: 4 }} key={i} value={e}>{e}</ToggleButton>))}
                     </ToggleButtonGroup>
-                </Box>
+                </Box>}
                 <Box className="GridTextBox">
-                    {this.state.rows && this.state.rows.length > 0 &&
+                    {this.state.rows && !this.state.showHelp &&
                         <DataGrid
                             style={{ height: this.state.height, width: this.state.width }}
                             hideFooterPagination={true}
@@ -144,8 +161,8 @@ class DisplayGrid extends React.Component {
                             rows={this.state.rows}
                             columns={this.state.columns}
                             onCellDoubleClick={(e) => this.handleClick(e)} />}
-                    {this.state.rows && this.state.rows.length === 0 &&
-                        <Box>
+                    {this.state.showHelp &&
+                        <Box pb={10}>
                             <ol>
                                 {HELP.map((e, i) => (
                                     <li key={i}>{e}</li>
@@ -171,4 +188,8 @@ class DisplayGrid extends React.Component {
         );
     }
 }
+
 export default DisplayGrid;
+
+// https://www.npmjs.com/package/react-micro-bar-chart
+// http://kyleamathews.github.io/react-micro-bar-chart/
