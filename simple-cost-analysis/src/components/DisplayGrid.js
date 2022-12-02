@@ -6,6 +6,8 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 import GridDialogContent from "./GridDialogContent";
 
@@ -28,6 +30,8 @@ const HELP = [
     "AFter saving the file new data will be available and you can see them in Show Data"
 ];
 
+const CATEGORIES = ['All', 'None', 'Commute', 'Entertainment', 'Groceries', 'Houseware', 'Outfits', 'Utilities', 'Misc'];
+
 class DisplayGrid extends React.Component {
 
     constructor(props) {
@@ -39,24 +43,27 @@ class DisplayGrid extends React.Component {
             message: null,
             openSnack: false,
             height: getGridHeight(),
-            width: getGridWidth()
+            width: getGridWidth(),
+            category: 'All',
+            showHelp: false
         }
         this.handleClick = this.handleClick.bind(this);
         this.handleCloseDialog = this.handleCloseDialog.bind(this);
         this.handleCloseSnack = this.handleCloseSnack.bind(this);
         this.setNewData = this.setNewData.bind(this);
-        _displatGrid = this;
         this.handleScreenResize = this.handleScreenResize.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleToggle = this.handleToggle.bind(this);
+        this.refreshData = this.refreshData.bind(this);
+        this.updateDistribution = this.updateDistribution.bind(this);
+        _displatGrid = this;
     }
 
     async componentDidMount() {
         let data = await getData();
-        let columns = getColumns(data[0]);
-        this.setState({ rows: data, columns: columns });
-
+        this.refreshData(data);
         window.addEventListener("resize", this.handleScreenResize);
     }
-
 
     handleClick(e) {
         this.setState({ dialogOpen: true, clickedRow: e.row });
@@ -71,7 +78,9 @@ class DisplayGrid extends React.Component {
             for (let i in rows) {
                 if (rows[i].id === row.id) {
                     rows[i].CATEGORY = row.CATEGORY;
-                    this.setState({ rows });
+                    this.setState({ rows }, function () {
+                        this.updateDistribution();
+                    });
                     break;
                 }
             }
@@ -85,51 +94,102 @@ class DisplayGrid extends React.Component {
     }
 
     setNewData(data) {
-        console.log(data);
-        this.setState({ rows: Object.values(data) });
+        this.setState({ rows: null, showHelp: true }, function () {
+            this.refreshData(Object.values(data), function () {
+                this.updateDistribution();
+            });
+        });
+    }
+
+    refreshData(data) {
+        let columns = getColumns(data[0]);
+        this.setState({ rows: data, columns: columns, showHelp: (columns.length === 0) }, function () {
+            this.updateDistribution();
+        });
+    }
+
+    updateDistribution() {
+        let distribution = {};
+        CATEGORIES.forEach(c => {
+            distribution[c] = this.state.rows.filter(d => d.CATEGORY === c).length
+        });
+        distribution.All = this.state.rows.length;
+        this.setState({ distribution });
     }
 
     handleScreenResize() {
         this.setState({ height: getGridHeight(), width: getGridWidth() });
     }
 
+    async handleChange(e) {
+        let data = await getData();
+        let rows = [];
+
+        this.setState({ category: e.target.value });
+
+        if (this.state.category === 'All') {
+            this.setState({ rows: data });
+        } else {
+            rows = data.filter((e) => (e.CATEGORY === this.state.category));
+            this.setState({ rows: rows });
+        }
+    }
+
+    handleToggle(e) {
+        this.setState({ category: e.target.value });
+    }
+
     render() {
         return (
-            <>
-                {this.state.rows && this.state.rows.length > 0 &&
+            <Box className="GridMainBox">
+                {this.state.rows && !this.state.showHelp && <Box className="ToggleBox" w={1}>
+                    <ToggleButtonGroup
+                        size="small"
+                        color="primary"
+                        value={this.state.category}
+                        exclusive
+                        onChange={(e) => this.handleChange(e)}>
+                        {CATEGORIES.map((e, i) => (<ToggleButton onClick={(e) => this.handleToggle(e)} style={{ fontSize: 8, padding: 4 }} key={i} value={e}>{e}</ToggleButton>))}
+                    </ToggleButtonGroup>
+                </Box>}
+                <Box className="GridTextBox">
+                    {this.state.rows && !this.state.showHelp &&
                         <DataGrid
                             style={{ height: this.state.height, width: this.state.width }}
                             hideFooterPagination={true}
                             hideFooter={true}
                             rows={this.state.rows}
                             columns={this.state.columns}
-                            onCellDoubleClick={(e) => this.handleClick(e)}
-                        />
-                    }
-                {this.state.rows && this.state.rows.length === 0 &&
-                    <Box>
-                        <ol>
-                            {HELP.map((e, i) => (
-                                <li key={i}>{e}</li>
-                            ))}
-                        </ol>
-                    </Box>}
+                            onCellDoubleClick={(e) => this.handleClick(e)} />}
+                    {this.state.showHelp &&
+                        <Box pb={10}>
+                            <ol>
+                                {HELP.map((e, i) => (
+                                    <li key={i}>{e}</li>
+                                ))}
+                            </ol>
+                        </Box>}
 
-                {this.state.dialogOpen && <Dialog onClose={() => this.handleCloseDialog(false)} open={this.state.dialogOpen} maxWidth='sm' fullWidth={true}>
-                    <DialogTitle>Details</DialogTitle>
-                    <GridDialogContent clickedRow={this.state.clickedRow} close={this.handleCloseDialog} />
-                </Dialog>}
+                    {this.state.dialogOpen && <Dialog onClose={() => this.handleCloseDialog(false)} open={this.state.dialogOpen} maxWidth='sm' fullWidth={true}>
+                        <DialogTitle>Details</DialogTitle>
+                        <GridDialogContent clickedRow={this.state.clickedRow} close={this.handleCloseDialog} />
+                    </Dialog>}
 
-                <Snackbar
-                    anchorOrigin={{ vertical: 'top', horizontal: 'center', }}
-                    open={this.state.openSnack}
-                    autoHideDuration={2000}
-                    onClose={this.handleCloseSnack}>
-                    <SnackbarContent style={{ backgroundColor: '#63A355', color: 'white', fontWeight: 'bold' }}
-                        message={<div style={{ textAlign: 'center', width: 400 }}>{this.state.message}</div>} />
-                </Snackbar>
-            </>
+                    <Snackbar
+                        anchorOrigin={{ vertical: 'top', horizontal: 'center', }}
+                        open={this.state.openSnack}
+                        autoHideDuration={2000}
+                        onClose={this.handleCloseSnack}>
+                        <SnackbarContent style={{ backgroundColor: '#63A355', color: 'white', fontWeight: 'bold' }}
+                            message={<div style={{ textAlign: 'center', width: 400 }}>{this.state.message}</div>} />
+                    </Snackbar>
+                </Box>
+            </Box>
         );
     }
 }
+
 export default DisplayGrid;
+
+// https://www.npmjs.com/package/react-micro-bar-chart
+// http://kyleamathews.github.io/react-micro-bar-chart/

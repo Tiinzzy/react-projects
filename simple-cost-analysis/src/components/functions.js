@@ -82,7 +82,7 @@ export async function editData(query) {
 }
 
 export function getGridHeight() {
-    let height = window.innerHeight - 150;
+    let height = window.innerHeight - 250;
     if (height < 100) {
         height = 100;
     }

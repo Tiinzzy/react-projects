@@ -35,9 +35,13 @@ class Save extends React.Component {
     }
 
     async save(e) {
-        await saveCsv(this.state.jCsv);
-        this.state.handleCloseDialog();
-        this.state.callback(true);
+        if (this.state.rows.length < 100) {
+            await saveCsv(this.state.jCsv);
+            this.state.handleCloseDialog();
+            this.state.callback(true);
+        } else {
+            alert('Your file is too big!' + '\n' + 'PLease choose a file with less than 100 rows.')
+        }
         setNewData(this.state.jCsv);
     }
 
@@ -63,7 +67,7 @@ class Save extends React.Component {
                 </Box>
 
                 <Box variant="body1" style={{ marginLeft: 30, marginTop: 20, marginBottom: 20 }}>
-                    <span style={{ fontWeight: 'bold', marginRight:2 }}> * Number of rows in the following data:</span>  {this.state.rows.length}
+                    <span style={{ fontWeight: 'bold', marginRight: 2 }}> * Number of rows in the following data:</span>  {this.state.rows.length}
                     <br />
                     <span style={{ fontWeight: 'bold' }}> * Saving the new file will remove any pre existing data.</span>
                 </Box>

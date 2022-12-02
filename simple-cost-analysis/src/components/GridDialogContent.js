@@ -12,6 +12,8 @@ import { editData } from "./functions";
 
 import './design.css';
 
+const CATEGORIES = ['None', 'Commute', 'Entertainment', 'Groceries', 'Houseware', 'Outfits', 'Utilities', 'Misc'];
+
 class GridDialogContent extends React.Component {
 
     constructor(props) {
@@ -71,16 +73,7 @@ class GridDialogContent extends React.Component {
                             id="demo-simple-select"
                             value={this.state.CATEGORY}
                             onChange={(e) => this.handleChangeCategory(e)}>
-                            <MenuItem value={'None'}>Not selected yet!</MenuItem>
-                            <Divider />
-                            <MenuItem value={'Commute'}>Commute</MenuItem>
-                            <MenuItem value={'Entertainment'}>Entertainment</MenuItem>
-                            <MenuItem value={'Groceries'}>Groceries</MenuItem>
-                            <MenuItem value={'Houseware'}>Houseware</MenuItem>
-                            <MenuItem value={'Outfits'}>Outfits</MenuItem>
-                            <MenuItem value={'Utilities'}>Utilities</MenuItem>
-                            <Divider />
-                            <MenuItem value={'Misc'}>Misc</MenuItem>
+                            {CATEGORIES.map((e, i) => (<MenuItem key={i} value={e}>{e}</MenuItem>))}
                         </Select>
                     </Box>
 
