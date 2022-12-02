@@ -39,8 +39,6 @@ class Save extends React.Component {
             await saveCsv(this.state.jCsv);
             this.state.handleCloseDialog();
             this.state.callback(true);
-        } else {
-            alert('Your file is too big!' + '\n' + 'PLease choose a file with less than 100 rows.')
         }
         setNewData(this.state.jCsv);
     }
@@ -53,7 +51,8 @@ class Save extends React.Component {
     render() {
         return (
             <>
-                <DialogTitle>Would you like to save the following data?</DialogTitle>
+            {this.state.rows.length > 100 ? <DialogTitle color="red">Can't Save The Following Data</DialogTitle>
+               : <DialogTitle>Would You Like to Save the Following Data?</DialogTitle>}
                 <Divider />
 
                 <Box className="SaveBoxGrid">
@@ -66,16 +65,20 @@ class Save extends React.Component {
                     />
                 </Box>
 
-                <Box variant="body1" style={{ marginLeft: 30, marginTop: 20, marginBottom: 20 }}>
-                    <span style={{ fontWeight: 'bold', marginRight: 2 }}> * Number of rows in the following data:</span>  {this.state.rows.length}
+                <Box variant="body1" className="MessagesBox">
+                    <Box className="TextMessage" color={this.state.rows.length > 100 && "red"} fontSize={this.state.rows.length > 100 && 20}> * Number of Rows in Uploaded Data: {this.state.rows.length}</Box>
                     <br />
-                    <span style={{ fontWeight: 'bold' }}> * Saving the new file will remove any pre existing data.</span>
+                    {this.state.rows.length > 100 ? <Box className="ErrorText"> * PLease Upload a File with less than 100 rows.</Box>
+                        : <Box className="TextMessage"> * Saving the New File Will Remove any Pre-existing Data.</Box>}
                 </Box>
                 <Divider />
 
                 <DialogActions style={{ marginTop: 20, marginBottom: 20, marginRight: 20 }}>
-                    <Button onClick={(e) => this.cancelAndClose(e)} variant="outlined" color="error"> Cancel </Button>
-                    <Button onClick={(e) => this.save(e)} variant="outlined" color="success">Save</Button>
+                    {this.state.rows.length > 100 ? <Button onClick={(e) => this.cancelAndClose(e)} variant="outlined" color="error" > Sorry YOur File Is Too Big, Please Select Another File </Button> :
+                        <Button onClick={(e) => this.cancelAndClose(e)} variant="outlined" color="error"> Cancel </Button>}
+
+                    {this.state.rows.length > 100 ? null :
+                        <Button onClick={(e) => this.save(e)} variant="outlined" color="success">Save</Button>}
                 </DialogActions>
             </>
         );
