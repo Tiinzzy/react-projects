@@ -96,6 +96,22 @@
     margin: 15px;
 }
 
+.MessagesBox {
+    margin-left: 25px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.TextMessage {
+    font-weight: bold;
+}
+
+.ErrorText {
+    font-weight: bold;
+    color: red;
+    font-size: 20px;
+}
+
 /*DisplayGrid----------------------------------------------------*/
 .GridMainBox {
     display: flex;
