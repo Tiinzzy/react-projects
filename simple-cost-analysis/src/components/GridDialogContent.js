@@ -12,7 +12,7 @@ import { editData } from "./functions";
 
 import './design.css';
 
-const CATEGORIES = ['None', 'Commute', 'Entertainment', 'Groceries', 'Houseware', 'Outfits', 'Utilities', 'Misc'];
+const CATEGORIES = ['None', 'Commute', 'Entertainment', 'Groceries', 'Houseware', 'Outfits', 'Utilities', 'Misc', 'Dining'];
 
 class GridDialogContent extends React.Component {
 

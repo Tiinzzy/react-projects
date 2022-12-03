@@ -33,7 +33,7 @@ export function getColumns(row) {
     var defaultColumns = [];
 
     for (var c in row) {
-        let col = { field: c, headerName: c, width: (c === 'DESC' ? 500 : 200) };
+        let col = { field: c, headerName: c, width: (c === 'DESC' ? 500 : 100) };
         if (col.field === 'AMOUNT') {
             col.type = 'number';
             col.align = 'right';
@@ -82,7 +82,7 @@ export async function editData(query) {
 }
 
 export function getGridHeight() {
-    let height = window.innerHeight - 250;
+    let height = window.innerHeight - 180;
     if (height < 100) {
         height = 100;
     }
