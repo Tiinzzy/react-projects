@@ -8,10 +8,13 @@ import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import Popover from '@mui/material/Popover';
 
 import GridDialogContent from "./GridDialogContent";
 
 import { getData, getColumns, getGridHeight, getGridWidth } from './functions';
+
+import { constants } from './constants';
 
 var _displatGrid = null;
 
@@ -19,18 +22,8 @@ export function setNewData(data) {
     _displatGrid.setNewData(data);
 }
 
-const HELP = [
-    "First go to Upload File",
-    "Select a file to uploead using the button",
-    "The file must be CSV to be read",
-    "When your file is uploaded, you will see a display of it",
-    "There is also a display of any pervious data if it existed from before",
-    "If youre satisfied with your file click on save button",
-    "Once the pop-up comes up, you will be notified that saving new file will remove any previous data",
-    "AFter saving the file new data will be available and you can see them in Show Data"
-];
 
-const CATEGORIES = ['All', 'None', 'Commute', 'Entertainment', 'Groceries', 'Houseware', 'Outfits', 'Utilities', 'Misc', 'Dining'];
+const MAX_BAR_WIDTH = 300;
 
 class DisplayGrid extends React.Component {
 
@@ -45,7 +38,9 @@ class DisplayGrid extends React.Component {
             height: getGridHeight(),
             width: getGridWidth(),
             category: 'All',
-            showHelp: false
+            showHelp: false,
+            openPopover: false,
+            popoverAnchorEl: null
         }
         this.handleClick = this.handleClick.bind(this);
         this.handleCloseDialog = this.handleCloseDialog.bind(this);
@@ -56,6 +51,7 @@ class DisplayGrid extends React.Component {
         this.handleToggle = this.handleToggle.bind(this);
         this.refreshData = this.refreshData.bind(this);
         this.updateDistribution = this.updateDistribution.bind(this);
+        this.handleClosePopover = this.handleClosePopover.bind(this);
         _displatGrid = this;
     }
 
@@ -70,7 +66,6 @@ class DisplayGrid extends React.Component {
     }
 
     handleCloseDialog(isUpdated, row) {
-        console.log(row.CATEGORY);
         let openSnack = isUpdated;
         let message = isUpdated ? ('Category Successfully Changed to "' + row.CATEGORY) + '"' : null;
 
@@ -111,11 +106,13 @@ class DisplayGrid extends React.Component {
 
     updateDistribution() {
         let distribution = {};
-        CATEGORIES.forEach(c => {
+        constants.categories.forEach(c => {
             distribution[c] = this.state.rows.filter(d => d.CATEGORY === c).length
         });
         distribution.All = this.state.rows.length;
-        this.setState({ distribution });
+        this.setState({ distribution: null }, function () {
+            this.setState({ distribution });
+        });
     }
 
     handleScreenResize() {
@@ -140,13 +137,17 @@ class DisplayGrid extends React.Component {
         this.setState({ category: e.target.value });
     }
 
+    handleClosePopover() {
+        this.setState({ openPopover: false, popoverAnchorEl: null })
+    }
+
     render() {
         return (
             <Box className="GridMainBox">
                 {this.state.distribution && this.state.rows && !this.state.showHelp && <Box tyle={{ display: 'flex', flexDirection: 'column' }}>
                     <Box className="ToggleBox" >
 
-                        {CATEGORIES.map((e, i) =>
+                        {constants.categories.map((e, i) =>
                             <ToggleButtonGroup
                                 key={i}
                                 size="small"
@@ -154,7 +155,11 @@ class DisplayGrid extends React.Component {
                                 value={this.state.category}
                                 exclusive
                                 onChange={(e) => this.handleChange(e)}>
-                                <ToggleButton onClick={(e) => this.handleToggle(e)} style={{ fontSize: 8, padding: 6, marginRight: 5 }} key={i} value={e}>
+                                <ToggleButton
+                                    onMouseEnter={(e) => this.setState({ openPopover: true, popoverAnchorEl: e.target })}
+                                    onMouseLeave={(e) => this.handleClosePopover()}
+                                    onClick={(e) => this.handleToggle(e)}
+                                    style={{ fontSize: 8, padding: 6, marginRight: 5 }} key={i} value={e}>
                                     {e + ' (' + this.state.distribution[e] + ')'}
                                 </ToggleButton>
                             </ToggleButtonGroup>)}
@@ -172,7 +177,7 @@ class DisplayGrid extends React.Component {
                     {this.state.showHelp &&
                         <Box pb={10}>
                             <ol>
-                                {HELP.map((e, i) => (
+                                {constants.help.map((e, i) => (
                                     <li key={i}>{e}</li>
                                 ))}
                             </ol>
@@ -192,7 +197,35 @@ class DisplayGrid extends React.Component {
                             message={<div style={{ textAlign: 'center', width: 400 }}>{this.state.message}</div>} />
                     </Snackbar>
                 </Box>
-            </Box>
+
+
+                <Popover
+                    sx={{ pointerEvents: 'none', }}
+                    open={this.state.openPopover}
+                    anchorEl={this.state.popoverAnchorEl}
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                    }}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                    }}
+                    onClose={this.handleClosePopover}
+                    disableRestoreFocus>
+                    {this.state.popoverAnchorEl && <Box sx={{ p: 2 }}>
+                        {constants.categories.filter(e => e !== 'All').map((e, i) =>
+                            <div key={i} style={{ fontSize: '70%', borderBottom: 'solid 1px #eaeaea', marginBottom: 10 }}>
+                                {e} - {this.state.distribution[e]}
+                                <div style={{
+                                    width: ((this.state.distribution[e] * 1) / (this.state.rows.length) * MAX_BAR_WIDTH),
+                                    border: 'solid 2px ' + (e === this.state.popoverAnchorEl.value ? 'darkred' : 'steelblue')
+                                }}></div>
+                            </div>)}
+                    </Box>}
+                </Popover>
+
+            </Box >
         );
     }
 }
