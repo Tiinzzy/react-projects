@@ -12,12 +12,6 @@ import { useFilePicker } from 'use-file-picker';
 
 const csv = require('csvtojson');
 
-const headerStyle = {
-    cursor: 'pointer',
-    color: '#1c4966',
-    TextDecoder: 'none'
-}
-
 export default function FilePicker(props) {
     const [jCsv, setJCsv] = useState(null);
     const [openSnack, setOpenSnack] = useState(false);
