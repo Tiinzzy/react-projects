@@ -51,32 +51,37 @@ class Save extends React.Component {
     render() {
         return (
             <>
-            {this.state.rows.length > 100 ? <DialogTitle color="red">Can't Save The Following Data</DialogTitle>
-               : <DialogTitle>Would You Like to Save the Following Data?</DialogTitle>}
+                {this.state.rows.length > 100 ? <DialogTitle>Can't Save The Following Data</DialogTitle>
+                    : <DialogTitle>Would You Like to Save the Following Data?</DialogTitle>}
                 <Divider />
 
+
                 <Box className="SaveBoxGrid">
-                    <DataGrid
-                        style={{ height: 400, width: 1000 }}
-                        hideFooterPagination={true}
-                        hideFooter={true}
-                        rows={this.state.rows}
-                        columns={this.state.columns}
-                    />
+                    {this.state.rows.length > 100 ?
+                        <Box>
+                            The number of rows that you have uploaded are <span style={{ color: "red" }}> {this.state.rows.length} </span>.
+                            <br />
+                            PLease upload a file with less than 100 rows to be able to save it.
+                        </Box> :
+                        <DataGrid
+                            style={{ height: 400, width: 900 }}
+                            hideFooterPagination={true}
+                            hideFooter={true}
+                            rows={this.state.rows}
+                            columns={this.state.columns} />
+                    }
                 </Box>
 
-                <Box variant="body1" className="MessagesBox">
-                    <Box className="TextMessage" color={this.state.rows.length > 100 && "red"} fontSize={this.state.rows.length > 100 && 20}> * Number of Rows in Uploaded Data: {this.state.rows.length}</Box>
-                    <br />
-                    {this.state.rows.length > 100 ? <Box className="ErrorText"> * PLease Upload a File with less than 100 rows.</Box>
-                        : <Box className="TextMessage"> * Saving the New File Will Remove any Pre-existing Data.</Box>}
-                </Box>
+                {this.state.rows.length > 100 ? null :
+                    <Box variant="body1" className="MessagesBox">
+                        <Box className="TextMessage"> * Number of Rows in Uploaded Data: {this.state.rows.length}</Box>
+                        <br />
+                        <Box className="TextMessage"> * Saving the New File Will Remove any Pre-existing Data.</Box>
+                    </Box>}
                 <Divider />
 
                 <DialogActions style={{ marginTop: 20, marginBottom: 20, marginRight: 20 }}>
-                    {this.state.rows.length > 100 ? <Button onClick={(e) => this.cancelAndClose(e)} variant="outlined" color="error" > Sorry YOur File Is Too Big, Please Select Another File </Button> :
-                        <Button onClick={(e) => this.cancelAndClose(e)} variant="outlined" color="error"> Cancel </Button>}
-
+                    <Button onClick={(e) => this.cancelAndClose(e)} variant="outlined" color="error"> Cancel </Button>
                     {this.state.rows.length > 100 ? null :
                         <Button onClick={(e) => this.save(e)} variant="outlined" color="success">Save</Button>}
                 </DialogActions>
