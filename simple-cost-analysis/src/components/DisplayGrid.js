@@ -30,7 +30,7 @@ const HELP = [
     "AFter saving the file new data will be available and you can see them in Show Data"
 ];
 
-const CATEGORIES = ['All', 'None', 'Commute', 'Entertainment', 'Groceries', 'Houseware', 'Outfits', 'Utilities', 'Misc'];
+const CATEGORIES = ['All', 'None', 'Commute', 'Entertainment', 'Groceries', 'Houseware', 'Outfits', 'Utilities', 'Misc', 'Dining'];
 
 class DisplayGrid extends React.Component {
 
@@ -70,8 +70,9 @@ class DisplayGrid extends React.Component {
     }
 
     handleCloseDialog(isUpdated, row) {
+        console.log(row.CATEGORY);
         let openSnack = isUpdated;
-        let message = isUpdated ? 'Category Changed Successfully' : null;
+        let message = isUpdated ? ('Category Successfully Changed to "' + row.CATEGORY) + '"' : null;
 
         if (isUpdated) {
             let rows = this.state.rows;
@@ -142,15 +143,22 @@ class DisplayGrid extends React.Component {
     render() {
         return (
             <Box className="GridMainBox">
-                {this.state.rows && !this.state.showHelp && <Box className="ToggleBox" w={1}>
-                    <ToggleButtonGroup
-                        size="small"
-                        color="primary"
-                        value={this.state.category}
-                        exclusive
-                        onChange={(e) => this.handleChange(e)}>
-                        {CATEGORIES.map((e, i) => (<ToggleButton onClick={(e) => this.handleToggle(e)} style={{ fontSize: 8, padding: 4 }} key={i} value={e}>{e}</ToggleButton>))}
-                    </ToggleButtonGroup>
+                {this.state.distribution && this.state.rows && !this.state.showHelp && <Box tyle={{ display: 'flex', flexDirection: 'column' }}>
+                    <Box className="ToggleBox" >
+
+                        {CATEGORIES.map((e, i) =>
+                            <ToggleButtonGroup
+                                key={i}
+                                size="small"
+                                color="primary"
+                                value={this.state.category}
+                                exclusive
+                                onChange={(e) => this.handleChange(e)}>
+                                <ToggleButton onClick={(e) => this.handleToggle(e)} style={{ fontSize: 8, padding: 6, marginRight: 5 }} key={i} value={e}>
+                                    {e + ' (' + this.state.distribution[e] + ')'}
+                                </ToggleButton>
+                            </ToggleButtonGroup>)}
+                    </Box>
                 </Box>}
                 <Box className="GridTextBox">
                     {this.state.rows && !this.state.showHelp &&
@@ -190,6 +198,3 @@ class DisplayGrid extends React.Component {
 }
 
 export default DisplayGrid;
-
-// https://www.npmjs.com/package/react-micro-bar-chart
-// http://kyleamathews.github.io/react-micro-bar-chart/
