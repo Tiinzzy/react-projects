@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import DialogTitle from "@mui/material/DialogTitle";
 import Divider from "@mui/material/Divider";
 import DialogActions from "@mui/material/DialogActions";
+import Typography from "@mui/material/Typography";
 
 import { saveCsv, getColumns } from './functions';
 
@@ -51,17 +52,18 @@ class Save extends React.Component {
     render() {
         return (
             <>
-                {this.state.rows.length > 100 ? <DialogTitle>Can't Save The Following Data</DialogTitle>
+                {this.state.rows.length > 100 ? <DialogTitle>Can't Save the selected CSV file!</DialogTitle>
                     : <DialogTitle>Would You Like to Save the Following Data?</DialogTitle>}
                 <Divider />
 
-
                 <Box className="SaveBoxGrid">
                     {this.state.rows.length > 100 ?
-                        <Box>
-                            The number of rows that you have uploaded are <span style={{ color: "red" }}> {this.state.rows.length} </span>.
-                            <br />
-                            PLease upload a file with less than 100 rows to be able to save it.
+                        <Box p={2}>
+                            <Typography variant="body1" component="div" style={{lineHeight: '160%'}}>
+                                Number of rows of the file  you have uploaded is <span style={{ color: "red" }}> {this.state.rows.length}</span>.
+                                <br/>
+                                PLease upload a file with less than 100 rows to be able to save it.
+                            </Typography>
                         </Box> :
                         <DataGrid
                             style={{ height: 400, width: 900 }}
