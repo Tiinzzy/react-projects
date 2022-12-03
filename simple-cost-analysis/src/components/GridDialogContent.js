@@ -9,10 +9,9 @@ import Divider from "@mui/material/Divider";
 import DialogActions from "@mui/material/DialogActions";
 
 import { editData } from "./functions";
+import { constants } from './constants';
 
 import './design.css';
-
-const CATEGORIES = ['None', 'Commute', 'Entertainment', 'Groceries', 'Houseware', 'Outfits', 'Utilities', 'Misc', 'Dining'];
 
 class GridDialogContent extends React.Component {
 
@@ -73,7 +72,7 @@ class GridDialogContent extends React.Component {
                             id="demo-simple-select"
                             value={this.state.CATEGORY}
                             onChange={(e) => this.handleChangeCategory(e)}>
-                            {CATEGORIES.map((e, i) => (<MenuItem key={i} value={e}>{e}</MenuItem>))}
+                            {constants.categories.map((e, i) => (<MenuItem key={i} value={e}>{e}</MenuItem>))}
                         </Select>
                     </Box>
 
