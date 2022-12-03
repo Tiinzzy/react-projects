@@ -77,7 +77,7 @@ export default function FilePicker(props) {
             {filesContent.map((file, i) => (
                 <Box key={i} className='FilePickerFileName2 '>{processContent(file.content, i)}</Box>))}
 
-            {dialogOpen && <Dialog onClose={() => handleCloseDialog()} open={dialogOpen} maxWidth="lg" fullWidth={true}>
+            {dialogOpen && <Dialog onClose={() => handleCloseDialog()} open={dialogOpen} maxWidth="xl" >
                 <Save jCsv={jCsv} handleCloseDialog={handleCloseDialog} callback={saveCallBack} />
             </Dialog>}
 
