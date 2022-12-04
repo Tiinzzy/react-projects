@@ -99,7 +99,7 @@ class DisplayGrid extends React.Component {
 
     refreshData(data) {
         let columns = getColumns(data[0]);
-        this.setState({ rows: data, columns: columns, showHelp: (columns.length === 0) }, function () {
+        this.setState({ rows: data, rowsCount: data.length, columns: columns, showHelp: (columns.length === 0) }, function () {
             this.updateDistribution();
         });
     }
@@ -218,7 +218,7 @@ class DisplayGrid extends React.Component {
                             <div key={i} style={{ fontSize: '70%', borderBottom: 'solid 1px #eaeaea', marginBottom: 10 }}>
                                 {e} - {this.state.distribution[e]}
                                 <div style={{
-                                    width: ((this.state.distribution[e] * 1) / (this.state.rows.length) * MAX_BAR_WIDTH),
+                                    width: ((this.state.distribution[e] * 1) / (this.state.rowsCount) * MAX_BAR_WIDTH),
                                     border: 'solid 2px ' + (e === this.state.popoverAnchorEl.value ? 'darkred' : 'steelblue')
                                 }}></div>
                             </div>)}
