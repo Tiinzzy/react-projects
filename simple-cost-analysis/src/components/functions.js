@@ -96,3 +96,20 @@ export function getGridWidth() {
     }
     return width;
 }
+
+export function stringWordsEqual(s1, s2, wordCount = 2) {
+    let cleanS1 = s1.toLowerCase().split(' ').filter(e => e !== '');
+    let cleanS2 = s2.toLowerCase().split(' ').filter(e => e !== '');
+
+    if (cleanS1.length < wordCount ||  cleanS2.length < wordCount) {
+        return false;
+    }
+
+    for (let i = 0; i < wordCount; i++) {
+        if (cleanS1[i] !== cleanS2[i]) {
+            return false;
+        }
+    }
+  
+    return true;
+}

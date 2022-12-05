@@ -13,7 +13,6 @@ import Popover from '@mui/material/Popover';
 import GridDialogContent from "./GridDialogContent";
 
 import { getData, getColumns, getGridHeight, getGridWidth } from './functions';
-
 import { constants } from './constants';
 
 var _displatGrid = null;
@@ -22,8 +21,7 @@ export function setNewData(data) {
     _displatGrid.setNewData(data);
 }
 
-
-const MAX_BAR_WIDTH = 300;
+const MAX_BAR_WIDTH = 800;
 
 class DisplayGrid extends React.Component {
 
@@ -99,16 +97,26 @@ class DisplayGrid extends React.Component {
 
     refreshData(data) {
         let columns = getColumns(data[0]);
-        this.setState({ rows: data, rowsCount: data.length, columns: columns, showHelp: (columns.length === 0) }, function () {
+        this.setState({
+            rows: data,
+            rowsCount: data.length,
+            rowsSum: data.map(e => e.AMOUNT * 1).reduce((a, b) => a + b, 0),
+            columns: columns,
+            showHelp: (columns.length === 0)
+        }, function () {
             this.updateDistribution();
         });
     }
 
     updateDistribution() {
         let distribution = {};
+
         constants.categories.forEach(c => {
-            distribution[c] = this.state.rows.filter(d => d.CATEGORY === c).length
+            let count = this.state.rows.filter(d => d.CATEGORY === c).length;
+            let sum = this.state.rows.filter(d => d.CATEGORY === c).map(e => e.AMOUNT * 1).reduce((a, b) => a + b, 0)
+            distribution[c] = { sum, count };
         });
+
         distribution.All = this.state.rows.length;
         this.setState({ distribution: null }, function () {
             this.setState({ distribution });
@@ -160,7 +168,7 @@ class DisplayGrid extends React.Component {
                                     onMouseLeave={(e) => this.handleClosePopover()}
                                     onClick={(e) => this.handleToggle(e)}
                                     style={{ fontSize: 8, padding: 6, marginRight: 5 }} key={i} value={e}>
-                                    {e + ' (' + this.state.distribution[e] + ')'}
+                                    {e + ' (' + this.state.distribution[e].count + ')'}
                                 </ToggleButton>
                             </ToggleButtonGroup>)}
                     </Box>
@@ -185,7 +193,7 @@ class DisplayGrid extends React.Component {
 
                     {this.state.dialogOpen && <Dialog onClose={() => this.handleCloseDialog(false)} open={this.state.dialogOpen} maxWidth='sm' fullWidth={true}>
                         <DialogTitle>Details</DialogTitle>
-                        <GridDialogContent clickedRow={this.state.clickedRow} close={this.handleCloseDialog} />
+                        <GridDialogContent clickedRow={this.state.clickedRow} close={this.handleCloseDialog} rows={this.state.rows} />
                     </Dialog>}
 
                     <Snackbar
@@ -197,31 +205,27 @@ class DisplayGrid extends React.Component {
                             message={<div style={{ textAlign: 'center', width: 400 }}>{this.state.message}</div>} />
                     </Snackbar>
                 </Box>
-
-
                 <Popover
                     sx={{ pointerEvents: 'none', }}
                     open={this.state.openPopover}
                     anchorEl={this.state.popoverAnchorEl}
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left',
-                    }}
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'left',
-                    }}
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                    transformOrigin={{ vertical: 'top', horizontal: 'left' }}
                     onClose={this.handleClosePopover}
                     disableRestoreFocus>
-                    {this.state.popoverAnchorEl && <Box sx={{ p: 2 }}>
+                    {this.state.popoverAnchorEl && <Box className="PopoverBox">
                         {constants.categories.filter(e => e !== 'All').map((e, i) =>
-                            <div key={i} style={{ fontSize: '70%', borderBottom: 'solid 1px #eaeaea', marginBottom: 10 }}>
-                                {e} - {this.state.distribution[e]}
-                                <div style={{
-                                    width: ((this.state.distribution[e] * 1) / (this.state.rowsCount) * MAX_BAR_WIDTH),
+                            <Box key={i} className="PopoverData">
+                                <Box display='flex'>
+                                    <Box> {e} </Box>
+                                    <Box flexGrow={1} />
+                                    <Box>{'$ ' +this.state.distribution[e].sum.toFixed(2)} </Box>
+                                </Box>
+                                <Box style={{
+                                    width: ((this.state.distribution[e].sum * 1) / (this.state.rowsSum) * MAX_BAR_WIDTH),
                                     border: 'solid 2px ' + (e === this.state.popoverAnchorEl.value ? 'darkred' : 'steelblue')
-                                }}></div>
-                            </div>)}
+                                }}></Box>
+                            </Box>)}
                     </Box>}
                 </Popover>
 

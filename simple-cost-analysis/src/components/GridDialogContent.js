@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import Divider from "@mui/material/Divider";
 import DialogActions from "@mui/material/DialogActions";
 
-import { editData } from "./functions";
+import { editData, stringWordsEqual } from "./functions";
 import { constants } from './constants';
 
 import './design.css';
@@ -20,11 +20,20 @@ class GridDialogContent extends React.Component {
         this.state = {
             clickedRow: props.clickedRow,
             CATEGORY: props.clickedRow.CATEGORY,
-            close: props.close
+            close: props.close,
+            rows: props.rows
         }
         this.handleChangeCategory = this.handleChangeCategory.bind(this);
         this.cancelAndClose = this.cancelAndClose.bind(this);
         this.submitEdit = this.submitEdit.bind(this);
+    }
+
+    componentDidMount() {
+        console.log(this.state.rows.filter(e => stringWordsEqual(this.state.clickedRow.DESC, e.DESC)));
+
+        this.state.rows.filter(e => stringWordsEqual(this.state.clickedRow.DESC, e.DESC)).forEach(e => {
+            // call a function that talks to the back-end to change this event catgeory => e
+        });
     }
 
     handleChangeCategory(e) {
