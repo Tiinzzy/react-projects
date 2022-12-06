@@ -21,4 +21,7 @@ app.listen(PORT, () => {
     res.json(dataServices.editData(req));
   })
   
+  app.post("/set-category", (req, res) => {
+    res.json(dataServices.setCategory(req));
+  })
 });

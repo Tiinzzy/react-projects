@@ -64,20 +64,24 @@ class DisplayGrid extends React.Component {
     }
 
     handleCloseDialog(isUpdated, row) {
+
         let openSnack = isUpdated;
         let message = isUpdated ? ('Category Successfully Changed to "' + row.CATEGORY) + '"' : null;
 
         if (isUpdated) {
+            if (typeof row.id === 'string') {
+                row.id = [row.id];
+            }
+
             let rows = this.state.rows;
             for (let i in rows) {
-                if (rows[i].id === row.id) {
+                if (row.id.indexOf(rows[i].id) >= 0) {
                     rows[i].CATEGORY = row.CATEGORY;
-                    this.setState({ rows }, function () {
-                        this.updateDistribution();
-                    });
-                    break;
                 }
             }
+            this.setState({ rows }, function () {
+                this.updateDistribution();
+            });
         }
 
         this.setState({ dialogOpen: false, message, openSnack, clickedRow: null });
@@ -219,7 +223,7 @@ class DisplayGrid extends React.Component {
                                 <Box display='flex'>
                                     <Box> {e} </Box>
                                     <Box flexGrow={1} />
-                                    <Box>{'$ ' +this.state.distribution[e].sum.toFixed(2)} </Box>
+                                    <Box>{'$ ' + this.state.distribution[e].sum.toFixed(2)} </Box>
                                 </Box>
                                 <Box style={{
                                     width: ((this.state.distribution[e].sum * 1) / (this.state.rowsSum) * MAX_BAR_WIDTH),
