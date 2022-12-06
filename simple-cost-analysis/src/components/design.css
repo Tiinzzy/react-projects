@@ -169,3 +169,11 @@
     margin-top: 10px;
     margin-bottom: 20px;
 }
+
+.Checkbox{
+    font-size: 18px;
+    display: flex;
+    justify-content: left;
+    margin-bottom: 20px;
+    align-content: baseline;
+}
