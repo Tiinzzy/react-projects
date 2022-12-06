@@ -7,8 +7,9 @@ import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import Divider from "@mui/material/Divider";
 import DialogActions from "@mui/material/DialogActions";
+import Checkbox from '@mui/material/Checkbox';
 
-import { editData, stringWordsEqual } from "./functions";
+import { editData, stringWordsEqual, setCategory } from "./functions";
 import { constants } from './constants';
 
 import './design.css';
@@ -21,19 +22,16 @@ class GridDialogContent extends React.Component {
             clickedRow: props.clickedRow,
             CATEGORY: props.clickedRow.CATEGORY,
             close: props.close,
-            rows: props.rows
+            rows: props.rows,
+            checkBox: false
         }
         this.handleChangeCategory = this.handleChangeCategory.bind(this);
         this.cancelAndClose = this.cancelAndClose.bind(this);
         this.submitEdit = this.submitEdit.bind(this);
+        this.handleCheckBox = this.handleCheckBox.bind(this);
     }
 
     componentDidMount() {
-        console.log(this.state.rows.filter(e => stringWordsEqual(this.state.clickedRow.DESC, e.DESC)));
-
-        this.state.rows.filter(e => stringWordsEqual(this.state.clickedRow.DESC, e.DESC)).forEach(e => {
-            // call a function that talks to the back-end to change this event catgeory => e
-        });
     }
 
     handleChangeCategory(e) {
@@ -41,20 +39,30 @@ class GridDialogContent extends React.Component {
     }
 
     async submitEdit(e) {
-        let query = {
-            id: this.state.clickedRow.id,
-            DATE: this.state.clickedRow.DATE,
-            DESC: this.state.clickedRow.DESC,
-            AMOUNT: this.state.clickedRow.AMOUNT,
-            CATEGORY: this.state.CATEGORY
-        };
-
-        await editData(query);
-        this.state.close(true, query);
+        console.log(111, this.state.checkBox);
+        if (this.state.checkBox) {
+            let query = {
+                id: this.state.rows.filter(e => stringWordsEqual(this.state.clickedRow.DESC, e.DESC)).map(e => e.id),
+                CATEGORY: this.state.CATEGORY
+            };
+            await setCategory(query);
+            this.state.close(true, query);
+        } else {
+            let query = {
+                id: this.state.clickedRow.id,
+                CATEGORY: this.state.CATEGORY
+            };
+            await setCategory(query);
+            this.state.close(true, query);
+        }
     }
 
     cancelAndClose(e) {
         this.state.close(false);
+    }
+
+    handleCheckBox(e) {
+        this.setState({ checkBox: e.target.checked })
     }
 
     render() {
@@ -83,6 +91,17 @@ class GridDialogContent extends React.Component {
                             onChange={(e) => this.handleChangeCategory(e)}>
                             {constants.categories.map((e, i) => (<MenuItem key={i} value={e}>{e}</MenuItem>))}
                         </Select>
+                    </Box>
+
+                    <Box className="Checkbox">
+                        <Box display='flex'>
+                            Apply "{this.state.CATEGORY}" category for similar descriptions?
+                        </Box>
+                        <Box flexGrow={1}>
+                            <Checkbox
+                                checked={this.state.checkBox}
+                                onChange={(e) => this.handleCheckBox(e)} />
+                        </Box>
                     </Box>
 
                     <Divider />
