@@ -67,20 +67,6 @@ export async function saveCsv(data) {
         });
 }
 
-export async function editData(query) {
-    return axios.post('/edit-data', {}, { params: { query: query } })
-        .then(response => {
-            if (response.status === 200) {
-                return response.data.success;
-            } else {
-                return false;
-            }
-        })
-        .catch(error => {
-            return false;
-        });
-}
-
 export function getGridHeight() {
     let height = window.innerHeight - 180;
     if (height < 100) {
@@ -101,7 +87,7 @@ export function stringWordsEqual(s1, s2, wordCount = 2) {
     let cleanS1 = s1.toLowerCase().split(' ').filter(e => e !== '');
     let cleanS2 = s2.toLowerCase().split(' ').filter(e => e !== '');
 
-    if (cleanS1.length < wordCount ||  cleanS2.length < wordCount) {
+    if (cleanS1.length < wordCount || cleanS2.length < wordCount) {
         return false;
     }
 
@@ -110,6 +96,34 @@ export function stringWordsEqual(s1, s2, wordCount = 2) {
             return false;
         }
     }
-  
+
     return true;
+}
+
+export async function setCategory(query) {
+    return axios.post('/set-category', {}, { params: { query: query } })
+        .then(response => {
+            if (response.status === 200) {
+                return response.data.success;
+            } else {
+                return false;
+            }
+        })
+        .catch(error => {
+            return false;
+        });
+}
+
+export async function editData(query) {
+    return axios.post('/edit-data', {}, { params: { query: query } })
+        .then(response => {
+            if (response.status === 200) {
+                return response.data.success;
+            } else {
+                return false;
+            }
+        })
+        .catch(error => {
+            return false;
+        });
 }
