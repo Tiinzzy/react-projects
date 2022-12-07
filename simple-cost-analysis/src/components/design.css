@@ -1,6 +1,6 @@
 /*Header---------------------------------------------------------*/
 .HeaderBox {
-    padding-left: 12px;
+    padding-left: 22px;
     padding-top: 15px;
     padding-bottom: 15px;
     display: flex;
@@ -139,7 +139,7 @@
     padding: 15px;
 }
 
-.PopoverData{
+.PopoverData {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -170,7 +170,7 @@
     margin-bottom: 20px;
 }
 
-.Checkbox{
+.Checkbox {
     font-size: 18px;
     display: flex;
     justify-content: left;
