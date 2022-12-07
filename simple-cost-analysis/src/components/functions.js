@@ -127,3 +127,14 @@ export async function editData(query) {
             return false;
         });
 }
+
+export function getDailyAmount(data) {
+    let dateSet = new Set(data.map(e => e.DATE));
+    let dailyAmount = [...dateSet].map(e => { return { Date: e, AMOUNT: getDateSummary(data, e) } });
+    return dailyAmount;
+}
+
+function getDateSummary(data, d) {
+    let dateSummary = data.filter(e => e.DATE === d).map(e => e.AMOUNT * 1).reduce((a, b) => (a + b), 0);
+    return dateSummary;
+}
