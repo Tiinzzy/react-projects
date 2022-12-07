@@ -9,10 +9,12 @@ import SnackbarContent from '@mui/material/SnackbarContent';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Popover from '@mui/material/Popover';
+import Button from '@mui/material/Button'
 
 import GridDialogContent from "./GridDialogContent";
+import GraphDisplay from "./GraphDisplay";
 
-import { getData, getColumns, getGridHeight, getGridWidth } from './functions';
+import { getData, getColumns, getGridHeight, getGridWidth, getDailyAmount } from './functions';
 import { constants } from './constants';
 
 var _displatGrid = null;
@@ -38,7 +40,9 @@ class DisplayGrid extends React.Component {
             category: 'All',
             showHelp: false,
             openPopover: false,
-            popoverAnchorEl: null
+            popoverAnchorEl: null,
+            graphDialog: false,
+            summaryData: null
         }
         this.handleClick = this.handleClick.bind(this);
         this.handleCloseDialog = this.handleCloseDialog.bind(this);
@@ -50,13 +54,24 @@ class DisplayGrid extends React.Component {
         this.refreshData = this.refreshData.bind(this);
         this.updateDistribution = this.updateDistribution.bind(this);
         this.handleClosePopover = this.handleClosePopover.bind(this);
+        this.openGRaph = this.openGRaph.bind(this);
         _displatGrid = this;
     }
 
     async componentDidMount() {
         let data = await getData();
+
+        let summary = getDailyAmount(data);
+        
+        summary = summary.map(function (e) {
+            return Object.keys(e).map(g => e[g])
+        });
+
         this.refreshData(data);
         window.addEventListener("resize", this.handleScreenResize);
+
+        summary.unshift(['DATE', 'AMOUNT']);
+        this.setState({ summaryData: summary })
     }
 
     handleClick(e) {
@@ -153,6 +168,10 @@ class DisplayGrid extends React.Component {
         this.setState({ openPopover: false, popoverAnchorEl: null })
     }
 
+    openGRaph() {
+        this.setState({ graphDialog: true })
+    }
+
     render() {
         return (
             <Box className="GridMainBox">
@@ -175,6 +194,8 @@ class DisplayGrid extends React.Component {
                                     {e + ' (' + this.state.distribution[e].count + ')'}
                                 </ToggleButton>
                             </ToggleButtonGroup>)}
+                        <Box style={{ marginLeft: 'auto', justifyContent: 'right' }} > <Button variant="outlined" size="small" onClick={() => this.openGRaph()}> Daily chart</Button>
+                        </Box>
                     </Box>
                 </Box>}
                 <Box className="GridTextBox">
@@ -199,6 +220,11 @@ class DisplayGrid extends React.Component {
                         <DialogTitle>Details</DialogTitle>
                         <GridDialogContent clickedRow={this.state.clickedRow} close={this.handleCloseDialog} rows={this.state.rows} />
                     </Dialog>}
+
+                    <Dialog onClose={() => this.setState({ graphDialog: false })} open={this.state.graphDialog} maxWidth='lg' fullWidth={true}>
+                        <DialogTitle>Expenses Chart</DialogTitle>
+                        <GraphDisplay data={this.state.summaryData} />
+                    </Dialog>
 
                     <Snackbar
                         anchorOrigin={{ vertical: 'top', horizontal: 'center', }}
