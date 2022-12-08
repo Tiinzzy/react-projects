@@ -8,8 +8,9 @@ import Button from '@mui/material/Button';
 import Divider from "@mui/material/Divider";
 import DialogActions from "@mui/material/DialogActions";
 import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
-import { editData, stringWordsEqual, setCategory } from "./functions";
+import { stringWordsEqual, setCategory } from "./functions";
 import { constants } from './constants';
 
 import './design.css';
@@ -94,14 +95,9 @@ class GridDialogContent extends React.Component {
                     </Box>
 
                     <Box className="Checkbox">
-                        <Box display='flex'>
-                            Apply "{this.state.CATEGORY}" category for similar descriptions?
-                        </Box>
-                        <Box flexGrow={1}>
-                            <Checkbox
-                                checked={this.state.checkBox}
-                                onChange={(e) => this.handleCheckBox(e)} />
-                        </Box>
+                        <FormControlLabel
+                            control={<Checkbox checked={this.state.checkBox} onChange={(e) => this.handleCheckBox(e)} />}
+                            label={'Apply ' + this.state.CATEGORY + ' category for similar descriptions?'} />
                     </Box>
 
                     <Divider />

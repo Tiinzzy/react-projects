@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const csv = require('csvtojson')
+const DAY_OF_WEEK = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 export async function getDataFromPublic() {
     return axios('/some-costs.csv').then(result => {
@@ -130,11 +131,31 @@ export async function editData(query) {
 
 export function getDailyAmount(data) {
     let dateSet = new Set(data.map(e => e.DATE));
-    let dailyAmount = [...dateSet].map(e => { return { Date: e, AMOUNT: getDateSummary(data, e) } });
+    let dailyAmount = [...dateSet].map(e => { return { Date: e, AMOUNT: getDailySummary(data, e) } });
     return dailyAmount;
 }
 
-function getDateSummary(data, d) {
+function getDailySummary(data, d) {
     let dateSummary = data.filter(e => e.DATE === d).map(e => e.AMOUNT * 1).reduce((a, b) => (a + b), 0);
     return dateSummary;
+}
+
+export function getWeekDaysAmount(data) {
+    return [0, 1, 2, 3, 4, 5, 6].map(wdId => { return { Date: DAY_OF_WEEK[wdId], AMOUNT: getWeekDaySummary(data, wdId) } });
+}
+
+function getWeekDaySummary(data, wdId) {
+    return data.filter(d => string2Date(d.DATE).getDay() === wdId).map(e => e.AMOUNT * 1).reduce((a, b) => (a + b), 0);
+}
+
+function string2Date(dateStr) {
+    let parts = dateStr.split('-');
+    let d = new Date();
+    d.setYear(parts[0] * 1);
+    d.setMonth(parts[1] * 1 - 1);
+    d.setDate(parts[2] * 1);
+    d.setHours(0);
+    d.setMinutes(0);
+    d.setSeconds(0);
+    return d;
 }

@@ -10,11 +10,13 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Popover from '@mui/material/Popover';
 import Button from '@mui/material/Button'
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 import GridDialogContent from "./GridDialogContent";
 import GraphDisplay from "./GraphDisplay";
 
-import { getData, getColumns, getGridHeight, getGridWidth, getDailyAmount } from './functions';
+import { getData, getColumns, getGridHeight, getGridWidth, getDailyAmount, getWeekDaysAmount } from './functions';
 import { constants } from './constants';
 
 var _displatGrid = null;
@@ -42,7 +44,10 @@ class DisplayGrid extends React.Component {
             openPopover: false,
             popoverAnchorEl: null,
             graphDialog: false,
-            summaryData: null
+            dailySummaryData: null,
+            weekDaysSummaryData: null,
+            anchorEl: null,
+            openMenu: false
         }
         this.handleClick = this.handleClick.bind(this);
         this.handleCloseDialog = this.handleCloseDialog.bind(this);
@@ -54,24 +59,30 @@ class DisplayGrid extends React.Component {
         this.refreshData = this.refreshData.bind(this);
         this.updateDistribution = this.updateDistribution.bind(this);
         this.handleClosePopover = this.handleClosePopover.bind(this);
-        this.openGRaph = this.openGRaph.bind(this);
+        this.handleOpenMenu = this.handleOpenMenu.bind(this);
+        this.handleCloseMenu = this.handleCloseMenu.bind(this);
         _displatGrid = this;
     }
 
     async componentDidMount() {
         let data = await getData();
 
-        let summary = getDailyAmount(data);
-        
-        summary = summary.map(function (e) {
+        let dailySummaryData = getDailyAmount(data);
+        dailySummaryData = dailySummaryData.map(function (e) {
+            return Object.keys(e).map(g => e[g])
+        });
+
+        let weekDaysSummaryData = getWeekDaysAmount(data);
+        weekDaysSummaryData = weekDaysSummaryData.map(function (e) {
             return Object.keys(e).map(g => e[g])
         });
 
         this.refreshData(data);
         window.addEventListener("resize", this.handleScreenResize);
 
-        summary.unshift(['DATE', 'AMOUNT']);
-        this.setState({ summaryData: summary })
+        dailySummaryData.unshift(['DATE', 'AMOUNT']);
+        weekDaysSummaryData.unshift(['DAYS', 'AMOUNT']);
+        this.setState({ dailySummaryData, weekDaysSummaryData })
     }
 
     handleClick(e) {
@@ -79,7 +90,6 @@ class DisplayGrid extends React.Component {
     }
 
     handleCloseDialog(isUpdated, row) {
-
         let openSnack = isUpdated;
         let message = isUpdated ? ('Category Successfully Changed to "' + row.CATEGORY) + '"' : null;
 
@@ -136,7 +146,10 @@ class DisplayGrid extends React.Component {
             distribution[c] = { sum, count };
         });
 
-        distribution.All = this.state.rows.length;
+        distribution['All'] = {
+            count: this.state.rows.length,
+            sum: this.state.rows.map(e => e.AMOUNT).reduce((a, b) => a + b, 0)
+        };
         this.setState({ distribution: null }, function () {
             this.setState({ distribution });
         });
@@ -168,73 +181,75 @@ class DisplayGrid extends React.Component {
         this.setState({ openPopover: false, popoverAnchorEl: null })
     }
 
-    openGRaph() {
-        this.setState({ graphDialog: true })
+    handleOpenMenu(e) {
+        this.setState({ openMenu: true, anchorEl: e.target })
     }
 
-    render() {
+    handleCloseMenu(index) {
+        if (index == 1) {
+            // open daily summary chart
+            this.setState({ openMenu: false, graphIndex: 1, graphDialog: true });
+        } else if (index == 2) {
+            // open day of week summary chart
+            this.setState({ openMenu: false, graphIndex: 2, graphDialog: true });
+        } else {
+            // open NOTHING
+            this.setState({ openMenu: false, graphIndex: 0, graphDialog: false });
+        }
+    }
+
+    renderMenu() {
         return (
-            <Box className="GridMainBox">
-                {this.state.distribution && this.state.rows && !this.state.showHelp && <Box tyle={{ display: 'flex', flexDirection: 'column' }}>
-                    <Box className="ToggleBox" >
+            <Box style={{ marginLeft: 'auto', justifyContent: 'right' }} >
+                <Button onClick={(e) => this.handleOpenMenu(e)} variant="outlined" size="small">Charts</Button>
+                <Menu
+                    size='small'
+                    style={{ width: 200 }}
+                    anchorEl={this.state.anchorEl}
+                    open={this.state.openMenu}
+                    value={1}
+                    onClose={() => this.handleCloseMenu(0)}>
+                    <MenuItem onClick={() => this.handleCloseMenu(1)} >Daily Graph</MenuItem>
+                    <MenuItem onClick={() => this.handleCloseMenu(2)}> Weekly Graph</MenuItem>
+                </Menu>
+            </Box>
+        );
+    }
 
-                        {constants.categories.map((e, i) =>
-                            <ToggleButtonGroup
-                                key={i}
-                                size="small"
-                                color="primary"
-                                value={this.state.category}
-                                exclusive
-                                onChange={(e) => this.handleChange(e)}>
-                                <ToggleButton
-                                    onMouseEnter={(e) => this.setState({ openPopover: true, popoverAnchorEl: e.target })}
-                                    onMouseLeave={(e) => this.handleClosePopover()}
-                                    onClick={(e) => this.handleToggle(e)}
-                                    style={{ fontSize: 8, padding: 6, marginRight: 5 }} key={i} value={e}>
-                                    {e + ' (' + this.state.distribution[e].count + ')'}
-                                </ToggleButton>
-                            </ToggleButtonGroup>)}
-                        <Box style={{ marginLeft: 'auto', justifyContent: 'right' }} > <Button variant="outlined" size="small" onClick={() => this.openGRaph()}> Daily chart</Button>
-                        </Box>
-                    </Box>
-                </Box>}
-                <Box className="GridTextBox">
-                    {this.state.rows && !this.state.showHelp &&
-                        <DataGrid
-                            style={{ height: this.state.height, width: this.state.width }}
-                            hideFooterPagination={true}
-                            hideFooter={true}
-                            rows={this.state.rows}
-                            columns={this.state.columns}
-                            onCellDoubleClick={(e) => this.handleClick(e)} />}
-                    {this.state.showHelp &&
-                        <Box pb={10}>
-                            <ol>
-                                {constants.help.map((e, i) => (
-                                    <li key={i}>{e}</li>
-                                ))}
-                            </ol>
-                        </Box>}
+    renderEasyFilterBox(e, i) {
+        if (typeof this.state.distribution[e] === 'undefined') {
+            console.log(this.state.distribution[e]);
+        }
+        return (
+            <ToggleButtonGroup
+                key={i}
+                size="small"
+                color="primary"
+                value={this.state.category}
+                exclusive
+                onChange={(e) => this.handleChange(e)}>
+                <ToggleButton
+                    onMouseEnter={(e) => this.setState({ openPopover: true, popoverAnchorEl: e.target })}
+                    onMouseLeave={(e) => this.handleClosePopover()}
+                    onClick={(e) => this.handleToggle(e)}
+                    style={{ fontSize: 8, padding: 6, marginRight: 5 }} key={i} value={e}>
+                    {e + ' (' + this.state.distribution[e].count + ')'}
+                </ToggleButton>
+            </ToggleButtonGroup>
+        );
+    }
 
-                    {this.state.dialogOpen && <Dialog onClose={() => this.handleCloseDialog(false)} open={this.state.dialogOpen} maxWidth='sm' fullWidth={true}>
-                        <DialogTitle>Details</DialogTitle>
-                        <GridDialogContent clickedRow={this.state.clickedRow} close={this.handleCloseDialog} rows={this.state.rows} />
-                    </Dialog>}
-
-                    <Dialog onClose={() => this.setState({ graphDialog: false })} open={this.state.graphDialog} maxWidth='lg' fullWidth={true}>
-                        <DialogTitle>Expenses Chart</DialogTitle>
-                        <GraphDisplay data={this.state.summaryData} />
-                    </Dialog>
-
-                    <Snackbar
-                        anchorOrigin={{ vertical: 'top', horizontal: 'center', }}
-                        open={this.state.openSnack}
-                        autoHideDuration={2000}
-                        onClose={this.handleCloseSnack}>
-                        <SnackbarContent style={{ backgroundColor: '#63A355', color: 'white', fontWeight: 'bold' }}
-                            message={<div style={{ textAlign: 'center', width: 400 }}>{this.state.message}</div>} />
-                    </Snackbar>
-                </Box>
+    renderPopoverAndSnackBar() {
+        return (
+            <>
+                <Snackbar
+                    anchorOrigin={{ vertical: 'top', horizontal: 'center', }}
+                    open={this.state.openSnack}
+                    autoHideDuration={2000}
+                    onClose={this.handleCloseSnack}>
+                    <SnackbarContent style={{ backgroundColor: '#63A355', color: 'white', fontWeight: 'bold' }}
+                        message={<div style={{ textAlign: 'center', width: 400 }}>{this.state.message}</div>} />
+                </Snackbar>
                 <Popover
                     sx={{ pointerEvents: 'none', }}
                     open={this.state.openPopover}
@@ -258,6 +273,74 @@ class DisplayGrid extends React.Component {
                             </Box>)}
                     </Box>}
                 </Popover>
+            </>
+        );
+    }
+
+    renderDialogs() {
+        return (
+            <>
+                {this.state.dialogOpen &&
+                    <Dialog
+                        onClose={() => this.handleCloseDialog(false)}
+                        open={this.state.dialogOpen}
+                        maxWidth='sm' fullWidth={true}>
+                        <DialogTitle>Details</DialogTitle>
+                        <GridDialogContent clickedRow={this.state.clickedRow} close={this.handleCloseDialog} rows={this.state.rows} />
+                    </Dialog>}
+
+                <Dialog
+                    onClose={() => this.setState({ graphDialog: false })}
+                    open={this.state.graphDialog} maxWidth='lg' fullWidth={true}>
+                    <DialogTitle>Expenses Chart</DialogTitle>
+                    <GraphDisplay
+                        graphIndex={this.state.graphIndex}
+                        dailyData={this.state.dailySummaryData}
+                        weekDaysData={this.state.weekDaysSummaryData} />
+                </Dialog>
+            </>
+        );
+    }
+
+    renderHelp() {
+        return (
+            <Box pb={10}>
+                <ol>
+                    {constants.help.map((e, i) => (
+                        <li key={i}>{e}</li>
+                    ))}
+                </ol>
+            </Box>
+        );
+    }
+
+    render() {
+        return (
+            <Box className="GridMainBox">
+
+                {this.state.distribution && this.state.rows && !this.state.showHelp &&
+                    <Box tyle={{ display: 'flex', flexDirection: 'column' }}>
+                        <Box className="ToggleBox" >
+                            {constants.categories.map((e, i) => this.renderEasyFilterBox(e, i))}
+                            {this.renderMenu()}
+                        </Box>
+                    </Box>}
+
+                <Box className="GridTextBox">
+                    {this.state.rows && !this.state.showHelp &&
+                        <DataGrid
+                            style={{ height: this.state.height, width: this.state.width }}
+                            hideFooterPagination={true}
+                            hideFooter={true}
+                            rows={this.state.rows}
+                            columns={this.state.columns}
+                            onCellDoubleClick={(e) => this.handleClick(e)} />}
+
+                    {this.state.showHelp && this.renderHelp()}
+                </Box>
+
+                {this.renderDialogs()}
+                {this.renderPopoverAndSnackBar()}
 
             </Box >
         );
