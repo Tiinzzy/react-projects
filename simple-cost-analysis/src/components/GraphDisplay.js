@@ -9,14 +9,22 @@ import './design.css';
 export default function GraphDisplay(props) {
 
     return (
-        <Box style={{ margin: 20}}>
-            <Chart
+        <Box style={{ margin: 20 }}>
+            {props.graphIndex === 1 && <Chart
                 chartType="Bar"
                 width="100%"
                 height="500px"
-                data={props.data}
-            />
+                data={props.dailyData}
+            />}
+
+            {props.graphIndex === 2 && <Chart
+                chartType="Bar"
+                width="100%"
+                height="500px"
+                data={props.weekDaysData}
+            />}
         </Box>
     );
-
 };
+
+//https://developers.google.com/chart/interactive/docs/gallery/barchart#stacked-bar-charts
