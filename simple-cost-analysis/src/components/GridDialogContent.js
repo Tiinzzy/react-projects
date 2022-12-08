@@ -8,6 +8,7 @@ import Button from '@mui/material/Button';
 import Divider from "@mui/material/Divider";
 import DialogActions from "@mui/material/DialogActions";
 import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 import { stringWordsEqual, setCategory } from "./functions";
 import { constants } from './constants';
@@ -94,14 +95,9 @@ class GridDialogContent extends React.Component {
                     </Box>
 
                     <Box className="Checkbox">
-                        <Box mt={1.2}>
-                            Apply "{this.state.CATEGORY}" category for similar descriptions?
-                        </Box>
-                        <Box>
-                            <Checkbox
-                                checked={this.state.checkBox}
-                                onChange={(e) => this.handleCheckBox(e)} />
-                        </Box>
+                        <FormControlLabel
+                            control={<Checkbox checked={this.state.checkBox} onChange={(e) => this.handleCheckBox(e)} />}
+                            label={'Apply ' + this.state.CATEGORY + ' category for similar descriptions?'} />
                     </Box>
 
                     <Divider />
