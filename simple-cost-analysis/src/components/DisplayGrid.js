@@ -16,7 +16,7 @@ import MenuItem from '@mui/material/MenuItem';
 import GridDialogContent from "./GridDialogContent";
 import GraphDisplay from "./GraphDisplay";
 
-import { getData, getColumns, getGridHeight, getGridWidth, getDailyAmount, getWeekDaysAmount } from './functions';
+import { getData, getColumns, getGridHeight, getGridWidth, getDailyAmount, getWeekDaysAmount, geDetailedtWeekDaysAmount } from './functions';
 import { constants } from './constants';
 
 var _displatGrid = null;
@@ -46,6 +46,7 @@ class DisplayGrid extends React.Component {
             graphDialog: false,
             dailySummaryData: null,
             weekDaysSummaryData: null,
+            detailedSummary: null,
             anchorEl: null,
             openMenu: false
         }
@@ -77,12 +78,20 @@ class DisplayGrid extends React.Component {
             return Object.keys(e).map(g => e[g])
         });
 
+        let detailedSummary = geDetailedtWeekDaysAmount(data);
+        console.log('--------------->>');
+        console.log(detailedSummary)
+        console.log('<<---------------');
+
         this.refreshData(data);
         window.addEventListener("resize", this.handleScreenResize);
 
         dailySummaryData.unshift(['DATE', 'AMOUNT']);
         weekDaysSummaryData.unshift(['DAYS', 'AMOUNT']);
-        this.setState({ dailySummaryData, weekDaysSummaryData })
+
+
+
+        this.setState({ dailySummaryData, weekDaysSummaryData, detailedSummary })
     }
 
     handleClick(e) {
@@ -192,7 +201,10 @@ class DisplayGrid extends React.Component {
         } else if (index == 2) {
             // open day of week summary chart
             this.setState({ openMenu: false, graphIndex: 2, graphDialog: true });
-        } else {
+        } else if (index == 3) {
+            this.setState({ openMenu: false, graphIndex: 3, graphDialog: true });
+        }
+        else {
             // open NOTHING
             this.setState({ openMenu: false, graphIndex: 0, graphDialog: false });
         }
@@ -211,6 +223,7 @@ class DisplayGrid extends React.Component {
                     onClose={() => this.handleCloseMenu(0)}>
                     <MenuItem onClick={() => this.handleCloseMenu(1)} >Daily Graph</MenuItem>
                     <MenuItem onClick={() => this.handleCloseMenu(2)}> Weekly Graph</MenuItem>
+                    <MenuItem onClick={() => this.handleCloseMenu(3)}> Detailed Daily Graph</MenuItem>
                 </Menu>
             </Box>
         );
@@ -296,7 +309,8 @@ class DisplayGrid extends React.Component {
                     <GraphDisplay
                         graphIndex={this.state.graphIndex}
                         dailyData={this.state.dailySummaryData}
-                        weekDaysData={this.state.weekDaysSummaryData} />
+                        weekDaysData={this.state.weekDaysSummaryData}
+                        detailedSummary={this.state.detailedSummary} />
                 </Dialog>
             </>
         );

@@ -1,7 +1,7 @@
 import axios from "axios";
+import { constants } from './constants';
 
 const csv = require('csvtojson')
-const DAY_OF_WEEK = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 export async function getDataFromPublic() {
     return axios('/some-costs.csv').then(result => {
@@ -141,13 +141,14 @@ function getDailySummary(data, d) {
 }
 
 export function getWeekDaysAmount(data) {
-    return [0, 1, 2, 3, 4, 5, 6].map(wdId => { return { Date: DAY_OF_WEEK[wdId], AMOUNT: getWeekDaySummary(data, wdId) } });
+    return [0, 1, 2, 3, 4, 5, 6].map(wdId => { return { Date: constants.dayOfWeek[wdId], AMOUNT: getWeekDaySummary(data, wdId) } });
 }
 
 function getWeekDaySummary(data, wdId) {
     return data.filter(d => string2Date(d.DATE).getDay() === wdId).map(e => e.AMOUNT * 1).reduce((a, b) => (a + b), 0);
 }
 
+//gives the date properly
 function string2Date(dateStr) {
     let parts = dateStr.split('-');
     let d = new Date();
@@ -159,3 +160,54 @@ function string2Date(dateStr) {
     d.setSeconds(0);
     return d;
 }
+
+export function geDetailedtWeekDaysAmount(data) {
+    let result = [0, 1, 2, 3, 4, 5, 6].map(d => getWeekDayDetailedSummary(data, d));
+    
+    // add categiory titles row
+    let title = [...constants.categories];
+    title.shift()
+    result.unshift(title);
+
+    // add day of week column to the first 
+    for (let i = 0; i < result.length; i++) {
+        if (i === 0) {
+            result[i].unshift('Day of weeks');
+        } else {
+            result[i].unshift(constants.dayOfWeek[i-1]);
+        }                
+    }
+    
+    return result;
+}
+
+function getWeekDayDetailedSummary(data, d) {
+    let dayOfWeekResult = [];
+    constants.categories.filter(c => c !== 'All').forEach(c => {
+        let sum = getDetailedAMount(data, d, c);
+        dayOfWeekResult.push(sum);
+    })
+    return dayOfWeekResult;
+}
+
+function getDetailedAMount(data, day, category) {
+    let result = data.filter(d => d.CATEGORY === category && string2Date(d.DATE).getDay() === day).map(e => e.AMOUNT * 1).reduce((a, b) => (a + b), 0);
+    return result;
+}
+
+/**
+export function geDetailedtWeekDaysAmount(data) {
+    return [0, 1, 2, 3, 4, 5, 6].map(wdId => { return { Date: DAY_OF_WEEK[wdId], AMOUNT: getWeekDayDetailedSummary(data, wdId) } });
+}
+
+function getWeekDayDetailedSummary(data, wdId) {
+    let result = data.filter(d => string2Date(d.DATE).getDay() === wdId).map(e => e.CATEGORY).map(e => getDetailedAMount(e, data, wdId));
+    let newR = [...new Set(result)];
+    return newR;
+}
+
+function getDetailedAMount(e, data, wdId) {
+    let result = data.filter(d => d.CATEGORY === e).filter(d => string2Date(d.DATE).getDay() === wdId).map(e => e.AMOUNT * 1).reduce((a, b) => (a + b), 0);
+    return result;
+}
+**/
