@@ -9,5 +9,6 @@ export const constants = {
         "Once the pop-up comes up, you will be notified that saving new file will remove any previous data",
         "AFter saving the file new data will be available and you can see them in Show Data"
     ],
+    dayOfWeek: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     categories: ['All', 'Medicine', 'None', 'Commute', 'Entertainment', 'Groceries', 'Houseware', 'Clothing', 'Utilities', 'Misc', 'Dining', 'Online Shopping'].sort()
 }
