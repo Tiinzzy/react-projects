@@ -1,0 +1,11 @@
+.SelectingPrompt{
+margin-right: 20px;
+}
+
+.SelectingPrompt:hover {
+    background-color: rgba(207, 244, 255, 0.843);
+    padding: 10px;
+    border-radius: 50px;
+    border: none;
+    margin-right: 15px
+}
