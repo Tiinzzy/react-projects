@@ -1,4 +1,5 @@
 from database_connection import Database
+from random_assignment import get_random_url_assignment
 
 
 class Tiny_Url:
@@ -6,38 +7,23 @@ class Tiny_Url:
         pass
 
     @classmethod
-    def submit_and_get_url(self, mainUrl, tinyUrl):
-        print('>>>', mainUrl, tinyUrl)
-        mainUrl = str(mainUrl)
-        tinyUrl = str(tinyUrl)
-        main_url_condition = "'" + mainUrl + "'"
-        tiny_url_condition = "'" + tinyUrl + "'"
+    def submit_and_get_url(self, user_url):
+        url_conversion = get_random_url_assignment()
         db = Database()
         con, cur = db.open_database()
-        cur.execute(''' insert into tests.tiny_url (user_url, url_conversion)
-                            values (_MAIN_URL_, _TINY_URL_)
-                        '''.replace('_MAIN_URL_', main_url_condition).replace('_TINY_URL_', tiny_url_condition))
+        sql = "insert into tests.tiny_url (user_url, url_conversion) values (%s, %s)"
+        cur.execute(sql, (user_url, url_conversion))
         con.commit()
-        cur.execute(''' select url_conversion from tests.tiny_url 
-                            where user_url = _MAIN_URL_
-                        '''.replace('_MAIN_URL_', main_url_condition))
-        rows = cur.fetchall()
-        result = []
-        for row in rows:
-            result.append({'tiny_url': row[0]})
         db.close_database()
-        return result
+        return url_conversion
 
     @classmethod
-    def get_url(self, tinyUrl):
+    def get_url(self, url_conversion):
         db = Database()
         con, cur = db.open_database()
-        cur.execute(
-            "select user_url from tests.tiny_url where url_conversion = '" + tinyUrl + "' limit 1")
+        sql = "select user_url from tests.tiny_url where url_conversion = %s limit 1"
+        cur.execute(sql, (url_conversion,))
         rows = cur.fetchall()
-        if len(rows) == 1:
-            url = rows[0][0]
-        else:
-            url = ''
+        url = rows[0][0] if len(rows) == 1 else ''
         db.close_database()
         return url
