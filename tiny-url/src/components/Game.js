@@ -72,7 +72,7 @@ class Game extends React.Component {
             <Box style={{
                 display: 'flex', flexDirection: 'row', justifyContent: 'center',
                 margin: 'auto', border: 'solid 3px #73a5f5', padding: 20,
-                width: 500, height: 250
+                width: 500, height: 250,borderRadius: 5
             }}>
                 <Box style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 10, marginBottom: 100 }}>
                     {this.state.userSelect === false && this.state.computerDisplay === false &&
