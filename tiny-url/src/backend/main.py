@@ -7,7 +7,7 @@ app = Flask(__name__)
 def getting_url_and_convert():
     args = request.args
     data = Tiny_Url.submit_and_get_url(
-        args.get('mainUrl'), args.get('tinyUrl'))
+        args.get('mainUrl'))
     return jsonify(data)
 
 
