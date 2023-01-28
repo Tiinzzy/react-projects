@@ -6,6 +6,8 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import InsertLinkIcon from '@mui/icons-material/InsertLink';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
+import ShortcutIcon from '@mui/icons-material/Shortcut';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 import BackEndConnection from "./BackendConnection";
 import { Base64 } from 'js-base64';
@@ -26,6 +28,7 @@ class TinyUrl extends React.Component {
         this.getLongUrl = this.getLongUrl.bind(this);
         this.resetConvert = this.resetConvert.bind(this);
         this.copyUrl = this.copyUrl.bind(this);
+        this.redirectToUrl = this.redirectToUrl.bind(this);
     }
 
     getLongUrl(e) {
@@ -45,7 +48,6 @@ class TinyUrl extends React.Component {
             this.setState({ showResult: true }, () => {
                 let that = this;
                 let urlEncode = Base64.encode(this.state.typpedUrl);
-                console.log('En -->', urlEncode);
                 backend.get_tiny_url(urlEncode, 'http://localhost:3000/' + randomAssignment.trim(), (data) => {
                     that.setState({ assignedValue: data[0].tiny_url })
                 })
@@ -61,6 +63,10 @@ class TinyUrl extends React.Component {
         let copyText = document.getElementById('tiny-url-result');
         copyText.select();
         navigator.clipboard.writeText(copyText.value);
+    }
+
+    redirectToUrl() {
+        window.open(this.state.assignedValue, '_blank');
     }
 
     render() {
@@ -92,17 +98,11 @@ class TinyUrl extends React.Component {
                         <TextField variant="outlined" size="small" value={this.state.assignedValue} id="tiny-url-result" />}
                     {this.state.showResult === true &&
                         <Box style={{ border: 'solid 0px red', padding: '10px 10px 10px 0', marginTop: 10, display: 'flex', justifyContent: 'left' }}>
-                            <a id="redirect-btn" variant="contained"
-                                style={{
-                                    marginRight: 10, cursor: 'pointer', textDecoration: 'none',
-                                    border: 'solid 1px #1769aa', borderRadius: 4.5, backgroundColor: '#1769aa', color: 'white',
-                                    padding: '8px 12px 8px 12px'
-                                }}
-                                target="_blank" href={this.state.assignedValue}>
-                                REDIRECT
-                            </a>
-                            <Button variant="contained" style={{ marginRight: 10 }} onClick={() => this.copyUrl()}>Copy</Button>
-                            <Button variant="contained" style={{}} onClick={() => this.resetConvert()}>Reset</Button>
+                            <Button variant="contained" style={{ marginRight: 10 }} onClick={() => this.redirectToUrl()}
+                                startIcon={<ShortcutIcon />}>Redirect</Button>
+                            <Button variant="contained" style={{ marginRight: 10 }} onClick={() => this.copyUrl()}
+                                startIcon={<ContentCopyIcon />}>Copy</Button>
+                            <Button variant="contained" onClick={() => this.resetConvert()}>Reset</Button>
                         </Box>}
                 </Box>
             </Box>
