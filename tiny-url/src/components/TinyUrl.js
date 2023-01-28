@@ -6,7 +6,9 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import InsertLinkIcon from '@mui/icons-material/InsertLink';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
+
 import BackEndConnection from "./BackendConnection";
+import { Base64 } from 'js-base64';
 
 const backend = BackEndConnection.INSTANCE();
 
@@ -42,7 +44,9 @@ class TinyUrl extends React.Component {
         } else {
             this.setState({ showResult: true }, () => {
                 let that = this;
-                backend.get_tiny_url(this.state.typpedUrl, 'http://localhost:3000/' + randomAssignment.trim(), (data) => {
+                let urlEncode = Base64.encode(this.state.typpedUrl);
+                console.log('En -->', urlEncode);
+                backend.get_tiny_url(urlEncode, 'http://localhost:3000/' + randomAssignment.trim(), (data) => {
                     that.setState({ assignedValue: data[0].tiny_url })
                 })
             });
