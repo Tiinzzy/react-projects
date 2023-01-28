@@ -48,8 +48,8 @@ class TinyUrl extends React.Component {
             this.setState({ showResult: true }, () => {
                 let that = this;
                 let urlEncode = Base64.encode(this.state.typpedUrl);
-                backend.get_tiny_url(urlEncode, 'http://localhost:3000/' + randomAssignment.trim(), (data) => {
-                    that.setState({ assignedValue: data[0].tiny_url })
+                backend.get_tiny_url(urlEncode, (data) => {
+                    that.setState({ assignedValue: 'http://localhost:3000/' + data })
                 })
             });
         }
