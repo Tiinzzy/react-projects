@@ -2,8 +2,8 @@ import axios from 'axios';
 import { Base64 } from 'js-base64';
 
 class BackEndConnectionImpl {
-    async get_tiny_url(mainUrl, tinyUrl, callback) {
-        let url = '/getting_url_and_convert?mainUrl=' + mainUrl + '&tinyUrl=' + tinyUrl;
+    async get_tiny_url(mainUrl, callback) {
+        let url = '/getting_url_and_convert?mainUrl=' + mainUrl;
         return axios.get(url, {})
             .then(function (response) {
                 if (callback) {
