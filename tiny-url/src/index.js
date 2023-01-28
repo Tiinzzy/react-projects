@@ -7,7 +7,9 @@ import BackEndConnection from "./components/BackendConnection";
 const backend = BackEndConnection.INSTANCE();
 
 
-backend.redirect_if_needed(window.location.href, (url) => {
+let pathKey = window.location.pathname.replaceAll("/", "")
+
+backend.redirect_if_needed(pathKey, (url) => {
   if (url !== '') {
     window.location = url;
   } else {
