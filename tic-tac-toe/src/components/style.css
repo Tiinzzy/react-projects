@@ -1,0 +1,21 @@
+.EachRow {
+    border: solid 1px red;
+    padding: 15px;
+    margin: 10px;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    text-align: center
+}
+
+.EachMapping {
+    display: flex;
+    flex-direction: row;
+}
+
+.GameBody {
+    display: flex;
+    flex-Direction: column;
+    justify-Content: center;
+    margin-top: 100px
+}
