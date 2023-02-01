@@ -4,6 +4,8 @@ import './style.css';
 
 import { body, OCCUPIED_HOUSES, CORNERS, CENTER, EDGES, ROW_OPPOSITE_EDGES, COLUMN_OPPOSITE_EDGES, pushResultIntoBox, checkForEmptyHouse } from './constants';
 
+const DELAY_TIME = 5 * 1000;
+
 class Game extends React.Component {
 
     constructor(props) {
@@ -32,15 +34,25 @@ class Game extends React.Component {
 
         if (CORNERS.includes(userResponse)) {
             console.log('corner');
-            this.cornerMove();
+
+            setTimeout(() => {
+                this.cornerMove();
+            }, DELAY_TIME);
         }
+
         else if (CENTER.includes(userResponse)) {
             console.log('center');
-            this.centerMove();
+
+            setTimeout(() => {
+                this.centerMove();
+            }, DELAY_TIME);
         }
+
         else if (EDGES.includes(userResponse)) {
             console.log('edge');
-            this.edgeMove(userResponse);
+            setTimeout(() => {
+                this.edgeMove(userResponse);
+            }, DELAY_TIME)
         }
     }
 
