@@ -1,11 +1,20 @@
 .EachRow {
-    border: solid 1px red;
+    border: solid 2px rgb(7, 129, 100);
+    border-radius: 4px;
     padding: 15px;
     margin: 10px;
     cursor: pointer;
     width: 20px;
     height: 20px;
-    text-align: center
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 18px;
+    color: rgb(5, 40, 32)
+}
+
+.EachRow:active {
+    background-color: rgba(176, 249, 232, 0.309);
 }
 
 .EachMapping {
@@ -18,4 +27,12 @@
     flex-Direction: column;
     justify-Content: center;
     margin-top: 100px
+}
+
+.PlayerTurn {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 25px;
+    color: rgb(5, 40, 32);
+    font-weight: bold;
 }
