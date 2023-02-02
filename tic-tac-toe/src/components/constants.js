@@ -81,3 +81,57 @@ export function insertIntoCurrentHouses(e, user) {
         }
     }
 }
+
+function toWinTheMatch(wp) {
+    let danger = 0;
+    for (let i = 0; i < CURRENT_FULL_HOUSES.length; i++) {
+        danger += WINNING_POSSIBILITIES[wp][i] * CURRENT_FULL_HOUSES[i];
+    }
+    return danger;
+}
+
+function findMaxDangrWinPOs(wps_danger) {
+    let maxDanger = Math.max(...wps_danger);
+    for (let i = 0; i < wps_danger.length; i++) {
+        if (wps_danger[i] === maxDanger) {
+            return WINNING_POSSIBILITIES[i];
+        }
+    }
+    return null;
+}
+
+function getComputerMove(md_wp) {
+    let moves = [];
+    for (let i = 0; i < 9; i++) {
+        moves.push(md_wp[i] * CURRENT_FULL_HOUSES[i]);
+    }
+
+    for (let j = 0; j < 9; j++) {
+        if (moves[j] + md_wp[j] === 1) {
+            return j;
+        }
+    }
+    return null;
+}
+
+export function findNextMove() {
+    let wps_danger = [];
+    for (let i in WINNING_POSSIBILITIES) {
+        let danger = toWinTheMatch(i);
+        wps_danger.push(danger);
+        // console.log('current state: ', CURRENT_FULL_HOUSES)
+        // console.log('winning possibilites: ', WINNING_POSSIBILITIES[i])
+        // console.log('DANGER => ', danger)
+        // console.log('------------------------------------------')
+    }
+    // console.log(wps_danger);
+    let md_wp = findMaxDangrWinPOs(wps_danger);
+    // console.log(md_wp);
+
+    if (md_wp !== null) {
+        let computerMove = getComputerMove(md_wp);
+        return computerMove ;
+    }
+
+    
+}
