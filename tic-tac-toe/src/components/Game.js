@@ -4,7 +4,7 @@ import Box from '@mui/material/Box'
 
 import './style.css';
 
-import { GAME_BODY, CURRENT_FULL_HOUSES, insertIntoCurrentHouses } from './constants';
+import { GAME_BODY, insertIntoCurrentHouses } from './constants';
 
 const DELAY_TIME = 1000;
 
@@ -14,7 +14,6 @@ class Game extends React.Component {
         super(props);
         this.state = {
             message: 'User\'s turn',
-            disabled: false
 
         }
         this.houseClicked = this.houseClicked.bind(this);
@@ -24,9 +23,6 @@ class Game extends React.Component {
         insertIntoCurrentHouses(e, 'X')
         document.getElementById(e);
         document.getElementById(e).textContent = "X";
-        if (!this.state.disabled) {
-            this.setState({ disabled: true })
-        }
         this.setState({ message: 'Computer\'s turn' })
     }
 
