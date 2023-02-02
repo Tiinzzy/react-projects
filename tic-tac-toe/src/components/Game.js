@@ -4,7 +4,7 @@ import Box from '@mui/material/Box'
 
 import './style.css';
 
-import { GAME_BODY, insertIntoCurrentHouses, CURRENT_FULL_HOUSES, ALL_HOUSES } from './constants';
+import { GAME_BODY, insertIntoCurrentHouses, CURRENT_FULL_HOUSES, ALL_HOUSES, findNextMove, WINNING_POSSIBILITIES } from './constants';
 
 const DELAY_TIME = 3 * 1000;
 
@@ -26,9 +26,10 @@ class Game extends React.Component {
         document.getElementById(e).textContent = "X";
         this.computerMove();
         this.setState({ message: 'Computer\'s turn' });
+
     }
 
-    computerMove(e) {
+    computerMove() {
         if (this.state.firstTime === true) {
             setTimeout(() => {
                 this.setState({ message: 'User turn', firstTime: false }, () => {
@@ -37,6 +38,15 @@ class Game extends React.Component {
                     document.getElementById(initialPlacement).textContent = "O";
                     insertIntoCurrentHouses(initialPlacement, 'O');
                 });
+            }, DELAY_TIME);
+        } else {
+            setTimeout(() => {
+                let nextMoveIndex = findNextMove();
+                console.log(nextMoveIndex)
+                let nextMove = ALL_HOUSES[nextMoveIndex];
+                insertIntoCurrentHouses(nextMove, 'O')
+                document.getElementById(nextMove).textContent = "O";
+                insertIntoCurrentHouses(nextMove, 'O');
             }, DELAY_TIME);
         }
     }
@@ -66,6 +76,7 @@ class Game extends React.Component {
                             className="EachRow">
                         </Box>)}
                 </Box>
+                <Box id="final-result" className="PlayerTurn" marginTop={2}></Box>
             </Box>
         );
     }
