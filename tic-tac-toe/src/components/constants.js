@@ -3,6 +3,9 @@ export const GAME_BODY = [
     ['row2, col1', 'row2, col2', 'row2, col3'],
     ['row3, col1', 'row3, col2', 'row3, col3']
 ];
+
+export const ALL_HOUSES = ['row1, col1', 'row1, col2', 'row1, col3', 'row2, col1', 'row2, col2', 'row2, col3', 'row3, col1', 'row3, col2', 'row3, col3'];
+
 export const CURRENT_FULL_HOUSES = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 export const WINNING_POSSIBILITIES = [[1, 1, 1, 0, 0, 0, 0, 0, 0],
