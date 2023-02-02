@@ -1,146 +1,137 @@
-export const body = [
+export const GAME_BODY = [
     ['row1, col1', 'row1, col2', 'row1, col3'],
     ['row2, col1', 'row2, col2', 'row2, col3'],
     ['row3, col1', 'row3, col2', 'row3, col3']
 ];
 
-export const ALL_HOUSES = ['row1, col1', 'row1, col2', 'row1, col3',
-    'row2, col1', 'row2, col2', 'row2, col3',
-    'row3, col1', 'row3, col2', 'row3, col3'];
+export const ALL_HOUSES = ['row1, col1', 'row1, col2', 'row1, col3', 'row2, col1', 'row2, col2', 'row2, col3', 'row3, col1', 'row3, col2', 'row3, col3'];
 
-export const CORNERS = ['row1, col1', 'row1, col3', 'row3, col1', 'row3, col3'];
+export const CURRENT_FULL_HOUSES = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-export const CENTER = ['row2, col2'];
-
-export const EDGES = ['row1, col2', 'row2, col1', 'row2, col3', 'row3, col2'];
-
-export const ROW_OPPOSITE_EDGES = ['row2, col1', 'row2, col3'];
-
-export const COLUMN_OPPOSITE_EDGES = ['row1, col2', 'row3, col2'];
-
-export const WINNING_POSSIBILITIES = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-]
-
-export let OCCUPIED_HOUSES = [];
-
-// export function pushResultIntoBox(anySelect) {
-//     pushIntoNotEmpty(anySelect);
-//     document.getElementById(anySelect);
-//     document.getElementById(anySelect).textContent = "O";
-// }
-
-// export function checkForEmptyHouse(selectedPosition) {
-//     let emptyHouses = [];
-//     selectedPosition.forEach(e => {
-//         if (notEmpty.includes(e)) {
-//             return
-//         } else {
-//             pushIntoNotEmpty(e)
-//         }
-//     });
-//     return notEmpty;
-// }
+export const WINNING_POSSIBILITIES = [[1, 1, 1, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 1, 1, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 1, 1, 1],
+[1, 0, 0, 0, 1, 0, 0, 0, 1], [0, 0, 1, 0, 1, 0, 1, 0, 0], [1, 0, 0, 1, 0, 0, 1, 0, 0], [0, 1, 0, 0, 1, 0, 0, 1, 0], [0, 0, 1, 0, 0, 1, 0, 0, 1]];
 
 
-
-export let fullHouses = [[, ,],
-[, ,],
-[, ,]];
-
-export let userChoices = [[, ,],
-[, ,],
-[, ,]];
-export let computerChoices = [[, ,],
-[, ,],
-[, ,]];
-
-export function occupiedHouses(e, arr) {
+export function insertIntoCurrentHouses(e, user) {
     let column;
     if (e.startsWith('row1')) {
         column = e.replace('row1, ', '').trim();
         if (column === 'col1') {
-            arr[0][0] = 0
+            if (user === 'X') {
+                CURRENT_FULL_HOUSES[0] = 1
+            } else {
+                CURRENT_FULL_HOUSES[0] = -2
+            }
         }
         else if (column === 'col2') {
-            arr[0][1] = 1
+            if (user === 'X') {
+                CURRENT_FULL_HOUSES[1] = 1
+            } else {
+                CURRENT_FULL_HOUSES[1] = -2
+            }
         } else if (column === 'col3') {
-            arr[0][2] = 2
+            if (user === 'X') {
+                CURRENT_FULL_HOUSES[2] = 1
+            } else {
+                CURRENT_FULL_HOUSES[2] = -2
+            }
         }
     } else if (e.startsWith('row2')) {
         column = e.replace('row2, ', '').trim();
         if (column === 'col1') {
-            arr[1][0] = 3
+            if (user === 'X') {
+                CURRENT_FULL_HOUSES[3] = 1
+            } else {
+                CURRENT_FULL_HOUSES[3] = -2
+            }
         } else if (column === 'col2') {
-            arr[1][1] = 4
+            if (user === 'X') {
+                CURRENT_FULL_HOUSES[4] = 1
+            } else {
+                CURRENT_FULL_HOUSES[4] = -2
+            }
         } else if (column === 'col3') {
-            arr[1][2] = 5
+            if (user === 'X') {
+                CURRENT_FULL_HOUSES[5] = 1
+            } else {
+                CURRENT_FULL_HOUSES[5] = -2
+            }
         }
     } else if (e.startsWith('row3')) {
         column = e.replace('row3, ', '').trim();
         if (column === 'col1') {
-            arr[2][0] = 6
+            if (user === 'X') {
+                CURRENT_FULL_HOUSES[6] = 1
+            } else {
+                CURRENT_FULL_HOUSES[6] = -2
+            }
         } else if (column === 'col2') {
-            arr[2][1] = 7
+            if (user === 'X') {
+                CURRENT_FULL_HOUSES[7] = 1
+            } else {
+                CURRENT_FULL_HOUSES[7] = -2
+            }
         } else if (column === 'col3') {
-            arr[2][2] = 8
+            if (user === 'X') {
+                CURRENT_FULL_HOUSES[8] = 1
+            } else {
+                CURRENT_FULL_HOUSES[8] = -2
+            }
         }
     }
 }
 
-export function giveNUmValue(e) {
-    let num;
-    let column;
-    if (e.startsWith('row1')) {
-        column = e.replace('row1, ', '').trim();
-        if (column === 'col1') {
-            num = 0
-            return num;
-        }
-        else if (column === 'col2') {
-            num = 2
-            return num;
-        } else if (column === 'col3') {
-            num = 3
-            return num;
-        }
-    } else if (e.startsWith('row2')) {
-        column = e.replace('row2, ', '').trim();
-        if (column === 'col1') {
-            num = 4
-            return num;
-        } else if (column === 'col2') {
-            num = 5
-            return num;
-        } else if (column === 'col3') {
-            num = 6
-            return num;
-        }
-    } else if (e.startsWith('row3')) {
-        column = e.replace('row3, ', '').trim();
-        if (column === 'col1') {
-            num = 7
-            return num;
-        } else if (column === 'col2') {
-            num = 8
-            return num;
-        } else if (column === 'col3') {
-            num = 9
-            return num;
-        }
-    }
-}
-
-function checkForWins() {
+function toWinTheMatch(wp) {
     let danger = 0;
-    for (let i in fullHouses){
-        danger += fullHouses[i] * WINNING_POSSIBILITIES
+    for (let i = 0; i < CURRENT_FULL_HOUSES.length; i++) {
+        danger += WINNING_POSSIBILITIES[wp][i] * CURRENT_FULL_HOUSES[i];
     }
+    return danger;
+}
+
+function findMaxDangrWinPOs(wps_danger) {
+    let maxDanger = Math.max(...wps_danger);
+    for (let i = 0; i < wps_danger.length; i++) {
+        if (wps_danger[i] === maxDanger) {
+            return WINNING_POSSIBILITIES[i];
+        }
+    }
+    return null;
+}
+
+function getComputerMove(md_wp) {
+    let moves = [];
+    for (let i = 0; i < 9; i++) {
+        moves.push(md_wp[i] * CURRENT_FULL_HOUSES[i]);
+    }
+
+    for (let j = 0; j < 9; j++) {
+        if (moves[j] + md_wp[j] === 1) {
+            return j;
+        }
+    }
+    return null;
+}
+
+export function findNextMove() {
+    let wps_danger = [];
+    for (let i in WINNING_POSSIBILITIES) {
+        let danger = toWinTheMatch(i);
+        wps_danger.push(danger);
+        // console.log('current state: ', CURRENT_FULL_HOUSES)
+        // console.log('winning possibilites: ', WINNING_POSSIBILITIES[i])
+        // console.log('DANGER => ', danger)
+        // console.log('------------------------------------------')
+    }
+    // console.log(wps_danger);
+    let md_wp = findMaxDangrWinPOs(wps_danger);
+    // console.log(md_wp);
+
+    if (md_wp !== null) {
+        let computerMove = getComputerMove(md_wp);
+        return computerMove ;
+    }
+
+    
 }

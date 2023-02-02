@@ -36,3 +36,9 @@
     color: rgb(5, 40, 32);
     font-weight: bold;
 }
+
+.StartBtn {
+    width: 100px !important;
+    margin: auto auto 20px auto !important;
+    background-color: rgb(1, 97, 75) !important;
+}

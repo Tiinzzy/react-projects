@@ -1,86 +1,99 @@
 import React from "react";
 
+import Box from '@mui/material/Box'
+
 import './style.css';
 
-import { giveNUmValue, body, fullHouses, userChoices, computerChoices, occupiedHouses, ALL_HOUSES } from './constants';
+import { GAME_BODY, insertIntoCurrentHouses, CURRENT_FULL_HOUSES, ALL_HOUSES, findNextMove, WINNING_POSSIBILITIES } from './constants';
+import { Button } from "@mui/material";
 
-const DELAY_TIME = 1000;
+const DELAY_TIME = 3 * 1000;
 
 class Game extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            message: 'User\'s turn'
+            message: 'User\'s turn',
+            firstTime: true,
+            play: false,
+            display: true
 
         }
         this.houseClicked = this.houseClicked.bind(this);
+        this.startGame = this.startGame.bind(this);
     }
-
+    startGame() {
+        this.setState({ play: true, display: false })
+    }
     houseClicked(e) {
-        let userResponse = document.getElementById(e);
+        insertIntoCurrentHouses(e, 'X')
+        document.getElementById(e);
         document.getElementById(e).textContent = "X";
+        this.computerMove();
+        this.setState({ message: 'Computer\'s turn' });
 
-        //getting user input
-        occupiedHouses(1, userChoices);
+        const found = WINNING_POSSIBILITIES.some(r => CURRENT_FULL_HOUSES.indexOf(r) > 0);
 
-        // putting each selection into the right house
-        occupiedHouses(1, fullHouses);
-
-        this.computerMove(e);
-        this.setState({ message: 'Computer\'s turn' })
     }
 
-    computerMove(e) {
-        let userInput = giveNUmValue(e);
-        if ((fullHouses[0].includes(userInput) || fullHouses[1].includes(userInput) || fullHouses[2].includes(userInput))) {
+    computerMove() {
+        if (this.state.firstTime === true) {
             setTimeout(() => {
-                this.cornerMove();
-                this.setState({ message: 'User turn' });
+                this.setState({ message: 'User turn', firstTime: false }, () => {
+                    let placementIndex = Math.floor(Math.random() * CURRENT_FULL_HOUSES.length);
+                    let initialPlacement = ALL_HOUSES[placementIndex];
+                    document.getElementById(initialPlacement).textContent = "O";
+                    insertIntoCurrentHouses(initialPlacement, 'O');
+                });
             }, DELAY_TIME);
-        }
-    }
-
-    cornerMove() {
-        let initRes = Math.floor(Math.random() * ALL_HOUSES.length);
-        let compSlect = ALL_HOUSES[initRes];
-        if ((!fullHouses[0].includes(compSlect) || !fullHouses[1].includes(compSlect) || !fullHouses[2].includes(compSlect))) {
-            document.getElementById(compSlect).textContent = "O";
-            occupiedHouses(0, fullHouses);
-            occupiedHouses(0, computerChoices)
-
         } else {
-            // 
-            this.cornerMove();
+            setTimeout(() => {
+                let nextMoveIndex = findNextMove();
+                let nextMove = ALL_HOUSES[nextMoveIndex];
+                console.log('error -->', nextMove)
+                if (nextMove !== undefined) {
+                    insertIntoCurrentHouses(nextMove, 'O');
+                    document.getElementById(nextMove).textContent = "O";
+                }
+            }, DELAY_TIME);
         }
     }
 
     render() {
         return (
-            <div id="main-div" className="GameBody">
-                <div className="PlayerTurn">{this.state.message}</div>
-                <div className="EachMapping">
-                    {body[0].map((rows, index) =>
-                        < div id={rows} key={index}
-                            onClick={() => this.houseClicked(rows)}
-                            className="EachRow">
-                        </div>)}
-                </div>
-                <div className="EachMapping">
-                    {body[1].map((rows, index) =>
-                        < div id={rows} key={index}
-                            onClick={() => this.houseClicked(rows)}
-                            className="EachRow">
-                        </div>)}
-                </div>
-                <div className="EachMapping">
-                    {body[2].map((rows, index) =>
-                        < div id={rows} key={index}
-                            onClick={() => this.houseClicked(rows)}
-                            className="EachRow">
-                        </div>)}
-                </div>
-            </div>
+            <Box id="main-div" className="GameBody">
+                {this.state.display === true &&
+                    <Button variant="contained" className="StartBtn" onClick={() => this.startGame()}>Start</Button>}
+                {this.state.play === true &&
+                    <Box className="PlayerTurn">
+                        {this.state.message}</Box>}
+                {this.state.play === true &&
+                    <Box className="EachMapping">
+                        {GAME_BODY[0].map((rows, index) =>
+                            < Box id={rows} key={index}
+                                onClick={() => this.houseClicked(rows)}
+                                className="EachRow">
+                            </Box>)}
+                    </Box>}
+                {this.state.play === true &&
+                    <Box className="EachMapping">
+                        {GAME_BODY[1].map((rows, index) =>
+                            < Box id={rows} key={index}
+                                onClick={() => this.houseClicked(rows)}
+                                className="EachRow">
+                            </Box>)}
+                    </Box>}
+                {this.state.play === true &&
+                    <Box className="EachMapping">
+                        {GAME_BODY[2].map((rows, index) =>
+                            < Box id={rows} key={index}
+                                onClick={() => this.houseClicked(rows)}
+                                className="EachRow">
+                            </Box>)}
+                    </Box>}
+                <Box id="final-result" className="PlayerTurn" marginTop={2}></Box>
+            </Box>
         );
     }
 }
