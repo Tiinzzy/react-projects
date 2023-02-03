@@ -33,8 +33,6 @@ class Game extends React.Component {
         this.computerMove();
         this.setState({ message: 'Computer\'s turn' });
 
-        const found = WINNING_POSSIBILITIES.some(r => CURRENT_FULL_HOUSES.indexOf(r) > 0);
-
     }
 
     computerMove() {
@@ -49,13 +47,15 @@ class Game extends React.Component {
             }, DELAY_TIME);
         } else {
             setTimeout(() => {
-                let nextMoveIndex = findNextMove();
-                let nextMove = ALL_HOUSES[nextMoveIndex];
-                console.log('error -->', nextMove)
-                if (nextMove !== undefined) {
-                    insertIntoCurrentHouses(nextMove, 'O');
-                    document.getElementById(nextMove).textContent = "O";
-                }
+                this.setState({ message: 'User turn', firstTime: false }, () => {
+                    let nextMoveIndex = findNextMove(WINNING_POSSIBILITIES, CURRENT_FULL_HOUSES);
+                    let nextMove = ALL_HOUSES[nextMoveIndex];
+                    console.log('error -->', nextMove)
+                    if (nextMove !== undefined) {
+                        insertIntoCurrentHouses(nextMove, 'O');
+                        document.getElementById(nextMove).textContent = "O";
+                    }
+                });
             }, DELAY_TIME);
         }
     }
