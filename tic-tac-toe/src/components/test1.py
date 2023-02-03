@@ -48,11 +48,7 @@ def my_nex_play(dr, dc, dd, cs):
     return play
 
 
-cs = [ 1,  0,  1,
-       0,  0,  0,
-       1,  10, 10
-     ]
-
+cs = [1, 10, 1, 0, 10, 1, 0, 0, 0]
 drs = find_row_dangers(cs)
 print('DRs:', drs)
 
