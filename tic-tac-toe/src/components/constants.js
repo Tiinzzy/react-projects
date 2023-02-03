@@ -82,28 +82,28 @@ export function insertIntoCurrentHouses(e, user) {
     }
 }
 
-function toWinTheMatch(wp) {
+function toWinTheMatch(wp, cs) {
     let danger = 0;
-    for (let i = 0; i < CURRENT_FULL_HOUSES.length; i++) {
-        danger += WINNING_POSSIBILITIES[wp][i] * CURRENT_FULL_HOUSES[i];
+    for (let i = 0; i < 9; i++) {
+        danger += WINNING_POSSIBILITIES[wp][i] * cs[i];
     }
     return danger;
 }
 
-function findMaxDangrWinPOs(wps_danger) {
+function findMaxDangrWinPOs(wps, wps_danger) {
     let maxDanger = Math.max(...wps_danger);
     for (let i = 0; i < wps_danger.length; i++) {
         if (wps_danger[i] === maxDanger) {
-            return WINNING_POSSIBILITIES[i];
+            return wps[i];
         }
     }
     return null;
 }
 
-function getComputerMove(md_wp) {
+function getComputerMove(md_wp, cs) {
     let moves = [];
     for (let i = 0; i < 9; i++) {
-        moves.push(md_wp[i] * CURRENT_FULL_HOUSES[i]);
+        moves.push(md_wp[i] * cs[i]);
     }
 
     for (let j = 0; j < 9; j++) {
@@ -114,10 +114,10 @@ function getComputerMove(md_wp) {
     return null;
 }
 
-export function findNextMove() {
+export function findNextMove(wps, cs) {
     let wps_danger = [];
-    for (let i in WINNING_POSSIBILITIES) {
-        let danger = toWinTheMatch(i);
+    for (let wp in wps) {
+        let danger = toWinTheMatch(wp, cs);
         wps_danger.push(danger);
         // console.log('current state: ', CURRENT_FULL_HOUSES)
         // console.log('winning possibilites: ', WINNING_POSSIBILITIES[i])
@@ -125,11 +125,11 @@ export function findNextMove() {
         // console.log('------------------------------------------')
     }
     // console.log(wps_danger);
-    let md_wp = findMaxDangrWinPOs(wps_danger);
+    let md_wp = findMaxDangrWinPOs(wps, wps_danger);
     // console.log(md_wp);
 
     if (md_wp !== null) {
-        let computerMove = getComputerMove(md_wp);
+        let computerMove = getComputerMove(md_wp, cs);
         return computerMove ;
     }
 
