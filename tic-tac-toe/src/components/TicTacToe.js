@@ -1,15 +1,15 @@
 import React from "react";
 
-import Box from '@mui/material/Box'
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 
-import { RC_ARRAY, USER, COMPUTER, FREE, getNextMove } from './tic_tac_to_logic'
+import { RC_ARRAY, USER, COMPUTER, FREE, getNextMove } from './tic_tac_to_logic';
 
 import './style.css';
 
 const X_SYMBOL = '✕';
 const O_SYMBOL = 'o';
-const DELAY_TIME = 2 * 1000;
-
+const DELAY_TIME = 3 * 1000;
 
 const cellStyle = (turn) => {
     return {
@@ -44,8 +44,14 @@ class TicTacToe extends React.Component {
             board: [...Array(9)].map(e => FREE),
             turn: USER,
             userSymbol: X_SYMBOL,
-            playerTurn: 'User\'s turn'
+            playerTurn: 'It\'s your turn',
+            play: false,
+            display: true
         }
+    }
+
+    startGame() {
+        this.setState({ play: true, display: false })
     }
 
     playComputer() {
@@ -57,7 +63,7 @@ class TicTacToe extends React.Component {
                 this.setState({ turn: USER, board });
             }
             console.log(move.status);
-            this.setState({ playerTurn: 'User\'s turn' })
+            this.setState({ playerTurn: 'It\'s your turn' })
         }, DELAY_TIME);
     }
 
@@ -67,26 +73,30 @@ class TicTacToe extends React.Component {
             board[cellId] = USER;
             this.setState({ turn: COMPUTER, board });
             this.playComputer()
-            this.setState({ playerTurn: 'Computer\'s turn' })
+            this.setState({ playerTurn: 'Now is my turn' })
         }
     }
 
     render() {
         return (
             <Box>
-                <Box className="PlayerTurn">
-                    {this.state.playerTurn}
-                </Box>
-
-                {RC_ARRAY.map(r => (
-                    <Box display='flex' key={r}>
-                        {RC_ARRAY.map(c => (
-                            <Box key={c} style={cellStyle(this.state.turn)} onClick={() => this.cellClick(r * 3 + c)}>
-                                {xo(this.state.board[r * 3 + c], this.state.userSymbol)}
-                            </Box>
-                        ))}
+                {this.state.display === true &&
+                    <Button variant="contained" className="StartBtn" onClick={() => this.startGame()}>Start</Button>}
+                {this.state.play === true && <Box>
+                    <Box className="PlayerTurn">
+                        {this.state.playerTurn}
                     </Box>
-                ))}
+
+                    {RC_ARRAY.map(r => (
+                        <Box display='flex' key={r}>
+                            {RC_ARRAY.map(c => (
+                                <Box key={c} style={cellStyle(this.state.turn)} onClick={() => this.cellClick(r * 3 + c)}>
+                                    {xo(this.state.board[r * 3 + c], this.state.userSymbol)}
+                                </Box>
+                            ))}
+                        </Box>
+                    ))}
+                </Box>}
             </Box>
         );
     }
