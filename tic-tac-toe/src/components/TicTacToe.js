@@ -44,9 +44,10 @@ class TicTacToe extends React.Component {
             board: [...Array(9)].map(e => FREE),
             turn: USER,
             userSymbol: null,
-            playerTurn: 'It\'s your turn',
+            playerTurn: 'Start the game',
             play: false,
-            display: true
+            display: true,
+            firstTime: true
         }
     }
 
@@ -63,7 +64,9 @@ class TicTacToe extends React.Component {
                 this.setState({ turn: USER, board });
             }
             console.log(move.status);
-            this.setState({ playerTurn: 'It\'s your turn' })
+            this.setState({ firstTime: false, playerTurn: 'Start the game' }, () => {
+                this.setState({ playerTurn: 'It\'s your turn' });
+            });
         }, DELAY_TIME);
     }
 
