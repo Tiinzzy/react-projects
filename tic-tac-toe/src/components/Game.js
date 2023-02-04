@@ -50,7 +50,7 @@ class Game extends React.Component {
         } else {
             setTimeout(() => {
                 let rawNextMove = get_comp_next_move(CURRENT_FULL_HOUSES);
-                console.log(rawNextMove.winner);
+                console.log(rawNextMove.status);
                 let nextMoveIndex = rawNextMove.play;
                 if (nextMoveIndex.length > 1) {
                     this.setState({ message: 'User turn', firstTime: false }, () => {

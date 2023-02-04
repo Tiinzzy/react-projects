@@ -244,10 +244,10 @@ export function get_comp_next_move(cs) {
     console.log('WIN10: ', win10)
 
     if (win20.length > 0) {
-        return { play: win20, winner: 'winner' };
+        return { play: win20, status: 'computer wins 100%' };
     } else if (prevent.length > 0) {
-        return { play: prevent, winner: null };
+        return { play: prevent, status: 'trying to stop user-win if possible' };
     } else {
-        return { play: win10, winner: null };
+        return { play: win10, status: 'planing to win in next couple of moves' };
     }    
 }

@@ -1,44 +1,76 @@
 .EachRow {
+    width: 50px;
+    height: 50px;
     border: solid 2px rgb(7, 129, 100);
     border-radius: 4px;
-    padding: 15px;
-    margin: 10px;
-    cursor: pointer;
-    width: 20px;
-    height: 20px;
-    text-align: center;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 18px;
-    color: rgb(5, 40, 32)
+    margin: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(9, 80, 63) !important;
+    font-weight: bold !important;
 }
 
 .EachRow:active {
     background-color: rgba(176, 249, 232, 0.309);
 }
 
-.EachMapping {
-    display: flex;
-    flex-direction: row;
-}
-
-.GameBody {
-    display: flex;
-    flex-Direction: column;
-    justify-Content: center;
-    margin-top: 100px
-}
-
 .PlayerTurn {
     text-align: center;
-    margin-bottom: 20px;
     font-size: 25px;
-    color: rgb(5, 40, 32);
+    color: rgb(9, 80, 63);
     font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 400px;
+    margin-bottom: 25px;
 }
 
-.StartBtn {
-    width: 100px !important;
-    margin: 20px auto 20px auto !important;
-    background-color: rgb(1, 97, 75) !important;
+.StartGameBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.FormItems {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.EcchItem {
+    color: rgb(9, 80, 63) !important;
+    font-weight: bold !important;
+}
+
+.DialogContent {
+    display: flex;
+    flex-direction: row;
+    width: 500px;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+}
+
+.CelbrateImg {
+    -webkit-transform: scaleX(-1) !important;
+    transform: scaleX(-1) !important;
+}
+
+.MainBox {
+    width: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.BoeardGameBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
