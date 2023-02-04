@@ -7,6 +7,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    color: rgb(9, 80, 63);
+    font-weight: bold;
 }
 
 .EachRow:active {
@@ -16,7 +18,7 @@
 .PlayerTurn {
     text-align: center;
     font-size: 25px;
-    color: rgb(5, 40, 32);
+    color: rgb(9, 80, 63);
     font-weight: bold;
     display: flex;
     align-items: center;
@@ -25,8 +27,19 @@
     margin-bottom: 25px;
 }
 
-.StartBtn {
-    width: 100px !important;
-    margin: 20px auto 20px auto !important;
-    background-color: rgb(1, 97, 75) !important;
+.StartGameBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.FormItems {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-left: 15px;
+    color: rgb(9, 80, 63);
+    font-weight: bold;
 }
