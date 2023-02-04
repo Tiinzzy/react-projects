@@ -1,7 +1,14 @@
 import React from "react";
 
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import Typography from '@mui/material/Typography';
+
+import OIcon from '@mui/icons-material/RadioButtonUnchecked';
+import XIcon from '@mui/icons-material/Close';
 
 import { RC_ARRAY, USER, COMPUTER, FREE, getNextMove } from './tic_tac_to_logic';
 
@@ -9,7 +16,11 @@ import './style.css';
 
 const X_SYMBOL = '✕';
 const O_SYMBOL = 'o';
-const DELAY_TIME = 3 * 1000;
+const DELAY_TIME = 1 * 1000;
+
+const X_RETURN_VALUE = <XIcon />;
+const O_RETURN_VALUE = <OIcon />;
+
 
 const cellStyle = (turn) => {
     return {
@@ -17,15 +28,15 @@ const cellStyle = (turn) => {
     }
 }
 
-
 function xo(id, userSymbol) {
+    let result = '';
     if (id === USER) {
-        return userSymbol
+        result = userSymbol === X_SYMBOL ? X_RETURN_VALUE : O_RETURN_VALUE
     } else if (id === COMPUTER) {
-        return userSymbol === X_SYMBOL ? O_SYMBOL : X_SYMBOL
-    } else {
-        return ''
+        result = userSymbol === X_SYMBOL ? O_RETURN_VALUE : X_RETURN_VALUE
     }
+
+    return (<div>{result}</div>)
 }
 
 class TicTacToe extends React.Component {
@@ -35,15 +46,15 @@ class TicTacToe extends React.Component {
         this.state = {
             board: [...Array(9)].map(e => FREE),
             turn: USER,
-            userSymbol: X_SYMBOL,
+            userSymbol: null,
             playerTurn: 'It\'s your turn',
             play: false,
             display: true
         }
     }
 
-    startGame() {
-        this.setState({ play: true, display: false })
+    startGame(e) {
+        this.setState({ play: true, display: false, userSymbol: e })
     }
 
     playComputer() {
@@ -73,7 +84,19 @@ class TicTacToe extends React.Component {
         return (
             <Box>
                 {this.state.display === true &&
-                    <Button variant="contained" className="StartBtn" onClick={() => this.startGame()}>Start</Button>}
+                    <Box className="StartGameBox">
+                        <FormControl>
+                            <RadioGroup>
+                                <span className="FormItems">
+                                    <span style={{ marginRight: 10 }}>
+                                        <FormControlLabel value={X_SYMBOL} control={<Radio />} label={X_RETURN_VALUE} onClick={() => this.startGame(X_SYMBOL)} />
+                                    </span>
+                                    <FormControlLabel value={O_SYMBOL} control={<Radio />} label={O_RETURN_VALUE} onClick={() => this.startGame(O_SYMBOL)} />
+                                </span>
+                            </RadioGroup>
+                        </FormControl>
+                        <Typography variant="h6" style={{ color: 'rgb(9, 80, 63)' }}>Select a Player to Start </Typography>
+                    </Box>}
                 {this.state.play === true && <Box>
                     <Box className="PlayerTurn">
                         {this.state.playerTurn}
