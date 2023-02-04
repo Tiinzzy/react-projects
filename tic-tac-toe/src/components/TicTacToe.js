@@ -1,11 +1,8 @@
 import React from "react";
 
 import Box from '@mui/material/Box';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
 import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
 
 import OIcon from '@mui/icons-material/RadioButtonUnchecked';
 import XIcon from '@mui/icons-material/Close';
@@ -85,17 +82,17 @@ class TicTacToe extends React.Component {
             <Box>
                 {this.state.display === true &&
                     <Box className="StartGameBox">
-                        <FormControl>
-                            <RadioGroup>
-                                <span className="FormItems">
-                                    <span style={{ marginRight: 10 }}>
-                                        <FormControlLabel value={X_SYMBOL} control={<Radio />} label={X_RETURN_VALUE} onClick={() => this.startGame(X_SYMBOL)} />
-                                    </span>
-                                    <FormControlLabel value={O_SYMBOL} control={<Radio />} label={O_RETURN_VALUE} onClick={() => this.startGame(O_SYMBOL)} />
-                                </span>
-                            </RadioGroup>
-                        </FormControl>
-                        <Typography variant="h6" style={{ color: 'rgb(9, 80, 63)' }}>Select a Player to Start </Typography>
+                        <Box className="FormItems">
+                            <IconButton style={{ marginRight: 50 }} className="EcchItem" onClick={() => this.startGame(X_SYMBOL)}>
+                                <input hidden accept="image/*" type="file" />
+                                {X_RETURN_VALUE}
+                            </IconButton>
+                            <IconButton className="EcchItem" onClick={() => this.startGame(O_SYMBOL)}>
+                                <input hidden accept="image/*" type="file" />
+                                {O_RETURN_VALUE}
+                            </IconButton>
+                        </Box>
+                        <Typography variant="h6" style={{ color: 'rgb(9, 80, 63)' }}>Select a Symbol to Start </Typography>
                     </Box>}
                 {this.state.play === true && <Box>
                     <Box className="PlayerTurn">
