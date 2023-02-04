@@ -95,7 +95,7 @@ class TicTacToe extends React.Component {
 
     render() {
         return (
-            <Box>
+            <Box className="MainBox">
                 {this.state.display === true &&
                     <Box className="StartGameBox">
                         <Box className="FormItems">
@@ -111,7 +111,7 @@ class TicTacToe extends React.Component {
                         <Typography variant="h5" style={{ color: 'rgb(9, 80, 63)' }}>Select a Symbol to Start </Typography>
                     </Box>}
                 {this.state.play === true &&
-                    <Box >
+                    <Box className="BoeardGameBox">
                         <Box className="PlayerTurn">
                             {this.state.playerTurn}
                         </Box>
