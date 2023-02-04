@@ -72,6 +72,8 @@ class TicTacToe extends React.Component {
             }
             if (move.status === 'computer-wins') {
                 this.setState({ openDialog: true, outcomeMessage: 'Computer Wins!' });
+            } else if (!this.state.board.includes(0)) {
+                this.setState({ openDialog: true, outcomeMessage: 'Draw Result!' });
             }
             this.setState({ firstTime: false, playerTurn: 'Start the Game' }, () => {
                 this.setState({ playerTurn: getRandomMessage(USER_MESSAGES) });
