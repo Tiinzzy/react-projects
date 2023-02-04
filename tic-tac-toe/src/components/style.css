@@ -46,3 +46,17 @@
     color: rgb(9, 80, 63) !important;
     font-weight: bold !important;
 }
+
+.DialogContent {
+    display: flex;
+    flex-direction: row;
+    width: 500px;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+}
+
+.CelbrateImg {
+    -webkit-transform: scaleX(-1) !important;
+    transform: scaleX(-1) !important;
+}
