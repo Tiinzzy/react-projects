@@ -3,11 +3,14 @@ import React from "react";
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
+import Dialog from '@mui/material/Dialog';
 
 import OIcon from '@mui/icons-material/RadioButtonUnchecked';
 import XIcon from '@mui/icons-material/Close';
 
 import { RC_ARRAY, USER, COMPUTER, FREE, getNextMove } from './tic_tac_to_logic';
+
+import OutcomeDialog from './OutcomeDialog';
 
 import './style.css';
 
@@ -47,12 +50,14 @@ class TicTacToe extends React.Component {
             playerTurn: 'Start the game',
             play: false,
             display: true,
-            firstTime: true
+            firstTime: true,
+            openDialog: false,
+            outcomeMessage: ''
         }
     }
 
     startGame(e) {
-        this.setState({ play: true, display: false, userSymbol: e })
+        this.setState({ play: true, display: false, userSymbol: e });
     }
 
     playComputer() {
@@ -63,7 +68,9 @@ class TicTacToe extends React.Component {
                 board[move.cellId] = COMPUTER;
                 this.setState({ turn: USER, board });
             }
-            console.log(move.status);
+            if (move.status === 'computer-wins') {
+                this.setState({ openDialog: true, outcomeMessage: 'Computer Wins!' });
+            }
             this.setState({ firstTime: false, playerTurn: 'Start the Game' }, () => {
                 this.setState({ playerTurn: 'It\'s your turn' });
             });
@@ -75,9 +82,13 @@ class TicTacToe extends React.Component {
             let board = this.state.board;
             board[cellId] = USER;
             this.setState({ turn: COMPUTER, board });
-            this.playComputer()
-            this.setState({ playerTurn: 'Now is my turn' })
+            this.playComputer();
+            this.setState({ playerTurn: 'Now is my turn' });
         }
+    }
+
+    handleCloseDialog() {
+        this.setState({ openDialog: false });
     }
 
     render() {
@@ -113,6 +124,9 @@ class TicTacToe extends React.Component {
                             </Box>
                         ))}
                     </Box>}
+                <Dialog open={this.state.openDialog} onClose={() => this.handleCloseDialog()}>
+                    <OutcomeDialog outcomeMessage={this.state.outcomeMessage}/>
+                </Dialog>
             </Box>
         );
     }
