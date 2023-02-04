@@ -13,15 +13,7 @@ const DELAY_TIME = 3 * 1000;
 
 const cellStyle = (turn) => {
     return {
-        width: 50,
-        height: 50,
-        border: 'solid 2px rgb(7, 129, 100)',
-        borderRadius: 4,
-        margin: 5,
-        display: 'flex',
-        cursor: turn === USER ? 'pointer' : 'auto',
-        alignItems: 'center',
-        justifyContent: 'center'
+        cursor: turn === USER ? 'pointer' : 'auto'
     }
 }
 
@@ -90,7 +82,7 @@ class TicTacToe extends React.Component {
                     {RC_ARRAY.map(r => (
                         <Box display='flex' key={r}>
                             {RC_ARRAY.map(c => (
-                                <Box key={c} style={cellStyle(this.state.turn)} onClick={() => this.cellClick(r * 3 + c)}>
+                                <Box className="EachRow" key={c} style={cellStyle(this.state.turn)} onClick={() => this.cellClick(r * 3 + c)}>
                                     {xo(this.state.board[r * 3 + c], this.state.userSymbol)}
                                 </Box>
                             ))}
