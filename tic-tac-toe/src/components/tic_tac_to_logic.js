@@ -127,3 +127,10 @@ function get_comp_next_move(board) {
         return { cellId: get_first_move(board), status: 'computer-first-move' };
     }
 }
+
+
+export function getRandomMessage(arr) {
+    let randomSelection = Math.floor(Math.random() * arr.length);
+    let message = arr[randomSelection];
+    return message;
+}
