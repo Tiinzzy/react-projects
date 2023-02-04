@@ -2,12 +2,11 @@ import React from "react";
 
 import Box from '@mui/material/Box'
 
-import { getNextMove } from './tic_tac_to_logic'
+import { RC_ARRAY, USER, COMPUTER, FREE, getNextMove } from './tic_tac_to_logic'
 
-const RC_ARRAY = [0, 1, 2];
-const USER = 1;
-const COMPUTER = 10;
-const FREE = 0;
+
+const X_SYMBOL = '✕';
+const O_SYMBOL = 'o';
 
 const cellStyle = (turn) => {
     return {
@@ -22,11 +21,12 @@ const cellStyle = (turn) => {
     }
 }
 
-function xo(id) {
+
+function xo(id, userSymbol) {
     if (id === USER) {
-        return 'X'
+        return userSymbol
     } else if (id === COMPUTER) {
-        return 'O'
+        return userSymbol === X_SYMBOL ? O_SYMBOL : X_SYMBOL
     } else {
         return ''
     }
@@ -38,7 +38,8 @@ class TicTacToe extends React.Component {
         super(props);
         this.state = {
             board: [...Array(9)].map(e => FREE),
-            turn: USER
+            turn: USER,
+            userSymbol: X_SYMBOL
         }
     }
 
@@ -68,7 +69,7 @@ class TicTacToe extends React.Component {
                     <Box display='flex' key={r}>
                         {RC_ARRAY.map(c => (
                             <Box key={c} style={cellStyle(this.state.turn)} onClick={() => this.cellClick(r * 3 + c)}>
-                                {xo(this.state.board[r * 3 + c])}
+                                {xo(this.state.board[r * 3 + c], this.state.userSymbol)}
                             </Box>
                         ))}
                     </Box>
