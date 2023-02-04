@@ -23,7 +23,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 200px;
+    width: 400px;
     margin-bottom: 25px;
 }
 
@@ -59,4 +59,18 @@
 .CelbrateImg {
     -webkit-transform: scaleX(-1) !important;
     transform: scaleX(-1) !important;
+}
+
+.MainBox {
+    width: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.BoeardGameBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
