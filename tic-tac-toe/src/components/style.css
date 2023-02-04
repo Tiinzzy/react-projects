@@ -31,10 +31,14 @@
 
 .PlayerTurn {
     text-align: center;
-    margin-bottom: 20px;
     font-size: 25px;
     color: rgb(5, 40, 32);
     font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    margin-bottom: 25px;
 }
 
 .StartBtn {
