@@ -1,7 +1,6 @@
 import React from "react";
 
 import Box from '@mui/material/Box'
-import Alert from '@mui/material/Alert';
 
 import { getNextMove } from './tic_tac_to_logic'
 
