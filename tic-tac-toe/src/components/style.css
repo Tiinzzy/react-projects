@@ -1,16 +1,12 @@
 .EachRow {
+    width: 50px;
+    height: 50px;
     border: solid 2px rgb(7, 129, 100);
     border-radius: 4px;
-    padding: 15px;
-    margin: 10px;
-    cursor: pointer;
-    width: 20px;
-    height: 20px;
-    text-align: center;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 18px;
-    color: rgb(5, 40, 32)
+    margin: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .EachRow:active {
