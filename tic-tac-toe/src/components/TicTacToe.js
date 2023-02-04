@@ -8,7 +8,7 @@ import Dialog from '@mui/material/Dialog';
 import OIcon from '@mui/icons-material/RadioButtonUnchecked';
 import XIcon from '@mui/icons-material/Close';
 
-import { RC_ARRAY, USER, COMPUTER, FREE, getNextMove } from './tic_tac_to_logic';
+import { RC_ARRAY, USER, COMPUTER, FREE, getNextMove, getRandomMessage } from './tic_tac_to_logic';
 
 import OutcomeDialog from './OutcomeDialog';
 
@@ -21,6 +21,8 @@ const DELAY_TIME = 1 * 1000;
 const X_RETURN_VALUE = <XIcon />;
 const O_RETURN_VALUE = <OIcon />;
 
+const USER_MESSAGES = ['It\'s your turn now!', 'Try to win', 'You can do this!'];
+const COMPUTER_MESSAGES = ['Now is my turn', 'Let me think for a bit!', 'I will win you!'];
 
 const cellStyle = (turn) => {
     return {
@@ -72,7 +74,7 @@ class TicTacToe extends React.Component {
                 this.setState({ openDialog: true, outcomeMessage: 'Computer Wins!' });
             }
             this.setState({ firstTime: false, playerTurn: 'Start the Game' }, () => {
-                this.setState({ playerTurn: 'It\'s your turn' });
+                this.setState({ playerTurn: getRandomMessage(USER_MESSAGES) });
             });
         }, DELAY_TIME);
     }
@@ -83,7 +85,7 @@ class TicTacToe extends React.Component {
             board[cellId] = USER;
             this.setState({ turn: COMPUTER, board });
             this.playComputer();
-            this.setState({ playerTurn: 'Now is my turn' });
+            this.setState({ playerTurn: getRandomMessage(COMPUTER_MESSAGES) });
         }
     }
 
@@ -125,7 +127,7 @@ class TicTacToe extends React.Component {
                         ))}
                     </Box>}
                 <Dialog open={this.state.openDialog} onClose={() => this.handleCloseDialog()}>
-                    <OutcomeDialog outcomeMessage={this.state.outcomeMessage}/>
+                    <OutcomeDialog outcomeMessage={this.state.outcomeMessage} />
                 </Dialog>
             </Box>
         );
