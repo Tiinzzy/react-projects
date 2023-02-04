@@ -7,6 +7,8 @@ import { RC_ARRAY, USER, COMPUTER, FREE, getNextMove } from './tic_tac_to_logic'
 
 const X_SYMBOL = '✕';
 const O_SYMBOL = 'o';
+const DELAY_TIME = 2 * 1000;
+
 
 const cellStyle = (turn) => {
     return {
@@ -44,13 +46,15 @@ class TicTacToe extends React.Component {
     }
 
     playComputer() {
-        let move = getNextMove(this.state.board, FREE);
-        if (move.cellId !== null) {
-            let board = this.state.board;
-            board[move.cellId] = COMPUTER;
-            this.setState({ turn: USER, board });
-        }
-        console.log(move.status);
+        setTimeout(() => {
+            let move = getNextMove(this.state.board, FREE);
+            if (move.cellId !== null) {
+                let board = this.state.board;
+                board[move.cellId] = COMPUTER;
+                this.setState({ turn: USER, board });
+            }
+            console.log(move.status);
+        }, DELAY_TIME);
     }
 
     cellClick(cellId) {
