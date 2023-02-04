@@ -13,18 +13,6 @@
     background-color: rgba(176, 249, 232, 0.309);
 }
 
-.EachMapping {
-    display: flex;
-    flex-direction: row;
-}
-
-.GameBody {
-    display: flex;
-    flex-Direction: column;
-    justify-Content: center;
-    margin-top: 100px
-}
-
 .PlayerTurn {
     text-align: center;
     font-size: 25px;
