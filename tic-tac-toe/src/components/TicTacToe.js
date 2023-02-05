@@ -9,7 +9,7 @@ import Button from "@mui/material/Button";
 import OIcon from '@mui/icons-material/RadioButtonUnchecked';
 import XIcon from '@mui/icons-material/Close';
 
-import { RC_ARRAY, USER, COMPUTER, FREE, getNextMove, getRandomMessage, checkUserWins } from './tic_tac_to_logic';
+import { RC_ARRAY, USER, COMPUTER, FREE, getNextMove, getRandomMessage, checkUserWins, COMPUTER_WINS, USER_WINS } from './tic_tac_to_logic';
 
 import OutcomeDialog from './OutcomeDialog';
 
@@ -17,13 +17,17 @@ import './style.css';
 
 const X_SYMBOL = '✕';
 const O_SYMBOL = 'o';
-const DELAY_TIME = 1 * 1000;
+const DELAY_TIME = 1000;
 
 const X_RETURN_VALUE = <XIcon />;
 const O_RETURN_VALUE = <OIcon />;
 
 const USER_MESSAGES = ['It\'s your turn now!', 'Try to win', 'You can do this!', 'You can\'t win me!'];
 const COMPUTER_MESSAGES = ['Now is my turn', 'Let me think for a bit!', 'I will win you!'];
+
+const USER_W_M = 'User Wins!';
+const COMP_W_M = 'Computer Wins!';
+const RES_DRAW = 'Draw Result!'
 
 const cellStyle = (turn) => {
     return {
@@ -73,24 +77,26 @@ class TicTacToe extends React.Component {
                 board[move.cellId] = COMPUTER;
                 this.setState({ turn: USER, board });
             }
-            if (move.status === 'computer-wins') {
-                this.setState({ openDialog: true, outcomeMessage: 'Computer Wins!' });
-            } else if (!this.state.board.includes(0) || (userResult === 'user-wins' && move.status === 'computer-wins')) {
-                this.setState({ openDialog: true, outcomeMessage: 'Draw Result!' });
+            if (move.status === COMPUTER_WINS) {
+                this.setState({ openDialog: true, outcomeMessage: COMP_W_M, playerTurn: COMP_W_M });
+            } else if (!this.state.board.includes(0) || (userResult === USER_WINS && move.status === COMPUTER_WINS)) {
+                this.setState({ openDialog: true, outcomeMessage: RES_DRAW, playerTurn: RES_DRAW });
+            } else if (move.status === USER_WINS) {
+                this.setState({ openDialog: true, outcomeMessage: USER_W_M, playerTurn: USER_W_M });
             } else {
-                if (userResult === 'user-wins') {
-                    this.setState({ openDialog: true, outcomeMessage: 'User Wins!' });
+                if (userResult === USER_WINS) {
+                    this.setState({ openDialog: true, outcomeMessage: USER_W_M, playerTurn: USER_W_M });
                 }
             }
-            this.setState({ firstTime: false, playerTurn: 'Start the Game' }, () => {
-                if (move.status === 'computer-wins') {
-                    this.setState({ playerTurn: 'Computer Wins!' });
-                } else if (!this.state.board.includes(0) || (userResult === 'user-wins' && move.status === 'computer-wins')) {
-                    this.setState({ playerTurn: 'Draw Result!' });
-                } else if (userResult === 'user-wins') {
-                    this.setState({ playerTurn: 'User Wins!' });
-                } else if (move.status === 'user-wins') {
-                    this.setState({ playerTurn: 'User Wins!' });
+            this.setState({ firstTime: false }, () => {
+                if (move.status === COMPUTER_WINS) {
+                    this.setState({ playerTurn: COMP_W_M });
+                } else if (move.status === USER_WINS) {
+                    this.setState({ playerTurn: USER_W_M });
+                } else if (!this.state.board.includes(0) || (userResult === USER_WINS && move.status === COMPUTER_WINS)) {
+                    this.setState({ playerTurn: RES_DRAW });
+                } else if (userResult === USER_WINS) {
+                    this.setState({ playerTurn: USER_W_M });
                 } else {
                     this.setState({ playerTurn: getRandomMessage(USER_MESSAGES) });
                 }
