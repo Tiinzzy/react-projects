@@ -8,7 +8,7 @@ import Dialog from '@mui/material/Dialog';
 import OIcon from '@mui/icons-material/RadioButtonUnchecked';
 import XIcon from '@mui/icons-material/Close';
 
-import { RC_ARRAY, USER, COMPUTER, FREE, getNextMove, getRandomMessage } from './tic_tac_to_logic';
+import { RC_ARRAY, USER, COMPUTER, FREE, getNextMove, getRandomMessage, checkUserWins } from './tic_tac_to_logic';
 
 import OutcomeDialog from './OutcomeDialog';
 
@@ -74,6 +74,11 @@ class TicTacToe extends React.Component {
                 this.setState({ openDialog: true, outcomeMessage: 'Computer Wins!' });
             } else if (!this.state.board.includes(0)) {
                 this.setState({ openDialog: true, outcomeMessage: 'Draw Result!' });
+            } else {
+                let result = checkUserWins(this.state.board);
+                if (result === 'user-wins') {
+                    this.setState({ openDialog: true, outcomeMessage: 'User Wins!' });
+                }
             }
             this.setState({ firstTime: false, playerTurn: 'Start the Game' }, () => {
                 this.setState({ playerTurn: getRandomMessage(USER_MESSAGES) });
