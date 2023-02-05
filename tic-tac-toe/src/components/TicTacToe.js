@@ -21,7 +21,7 @@ const DELAY_TIME = 1 * 1000;
 const X_RETURN_VALUE = <XIcon />;
 const O_RETURN_VALUE = <OIcon />;
 
-const USER_MESSAGES = ['It\'s your turn now!', 'Try to win', 'You can do this!'];
+const USER_MESSAGES = ['It\'s your turn now!', 'Try to win', 'You can do this!', 'You can\'t win me!'];
 const COMPUTER_MESSAGES = ['Now is my turn', 'Let me think for a bit!', 'I will win you!'];
 
 const cellStyle = (turn) => {
@@ -65,6 +65,7 @@ class TicTacToe extends React.Component {
     playComputer() {
         setTimeout(() => {
             let move = getNextMove(this.state.board, FREE);
+            let userResult = checkUserWins(this.state.board);
             if (move.cellId !== null) {
                 let board = this.state.board;
                 board[move.cellId] = COMPUTER;
@@ -72,16 +73,23 @@ class TicTacToe extends React.Component {
             }
             if (move.status === 'computer-wins') {
                 this.setState({ openDialog: true, outcomeMessage: 'Computer Wins!' });
-            } else if (!this.state.board.includes(0)) {
+            } else if (!this.state.board.includes(0) || (userResult === 'user-wins' && move.status === 'computer-wins')) {
                 this.setState({ openDialog: true, outcomeMessage: 'Draw Result!' });
             } else {
-                let result = checkUserWins(this.state.board);
-                if (result === 'user-wins') {
+                if (userResult === 'user-wins') {
                     this.setState({ openDialog: true, outcomeMessage: 'User Wins!' });
                 }
             }
             this.setState({ firstTime: false, playerTurn: 'Start the Game' }, () => {
-                this.setState({ playerTurn: getRandomMessage(USER_MESSAGES) });
+                if (move.status === 'computer-wins') {
+                    this.setState({ playerTurn: 'Computer Wins!' });
+                } else if (!this.state.board.includes(0) || (userResult === 'user-wins' && move.status === 'computer-wins')) {
+                    this.setState({ playerTurn: 'Draw Result!' });
+                } else if (userResult === 'user-wins') {
+                    this.setState({ playerTurn: 'User Wins!' })
+                } else {
+                    this.setState({ playerTurn: getRandomMessage(USER_MESSAGES) });
+                }
             });
         }, DELAY_TIME);
     }
