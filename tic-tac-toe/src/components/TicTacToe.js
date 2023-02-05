@@ -88,7 +88,9 @@ class TicTacToe extends React.Component {
                 } else if (!this.state.board.includes(0) || (userResult === 'user-wins' && move.status === 'computer-wins')) {
                     this.setState({ playerTurn: 'Draw Result!' });
                 } else if (userResult === 'user-wins') {
-                    this.setState({ playerTurn: 'User Wins!' })
+                    this.setState({ playerTurn: 'User Wins!' });
+                } else if (move.status === 'user-wins') {
+                    this.setState({ playerTurn: 'User Wins!' });
                 } else {
                     this.setState({ playerTurn: getRandomMessage(USER_MESSAGES) });
                 }
