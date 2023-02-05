@@ -22,7 +22,7 @@ class OutcomeDialog extends React.Component {
     componentDidMount() {
         if (this.state.outcomeMessage === 'Draw Result!') {
             this.setState({ showSad: true });
-        } else if (this.state.outcomeMessage === 'Computer Wins!') {
+        } else if (this.state.outcomeMessage === 'Computer Wins!' && this.state.outcomeMessage === 'User Wins!') {
             this.setState({ showCongratulations: true });
         }
     }
