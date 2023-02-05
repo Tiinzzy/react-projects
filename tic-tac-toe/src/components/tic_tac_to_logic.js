@@ -3,11 +3,11 @@ export const USER = 1;
 export const COMPUTER = 10;
 export const FREE = 0;
 
-const COMPUTER_WINS = 'computer-wins';
+export const COMPUTER_WINS = 'computer-wins';
 const COMPUTER_PREVENT = 'preventing-user-wins';
 const COMPUTER_PLAN_TO_WIN = 'computer-plans-to-win';
 const COMPUTER_INITIAL_MOVE = 'computer-first-move';
-const USER_WINS = 'user-wins';
+export const USER_WINS = 'user-wins';
 
 export function getNextMove(board) {
     let status = checkUserWins(board);
