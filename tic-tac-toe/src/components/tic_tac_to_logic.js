@@ -7,9 +7,9 @@ const COMPUTER_WINS = 'computer-wins';
 const COMPUTER_PREVENT = 'preventing-user-wins';
 const COMPUTER_PLAN_TO_WIN = 'computer-plans-to-win';
 const COMPUTER_INITIAL_MOVE = 'computer-first-move';
+const USER_WINS = 'user-wins';
 
 export function getNextMove(board) {
-    console.log(board)
     return get_comp_next_move(board);
 }
 
@@ -138,4 +138,16 @@ export function getRandomMessage(arr) {
     let randomSelection = Math.floor(Math.random() * arr.length);
     let message = arr[randomSelection];
     return message;
+}
+
+export function checkUserWins(board) {
+    let rows = find_row_with_sum(board, 3);
+    let columns = find_column_sum(board, 3);
+    let diagonals = find_diagonal_sum(board, 3);
+
+    if (rows.length > 0 || diagonals.length > 0 || columns.length > 0) {
+        let status = USER_WINS;
+        return status;
+    }
+    return null;
 }
