@@ -3,6 +3,11 @@ export const USER = 1;
 export const COMPUTER = 10;
 export const FREE = 0;
 
+const COMPUTER_WINS = 'computer-wins';
+const COMPUTER_PREVENT = 'preventing-user-wins';
+const COMPUTER_PLAN_TO_WIN = 'computer-plans-to-win';
+const COMPUTER_INITIAL_MOVE = 'computer-first-move';
+
 export function getNextMove(board) {
     console.log(board)
     return get_comp_next_move(board);
@@ -118,13 +123,13 @@ function get_comp_next_move(board) {
     let win10 = get_comp_next_move_sum(board, 10);
 
     if (win20.length > 0) {
-        return { cellId: get_a_random_cell_value(win20), status: 'computer-wins' };
+        return { cellId: get_a_random_cell_value(win20), status: COMPUTER_WINS };
     } else if (prevent.length > 0) {
-        return { cellId: get_a_random_cell_value(prevent), status: 'preventing-user-wins' };
+        return { cellId: get_a_random_cell_value(prevent), status: COMPUTER_PREVENT };
     } else if (win10.length > 0) {
-        return { cellId: get_a_random_cell_value(win10), status: 'computer-plans-to-win' };
+        return { cellId: get_a_random_cell_value(win10), status: COMPUTER_PLAN_TO_WIN };
     } else {
-        return { cellId: get_first_move(board), status: 'computer-first-move' };
+        return { cellId: get_first_move(board), status: COMPUTER_INITIAL_MOVE };
     }
 }
 
