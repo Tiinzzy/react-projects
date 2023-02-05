@@ -10,7 +10,12 @@ const COMPUTER_INITIAL_MOVE = 'computer-first-move';
 const USER_WINS = 'user-wins';
 
 export function getNextMove(board) {
-    return get_comp_next_move(board);
+    let status = checkUserWins(board);
+    if (status === USER_WINS) {
+        return { cellId: null, status };
+    } else {
+        return get_comp_next_move(board);
+    }
 }
 
 function find_row_with_sum(board, sum) {
