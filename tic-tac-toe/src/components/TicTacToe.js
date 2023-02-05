@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Dialog from '@mui/material/Dialog';
+import Button from "@mui/material/Button";
 
 import OIcon from '@mui/icons-material/RadioButtonUnchecked';
 import XIcon from '@mui/icons-material/Close';
@@ -54,7 +55,8 @@ class TicTacToe extends React.Component {
             display: true,
             firstTime: true,
             openDialog: false,
-            outcomeMessage: ''
+            outcomeMessage: '',
+            outcome: false
         }
     }
 
@@ -105,7 +107,11 @@ class TicTacToe extends React.Component {
     }
 
     handleCloseDialog() {
-        this.setState({ openDialog: false });
+        this.setState({ openDialog: false, outcome: true });
+    }
+
+    reStartGame() {
+        window.location = '/';
     }
 
     render() {
@@ -140,6 +146,9 @@ class TicTacToe extends React.Component {
                                 ))}
                             </Box>
                         ))}
+                        {this.state.outcome === true &&
+                            <Button className="RestartBtn" variant='contained' onClick={() => this.reStartGame()}>Restart</Button>
+                        }
                     </Box>}
                 <Dialog open={this.state.openDialog} onClose={() => this.handleCloseDialog()}>
                     <OutcomeDialog outcomeMessage={this.state.outcomeMessage} />
