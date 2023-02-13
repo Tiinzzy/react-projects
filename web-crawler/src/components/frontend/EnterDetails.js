@@ -5,6 +5,8 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from "@mui/material/Button";
 
+import BackEndConnection from './BackEndConnection';
+const backend = BackEndConnection.INSTANCE();
 
 class EnterDetails extends React.Component {
 
@@ -28,7 +30,7 @@ class EnterDetails extends React.Component {
     }
 
     sendDataToBackend() {
-        console.log(this.state.url, this.state.depth, this.state.searchNum)
+        backend.get_crawling_result(this.state.url, this.state.depth, this.state.searchNum);
     }
 
     render() {
