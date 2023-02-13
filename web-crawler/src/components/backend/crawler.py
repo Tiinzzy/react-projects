@@ -21,14 +21,36 @@ def open_and_read_url(url):
         return None, None
 
 
-def look_for_a_tag(soup):
+def look_for_a_tag(aTag):
+    if aTag.name == 'a':
+        return True
+    else:
+        return False
 
-    for aTag in soup.recursiveChildGenerator():
-        if aTag.name == 'a':
-            print(aTag)
+
+def loof_for_href(aTag, start_url):
+    all_urls = []
+    raw_url = start_url[:-1] if start_url.endswith('/') else start_url
+    if 'href' in aTag.attrs.keys():
+        href = aTag.attrs['href']
+        if href.startswith('http'):
+            href = href
+            all_urls.append(href)
+        elif href.startswith('//'):
+            href = 'https://' + href[2:]
+            all_urls.append(href)
+        else:
+            href = raw_url + href
+            all_urls.append(href)
+        return (all_urls)
+    else:
+        return None
 
 
 if __name__ == "__main__":
     start_url = input('please enter a url: ')
     html, soup = open_and_read_url(start_url)
-    look_for_a_tag(soup)
+
+    for aTag in soup.recursiveChildGenerator():
+        if look_for_a_tag(aTag):
+            all_urls = loof_for_href(aTag, start_url)
