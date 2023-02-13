@@ -32,9 +32,9 @@ def look_for_a_tag(aTag):
 
 
 def look_for_href(start_url, count):
-    html, soup = open_and_read_url(start_url)
     all_urls = []
 
+    html, soup = open_and_read_url(start_url)
     for aTag in soup.recursiveChildGenerator():
         if look_for_a_tag(aTag):
             raw_url = start_url[:-1] if start_url.endswith('/') else start_url
@@ -46,20 +46,29 @@ def look_for_href(start_url, count):
                     href = 'https://' + href[2:]
                 else:
                     href = raw_url + href
-                if href not in already_seen_urls:
+                if href not in already_seen_urls and href is not None:
                     already_seen_urls.append(href)
                     all_urls.append(href)
     return random.choices(all_urls, k=count)
 
 
-if __name__ == "__main__":
-    start_url = input('please enter a url: ')
-
-    random_urls = look_for_href(start_url, count=5)
+def crawl_the_web(start_url, depth, count, level):
+    if level > depth:
+        return
     i = 0
-    for url in random_urls:
-        urls = look_for_href(url, count=5)
-        print(i , url)
-        print(urls)
-        print()
+    for url in start_url:
+        print(url)
+        if url is not None:
+            random_urls = look_for_href(url, count)
+        # print(i, random_urls)
+        # print()
         i += 1
+        crawl_the_web(random_urls, depth, count, level+1)
+
+
+if __name__ == "__main__":
+    # start_url = input('please enter a url: ')
+
+    start_url = 'https://en.wikipedia.org/wiki/cat'
+
+    crawl_the_web([start_url], depth=3, count=2, level=0)
