@@ -55,5 +55,11 @@ def look_for_href(start_url, count):
 if __name__ == "__main__":
     start_url = input('please enter a url: ')
 
-    random_urls = look_for_href(start_url, count=3)
-    print(random_urls)
+    random_urls = look_for_href(start_url, count=5)
+    i = 0
+    for url in random_urls:
+        urls = look_for_href(url, count=5)
+        print(i , url)
+        print(urls)
+        print()
+        i += 1
