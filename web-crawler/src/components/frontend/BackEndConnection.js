@@ -1,9 +1,12 @@
 import axios from 'axios';
 
 class BackEndConnectionImpl {
-    async get_crawling_result(url, depth, searchNum) {
-        return axios.get('/get-url-crawl-result?url=' + url + '&depth=' + depth + '&searchNum=' + searchNum, {})
+    async trigger_crawling(url, depth, searchNum, callback) {
+        return axios.get('/trigger-crawling?url=' + url + '&depth=' + depth + '&searchNum=' + searchNum, {})
             .then(function (response) {
+                if (callback) {
+                    callback(response.data);
+                }
                 return response.data;
             })
             .catch(function (error) {
