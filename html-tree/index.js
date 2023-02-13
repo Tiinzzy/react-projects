@@ -1,27 +1,15 @@
-var HTMLParser = require('node-html-parser');
-var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+var util = require('util');
+var graphviz = require('graphviz');
 
+function displayGraphvis() {
+    var graph = graphviz.digraph("G");
 
-function reqListener() {
-    init(this.responseText);
-}
-
-const req = new XMLHttpRequest();
-req.addEventListener("load", reqListener);
-req.open("GET", "https://en.wikipedia.org/wiki/Jazz");
-req.send();
-
-// ------------------------------------------------------------------------------------------------
-
-function init(html) {
-    let fullHtml = html;
-    var root = HTMLParser.parse(fullHtml);
-    let totalDiv = root.getElementsByTagName('div');
-
-    for (let i in totalDiv) {
-        if (totalDiv[i].rawAttrs === 'class="mw-parser-output"') {
-            console.log(totalDiv[i].innerHTML)
-        }
-    }
-
-}
+    var n1 = g.addNode("Hello", { "color": "blue" });
+    n1.set("style", "filled");
+    g.addNode("World");
+    var e = g.addEdge(n1, "World");
+    e.set("color", "red");
+    console.log(g.to_dot());
+    g.setGraphVizPath("/usr/bin");
+    g.output("svg", "/home/tina/Downloads/test01.svg");
+  }
