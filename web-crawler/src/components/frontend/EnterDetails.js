@@ -11,6 +11,10 @@ import BackEndConnection from './BackEndConnection';
 const backend = BackEndConnection.INSTANCE();
 
 const UPDATE_DATA_INTERVAL = 1000;
+const URL_UPDATE_INTERVAL = 1000;
+
+
+let mountCount = 0;
 
 class EnterDetails extends React.Component {
 
@@ -19,8 +23,32 @@ class EnterDetails extends React.Component {
         this.state = {
             url: 'https://www.bbc.com',
             depth: 3,
-            searchNum: 3
+            searchNum: 3,
+            index: 0,
+            logs: [],
+            urls: []
         }
+    }
+
+    componentDidMount() {
+        if (mountCount > 0) {
+            return;
+        }
+        mountCount += 1;
+
+        let that = this;
+        setInterval(() => {
+            let urls = that.state.urls;
+            let logs = that.state.logs;
+            if (logs.length < urls.length) {
+                logs.push(urls[logs.length]);
+            }
+            that.setState({ logs }, () => {
+                let logsDiv = document.getElementById("logs_container");
+                logsDiv.scrollTop = logsDiv.scrollHeight;
+            });
+
+        }, URL_UPDATE_INTERVAL);
     }
 
     setUrl(e) {
@@ -37,8 +65,6 @@ class EnterDetails extends React.Component {
 
     sendDataToBackend() {
         let url = Base64.encode(this.state.url);
-        // console.log(this.state.url, this.state.depth, this.state.searchNum);
-
         backend.trigger_crawling(url, this.state.depth, this.state.searchNum, (data) => {
             console.log(data);
         });
@@ -46,15 +72,12 @@ class EnterDetails extends React.Component {
         let interval = setInterval(() => {
             backend.get_crawling_result((data) => {
                 let that = this;
-                let url = data.urls.map(e => {
-                    that.setState({ logs: e.url });
-                });
-                document.getElementById('logs').textContent = this.state.logs;
+                that.setState({ urls: data.urls });
                 if (data.finished === true && data.proccess_is_running === false) {
                     clearInterval(interval);
                     return;
                 }
-            })
+            });
         }, UPDATE_DATA_INTERVAL);
     }
 
@@ -74,8 +97,11 @@ class EnterDetails extends React.Component {
                     <Button variant="contained" onClick={() => this.sendDataToBackend()}>Submit</Button>
                 </Box>
 
-                <div id="logs">
-                </div>
+                <Box id="logs_container" style={{ background: 'lightgray', width: 600, marginTop: 20, height: 300, overflowY: 'scroll' }}>
+                    {this.state.logs.map((l, i) => (
+                        <div style={{ marginBottom: 5 }} key={i}>{i + 1}: {l.url.substring(0, 100)}</div>
+                    ))}
+                </Box>
             </Box>
         );
     }
