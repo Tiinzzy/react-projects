@@ -28,8 +28,9 @@ def trigger_crawling():
         [main_url], args.get('depth'), args.get('searchNum')))
     thread.start()
 
-    return jsonify({'message':'process is going on, you will not see anything!!!'})
+    return jsonify({'message': 'process is going on, you will not see anything!!!'})
 
-@app.route("/get-crawl-result", methods=['GET'])
+
+@app.route("/get-crawl-result")
 def get_crawl_result():
     return jsonify(crawler.get_crawl_result())
