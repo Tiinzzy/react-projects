@@ -15,6 +15,20 @@ class BackEndConnectionImpl {
             })
     }
 
+    async get_crawling_result(callback) {
+        return axios.get('/get-crawl-result', {})
+            .then(function (response) {
+                if (callback) {
+                    callback(response.data);
+                }
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+                return false;
+            })
+    }
+
 }
 
 export default class BackEndConnection {
