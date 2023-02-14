@@ -10,6 +10,8 @@ import { Base64 } from 'js-base64';
 import BackEndConnection from './BackEndConnection';
 const backend = BackEndConnection.INSTANCE();
 
+const UPDATE_DATA_INTERVAL = 1000;
+
 class EnterDetails extends React.Component {
 
     constructor(props) {
@@ -40,6 +42,20 @@ class EnterDetails extends React.Component {
         backend.trigger_crawling(url, this.state.depth, this.state.searchNum, (data) => {
             console.log(data);
         });
+
+        let interval = setInterval(() => {
+            backend.get_crawling_result((data) => {
+                let that = this;
+                let url = data.urls.map(e => {
+                    that.setState({ logs: e.url });
+                });
+                document.getElementById('logs').textContent = this.state.logs;
+                if (data.finished === true && data.proccess_is_running === false) {
+                    clearInterval(interval);
+                    return;
+                }
+            })
+        }, UPDATE_DATA_INTERVAL);
     }
 
     render() {
@@ -57,6 +73,9 @@ class EnterDetails extends React.Component {
                 <Box style={{ display: 'flex', justifyContent: 'right' }}>
                     <Button variant="contained" onClick={() => this.sendDataToBackend()}>Submit</Button>
                 </Box>
+
+                <div id="logs">
+                </div>
             </Box>
         );
     }
