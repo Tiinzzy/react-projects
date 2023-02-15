@@ -17,6 +17,7 @@
 }
 
 #logs_container {
+    border: solid 0.5px #e6e6e6;
     background: #f8f8f8;
     width: 600px;
     margin-top: 25px;
@@ -25,7 +26,17 @@
 }
 
 .UrlDataDive {
-    margin-bottom: 6px;
+    padding: 6px;
+    margin-bottom: 2px;
+}
+
+.UrlDataDive:nth-child(even) {
+    background-color: white;
+}
+
+#url_num {
+    font-weight: bold;
+    font-size: 18px;
 }
 
 .UrlData {
