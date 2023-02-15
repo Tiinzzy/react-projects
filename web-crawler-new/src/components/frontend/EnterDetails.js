@@ -27,7 +27,6 @@ class EnterDetails extends React.Component {
             url: 'https://www.foxnews.com/',
             depth: 2,
             searchNum: 2,
-            index: 0,
             logs: [],
             urls: [],
             buttonOff: false,
@@ -49,7 +48,6 @@ class EnterDetails extends React.Component {
             if (logs.length < urls.length) {
                 logs.push(urls[logs.length]);
                 if (logs.length === urls.length) {
-                    clearInterval(true);
                     that.setState({ buttonOff: false, showButton: true });
                 }
             }
@@ -74,24 +72,27 @@ class EnterDetails extends React.Component {
     }
 
     sendDataToBackend() {
-        this.setState({ buttonOff: true });
-        let url = Base64.encode(this.state.url);
-        backend.trigger_crawling(url, this.state.depth, this.state.searchNum, (data) => {
-            console.log(data);
-        });
+        let that = this;
+        this.setState({ buttonOff: true, logs: [], urls: [] }, () => {
+            let url = Base64.encode(that.state.url);
 
-        let interval = setInterval(() => {
-            backend.get_crawling_result((data) => {
-                let that = this;
-                that.setState({ urls: data.urls });
-                console.log(that.state.urls)
-                if (data.finished === true) {
-                    clearInterval(interval);
-                    return;
-                }
+            backend.trigger_crawling(url, that.state.depth, that.state.searchNum, (data) => {
+                console.log(data);
             });
 
-        }, UPDATE_DATA_INTERVAL);
+            let interval = setInterval(() => {
+                backend.get_crawling_result((data) => {
+                    that.setState({ urls: data.urls });
+                    console.log(data.urls)
+                    if (data.finished === true) {
+                        clearInterval(interval);
+                        return;
+                    }
+                });
+
+            }, UPDATE_DATA_INTERVAL);
+        });
+
     }
 
     clearTheResult() {
@@ -120,7 +121,7 @@ class EnterDetails extends React.Component {
                             <span id="url_num">{i + 1}: </span>
                             <Grow in={this.state.grow}
                                 style={{ transformOrigin: '0 0 0' }}
-                                {...(this.state.grow ? { timeout: 1000 } : {})}>
+                                {...(this.state.grow ? { timeout: 2000 } : {})}>
                                 <span className="UrlData">{l.url.substring(0, 100)}</span>
 
                             </Grow>
