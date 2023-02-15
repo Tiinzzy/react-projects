@@ -1,0 +1,33 @@
+.MainBox {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: left;
+    width: 600px;
+    margin-top: 30px
+}
+
+.ButtonBox {
+    display: flex;
+    justify-content: right;
+}
+
+#submit_btn {
+    font-weight: bold !important;
+}
+
+#logs_container {
+    background: #f8f8f8;
+    width: 600px;
+    margin-top: 25px;
+    height: 300px;
+    overflow-y: scroll;
+}
+
+.UrlDataDive {
+    margin-bottom: 6px;
+}
+
+.UrlData {
+    margin-left: 8px;
+}
