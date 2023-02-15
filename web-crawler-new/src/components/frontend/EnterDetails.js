@@ -116,7 +116,8 @@ class EnterDetails extends React.Component {
 
                 <Box id="logs_container">
                     {this.state.logs.map((l, i) => (
-                        <div className="UrlDataDive" key={i}>{i + 1}:
+                        <div className="UrlDataDive" key={i}>
+                            <span id="url_num">{i + 1}: </span>
                             <Grow in={this.state.grow}
                                 style={{ transformOrigin: '0 0 0' }}
                                 {...(this.state.grow ? { timeout: 1000 } : {})}>
