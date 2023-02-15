@@ -1,3 +1,4 @@
+import logging
 import ssl
 import sys
 import random
@@ -18,7 +19,15 @@ crawl_result = {'urls': [], 'finished': False, 'proccess_is_running': False}
 already_seen_urls = []
 
 
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s|%(levelname)s|%(message)s',
+                    datefmt="%Y-%m-%d %H:%M:%S",
+                    filename="/home/tina/Downloads/logs/web-crawling.log",
+                    filemode="a")
+
+
 def open_and_read_url(url):
+    logging.info(f"Opening and reading {url}")
     try:
         html = urllib.request.urlopen(url, context=ctx).read()
         soup = BeautifulSoup(html, 'lxml')
@@ -62,6 +71,7 @@ def look_for_href(start_url, count):
 
 
 def crawl_url(start_url, depth, count, level=0):
+    logging.info("Starting to crawl the web, based on give urls")
     depth = int(depth)
     count = int(count)
     if level > depth:
@@ -76,17 +86,20 @@ def crawl_url(start_url, depth, count, level=0):
 
 
 def init_crawl():
+    logging.info("Initializing crawling")
     crawl_result['urls'] = []
     crawl_result['finished'] = False
     crawl_result['proccess_is_running'] = True
 
 
 def mark_crawl_ended():
+    logging.info("Crawling proccess finished")
     crawl_result['finished'] = True
     crawl_result['proccess_is_running'] = False
 
 
 def get_crawl_result():
+    logging.info("Sending crawling results to frontend")
     return crawl_result
 
 
