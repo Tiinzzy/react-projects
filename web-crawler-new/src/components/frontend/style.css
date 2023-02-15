@@ -30,17 +30,18 @@
     margin-bottom: 2px;
 }
 
-.UrlDataDive:nth-child(even) {
+.UrlDataDive:nth-child(odd) {
     background-color: white;
 }
 
 #url_num {
     font-weight: bold;
-    font-size: 18px;
+    font-size: 14px;
 }
 
 .UrlData {
     margin-left: 8px;
+    font-size: 14px;
 }
 
 .ButtonBoxClear {
