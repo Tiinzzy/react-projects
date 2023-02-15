@@ -24,14 +24,15 @@ class EnterDetails extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            url: 'https://en.wikipedia.org/wiki/Jazz',
+            url: 'https://www.foxnews.com/',
             depth: 3,
             searchNum: 3,
             index: 0,
             logs: [],
             urls: [],
             buttonOff: false,
-            grow: false
+            grow: false,
+            showButton: false
         }
     }
 
@@ -81,13 +82,17 @@ class EnterDetails extends React.Component {
                 that.setState({ urls: data.urls });
                 console.log(that.state.urls)
                 if (data.finished === true) {
-                    that.setState({ buttonOff: false });
+                    that.setState({ buttonOff: false, showButton: true });
                     clearInterval(interval);
                     return;
                 }
             });
 
         }, UPDATE_DATA_INTERVAL);
+    }
+
+    clearTheResult() {
+        window.location = "./"
     }
 
     render() {
@@ -102,7 +107,7 @@ class EnterDetails extends React.Component {
                 <Typography mb={0.5} variant="body1">Number of Search</Typography>
                 <TextField size="small" variant="outlined" value={this.state.searchNum} style={{ marginBottom: 25 }} onChange={(e) => this.setSearch(e)} />
 
-                <Box className="ButtonBox">
+                <Box className="ButtonBoxSubmit">
                     <Button id="submit_btn" variant="contained" onClick={() => this.sendDataToBackend()} disabled={this.state.buttonOff}>Submit</Button>
                 </Box>
 
@@ -118,6 +123,10 @@ class EnterDetails extends React.Component {
                         </div>
                     ))}
                 </Box>
+                {this.state.showButton === true &&
+                    <Box className="ButtonBoxClear">
+                        <Button id="clear_btn" variant="contained" onClick={() => this.clearTheResult()}>clear</Button>
+                    </Box>}
             </Box>
         );
     }
