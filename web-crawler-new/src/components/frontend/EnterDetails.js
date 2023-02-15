@@ -84,20 +84,20 @@ class EnterDetails extends React.Component {
     render() {
         return (
             <Box style={{ display: 'flex', flexDirection: 'column', alignItems: 'left', justifyContent: 'left', width: 600, marginTop: 30 }}>
-                <Typography>Enter URL</Typography>
-                <TextField size="small" variant="outlined" value={this.state.url} style={{ marginBottom: 20 }} onChange={(e) => this.setUrl(e)} />
+                <Typography mb={0.5} variant="body1">Enter URL</Typography>
+                <TextField size="small" variant="outlined" value={this.state.url} style={{ marginBottom: 25 }} onChange={(e) => this.setUrl(e)} />
 
-                <Typography>Depth of Search</Typography>
-                <TextField size="small" variant="outlined" value={this.state.depth} style={{ marginBottom: 20 }} onChange={(e) => this.setDepth(e)} />
+                <Typography mb={0.5} variant="body1">Depth of Search</Typography>
+                <TextField size="small" variant="outlined" value={this.state.depth} style={{ marginBottom: 25 }} onChange={(e) => this.setDepth(e)} />
 
-                <Typography>Number of Search</Typography>
-                <TextField size="small" variant="outlined" value={this.state.searchNum} style={{ marginBottom: 20 }} onChange={(e) => this.setSearch(e)} />
+                <Typography mb={0.5} variant="body1">Number of Search</Typography>
+                <TextField size="small" variant="outlined" value={this.state.searchNum} style={{ marginBottom: 25 }} onChange={(e) => this.setSearch(e)} />
 
                 <Box style={{ display: 'flex', justifyContent: 'right' }}>
                     <Button variant="contained" onClick={() => this.sendDataToBackend()}>Submit</Button>
                 </Box>
 
-                <Box id="logs_container" style={{ background: 'lightgray', width: 600, marginTop: 20, height: 300, overflowY: 'scroll' }}>
+                <Box id="logs_container" style={{ background: '#eaeaea', width: 600, marginTop: 20, height: 300, overflowY: 'scroll' }}>
                     {this.state.logs.map((l, i) => (
                         <div style={{ marginBottom: 5 }} key={i}>{i + 1}: {l.url.substring(0, 100)}</div>
                     ))}
