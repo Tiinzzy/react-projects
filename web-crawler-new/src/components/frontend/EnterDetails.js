@@ -26,7 +26,8 @@ class EnterDetails extends React.Component {
             searchNum: 3,
             index: 0,
             logs: [],
-            urls: []
+            urls: [],
+            buttonOff: false
         }
     }
 
@@ -64,6 +65,7 @@ class EnterDetails extends React.Component {
     }
 
     sendDataToBackend() {
+        this.setState({ buttonOff: true });
         let url = Base64.encode(this.state.url);
         backend.trigger_crawling(url, this.state.depth, this.state.searchNum, (data) => {
             console.log(data);
@@ -73,11 +75,14 @@ class EnterDetails extends React.Component {
             backend.get_crawling_result((data) => {
                 let that = this;
                 that.setState({ urls: data.urls });
-                if (data.finished === true && data.proccess_is_running === false) {
+                console.log(that.state.urls)
+                if (data.finished === true ) {
+                    that.setState({ buttonOff: false });
                     clearInterval(interval);
                     return;
                 }
             });
+
         }, UPDATE_DATA_INTERVAL);
     }
 
@@ -94,10 +99,10 @@ class EnterDetails extends React.Component {
                 <TextField size="small" variant="outlined" value={this.state.searchNum} style={{ marginBottom: 25 }} onChange={(e) => this.setSearch(e)} />
 
                 <Box style={{ display: 'flex', justifyContent: 'right' }}>
-                    <Button variant="contained" onClick={() => this.sendDataToBackend()}>Submit</Button>
+                    <Button variant="contained" onClick={() => this.sendDataToBackend()} disabled={this.state.buttonOff}>Submit</Button>
                 </Box>
 
-                <Box id="logs_container" style={{ background: '#eaeaea', width: 600, marginTop: 20, height: 300, overflowY: 'scroll' }}>
+                <Box id="logs_container" style={{ background: '#eaeaea', width: 600, marginTop: 25, height: 300, overflowY: 'scroll' }}>
                     {this.state.logs.map((l, i) => (
                         <div style={{ marginBottom: 5 }} key={i}>{i + 1}: {l.url.substring(0, 100)}</div>
                     ))}
