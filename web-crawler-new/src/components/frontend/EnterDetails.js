@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from "@mui/material/Button";
+import Grow from '@mui/material/Grow';
 
 import { Base64 } from 'js-base64';
 
@@ -23,13 +24,14 @@ class EnterDetails extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            url: 'https://www.bbc.com',
+            url: 'https://en.wikipedia.org/wiki/Jazz',
             depth: 3,
             searchNum: 3,
             index: 0,
             logs: [],
             urls: [],
-            buttonOff: false
+            buttonOff: false,
+            grow: false
         }
     }
 
@@ -46,7 +48,7 @@ class EnterDetails extends React.Component {
             if (logs.length < urls.length) {
                 logs.push(urls[logs.length]);
             }
-            that.setState({ logs }, () => {
+            that.setState({ grow: true, logs }, () => {
                 let logsDiv = document.getElementById("logs_container");
                 logsDiv.scrollTop = logsDiv.scrollHeight;
             });
@@ -107,7 +109,12 @@ class EnterDetails extends React.Component {
                 <Box id="logs_container">
                     {this.state.logs.map((l, i) => (
                         <div className="UrlDataDive" key={i}>{i + 1}:
-                            <span className="UrlData">{l.url.substring(0, 100)}</span>
+                            <Grow in={this.state.grow}
+                                style={{ transformOrigin: '0 0 0' }}
+                                {...(this.state.grow ? { timeout: 1000 } : {})}>
+                                <span className="UrlData">{l.url.substring(0, 100)}</span>
+
+                            </Grow>
                         </div>
                     ))}
                 </Box>
