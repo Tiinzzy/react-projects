@@ -25,14 +25,14 @@ class EnterDetails extends React.Component {
         super(props);
         this.state = {
             url: 'https://www.foxnews.com/',
-            depth: 3,
-            searchNum: 3,
+            depth: 2,
+            searchNum: 2,
             index: 0,
             logs: [],
             urls: [],
             buttonOff: false,
             grow: false,
-            showButton: false
+            showButton: false,
         }
     }
 
@@ -48,6 +48,10 @@ class EnterDetails extends React.Component {
             let logs = that.state.logs;
             if (logs.length < urls.length) {
                 logs.push(urls[logs.length]);
+                if (logs.length === urls.length) {
+                    clearInterval(true);
+                    that.setState({ buttonOff: false, showButton: true });
+                }
             }
             that.setState({ grow: true, logs }, () => {
                 let logsDiv = document.getElementById("logs_container");
@@ -82,7 +86,6 @@ class EnterDetails extends React.Component {
                 that.setState({ urls: data.urls });
                 console.log(that.state.urls)
                 if (data.finished === true) {
-                    that.setState({ buttonOff: false, showButton: true });
                     clearInterval(interval);
                     return;
                 }
