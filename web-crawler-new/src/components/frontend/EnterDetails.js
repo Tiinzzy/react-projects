@@ -8,11 +8,13 @@ import Button from "@mui/material/Button";
 import { Base64 } from 'js-base64';
 
 import BackEndConnection from './BackEndConnection';
+
+import './style.css';
+
 const backend = BackEndConnection.INSTANCE();
 
 const UPDATE_DATA_INTERVAL = 1000;
 const URL_UPDATE_INTERVAL = 1000;
-
 
 let mountCount = 0;
 
@@ -76,7 +78,7 @@ class EnterDetails extends React.Component {
                 let that = this;
                 that.setState({ urls: data.urls });
                 console.log(that.state.urls)
-                if (data.finished === true ) {
+                if (data.finished === true) {
                     that.setState({ buttonOff: false });
                     clearInterval(interval);
                     return;
@@ -88,7 +90,7 @@ class EnterDetails extends React.Component {
 
     render() {
         return (
-            <Box style={{ display: 'flex', flexDirection: 'column', alignItems: 'left', justifyContent: 'left', width: 600, marginTop: 30 }}>
+            <Box className="MainBox">
                 <Typography mb={0.5} variant="body1">Enter URL</Typography>
                 <TextField size="small" variant="outlined" value={this.state.url} style={{ marginBottom: 25 }} onChange={(e) => this.setUrl(e)} />
 
@@ -98,13 +100,15 @@ class EnterDetails extends React.Component {
                 <Typography mb={0.5} variant="body1">Number of Search</Typography>
                 <TextField size="small" variant="outlined" value={this.state.searchNum} style={{ marginBottom: 25 }} onChange={(e) => this.setSearch(e)} />
 
-                <Box style={{ display: 'flex', justifyContent: 'right' }}>
-                    <Button variant="contained" onClick={() => this.sendDataToBackend()} disabled={this.state.buttonOff}>Submit</Button>
+                <Box className="ButtonBox">
+                    <Button id="submit_btn" variant="contained" onClick={() => this.sendDataToBackend()} disabled={this.state.buttonOff}>Submit</Button>
                 </Box>
 
-                <Box id="logs_container" style={{ background: '#eaeaea', width: 600, marginTop: 25, height: 300, overflowY: 'scroll' }}>
+                <Box id="logs_container">
                     {this.state.logs.map((l, i) => (
-                        <div style={{ marginBottom: 5 }} key={i}>{i + 1}: {l.url.substring(0, 100)}</div>
+                        <div className="UrlDataDive" key={i}>{i + 1}:
+                            <span className="UrlData">{l.url.substring(0, 100)}</span>
+                        </div>
                     ))}
                 </Box>
             </Box>
