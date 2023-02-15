@@ -16,7 +16,7 @@ ctx.verify_mode = ssl.CERT_NONE
 
 crawl_result = {'urls': [], 'finished': False, 'proccess_is_running': False}
 
-already_seen_urls = []
+# already_seen_urls = []
 
 
 logging.basicConfig(level=logging.INFO,
@@ -61,9 +61,9 @@ def look_for_href(start_url, count):
                     href = 'https://' + href[2:]
                 else:
                     href = raw_url + href
-            if href not in already_seen_urls:
-                already_seen_urls.append(href)
-                all_urls.append(href)
+            # if href not in already_seen_urls:
+            #     already_seen_urls.append(href)
+            all_urls.append(href)
     if len(all_urls) < count:
         return all_urls
     else:
