@@ -1,0 +1,55 @@
+.MainBox {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: left;
+    width: 600px;
+    margin-top: 30px
+}
+
+.ButtonBoxSubmit {
+    display: flex;
+    justify-content: right;
+}
+
+#submit_btn {
+    font-weight: bold !important;
+}
+
+#logs_container {
+    border: solid 0.5px #e6e6e6;
+    background: #f8f8f8;
+    width: 600px;
+    margin-top: 25px;
+    height: 300px;
+    overflow-y: scroll;
+}
+
+.UrlDataDive {
+    padding: 6px;
+    margin-bottom: 2px;
+}
+
+.UrlDataDive:nth-child(odd) {
+    background-color: white;
+}
+
+#url_num {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.UrlData {
+    margin-left: 8px;
+    font-size: 14px;
+}
+
+.ButtonBoxClear {
+    display: flex;
+    justify-content: right;
+    margin-top: 15px;
+}
+
+#clear_btn {
+    font-weight: bold !important;
+}

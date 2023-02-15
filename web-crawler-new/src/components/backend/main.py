@@ -10,7 +10,7 @@ app = Flask(__name__)
 def background_crawl_url(start_urls, depth, count):
     print('1% ', start_urls, depth, count)
     crawler.init_crawl()
-    crawler.crawl_url(start_urls, depth, count)
+    crawler.crawl_url('ROOT', start_urls, depth, count)
     crawler.mark_crawl_ended()
     print('Crawling is ended')
 
