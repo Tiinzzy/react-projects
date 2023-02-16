@@ -33,8 +33,9 @@ export default class GraphTree extends React.Component {
     }
 
     initGraph() {
-        let tree = this.state.treeData.map(e => (`"${e.parent_id}"->"${e.url_id}";`));
-        let data = `digraph G { ${tree} }`;
+        let tree = this.state.treeData.map(e => (`"${e.parent_id, e.url}"->"${e.url_id, e.url}"`));
+        let finalizedTree = [...new Set(tree)];
+        let data = `digraph G { ${finalizedTree} }`;
         this.setState({ graph: data })
     }
 
