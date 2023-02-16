@@ -44,7 +44,7 @@ export default class GraphTree extends React.Component {
             <Box id="graph-tree-box">
                 {this.state.graph !== null && <Graphviz
                     dot={this.state.graph}
-                    options={{ zoom: true, width: '100%', height: '100%', useWorker: false }}
+                    options={{ zoom: true, width: 1000, height: 1000, useWorker: false }}
                 />}
             </Box>
         );
