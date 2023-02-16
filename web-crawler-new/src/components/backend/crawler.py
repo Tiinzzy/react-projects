@@ -15,8 +15,9 @@ ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
 
 crawl_result = {'urls': [], 'finished': False,
-                'proccess_is_running': False, 'already_seen_urls': []}
+                'proccess_is_running': False}
 
+storage = {'already_seen_urls': []}
 
 urls_id = {}
 
@@ -73,8 +74,8 @@ def look_for_href(start_url, count):
                     href = 'https://' + href[2:]
                 else:
                     href = raw_url + href
-            if href not in crawl_result['already_seen_urls']:
-                crawl_result['already_seen_urls'].append(href)
+            if href not in storage['already_seen_urls']:
+                storage['already_seen_urls'].append(href)
                 all_urls.append(href)
     if len(all_urls) < count:
         return all_urls
@@ -101,10 +102,12 @@ def crawl_url(path, start_url, depth, count, level=0):
 
 def init_crawl():
     logging.info("Initializing crawling")
+    crawl_result.clear()
     crawl_result['urls'] = []
     crawl_result['finished'] = False
     crawl_result['proccess_is_running'] = True
-    crawl_result['already_seen_urls'] = []
+    storage['already_seen_urls'] = []
+    urls_id.clear()
 
 
 def mark_crawl_ended():
