@@ -1,40 +1,51 @@
-import React from 'react';
-
+import * as React from 'react';
+import TreeView from '@mui/lab/TreeView';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import TreeItem from '@mui/lab/TreeItem';
 import Box from '@mui/material/Box';
 
-import { LISTENERS } from './messaging';
+const data = {
+    id: 'root',
+    name: 'Parent',
+    children: [
+        {
+            id: '1',
+            name: 'Child - 1',
+        },
+        {
+            id: '3',
+            name: 'Child - 3',
+            children: [
+                {
+                    id: '4',
+                    name: 'Child - 4',
+                },
+            ],
+        },
+    ],
+};
 
-import BackEndConnection from './BackEndConnection';
+export default function Tree() {
+    const renderTree = (nodes) => (
+        <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name}>
+            {Array.isArray(nodes.children)
+                ? nodes.children.map((node) => renderTree(node))
+                : null}
+        </TreeItem>
+    );
 
-const backend = BackEndConnection.INSTANCE();
-
-let mountCount = 0;
-
-export default class Tree extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-        }
-    }
-
-    componentDidMount() {
-        if (mountCount > 0) {
-            let that = this;
-            LISTENERS.getTreeData().addEventListener('sending-data-for-tree', (e) => {
-                that.setState({ treeData: e.detail.data });
-            }, false);
-            return;
-        }
-        mountCount += 1;
-    }
-
-
-    render() {
-        return (
-            <Box id="graph-tree-box">
-              {/* https://mui.com/material-ui/react-tree-view/ */}
-            </Box>
-        );
-    }
+    return (
+        <Box style={{ width: 600, height: 200, marginTop: 10 }}>
+            <TreeView
+                aria-label="rich object"
+                defaultCollapseIcon={<ExpandMoreIcon />}
+                defaultExpanded={['root']}
+                defaultExpandIcon={<ChevronRightIcon />}
+                sx={{ height: '100%', flexGrow: 1, width: '100%' }}
+            >
+                {renderTree(data)}
+            </TreeView>
+        </Box>
+    );
 }
