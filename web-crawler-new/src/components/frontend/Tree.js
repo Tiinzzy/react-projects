@@ -1,9 +1,14 @@
-import * as React from 'react';
+import React from 'react';
 import TreeView from '@mui/lab/TreeView';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import TreeItem from '@mui/lab/TreeItem';
 import Box from '@mui/material/Box';
+
+
+import BackEndConnection from './BackEndConnection';
+
+const backend = BackEndConnection.INSTANCE();
 
 const data = {
     id: 'root',
@@ -27,6 +32,7 @@ const data = {
 };
 
 export default function Tree() {
+
     const renderTree = (nodes) => (
         <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name}>
             {Array.isArray(nodes.children)
@@ -34,6 +40,7 @@ export default function Tree() {
                 : null}
         </TreeItem>
     );
+
 
     return (
         <Box style={{ width: 600, height: 200, marginTop: 10 }}>
