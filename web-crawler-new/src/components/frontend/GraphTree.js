@@ -8,25 +8,43 @@ import BackEndConnection from './BackEndConnection';
 
 const backend = BackEndConnection.INSTANCE();
 
+let mountCount = 0;
+
 export default class GraphTree extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            graph: null
         }
     }
 
     componentDidMount() {
-        LISTENERS.getTreeData().addEventListener('sending-data-for-tree', (e) => {
-            console.log(e)
-        }, false);
+        if (mountCount > 0) {
+            let that = this;
+            LISTENERS.getTreeData().addEventListener('sending-data-for-tree', (e) => {
+                that.setState({ treeData: e.detail.data }, () => {
+                    this.initGraph();
+                });
+            }, false);
+            return;
+        }
+        mountCount += 1;
     }
 
+    initGraph() {
+        let tree = this.state.treeData.map(e => (`"${e.parent_id}"->"${e.url_id}";`));
+        let data = `digraph G { ${tree} }`;
+        this.setState({ graph: data })
+    }
 
     render() {
         return (
             <Box id="graph-tree-box">
-                hi
+                {this.state.graph !== null && <Graphviz
+                    dot={this.state.graph}
+                    options={{ zoom: true, width: '100%', height: '100%', useWorker: false }}
+                />}
             </Box>
         );
     }
