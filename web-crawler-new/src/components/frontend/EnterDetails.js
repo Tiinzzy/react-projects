@@ -5,12 +5,14 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from "@mui/material/Button";
 import Grow from '@mui/material/Grow';
+import Dialog from "@mui/material/Dialog";
 
 import { Base64 } from 'js-base64';
 import { LISTENERS } from './messaging';
 
 import BackEndConnection from './BackEndConnection';
 import GraphTree from "./GraphTree";
+import Tree from "./Tree";
 
 import './style.css';
 
@@ -33,7 +35,8 @@ class EnterDetails extends React.Component {
             urls: [],
             buttonOff: false,
             grow: false,
-            showButton: false
+            showButton: false,
+            open: false
         }
     }
 
@@ -102,9 +105,16 @@ class EnterDetails extends React.Component {
     }
 
     clearTheResult() {
-        window.location = "./"
+        window.location = "./";
     }
 
+    openDialog() {
+        this.setState({ open: true });
+    }
+
+    handleClose() {
+        this.setState({ open: false });
+    }
 
     render() {
         return (
@@ -137,12 +147,17 @@ class EnterDetails extends React.Component {
                 </Box>
                 {this.state.showButton === true &&
                     <Box className="ButtonBoxClear">
+                        <Button id="clear_btn" variant="contained" onClick={() => this.openDialog()} style={{ marginRight: 10 }}>Tree</Button>
                         <Button id="clear_btn" variant="contained" onClick={() => this.clearTheResult()}>clear</Button>
                     </Box>}
 
                 <Box marginTop={15} marginBottom={15}>
                     <GraphTree />
                 </Box>
+
+                <Dialog open={this.state.open} onClose={() => this.handleClose()}>
+                    <Tree />
+                </Dialog>
             </Box>
         );
     }
