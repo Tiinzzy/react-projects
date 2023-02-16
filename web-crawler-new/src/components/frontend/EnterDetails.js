@@ -7,8 +7,10 @@ import Button from "@mui/material/Button";
 import Grow from '@mui/material/Grow';
 
 import { Base64 } from 'js-base64';
+import { LISTENERS } from './messaging';
 
 import BackEndConnection from './BackEndConnection';
+import GraphTree from "./GraphTree";
 
 import './style.css';
 
@@ -83,7 +85,11 @@ class EnterDetails extends React.Component {
             let interval = setInterval(() => {
                 backend.get_crawling_result((data) => {
                     that.setState({ urls: data.urls });
-                    console.log(data.urls)
+                    console.log(data.urls);
+                    const event = new CustomEvent('sending-data-for-tree', {
+                        detail: { data: that.state.urls }
+                    });
+                    LISTENERS.getTreeData().dispatchEvent(event);
                     if (data.finished === true) {
                         clearInterval(interval);
                         return;
@@ -132,6 +138,10 @@ class EnterDetails extends React.Component {
                     <Box className="ButtonBoxClear">
                         <Button id="clear_btn" variant="contained" onClick={() => this.clearTheResult()}>clear</Button>
                     </Box>}
+
+                <Box marginTop={20}>
+                    <GraphTree />
+                </Box>
             </Box>
         );
     }
