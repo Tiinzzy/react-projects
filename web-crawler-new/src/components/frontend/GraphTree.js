@@ -2,40 +2,30 @@ import React from 'react';
 
 import Box from '@mui/material/Box';
 import { Graphviz } from "graphviz-react";
-import { LISTENERS } from './messaging';
 
 import BackEndConnection from './BackEndConnection';
 
 const backend = BackEndConnection.INSTANCE();
 
-let mountCount = 0;
 
 export default class GraphTree extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            treeData: props.data,
             graph: null
         }
     }
 
     componentDidMount() {
-        if (mountCount > 0) {
-            let that = this;
-            LISTENERS.getTreeData().addEventListener('sending-data-for-tree', (e) => {
-                that.setState({ treeData: e.detail.data }, () => {
-                    this.initGraph();
-                });
-            }, false);
-            return;
-        }
-        mountCount += 1;
-    }
-
-    initGraph() {
-        let tree = this.state.treeData.map(e => (`"${e.parent_id, e.url}"->"${e.url_id, e.url}"`));
+        let tree = this.state.treeData.map(e => (`"${e.parent_id}"->"${e.url_id}"`));
         let finalizedTree = [...new Set(tree)];
-        let data = `digraph G { ${finalizedTree} }`;
+
+        finalizedTree.forEach(e => console.log(e));
+
+        let data = 'digraph G { ' + finalizedTree.join(';') + '}';
+        console.log(data);
         this.setState({ graph: data })
     }
 
