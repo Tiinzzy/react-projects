@@ -5,17 +5,22 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from "@mui/material/Button";
 import Grow from '@mui/material/Grow';
+import Dialog from "@mui/material/Dialog";
 
 import { Base64 } from 'js-base64';
 
 import BackEndConnection from './BackEndConnection';
+import GraphTree from "./GraphTree";
+import Tree from "./Tree";
 
 import './style.css';
 
+import { urlArrays2Tree } from './helper'
+
 const backend = BackEndConnection.INSTANCE();
 
-const UPDATE_DATA_INTERVAL = 1000;
-const URL_UPDATE_INTERVAL = 1000;
+const UPDATE_DATA_INTERVAL = 500;
+const URL_UPDATE_INTERVAL = 500;
 
 let mountCount = 0;
 
@@ -29,9 +34,11 @@ class EnterDetails extends React.Component {
             searchNum: 2,
             logs: [],
             urls: [],
+            graphData: [],
             buttonOff: false,
             grow: false,
             showButton: false,
+            open: false
         }
     }
 
@@ -39,8 +46,8 @@ class EnterDetails extends React.Component {
         if (mountCount > 0) {
             return;
         }
-        mountCount += 1;
 
+        mountCount += 1;
         let that = this;
         setInterval(() => {
             let urls = that.state.urls;
@@ -48,7 +55,7 @@ class EnterDetails extends React.Component {
             if (logs.length < urls.length) {
                 logs.push(urls[logs.length]);
                 if (logs.length === urls.length) {
-                    that.setState({ buttonOff: false, showButton: true });
+                    that.setState({ buttonOff: false, showButton: true, graphData: logs });
                 }
             }
             that.setState({ grow: true, logs }, () => {
@@ -57,6 +64,7 @@ class EnterDetails extends React.Component {
             });
 
         }, URL_UPDATE_INTERVAL);
+
     }
 
     setUrl(e) {
@@ -73,7 +81,7 @@ class EnterDetails extends React.Component {
 
     sendDataToBackend() {
         let that = this;
-        this.setState({ buttonOff: true, logs: [], urls: [] }, () => {
+        this.setState({ buttonOff: true, logs: [], urls: [], graphData: [], showButton: false }, () => {
             let url = Base64.encode(that.state.url);
 
             backend.trigger_crawling(url, that.state.depth, that.state.searchNum, (data) => {
@@ -83,11 +91,11 @@ class EnterDetails extends React.Component {
             let interval = setInterval(() => {
                 backend.get_crawling_result((data) => {
                     that.setState({ urls: data.urls });
-                    console.log(data.urls)
+                    console.log('--> ', data);
                     if (data.finished === true) {
                         clearInterval(interval);
                         return;
-                    }
+                    };
                 });
 
             }, UPDATE_DATA_INTERVAL);
@@ -96,7 +104,17 @@ class EnterDetails extends React.Component {
     }
 
     clearTheResult() {
-        window.location = "./"
+        window.location = "./";
+    }
+
+    open3() {
+        let treeData = urlArrays2Tree(this.state.logs);
+        console.log(treeData);
+        // this.setState({ open: true });
+    }
+
+    handleClose() {
+        // this.setState({ open: false });
     }
 
     render() {
@@ -130,8 +148,17 @@ class EnterDetails extends React.Component {
                 </Box>
                 {this.state.showButton === true &&
                     <Box className="ButtonBoxClear">
+                        <Button id="clear_btn" variant="contained" onClick={() => this.open3()} style={{ marginRight: 10 }}>Tree</Button>
                         <Button id="clear_btn" variant="contained" onClick={() => this.clearTheResult()}>clear</Button>
                     </Box>}
+
+                <Box marginTop={15} marginBottom={15}>
+                    {this.state.graphData.length > 0 && <GraphTree data={this.state.graphData} />}
+                </Box>
+
+                <Dialog open={this.state.open} onClose={() => this.handleClose()}>
+                    <Tree />
+                </Dialog>
             </Box>
         );
     }

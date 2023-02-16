@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: left;
     justify-content: left;
-    width: 600px;
+    width: 1000px;
     margin-top: 30px
 }
 
@@ -19,7 +19,7 @@
 #logs_container {
     border: solid 0.5px #e6e6e6;
     background: #f8f8f8;
-    width: 600px;
+    width: 1000px;
     margin-top: 25px;
     height: 300px;
     overflow-y: scroll;
@@ -52,4 +52,10 @@
 
 #clear_btn {
     font-weight: bold !important;
+}
+
+#graph-tree-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
