@@ -43,11 +43,11 @@ class EnterDetails extends React.Component {
             setInterval(() => {
                 let urls = that.state.urls;
                 let logs = that.state.logs;
-                const event = new CustomEvent('sending-data-for-tree', {
-                    detail: { data: urls }
-                });
-                LISTENERS.getTreeData().dispatchEvent(event);
                 if (logs.length < urls.length) {
+                    const event = new CustomEvent('sending-data-for-tree', {
+                        detail: { data: urls }
+                    });
+                    LISTENERS.getTreeData().dispatchEvent(event);
                     logs.push(urls[logs.length]);
                     if (logs.length === urls.length) {
                         that.setState({ buttonOff: false, showButton: true });
