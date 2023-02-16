@@ -33,7 +33,7 @@ class EnterDetails extends React.Component {
             urls: [],
             buttonOff: false,
             grow: false,
-            showButton: false,
+            showButton: false
         }
     }
 
@@ -105,6 +105,7 @@ class EnterDetails extends React.Component {
         window.location = "./"
     }
 
+
     render() {
         return (
             <Box className="MainBox">
@@ -139,7 +140,7 @@ class EnterDetails extends React.Component {
                         <Button id="clear_btn" variant="contained" onClick={() => this.clearTheResult()}>clear</Button>
                     </Box>}
 
-                <Box marginTop={20}>
+                <Box marginTop={15} marginBottom={15}>
                     <GraphTree />
                 </Box>
             </Box>
