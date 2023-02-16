@@ -39,26 +39,30 @@ class EnterDetails extends React.Component {
 
     componentDidMount() {
         if (mountCount > 0) {
+            let that = this;
+            setInterval(() => {
+                let urls = that.state.urls;
+                let logs = that.state.logs;
+                const event = new CustomEvent('sending-data-for-tree', {
+                    detail: { data: urls }
+                });
+                LISTENERS.getTreeData().dispatchEvent(event);
+                if (logs.length < urls.length) {
+                    logs.push(urls[logs.length]);
+                    if (logs.length === urls.length) {
+                        that.setState({ buttonOff: false, showButton: true });
+                    }
+                }
+                that.setState({ grow: true, logs }, () => {
+                    let logsDiv = document.getElementById("logs_container");
+                    logsDiv.scrollTop = logsDiv.scrollHeight;
+                });
+
+            }, URL_UPDATE_INTERVAL);
             return;
         }
         mountCount += 1;
 
-        let that = this;
-        setInterval(() => {
-            let urls = that.state.urls;
-            let logs = that.state.logs;
-            if (logs.length < urls.length) {
-                logs.push(urls[logs.length]);
-                if (logs.length === urls.length) {
-                    that.setState({ buttonOff: false, showButton: true });
-                }
-            }
-            that.setState({ grow: true, logs }, () => {
-                let logsDiv = document.getElementById("logs_container");
-                logsDiv.scrollTop = logsDiv.scrollHeight;
-            });
-
-        }, URL_UPDATE_INTERVAL);
     }
 
     setUrl(e) {
@@ -86,14 +90,10 @@ class EnterDetails extends React.Component {
                 backend.get_crawling_result((data) => {
                     that.setState({ urls: data.urls });
                     console.log(data.urls);
-                    const event = new CustomEvent('sending-data-for-tree', {
-                        detail: { data: that.state.urls }
-                    });
-                    LISTENERS.getTreeData().dispatchEvent(event);
                     if (data.finished === true) {
                         clearInterval(interval);
                         return;
-                    }
+                    };
                 });
 
             }, UPDATE_DATA_INTERVAL);
