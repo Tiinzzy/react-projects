@@ -109,12 +109,11 @@ class EnterDetails extends React.Component {
 
     open3() {
         let treeData = urlArrays2Tree(this.state.logs);
-        console.log(treeData);
-        // this.setState({ open: true });
+        this.setState({ open: true, treeData: treeData });
     }
 
     handleClose() {
-        // this.setState({ open: false });
+        this.setState({ open: false });
     }
 
     render() {
@@ -156,8 +155,8 @@ class EnterDetails extends React.Component {
                     {this.state.graphData.length > 0 && <GraphTree data={this.state.graphData} />}
                 </Box>
 
-                <Dialog open={this.state.open} onClose={() => this.handleClose()}>
-                    <Tree />
+                <Dialog maxWidth='lg' open={this.state.open} onClose={() => this.handleClose()}>
+                    <Tree treeData={this.state.treeData}/> 
                 </Dialog>
             </Box>
         );
