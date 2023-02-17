@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import TreeView from '@mui/lab/TreeView';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -30,7 +30,7 @@ const data = {
     ],
 };
 
-export default function Tree() {
+export default function Tree(props) {
 
     const renderTree = (nodes) => (
         <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name}>
@@ -40,17 +40,16 @@ export default function Tree() {
         </TreeItem>
     );
 
-
     return (
-        <Box style={{ width: 600, height: 200, marginTop: 10 }}>
+        <Box style={{ width: window.innerWidth * 0.75, height: window.innerHeight * 0.75}}>
             <TreeView
                 aria-label="rich object"
                 defaultCollapseIcon={<ExpandMoreIcon />}
-                defaultExpanded={['root']}
+                defaultExpanded={props.treeData.defaultExpanded}
                 defaultExpandIcon={<ChevronRightIcon />}
                 sx={{ height: '100%', flexGrow: 1, width: '100%' }}
             >
-                {renderTree(data)}
+                {renderTree(props.treeData.root)}
             </TreeView>
         </Box>
     );
