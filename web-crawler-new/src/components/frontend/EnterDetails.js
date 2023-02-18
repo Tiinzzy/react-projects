@@ -10,7 +10,6 @@ import Dialog from "@mui/material/Dialog";
 import { Base64 } from 'js-base64';
 
 import BackEndConnection from './BackEndConnection';
-import { USER_ID } from './BackEndConnection';
 import GraphTree from "./GraphTree";
 import Tree from "./Tree";
 
@@ -21,7 +20,7 @@ import { urlArrays2Tree } from './helper'
 const backend = BackEndConnection.INSTANCE();
 
 const UPDATE_DATA_INTERVAL = 500;
-const URL_UPDATE_INTERVAL = 100;
+const URL_UPDATE_INTERVAL = 200;
 
 let mountCount = 0;
 
@@ -58,11 +57,11 @@ class EnterDetails extends React.Component {
                 if (logs.length === urls.length) {
                     that.setState({ buttonOff: false, showButton: true });
                 }
+                that.setState({ grow: true, logs }, () => {
+                    let logsDiv = document.getElementById("logs_container");
+                    logsDiv.scrollTop = logsDiv.scrollHeight;
+                });
             }
-            that.setState({ grow: true, logs }, () => {
-                let logsDiv = document.getElementById("logs_container");
-                logsDiv.scrollTop = logsDiv.scrollHeight;
-            });
         }, URL_UPDATE_INTERVAL);
     }
 
@@ -85,14 +84,12 @@ class EnterDetails extends React.Component {
                 let interval = setInterval(() => {
                     backend.get_crawling_result((data) => {
                         console.log('--> ', data);
-                        if (USER_ID === data.user_id * 1) {
-                            that.setState({ urls: data.urls });
-                            if (data.finished === true) {
-                                that.setState({ graphData: data.urls });
-                                clearInterval(interval);
-                                return;
-                            };
-                        }
+                        that.setState({ urls: data.urls });
+                        if (data.finished === true) {
+                            that.setState({ graphData: data.urls });
+                            clearInterval(interval);
+                            return;
+                        };
                     });
                 }, UPDATE_DATA_INTERVAL);
             } else {
@@ -145,7 +142,6 @@ class EnterDetails extends React.Component {
                                 style={{ transformOrigin: '0 0 0' }}
                                 {...(this.state.grow ? { timeout: 2000 } : {})}>
                                 <span className="UrlData">{l.url.substring(0, 100)}</span>
-
                             </Grow>
                         </div>
                     ))}

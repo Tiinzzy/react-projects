@@ -1,44 +1,47 @@
 from flask import Flask, request, jsonify
-import crawler
+from crawler_new import Crawler
 import base64
 
 import threading
 
 app = Flask(__name__)
 
-service_acess_lock = threading.Lock()
+crawlers = {}
+
+
+def get_crawler(user_id):
+    if user_id not in crawlers.keys():
+        crawlers[user_id] = Crawler(user_id)
+    return crawlers[user_id]
 
 
 def background_crawl_url(start_urls, depth, count, user_id):
-    print('1% ', start_urls, depth, count)
-    crawler.init_crawl(user_id)
-    crawler.crawl_url(user_id, 'ROOT', start_urls, depth, count)
-    crawler.mark_crawl_ended(user_id)
-    service_acess_lock.release()
+    crawler = get_crawler(user_id)
+
+    crawler.init_crawl()
+    crawler.crawl_url('ROOT', start_urls, depth, count)
+    crawler.mark_crawl_ended()
     print('Crawling is ended')
 
 
 @app.route("/trigger-crawling", methods=['GET'])
 def trigger_crawling():
-    if service_acess_lock.acquire(timeout=0):
-        print('\n\n>>>>>>>>>>>>>>>>>>>>>>> RUNNING A CRAWL PROCEESS \n\n\n')
-        args = request.args
-        
-        url = args.get('url')
-        main_url = base64.b64decode(url).decode('utf-8')
+    args = request.args
+    url = args.get('url')
+    main_url = base64.b64decode(url).decode('utf-8')
 
-        thread = threading.Thread(target=background_crawl_url, args=(
-            [main_url], args.get('depth'), args.get('searchNum'), args.get('userId')))
-        thread.start()
+    thread = threading.Thread(target=background_crawl_url, args=(
+        [main_url], args.get('depth'), args.get('searchNum'), args.get('userId')))
+    thread.start()
 
-        return jsonify({'message': 'process is going on, you will not see anything!!!', 'success': True})
-    else:
-        print('\n\n:( :( It is an embarassment !!!\n\n\n')
-        return jsonify({'message': 'a crawling already is running!', 'success': False})
+    return jsonify({'message': 'process is going on, you will not see anything!!!', 'success': True})
 
 
 @app.route("/get-crawl-result", methods=['GET'])
 def get_crawl_result():
     args = request.args
-    result = crawler.get_crawl_result(args.get('userId'))
+    crawler = get_crawler(args.get('userId'))
+    result = crawler.get_crawl_result()
+    if result['finished']:
+        del crawlers[args.get('userId')]
     return jsonify(result)
