@@ -10,6 +10,7 @@ import Dialog from "@mui/material/Dialog";
 import { Base64 } from 'js-base64';
 
 import BackEndConnection from './BackEndConnection';
+import { USER_ID } from './BackEndConnection';
 import GraphTree from "./GraphTree";
 import Tree from "./Tree";
 
@@ -20,7 +21,7 @@ import { urlArrays2Tree } from './helper'
 const backend = BackEndConnection.INSTANCE();
 
 const UPDATE_DATA_INTERVAL = 500;
-const URL_UPDATE_INTERVAL = 500;
+const URL_UPDATE_INTERVAL = 100;
 
 let mountCount = 0;
 
@@ -46,8 +47,8 @@ class EnterDetails extends React.Component {
         if (mountCount > 0) {
             return;
         }
-
         mountCount += 1;
+
         let that = this;
         setInterval(() => {
             let urls = that.state.urls;
@@ -55,16 +56,14 @@ class EnterDetails extends React.Component {
             if (logs.length < urls.length) {
                 logs.push(urls[logs.length]);
                 if (logs.length === urls.length) {
-                    that.setState({ buttonOff: false, showButton: true, graphData: logs });
+                    that.setState({ buttonOff: false, showButton: true });
                 }
             }
             that.setState({ grow: true, logs }, () => {
                 let logsDiv = document.getElementById("logs_container");
                 logsDiv.scrollTop = logsDiv.scrollHeight;
             });
-
         }, URL_UPDATE_INTERVAL);
-
     }
 
     setUrl(e) {
@@ -80,27 +79,33 @@ class EnterDetails extends React.Component {
     }
 
     sendDataToBackend() {
+        function startStatusCheck(data) {
+            console.log(data);
+            if (data.success) {
+                let interval = setInterval(() => {
+                    backend.get_crawling_result((data) => {
+                        console.log('--> ', data);
+                        if (USER_ID === data.user_id * 1) {
+                            that.setState({ urls: data.urls });
+                            if (data.finished === true) {
+                                that.setState({ graphData: data.urls });
+                                clearInterval(interval);
+                                return;
+                            };
+                        }
+                    });
+                }, UPDATE_DATA_INTERVAL);
+            } else {
+                alert('Sorry, you need to wait.');
+                that.setState({ buttonOff: false });
+            }
+        }
+
         let that = this;
         this.setState({ buttonOff: true, logs: [], urls: [], graphData: [], showButton: false }, () => {
             let url = Base64.encode(that.state.url);
-
-            backend.trigger_crawling(url, that.state.depth, that.state.searchNum, (data) => {
-                console.log(data);
-            });
-
-            let interval = setInterval(() => {
-                backend.get_crawling_result((data) => {
-                    that.setState({ urls: data.urls });
-                    console.log('--> ', data);
-                    if (data.finished === true) {
-                        clearInterval(interval);
-                        return;
-                    };
-                });
-
-            }, UPDATE_DATA_INTERVAL);
+            backend.trigger_crawling(url, that.state.depth, that.state.searchNum, startStatusCheck);
         });
-
     }
 
     clearTheResult() {
@@ -156,7 +161,7 @@ class EnterDetails extends React.Component {
                 </Box>
 
                 <Dialog maxWidth='lg' open={this.state.open} onClose={() => this.handleClose()}>
-                    <Tree treeData={this.state.treeData}/> 
+                    <Tree treeData={this.state.treeData} />
                 </Dialog>
             </Box>
         );
