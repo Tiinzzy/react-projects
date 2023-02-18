@@ -21,7 +21,7 @@ import { urlArrays2Tree } from './helper'
 const backend = BackEndConnection.INSTANCE();
 
 const UPDATE_DATA_INTERVAL = 500;
-const URL_UPDATE_INTERVAL = 500;
+const URL_UPDATE_INTERVAL = 100;
 
 let mountCount = 0;
 
