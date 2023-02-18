@@ -8,16 +8,13 @@ app = Flask(__name__)
 
 service_acess_lock = threading.Lock()
 
-user_info = {'id': None}
 
-
-def background_crawl_url(start_urls, depth, count):
+def background_crawl_url(start_urls, depth, count, user_id):
     print('1% ', start_urls, depth, count)
-    crawler.init_crawl()
-    crawler.crawl_url('ROOT', start_urls, depth, count)
-    crawler.mark_crawl_ended()
+    crawler.init_crawl(user_id)
+    crawler.crawl_url(user_id, 'ROOT', start_urls, depth, count)
+    crawler.mark_crawl_ended(user_id)
     service_acess_lock.release()
-    user_info['id'] = None
     print('Crawling is ended')
 
 
@@ -26,12 +23,12 @@ def trigger_crawling():
     if service_acess_lock.acquire(timeout=0):
         print('\n\n>>>>>>>>>>>>>>>>>>>>>>> RUNNING A CRAWL PROCEESS \n\n\n')
         args = request.args
+        
         url = args.get('url')
         main_url = base64.b64decode(url).decode('utf-8')
 
-        user_info['id'] = args.get('userId')
         thread = threading.Thread(target=background_crawl_url, args=(
-            [main_url], args.get('depth'), args.get('searchNum')))
+            [main_url], args.get('depth'), args.get('searchNum'), args.get('userId')))
         thread.start()
 
         return jsonify({'message': 'process is going on, you will not see anything!!!', 'success': True})
@@ -43,6 +40,5 @@ def trigger_crawling():
 @app.route("/get-crawl-result", methods=['GET'])
 def get_crawl_result():
     args = request.args
-    result = crawler.get_crawl_result()
-    result['user_id'] = args.get('userId')
+    result = crawler.get_crawl_result(args.get('userId'))
     return jsonify(result)
