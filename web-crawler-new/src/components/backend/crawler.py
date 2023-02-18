@@ -15,7 +15,7 @@ ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
 
 crawl_result = {'urls': [], 'finished': False,
-                'proccess_is_running': False}
+                'proccess_is_running': False, 'success': True}
 
 storage = {'already_seen_urls': []}
 
@@ -92,7 +92,7 @@ def crawl_url(path, start_url, depth, count, level=0):
     i = 0
     for url in start_url:
         url_id, parent_id, url_path = get_url_id(url, path)
-        print(i, '-'*level, url_id+'=>'+url)
+        # print(i, '-'*level, url_id+'=>'+url)
         crawl_result['urls'].append(
             {'index': i, 'level': level, 'url_id': url_id, 'parent_id': parent_id, 'url': url, 'url_path': url_path})
         random_urls = look_for_href(url, count)
