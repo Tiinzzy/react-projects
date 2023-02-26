@@ -20,7 +20,7 @@ import { urlArrays2Tree } from './helper'
 const backend = BackEndConnection.INSTANCE();
 
 const UPDATE_DATA_INTERVAL = 500;
-const URL_UPDATE_INTERVAL = 500;
+const URL_UPDATE_INTERVAL = 200;
 
 let mountCount = 0;
 
@@ -46,8 +46,8 @@ class EnterDetails extends React.Component {
         if (mountCount > 0) {
             return;
         }
-
         mountCount += 1;
+
         let that = this;
         setInterval(() => {
             let urls = that.state.urls;
@@ -55,16 +55,14 @@ class EnterDetails extends React.Component {
             if (logs.length < urls.length) {
                 logs.push(urls[logs.length]);
                 if (logs.length === urls.length) {
-                    that.setState({ buttonOff: false, showButton: true, graphData: logs });
+                    that.setState({ buttonOff: false, showButton: true });
                 }
+                that.setState({ grow: true, logs }, () => {
+                    let logsDiv = document.getElementById("logs_container");
+                    logsDiv.scrollTop = logsDiv.scrollHeight;
+                });
             }
-            that.setState({ grow: true, logs }, () => {
-                let logsDiv = document.getElementById("logs_container");
-                logsDiv.scrollTop = logsDiv.scrollHeight;
-            });
-
         }, URL_UPDATE_INTERVAL);
-
     }
 
     setUrl(e) {
@@ -80,27 +78,31 @@ class EnterDetails extends React.Component {
     }
 
     sendDataToBackend() {
+        function startStatusCheck(data) {
+            console.log(data);
+            if (data.success) {
+                let interval = setInterval(() => {
+                    backend.get_crawling_result((data) => {
+                        console.log('--> ', data);
+                        that.setState({ urls: data.urls });
+                        if (data.finished === true) {
+                            that.setState({ graphData: data.urls });
+                            clearInterval(interval);
+                            return;
+                        };
+                    });
+                }, UPDATE_DATA_INTERVAL);
+            } else {
+                alert('Sorry, you need to wait.');
+                that.setState({ buttonOff: false });
+            }
+        }
+
         let that = this;
         this.setState({ buttonOff: true, logs: [], urls: [], graphData: [], showButton: false }, () => {
             let url = Base64.encode(that.state.url);
-
-            backend.trigger_crawling(url, that.state.depth, that.state.searchNum, (data) => {
-                console.log(data);
-            });
-
-            let interval = setInterval(() => {
-                backend.get_crawling_result((data) => {
-                    that.setState({ urls: data.urls });
-                    console.log('--> ', data);
-                    if (data.finished === true) {
-                        clearInterval(interval);
-                        return;
-                    };
-                });
-
-            }, UPDATE_DATA_INTERVAL);
+            backend.trigger_crawling(url, that.state.depth, that.state.searchNum, startStatusCheck);
         });
-
     }
 
     clearTheResult() {
@@ -109,12 +111,11 @@ class EnterDetails extends React.Component {
 
     open3() {
         let treeData = urlArrays2Tree(this.state.logs);
-        console.log(treeData);
-        // this.setState({ open: true });
+        this.setState({ open: true, treeData: treeData });
     }
 
     handleClose() {
-        // this.setState({ open: false });
+        this.setState({ open: false });
     }
 
     render() {
@@ -141,7 +142,6 @@ class EnterDetails extends React.Component {
                                 style={{ transformOrigin: '0 0 0' }}
                                 {...(this.state.grow ? { timeout: 2000 } : {})}>
                                 <span className="UrlData">{l.url.substring(0, 100)}</span>
-
                             </Grow>
                         </div>
                     ))}
@@ -156,8 +156,8 @@ class EnterDetails extends React.Component {
                     {this.state.graphData.length > 0 && <GraphTree data={this.state.graphData} />}
                 </Box>
 
-                <Dialog open={this.state.open} onClose={() => this.handleClose()}>
-                    <Tree />
+                <Dialog maxWidth='lg' open={this.state.open} onClose={() => this.handleClose()}>
+                    <Tree treeData={this.state.treeData} />
                 </Dialog>
             </Box>
         );

@@ -1,8 +1,11 @@
 import axios from 'axios';
 
+export const USER_ID = Math.floor(1000000 * Math.random())
+
 class BackEndConnectionImpl {
     async trigger_crawling(url, depth, searchNum, callback) {
-        return axios.get('/trigger-crawling?url=' + url + '&depth=' + depth + '&searchNum=' + searchNum, {})
+        console.log(USER_ID);
+        return axios.get('/trigger-crawling?url=' + url + '&depth=' + depth + '&searchNum=' + searchNum + '&userId=' + USER_ID , {})
             .then(function (response) {
                 if (callback) {
                     callback(response.data);
@@ -16,7 +19,8 @@ class BackEndConnectionImpl {
     }
 
     async get_crawling_result(callback) {
-        return axios.get('/get-crawl-result', {})
+        console.log(USER_ID);
+        return axios.get('/get-crawl-result?userId=' + USER_ID, {})
             .then(function (response) {
                 if (callback) {
                     callback(response.data);

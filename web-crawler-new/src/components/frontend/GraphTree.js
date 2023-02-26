@@ -13,19 +13,24 @@ export default class GraphTree extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            treeData: props.data,
+            data: props.data,
             graph: null
         }
     }
 
     componentDidMount() {
-        let tree = this.state.treeData.map(e => (`"${e.parent_id}"->"${e.url_id}"`));
+        console.log(this.state.data);
+
+        let urlRelations = {}
+        this.state.data.map(e => {
+            urlRelations[e.url_id] = e.url;
+            urlRelations["ROOT"] = "ROOT";
+            // urlRelations["ROOT"] = this.state.treeData[0].url;
+        });
+        let tree = this.state.data.map(e => (`"${urlRelations[e.parent_id]}"->"${urlRelations[e.url_id]}"`));
         let finalizedTree = [...new Set(tree)];
 
-        finalizedTree.forEach(e => console.log(e));
-
         let data = 'digraph G { ' + finalizedTree.join(';') + '}';
-        console.log(data);
         this.setState({ graph: data })
     }
 
