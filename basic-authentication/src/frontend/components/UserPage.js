@@ -27,6 +27,12 @@ export default class UserPage extends React.Component {
         // })
     }
 
+    getSecret() {
+        backend.callSecrete((data) => {
+            console.log(data);
+        })
+    }
+
     logOutUser() {
         let that = this;
         backend.logout_user((data) => {
@@ -52,6 +58,7 @@ export default class UserPage extends React.Component {
                         <Typography mb={2} className="LoginHeader" variant="body1">
                             Hi <span style={{ fontWeight: 'bold' }}>{this.state.username}</span>, welcome back!
                         </Typography>
+                        <Button style={{ marginBottom: 10 }} className="LoginBtn" variant="contained" onClick={() => this.getSecret()}>SECRET!</Button>
                         <Button className="LoginBtn" variant="contained" onClick={() => this.logOutUser()}>Logout</Button>
                     </Box>}
             </>
