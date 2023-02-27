@@ -35,10 +35,10 @@ app.post("/logout", (req, res) => {
 });
 
 app.post("/secret", (req, res) => {
-    let result = {}
+    let result = { authorized: false };
     if (req.session.authorized) {
-        let user = req.session.user 
-        result = { message: 'This is a protected data, you need to login already!', user };
+        let user = req.session.user
+        result = { message: 'This is a protected data, you need to login already!', user, authorized: true };
     }
     res.json(result);
 });
