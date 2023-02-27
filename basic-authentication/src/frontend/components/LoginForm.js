@@ -37,6 +37,11 @@ export default class LoginForm extends React.Component {
 
     getPassword(e) {
         this.setState({ password: e.target.value, passError: false });
+        let key = e.code || "";
+        let isEnter = key.toLowerCase().indexOf('enter') >= 0;
+        if (isEnter) {
+            this.loginUser();
+        }
     }
 
     getSecret() {
@@ -47,7 +52,7 @@ export default class LoginForm extends React.Component {
     }
 
     loginUser() {
-        if (this.state.password === null && this.state.username === null || this.state.password === null || his.state.username === null) {
+        if (this.state.password === null && this.state.username === null || this.state.password === null || this.state.username === null) {
             this.setState({ userError: true, passError: true });
         } else {
             let that = this;
@@ -80,10 +85,11 @@ export default class LoginForm extends React.Component {
                             {this.state.userError === false ? <TextField style={{ marginTop: 15 }} label="Username" variant="outlined" onChange={(e) => this.getUsernmae(e)} /> :
                                 <TextField error helperText="Incorrect entry" style={{ marginTop: 15 }} label="Username" variant="outlined" onChange={(e) => this.getUsernmae(e)} />}
                             {this.state.passError === false ?
-                                <TextField style={{ marginTop: 20, marginBottom: 30 }} label="Password" variant="outlined" type="password" onChange={(e) => this.getPassword(e)} /> :
-                                <TextField error helperText="Incorrect entry" style={{ marginTop: 20, marginBottom: 30 }} label="Password" variant="outlined" type="password" onChange={(e) => this.getPassword(e)} />}
+                                <TextField style={{ marginTop: 20, marginBottom: 30 }} label="Password" variant="outlined" type="password" onChange={(e) => this.getPassword(e)}
+                                    onKeyDown={(e) => this.getPassword(e)} /> :
+                                <TextField error helperText="Incorrect entry" style={{ marginTop: 20, marginBottom: 30 }} label="Password" variant="outlined" type="password" onChange={(e) => this.getPassword(e)}
+                                    onKeyDown={(e) => this.getPassword(e)} />}
                             <Button className="LoginBtn" variant="contained" color="primary" onClick={() => this.loginUser()}>Login</Button>
-
                             <Button style={{ marginTop: 10 }} className="LoginBtn" variant="contained" onClick={() => this.getSecret()}>SECRET!</Button>
                         </Box>
                     </Box>}
