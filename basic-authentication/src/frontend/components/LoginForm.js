@@ -31,6 +31,12 @@ export default class LoginForm extends React.Component {
         this.setState({ password: e.target.value });
     }
 
+    getSecret() {
+        backend.callSecrete((data) => {
+            console.log(data);
+        })
+    }
+
     loginUser() {
         let that = this;
         backend.login_user(this.state.username, this.state.password, (data) => {
@@ -50,6 +56,8 @@ export default class LoginForm extends React.Component {
                             <TextField style={{ marginTop: 15 }} label="Username" variant="outlined" onChange={(e) => this.getUsernmae(e)} />
                             <TextField style={{ marginTop: 20, marginBottom: 30 }} label="Password" variant="outlined" type="password" onChange={(e) => this.getPassword(e)} />
                             <Button className="LoginBtn" variant="contained" color="primary" onClick={() => this.loginUser()}>Login</Button>
+
+                            <Button style={{ marginTop: 10 }} className="LoginBtn" variant="contained" onClick={() => this.getSecret()}>SECRET!</Button>
                         </Box>
                     </Box>}
                 {this.state.login === true &&
