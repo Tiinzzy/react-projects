@@ -48,6 +48,20 @@ class BackEndConnectionImpl {
                 return false;
             })
     }
+
+    async callSecrete(callback) {
+        return axios.post('/secret', this.#user, {})
+            .then(function (response) {
+                if (callback) {
+                    callback(response.data);
+                }
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+                return false;
+            })
+    }
 }
 
 export default class BackEndConnection {
