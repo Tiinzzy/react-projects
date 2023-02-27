@@ -53,7 +53,7 @@ class BackEndConnectionImpl {
         return axios.post('/secret', this.#user, {})
             .then(function (response) {
                 if (callback) {
-                    callback(response.data);
+                    callback(JSON.stringify(response.data));
                 }
                 return response.data;
             })
