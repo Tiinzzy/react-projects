@@ -9,6 +9,7 @@ import Dialog from '@mui/material/Dialog';
 import BackEndConnection from './BackEndConnection';
 import UserPage from "./UserPage";
 import DialogPopUp from "./DialogPopUp";
+import { shared } from './helper';
 
 import './style.css'
 
@@ -24,6 +25,8 @@ export default class LoginForm extends React.Component {
             login: false,
             openDialog: false
         }
+        this.callLoginForm = this.callLoginForm.bind(this);
+        shared.callLoginForm = this.callLoginForm;
     }
 
     getUsernmae(e) {
@@ -36,11 +39,8 @@ export default class LoginForm extends React.Component {
 
     getSecret() {
         let that = this;
-        backend.checkLoginStatus((data) => {
-            console.log(data)
-            if (data.authorized === false || data.user === '') {
-                that.setState({ openDialog: true });
-            }
+        backend.callSecrete((data) => {
+            that.setState({ openDialog: true, data: data })
         })
     }
 
@@ -55,6 +55,13 @@ export default class LoginForm extends React.Component {
 
     closeDialog() {
         this.setState({ openDialog: false });
+    }
+
+    callLoginForm(e) {
+        if (e.action === 'user-logged-out') {
+            this.setState({ login: false })
+        }
+
     }
 
     render() {
@@ -76,7 +83,7 @@ export default class LoginForm extends React.Component {
                         <UserPage username={this.state.username} />
                     </Box>}
 
-                <Dialog size="md" open={this.state.openDialog} onClose={() => this.closeDialog()}> <DialogPopUp status="logged-out" /> </Dialog>
+                <Dialog size="md" open={this.state.openDialog} onClose={() => this.closeDialog()}> <DialogPopUp status="logged-out" data={this.state.data} /> </Dialog>
             </>
         );
     }
