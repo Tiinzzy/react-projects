@@ -22,6 +22,7 @@ export default class UserPage extends React.Component {
         }
     }
 
+    
     getSecret() {
         let that = this;
         backend.callSecrete((data) => {
