@@ -4,11 +4,13 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import Dialog from '@mui/material/Dialog';
 
 import BackEndConnection from './BackEndConnection';
+import UserPage from "./UserPage";
+import DialogPopUp from "./DialogPopUp";
 
 import './style.css'
-import UserPage from "./UserPage";
 
 const backend = BackEndConnection.INSTANCE();
 
@@ -19,7 +21,8 @@ export default class LoginForm extends React.Component {
         this.state = {
             password: null,
             username: null,
-            login: false
+            login: false,
+            openDialog: false
         }
     }
 
@@ -32,8 +35,12 @@ export default class LoginForm extends React.Component {
     }
 
     getSecret() {
-        backend.callSecrete((data) => {
-            console.log(data);
+        let that = this;
+        backend.checkLoginStatus((data) => {
+            console.log(data)
+            if (data.authorized === false || data.user === '') {
+                that.setState({ openDialog: true });
+            }
         })
     }
 
@@ -41,9 +48,13 @@ export default class LoginForm extends React.Component {
         let that = this;
         backend.login_user(this.state.username, this.state.password, (data) => {
             if (data.authorized === true) {
-                that.setState({ login: true })
+                that.setState({ login: true });
             }
         });
+    }
+
+    closeDialog() {
+        this.setState({ openDialog: false });
     }
 
     render() {
@@ -64,6 +75,8 @@ export default class LoginForm extends React.Component {
                     <Box className="WholePageBox">
                         <UserPage username={this.state.username} />
                     </Box>}
+
+                <Dialog size="md" open={this.state.openDialog} onClose={() => this.closeDialog()}> <DialogPopUp status="logged-out" /> </Dialog>
             </>
         );
     }
