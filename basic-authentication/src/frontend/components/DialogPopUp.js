@@ -2,11 +2,7 @@ import React from "react";
 
 import Box from '@mui/material/Box';
 
-import BackEndConnection from './BackEndConnection';
-
 import './style.css'
-
-const backend = BackEndConnection.INSTANCE();
 
 export default class DialogPopUp extends React.Component {
 
