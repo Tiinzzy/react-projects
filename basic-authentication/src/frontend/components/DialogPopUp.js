@@ -14,15 +14,16 @@ export default class DialogPopUp extends React.Component {
         super(props);
         this.state = {
             secret: props.secret,
-            status: props.status
+            status: props.status,
+            data: props.data
 
         }
     }
 
     render() {
         return (
-            <Box style={{ height: 20, widht: 200, padding: 20 }}>
-                {this.state.status === 'logged-out' && 'you need to login to see the secret!'}
+            <Box style={{ height: 20, widht: 200, padding: 20, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                {this.state.status === 'logged-out' && 'Secrete: ' + this.state.data}
                 {this.state.secret && this.state.secret}
             </Box>
         );
