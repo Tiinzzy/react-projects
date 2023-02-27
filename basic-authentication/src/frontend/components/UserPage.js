@@ -3,9 +3,11 @@ import React from "react";
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import Dialog from '@mui/material/Dialog';
 
 import BackEndConnection from './BackEndConnection';
 import LoginForm from "./LoginForm";
+import DialogPopUp from "./DialogPopUp";
 
 import './style.css'
 
@@ -17,19 +19,22 @@ export default class UserPage extends React.Component {
         super(props);
         this.state = {
             username: props.username,
-            userLoggedOut: false
+            userLoggedOut: false,
+            openDialog: false
         }
     }
 
-    componentDidMount() {
-        // backend.checkLoginStatus((data) => {
-        //     console.log('login status: ', data);
-        // })
-    }
-
     getSecret() {
+        let that = this;
+        backend.checkLoginStatus((data) => {
+            if (data.authorized === true) {
+                that.setState({ openDialog: true });
+            }
+        })
+
         backend.callSecrete((data) => {
-            console.log(data);
+            that.setState({ secret: data.message });
+            console.log(data.message)
         })
     }
 
@@ -48,6 +53,10 @@ export default class UserPage extends React.Component {
         }
     }
 
+    closeDialog() {
+        this.setState({ openDialog: false });
+    }
+
     render() {
         return (
             <>
@@ -61,6 +70,7 @@ export default class UserPage extends React.Component {
                         <Button style={{ marginBottom: 10 }} className="LoginBtn" variant="contained" onClick={() => this.getSecret()}>SECRET!</Button>
                         <Button className="LoginBtn" variant="contained" onClick={() => this.logOutUser()}>Logout</Button>
                     </Box>}
+                <Dialog size="md" open={this.state.openDialog} onClose={() => this.closeDialog()}> <DialogPopUp secret={this.state.secret} /> </Dialog>
             </>
         );
     }
