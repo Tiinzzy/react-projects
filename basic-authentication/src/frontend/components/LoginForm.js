@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import BackEndConnection from './BackEndConnection';
 
 import './style.css'
+import UserPage from "./UserPage";
 
 const backend = BackEndConnection.INSTANCE();
 
@@ -41,16 +42,21 @@ export default class LoginForm extends React.Component {
 
     render() {
         return (
-            <Box className="WholePageBox">
+            <>
                 {this.state.login === false &&
-                    <Box className="LoginBox">
-                        <Typography className="LoginHeader" variant="body1">User Login Form</Typography>
-                        <TextField style={{ marginTop: 15 }} label="Username" variant="outlined" onChange={(e) => this.getUsernmae(e)} />
-                        <TextField style={{ marginTop: 20, marginBottom: 30 }} label="Password" variant="outlined" type="password" onChange={(e) => this.getPassword(e)} />
-                        <Button className="LoginBtn" variant="contained" color="primary" onClick={() => this.loginUser()}>Login</Button>
+                    <Box className="WholePageBox">
+                        <Box className="LoginBox">
+                            <Typography className="LoginHeader" variant="body1">User Login Form</Typography>
+                            <TextField style={{ marginTop: 15 }} label="Username" variant="outlined" onChange={(e) => this.getUsernmae(e)} />
+                            <TextField style={{ marginTop: 20, marginBottom: 30 }} label="Password" variant="outlined" type="password" onChange={(e) => this.getPassword(e)} />
+                            <Button className="LoginBtn" variant="contained" color="primary" onClick={() => this.loginUser()}>Login</Button>
+                        </Box>
                     </Box>}
-                {this.state.login === true && <Box>this is just a test</Box>}
-            </Box>
+                {this.state.login === true &&
+                    <Box className="WholePageBox">
+                        <UserPage username={this.state.username} />
+                    </Box>}
+            </>
         );
     }
 };
