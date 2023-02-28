@@ -2,6 +2,8 @@ import axios from 'axios';
 
 const md5 = require('md5');
 
+const MYSQL = { host: 'localhost', user: 'dbadmin', password: 'washywashy', database: 'tests' };
+
 class BackEndConnectionImpl {
     #user = null;
 
@@ -63,8 +65,8 @@ class BackEndConnectionImpl {
             })
     }
 
-    async sign_up_new_user(callback) {
-        return axios.post('sign-up-user', {})
+    async get_mysql_connection_status(callback) {
+        return axios.post('/get-connection-status', MYSQL, {})
             .then(function (response) {
                 if (callback) {
                     callback(response.data);
