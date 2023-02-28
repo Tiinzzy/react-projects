@@ -16,9 +16,6 @@ class MySqlConnectionImpl {
     }
 
     async connect(params, callback) {
-        console.log(params.host, params.user)
-
-        let sql = 'select 1 as result from dual;';
 
         this.#connectionInfo.host = params.host;
         this.#connectionInfo.user = params.user;
@@ -30,9 +27,6 @@ class MySqlConnectionImpl {
         return this.#connection.promise()
             .query('select 1 as result from dual;')
             .then(([rows, fields]) => {
-                if (callback) {
-                    callback(rows[0].result === 1);
-                }
                 return rows[0].result === 1;
             })
             .catch((error) => {
