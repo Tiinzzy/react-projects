@@ -15,7 +15,7 @@ class MySqlConnectionImpl {
         return this.#execute(safeSql);
     }
 
-    async connect(params, callback) {
+    async connect(params) {
 
         this.#connectionInfo.host = params.host;
         this.#connectionInfo.user = params.user;
