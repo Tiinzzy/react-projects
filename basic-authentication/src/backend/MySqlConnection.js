@@ -7,7 +7,12 @@ class MySqlConnectionImpl {
     async insertIntoMySql(params) {
         this.#open();
         let sql = "INSERT INTO tests.user_authentication VALUES('" + params.username + "','" + params.password + "')";
+        return this.#execute(sql);
+    }
 
+    async checkUserIsValid(params) {
+        this.#open();
+        let sql = "select password from tests.user_authentication where username = '" + params.user + "'";
         return this.#execute(sql);
     }
 
