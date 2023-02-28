@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
 import BackEndConnection from '../tools/BackEndConnection';
+import SignUp from "./SignUp";
 
 import './login.css'
 
@@ -21,7 +22,8 @@ export default class LoginForm extends React.Component {
             login: false,
             openDialog: false,
             userError: false,
-            passError: false
+            passError: false,
+            signUp: false
         }
     }
 
@@ -52,11 +54,15 @@ export default class LoginForm extends React.Component {
         this.setState({ openDialog: false });
     }
 
+    signUpNewUser() {
+        this.setState({ signUp: true })
+    }
+
     render() {
         return (
             <>
                 <Box className="WholePageBox">
-                    <Box className="LoginBox">
+                    {this.state.signUp === false && <Box className="LoginBox">
                         <Typography className="LoginHeader" variant="body1">User Login</Typography>
                         {this.state.userError === false ? <TextField style={{ marginTop: 15 }} label="Username" variant="outlined" onChange={(e) => this.getUsernmae(e)} /> :
                             <TextField error helperText="Incorrect entry" style={{ marginTop: 15 }} label="Username" variant="outlined" onChange={(e) => this.getUsernmae(e)} />}
@@ -67,10 +73,13 @@ export default class LoginForm extends React.Component {
                                 onKeyDown={(e) => this.getPassword(e)} />}
                         <Button className="LoginBtn" variant="contained" color="primary" onClick={() => this.loginUser()}>Login</Button>
                         <Box className="SignUpBox">
-                            <Typography variant="body1" className="SignUpText">Not a member? <span id="span-sign-up">Creat an account</span></Typography>
+                            <Typography variant="body1" className="SignUpText">
+                                Not a member? <span id="span-sign-up" onClick={() => this.signUpNewUser()}>Creat an account</span>
+                            </Typography>
                         </Box>
-                    </Box>
+                    </Box>}
                 </Box>
+                {this.state.signUp === true && <SignUp />}
             </>
         );
     }
