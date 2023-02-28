@@ -44,23 +44,26 @@ export default class SignUp extends React.Component {
     }
 
     createNewUser() {
-        // if (this.state.username === null && this.state.password === null && this.state.confPass === null) {
-        //     this.setState({ emptyErrUser: true, emptyErrPass: true });
-        // } else if (this.state.password !== this.state.confPass) {
-        //     this.setState({ passwordNotMatch: true });
-        // } else {
-        //     console.log('submit')
-        // }
-        let that = this;
-        backend.get_mysql_connection_status((data) => {
-            if (data.connectionStatus) {
-                that.setState({ connection: true }, () => {
-                    if (that.state.connection) {
-                        console.log('do this')
-                    }
-                })
-            }
-        })
+        if (this.state.username === null && this.state.password === null && this.state.confPass === null) {
+            this.setState({ emptyErrUser: true, emptyErrPass: true });
+        } else if (this.state.password !== this.state.confPass) {
+            this.setState({ passwordNotMatch: true });
+        } else {
+            let that = this;
+            backend.get_mysql_connection_status((data) => {
+                if (data.connectionStatus) {
+                    that.setState({ connection: true }, () => {
+                        if (that.state.connection) {
+                            backend.sign_up_new_user(that.state.username, that.state.password, (data) => {
+                                if (data.result.affectedRows === 1) {
+                                    console.log('now need to go to home page')
+                                }
+                            })
+                        }
+                    })
+                }
+            })
+        }
     }
 
     render() {
