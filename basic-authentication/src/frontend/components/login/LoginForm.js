@@ -66,6 +66,9 @@ export default class LoginForm extends React.Component {
                             <TextField error helperText="Incorrect entry" style={{ marginTop: 20, marginBottom: 30 }} label="Password" variant="outlined" type="password" onChange={(e) => this.getPassword(e)}
                                 onKeyDown={(e) => this.getPassword(e)} />}
                         <Button className="LoginBtn" variant="contained" color="primary" onClick={() => this.loginUser()}>Login</Button>
+                        <Box className="SignUpBox">
+                            <Typography variant="body1" className="SignUpText">Not a member? <span id="span-sign-up">Creat an account</span></Typography>
+                        </Box>
                     </Box>
                 </Box>
             </>
