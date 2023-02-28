@@ -66,13 +66,18 @@ export default class LoginForm extends React.Component {
                 <Box className="WholePageBox">
                     {this.state.signUp === false && <Box className="LoginBox">
                         <Typography className="LoginHeader" variant="body1">User Login</Typography>
-                        {this.state.userError === false ? <TextField style={{ marginTop: 15 }} label="Username" variant="outlined" onChange={(e) => this.getUsernmae(e)} /> :
+
+                        {this.state.userError === false ?
+                            <TextField style={{ marginTop: 15 }} label="Username" variant="outlined" onChange={(e) => this.getUsernmae(e)} /> :
                             <TextField error helperText="Incorrect entry" style={{ marginTop: 15 }} label="Username" variant="outlined" onChange={(e) => this.getUsernmae(e)} />}
+
                         {this.state.passError === false ?
                             <TextField style={{ marginTop: 20, marginBottom: 30 }} label="Password" variant="outlined" type="password" onChange={(e) => this.getPassword(e)}
-                                onKeyDown={(e) => this.getPassword(e)} /> :
+                                onKeyDown={(e) => this.getPassword(e)} />
+                            :
                             <TextField error helperText="Incorrect entry" style={{ marginTop: 20, marginBottom: 30 }} label="Password" variant="outlined" type="password" onChange={(e) => this.getPassword(e)}
                                 onKeyDown={(e) => this.getPassword(e)} />}
+
                         <Button className="LoginBtn" variant="contained" color="primary" onClick={() => this.loginUser()}>Login</Button>
                         <Box className="SignUpBox">
                             <Typography variant="body1" className="SignUpText">
