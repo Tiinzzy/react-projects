@@ -49,8 +49,14 @@ app.post("/secret", (req, res) => {
 app.post('/get-connection-status', async (req, res) => {
     let connectionStatus = await connection.connect(req.body);
     res.send({ connectionStatus })
+});
 
-})
+app.post('/sign-up-new-user', async (req, res) => {
+    let createUser = await connection.insertIntoMySql(req.body);
+    res.send({ result: createUser.rows })
+});
+
+
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
 
