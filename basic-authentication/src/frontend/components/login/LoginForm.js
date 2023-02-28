@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
 import BackEndConnection from '../tools/BackEndConnection';
+import SignUp from "./SignUp";
 
 import './login.css'
 
@@ -16,12 +17,14 @@ export default class LoginForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            callbacktoChangePage: props.callbacktoChangePage,
             password: null,
             username: null,
             login: false,
             openDialog: false,
             userError: false,
-            passError: false
+            passError: false,
+            signUp: false
         }
     }
 
@@ -52,11 +55,16 @@ export default class LoginForm extends React.Component {
         this.setState({ openDialog: false });
     }
 
+    signUpNewUser() {
+        let data = { action: 'create-new-user' }
+        this.state.callbacktoChangePage(data);
+    }
+
     render() {
         return (
             <>
                 <Box className="WholePageBox">
-                    <Box className="LoginBox">
+                    {this.state.signUp === false && <Box className="LoginBox">
                         <Typography className="LoginHeader" variant="body1">User Login</Typography>
                         {this.state.userError === false ? <TextField style={{ marginTop: 15 }} label="Username" variant="outlined" onChange={(e) => this.getUsernmae(e)} /> :
                             <TextField error helperText="Incorrect entry" style={{ marginTop: 15 }} label="Username" variant="outlined" onChange={(e) => this.getUsernmae(e)} />}
@@ -66,7 +74,12 @@ export default class LoginForm extends React.Component {
                             <TextField error helperText="Incorrect entry" style={{ marginTop: 20, marginBottom: 30 }} label="Password" variant="outlined" type="password" onChange={(e) => this.getPassword(e)}
                                 onKeyDown={(e) => this.getPassword(e)} />}
                         <Button className="LoginBtn" variant="contained" color="primary" onClick={() => this.loginUser()}>Login</Button>
-                    </Box>
+                        <Box className="SignUpBox">
+                            <Typography variant="body1" className="SignUpText">
+                                Not a member? <span id="span-sign-up" onClick={() => this.signUpNewUser()}>Creat an account</span>
+                            </Typography>
+                        </Box>
+                    </Box>}
                 </Box>
             </>
         );

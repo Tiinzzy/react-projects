@@ -20,6 +20,7 @@
     "express-basic-auth": "^1.2.1",
     "express-session": "^1.17.3",
     "md5": "^2.3.0",
+    "mysql2": "^3.1.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
