@@ -19,16 +19,18 @@ export default class SignUp extends React.Component {
             password: null,
             confPass: null,
             username: null,
-            passwordNotMatch: false
+            passwordNotMatch: false,
+            emptyErrUser: false,
+            emptyErrPass: false
         }
     }
 
     getUsername(e) {
-        this.setState({ username: e.target.value });
+        this.setState({ username: e.target.value, emptyErrUser: false });
     }
 
     getPassword(e) {
-        this.setState({ password: e.target.value, passwordNotMatch: false });
+        this.setState({ password: e.target.value, passwordNotMatch: false, emptyErrPass: false });
     }
 
     confirmPassword(e) {
@@ -41,10 +43,12 @@ export default class SignUp extends React.Component {
     }
 
     createNewUser() {
-        if (this.state.username === null || this.state.confPass === null || this.state.password === null) {
-            console.log('somethings wrong')
+        if (this.state.username === null && this.state.password === null && this.state.confPass === null) {
+            this.setState({ emptyErrUser: true, emptyErrPass: true });
         } else if (this.state.password !== this.state.confPass) {
-            this.setState({ passwordNotMatch: true })
+            this.setState({ passwordNotMatch: true });
+        } else {
+            console.log('submit')
         }
     }
 
@@ -54,8 +58,10 @@ export default class SignUp extends React.Component {
                 <Box className="WholePageBox">
                     <Box className="LoginBox">
                         <Typography className="LoginHeader" variant="body1">Creat Account</Typography>
-                        <TextField style={{ marginTop: 15 }} label="Username" variant="outlined" onChange={(e) => this.getUsername(e)} />
-                        <TextField style={{ marginTop: 20, marginBottom: 20 }} type="password" label="Password" variant="outlined" onChange={(e) => this.getPassword(e)} />
+                        {this.state.emptyErrUser === false ? <TextField style={{ marginTop: 15 }} label="Username" variant="outlined" onChange={(e) => this.getUsername(e)} /> :
+                            <TextField error helperText="Enter a username" style={{ marginTop: 15 }} label="Username" variant="outlined" onChange={(e) => this.getUsername(e)} />}
+                        {this.state.emptyErrPass === false ? <TextField style={{ marginTop: 20, marginBottom: 20 }} type="password" label="Password" variant="outlined" onChange={(e) => this.getPassword(e)} /> :
+                            <TextField error helperText="Enter a password" style={{ marginTop: 20, marginBottom: 20 }} type="password" label="Password" variant="outlined" onChange={(e) => this.getPassword(e)} />}
                         {this.state.passwordNotMatch === false ?
                             <TextField style={{ marginBottom: 30 }} type="password" label="Confirm Password" variant="outlined" onChange={(e) => this.confirmPassword(e)} onKeyDown={(e) => this.confirmPassword(e)} /> :
                             <TextField error helperText="Passwords not matching" style={{ marginBottom: 30 }} type="password" label="Confirm Password" variant="outlined" onChange={(e) => this.confirmPassword(e)} onKeyDown={(e) => this.confirmPassword(e)} />}
