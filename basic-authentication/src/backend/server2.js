@@ -6,8 +6,6 @@ var md5 = require('md5');
 const MySqlConnection = require('./MySqlConnection');
 const connection = MySqlConnection.INSTANCE();
 
-const MYSQL = { host: 'localhost', user: 'dbadmin', password: 'washywashy', database: 'tests' };
-
 const PORT = process.env.PORT || 5000;
 
 var app = express()
@@ -48,17 +46,10 @@ app.post("/secret", (req, res) => {
     res.json(result);
 });
 
-app.post('/sign-up-user', (req, res) => {
-    connection.connect(MYSQL, (data) => {
-        console.log('----------')
-        console.log(data)
-        console.log('<<<<<<<')
-    });
-    let sql = 'SHOW TABLES;'
-    connection.connect({ sql }, (data) => {
-        console.log(data);
-    })
-    res.send({ test: 'test' })
+app.post('/get-connection-status', async (req, res) => {
+    let connectionStatus = await connection.connect(req.body);
+    res.send({ connectionStatus })
+
 })
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
