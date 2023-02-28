@@ -17,6 +17,7 @@ export default class LoginForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            callbacktoChangePage: props.callbacktoChangePage,
             password: null,
             username: null,
             login: false,
@@ -55,7 +56,8 @@ export default class LoginForm extends React.Component {
     }
 
     signUpNewUser() {
-        this.setState({ signUp: true })
+        let data = { action: 'create-new-user' }
+        this.state.callbacktoChangePage(data);
     }
 
     render() {
@@ -79,7 +81,6 @@ export default class LoginForm extends React.Component {
                         </Box>
                     </Box>}
                 </Box>
-                {this.state.signUp === true && <SignUp />}
             </>
         );
     }
