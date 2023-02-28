@@ -4,15 +4,11 @@ class MySqlConnectionImpl {
     #connection = null;
     #connectionInfo = {};
 
-    async executeSql(params, callback) {
-        console.log(params.sql)
+    async insertIntoMySql(params) {
         this.#open();
+        let sql = "INSERT INTO tests.user_authentication VALUES('" + params.username + "','" + params.password + "')";
 
-        let safeSql = params.sql;
-        if (callback) {
-            callback(this.#execute(safeSql))
-        }
-        return this.#execute(safeSql);
+        return this.#execute(sql);
     }
 
     async connect(params) {
