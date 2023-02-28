@@ -32,6 +32,11 @@ export default class SignUp extends React.Component {
 
     confirmPassword(e) {
         this.setState({ confPass: e.target.value });
+        let key = e.code || "";
+        let isEnter = key.toLowerCase().indexOf('enter') >= 0;
+        if (isEnter) {
+            this.createNewUser();
+        }
     }
 
     createNewUser() {
@@ -48,7 +53,7 @@ export default class SignUp extends React.Component {
                         <Typography className="LoginHeader" variant="body1">Creat Account</Typography>
                         <TextField style={{ marginTop: 15 }} label="Username" variant="outlined" onChange={(e) => this.getUsername(e)} />
                         <TextField style={{ marginTop: 20, marginBottom: 20 }} type="password" label="Password" variant="outlined" onChange={(e) => this.getPassword(e)} />
-                        <TextField style={{ marginBottom: 30 }} type="password" label="Confirm Password" variant="outlined" onChange={(e) => this.confirmPassword(e)} />
+                        <TextField style={{ marginBottom: 30 }} type="password" label="Confirm Password" variant="outlined" onChange={(e) => this.confirmPassword(e)} onKeyDown={(e) => this.confirmPassword(e)}/>
 
                         <Button className="LoginBtn" variant="contained" color="primary" onClick={() => this.createNewUser()}>SIGNUP</Button>
 
