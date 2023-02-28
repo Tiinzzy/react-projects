@@ -43,13 +43,17 @@ export default class SignUp extends React.Component {
     }
 
     createNewUser() {
-        if (this.state.username === null && this.state.password === null && this.state.confPass === null) {
-            this.setState({ emptyErrUser: true, emptyErrPass: true });
-        } else if (this.state.password !== this.state.confPass) {
-            this.setState({ passwordNotMatch: true });
-        } else {
-            console.log('submit')
-        }
+        // if (this.state.username === null && this.state.password === null && this.state.confPass === null) {
+        //     this.setState({ emptyErrUser: true, emptyErrPass: true });
+        // } else if (this.state.password !== this.state.confPass) {
+        //     this.setState({ passwordNotMatch: true });
+        // } else {
+        //     console.log('submit')
+        // }
+
+        backend.sign_up_new_user((data) => {
+            console.log(data);
+        })
     }
 
     render() {
