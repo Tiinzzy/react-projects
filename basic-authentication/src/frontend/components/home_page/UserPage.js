@@ -47,7 +47,7 @@ export default class UserPage extends React.Component {
             <Box className="WholePageBox">
                 <Box style={{ display: 'flex', flexDirection: 'column' }}>
                     <Typography mb={2} className="LoginHeader" variant="body1">
-                        Hi {this.state.user}, welcome back!
+                        Hi <span style={{ fontWeight: 'bold' }}>{this.state.user}</span>, welcome back!
                     </Typography>
                     <Button style={{ marginBottom: 10 }} className="LoginBtn" variant="contained" onClick={() => this.getSecret()}>SECRET!</Button>
                     <Button className="LoginBtn" variant="contained" onClick={() => this.logOutUser()}>Logout</Button>

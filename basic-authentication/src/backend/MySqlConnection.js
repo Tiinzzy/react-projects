@@ -4,21 +4,19 @@ class MySqlConnectionImpl {
     #connection = null;
     #connectionInfo = {};
 
-    async executeSql(params, callback) {
-        console.log(params.sql)
+    async insertIntoMySql(params) {
         this.#open();
-
-        let safeSql = params.sql;
-        if (callback) {
-            callback(this.#execute(safeSql))
-        }
-        return this.#execute(safeSql);
+        let sql = "INSERT INTO tests.user_authentication VALUES('" + params.username + "','" + params.password + "')";
+        return this.#execute(sql);
     }
 
-    async connect(params, callback) {
-        console.log(params.host, params.user)
+    async checkUserIsValid(params) {
+        this.#open();
+        let sql = "select password from tests.user_authentication where username = '" + params.user + "'";
+        return this.#execute(sql);
+    }
 
-        let sql = 'select 1 as result from dual;';
+    async connect(params) {
 
         this.#connectionInfo.host = params.host;
         this.#connectionInfo.user = params.user;
@@ -30,9 +28,6 @@ class MySqlConnectionImpl {
         return this.#connection.promise()
             .query('select 1 as result from dual;')
             .then(([rows, fields]) => {
-                if (callback) {
-                    callback(rows[0].result === 1);
-                }
                 return rows[0].result === 1;
             })
             .catch((error) => {

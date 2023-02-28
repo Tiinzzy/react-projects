@@ -3,10 +3,10 @@ const session = require('express-session')
 const bodyParser = require('body-parser');
 var md5 = require('md5');
 
+const MYSQL = { host: 'localhost', user: 'dbadmin', password: 'washywashy', database: 'tests' };
+
 const MySqlConnection = require('./MySqlConnection');
 const connection = MySqlConnection.INSTANCE();
-
-const MYSQL = { host: 'localhost', user: 'dbadmin', password: 'washywashy', database: 'tests' };
 
 const PORT = process.env.PORT || 5000;
 
@@ -19,11 +19,20 @@ function isValidUser(user, password) {
     return (user === 'tina' && password === md5('tina123'))
 }
 
-app.post("/login", (req, res) => {
-    let authorized = isValidUser(req.body.user, req.body.password);
-    req.session.authorized = authorized;
-    req.session.user = req.body.user;
-    res.send({ authorized });
+app.post("/login", async (req, res) => {
+    // let authorized = isValidUser(req.body.user, req.body.password);
+    let connectionStatus = await connection.connect(MYSQL);
+    if (connectionStatus) {
+        let checkPassword = await connection.checkUserIsValid(req.body)
+        let pass = checkPassword.rows;
+        let authorized = pass[0].password === req.body.password;
+        if (authorized) {
+            req.session.authorized = authorized;
+            req.session.user = req.body.user;
+            res.send({ authorized });
+        }
+    }
+
 });
 
 app.post("/login-status", (req, res) => {
@@ -48,18 +57,17 @@ app.post("/secret", (req, res) => {
     res.json(result);
 });
 
-app.post('/sign-up-user', (req, res) => {
-    connection.connect(MYSQL, (data) => {
-        console.log('----------')
-        console.log(data)
-        console.log('<<<<<<<')
-    });
-    let sql = 'SHOW TABLES;'
-    connection.connect({ sql }, (data) => {
-        console.log(data);
-    })
-    res.send({ test: 'test' })
-})
+app.post('/get-connection-status', async (req, res) => {
+    let connectionStatus = await connection.connect(MYSQL);
+    res.send({ connectionStatus })
+});
+
+app.post('/sign-up-new-user', async (req, res) => {
+    let createUser = await connection.insertIntoMySql(req.body);
+    res.send({ result: createUser.rows })
+});
+
+
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
 

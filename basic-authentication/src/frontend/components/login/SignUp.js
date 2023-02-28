@@ -21,7 +21,8 @@ export default class SignUp extends React.Component {
             username: null,
             passwordNotMatch: false,
             emptyErrUser: false,
-            emptyErrPass: false
+            emptyErrPass: false,
+            connection: false
         }
     }
 
@@ -43,17 +44,28 @@ export default class SignUp extends React.Component {
     }
 
     createNewUser() {
-        // if (this.state.username === null && this.state.password === null && this.state.confPass === null) {
-        //     this.setState({ emptyErrUser: true, emptyErrPass: true });
-        // } else if (this.state.password !== this.state.confPass) {
-        //     this.setState({ passwordNotMatch: true });
-        // } else {
-        //     console.log('submit')
-        // }
-
-        backend.sign_up_new_user((data) => {
-            console.log(data);
-        })
+        if (this.state.username === null && this.state.password === null && this.state.confPass === null) {
+            this.setState({ emptyErrUser: true, emptyErrPass: true });
+        } else if (this.state.password !== this.state.confPass) {
+            this.setState({ passwordNotMatch: true });
+        } else {
+            let that = this;
+            backend.get_mysql_connection_status((data) => {
+                if (data.connectionStatus) {
+                    that.setState({ connection: true }, () => {
+                        if (that.state.connection) {
+                            backend.sign_up_new_user(that.state.username, that.state.password, (data) => {
+                                if (data.result.affectedRows === 1) {
+                                    backend.login_user(that.state.username, that.state.password, (data) => {
+                                        window.location = '/'
+                                    });
+                                }
+                            })
+                        }
+                    })
+                }
+            })
+        }
     }
 
     render() {
