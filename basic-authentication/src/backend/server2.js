@@ -3,6 +3,8 @@ const session = require('express-session')
 const bodyParser = require('body-parser');
 var md5 = require('md5');
 
+const MYSQL = { host: 'localhost', user: 'dbadmin', password: 'washywashy', database: 'tests' };
+
 const MySqlConnection = require('./MySqlConnection');
 const connection = MySqlConnection.INSTANCE();
 
@@ -17,11 +19,20 @@ function isValidUser(user, password) {
     return (user === 'tina' && password === md5('tina123'))
 }
 
-app.post("/login", (req, res) => {
-    let authorized = isValidUser(req.body.user, req.body.password);
-    req.session.authorized = authorized;
-    req.session.user = req.body.user;
-    res.send({ authorized });
+app.post("/login", async (req, res) => {
+    // let authorized = isValidUser(req.body.user, req.body.password);
+    let connectionStatus = await connection.connect(MYSQL);
+    if (connectionStatus) {
+        let checkPassword = await connection.checkUserIsValid(req.body)
+        let pass = checkPassword.rows;
+        let authorized = pass[0].password === req.body.password;
+        if (authorized) {
+            req.session.authorized = authorized;
+            req.session.user = req.body.user;
+            res.send({ authorized });
+        }
+    }
+
 });
 
 app.post("/login-status", (req, res) => {
@@ -47,7 +58,7 @@ app.post("/secret", (req, res) => {
 });
 
 app.post('/get-connection-status', async (req, res) => {
-    let connectionStatus = await connection.connect(req.body);
+    let connectionStatus = await connection.connect(MYSQL);
     res.send({ connectionStatus })
 });
 
