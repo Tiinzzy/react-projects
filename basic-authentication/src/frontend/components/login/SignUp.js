@@ -21,7 +21,8 @@ export default class SignUp extends React.Component {
             username: null,
             passwordNotMatch: false,
             emptyErrUser: false,
-            emptyErrPass: false
+            emptyErrPass: false,
+            connection: false
         }
     }
 
@@ -50,9 +51,15 @@ export default class SignUp extends React.Component {
         // } else {
         //     console.log('submit')
         // }
-
-        backend.sign_up_new_user((data) => {
-            console.log(data);
+        let that = this;
+        backend.get_mysql_connection_status((data) => {
+            if (data.connectionStatus) {
+                that.setState({ connection: true }, () => {
+                    if (that.state.connection) {
+                        console.log('do this')
+                    }
+                })
+            }
         })
     }
 
