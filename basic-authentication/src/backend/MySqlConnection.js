@@ -1,0 +1,82 @@
+const mysql = require('mysql2');
+
+class MySqlConnectionImpl {
+    #connection = null;
+    #connectionInfo = {};
+
+    async executeSql(params, callback) {
+        console.log(params.sql)
+        this.#open();
+
+        let safeSql = params.sql;
+        if (callback) {
+            callback(this.#execute(safeSql))
+        }
+        return this.#execute(safeSql);
+    }
+
+    async connect(params, callback) {
+        console.log(params.host, params.user)
+
+        let sql = 'select 1 as result from dual;';
+
+        this.#connectionInfo.host = params.host;
+        this.#connectionInfo.user = params.user;
+        this.#connectionInfo.password = params.password;
+        this.#connectionInfo.database = params.database;
+
+        this.#open();
+
+        return this.#connection.promise()
+            .query('select 1 as result from dual;')
+            .then(([rows, fields]) => {
+                if (callback) {
+                    callback(rows[0].result === 1);
+                }
+                return rows[0].result === 1;
+            })
+            .catch((error) => {
+                return false;
+            }).finally(() => {
+                this.#connection.end();
+            });
+    }
+
+    async #execute(sql) {
+        return this.#connection.promise()
+            .query(sql)
+            .then(([rows, fields]) => {
+                return { eror: null, rows }
+            })
+            .catch((error) => {
+                this.#connection.end();
+                return { error: error.message, rows: [] };
+            }).finally(() => {
+                this.#connection.end();
+            });
+    }
+
+    #open() {
+        this.#connection = mysql.createConnection({
+            host: this.#connectionInfo.host,
+            user: this.#connectionInfo.user,
+            password: this.#connectionInfo.password,
+            database: this.#connectionInfo.database
+        });
+    }
+
+    close() {
+        this.#connection.end();
+    }
+}
+
+module.exports = class MySqlConnection {
+    static #database = null;
+
+    static INSTANCE() {
+        if (MySqlConnection.#database === null) {
+            MySqlConnection.#database = new MySqlConnectionImpl();
+        }
+        return MySqlConnection.#database;
+    }
+}
