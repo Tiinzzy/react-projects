@@ -18,7 +18,8 @@ export default class SignUp extends React.Component {
         this.state = {
             password: null,
             confPass: null,
-            username: null
+            username: null,
+            passwordNotMatch: false
         }
     }
 
@@ -27,11 +28,11 @@ export default class SignUp extends React.Component {
     }
 
     getPassword(e) {
-        this.setState({ password: e.target.value });
+        this.setState({ password: e.target.value, passwordNotMatch: false });
     }
 
     confirmPassword(e) {
-        this.setState({ confPass: e.target.value });
+        this.setState({ confPass: e.target.value, passwordNotMatch: false });
         let key = e.code || "";
         let isEnter = key.toLowerCase().indexOf('enter') >= 0;
         if (isEnter) {
@@ -40,9 +41,11 @@ export default class SignUp extends React.Component {
     }
 
     createNewUser() {
-        console.log('username: ', this.state.username);
-        console.log('password: ', this.state.password);
-        console.log('confirm password:', this.state.confPass);
+        if (this.state.username === null || this.state.confPass === null || this.state.password === null) {
+            console.log('somethings wrong')
+        } else if (this.state.password !== this.state.confPass) {
+            this.setState({ passwordNotMatch: true })
+        }
     }
 
     render() {
@@ -53,7 +56,9 @@ export default class SignUp extends React.Component {
                         <Typography className="LoginHeader" variant="body1">Creat Account</Typography>
                         <TextField style={{ marginTop: 15 }} label="Username" variant="outlined" onChange={(e) => this.getUsername(e)} />
                         <TextField style={{ marginTop: 20, marginBottom: 20 }} type="password" label="Password" variant="outlined" onChange={(e) => this.getPassword(e)} />
-                        <TextField style={{ marginBottom: 30 }} type="password" label="Confirm Password" variant="outlined" onChange={(e) => this.confirmPassword(e)} onKeyDown={(e) => this.confirmPassword(e)}/>
+                        {this.state.passwordNotMatch === false ?
+                            <TextField style={{ marginBottom: 30 }} type="password" label="Confirm Password" variant="outlined" onChange={(e) => this.confirmPassword(e)} onKeyDown={(e) => this.confirmPassword(e)} /> :
+                            <TextField error helperText="Passwords not matching" style={{ marginBottom: 30 }} type="password" label="Confirm Password" variant="outlined" onChange={(e) => this.confirmPassword(e)} onKeyDown={(e) => this.confirmPassword(e)} />}
 
                         <Button className="LoginBtn" variant="contained" color="primary" onClick={() => this.createNewUser()}>SIGNUP</Button>
 
