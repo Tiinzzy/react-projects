@@ -23,7 +23,7 @@ app.post("/login", async (req, res) => {
     // let authorized = isValidUser(req.body.user, req.body.password);
     let connectionStatus = await connection.connect(MYSQL);
     if (connectionStatus) {
-        let checkPassword = await connection.checkUserIsValid(req.body)
+        let checkPassword = await connection.checkUserIsValid(req.body);
         let pass = checkPassword.rows;
         let authorized = pass[0].password === req.body.password;
         if (authorized) {
@@ -76,12 +76,14 @@ app.post('/sign-up-new-user', async (req, res) => {
 });
 
 app.post('/change_users_password', async (req, res) => {
-    console.log(req.body)
     let connectionStatus = await connection.connect(MYSQL);
-    if (connectionStatus) {
-        res.send({ result: 'seccessful' })
+    let checkPassword = await connection.checkUserIsValid(req.body);
+    let authorized = checkPassword.rows[0].password === req.body.password;
+    if (connectionStatus && authorized) {
+        let change = await connection.changeUsersPasswordInDatabase(req.body);
+        res.send({ result: 'seccessful', change: change.rows })
     } else {
-        res.send({ error: 'Sorry something went wrong!' });
+        res.send({ result: 'Sorry something went wrong!', change: null });
     }
 });
 
