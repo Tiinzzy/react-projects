@@ -12,7 +12,7 @@ class MySqlConnectionImpl {
 
     async checkUserIsValid(params) {
         this.#open();
-        let sql = "select password from tests.user_authentication where username = '" + params.user + "'";
+        let sql = "select password from tests.user_authentication where username = '" + params.user + "' limit 1";
         return this.#execute(sql);
     }
 
