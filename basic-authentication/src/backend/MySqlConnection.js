@@ -12,7 +12,16 @@ class MySqlConnectionImpl {
 
     async checkUserIsValid(params) {
         this.#open();
-        let sql = "select password from tests.user_authentication where username = '" + params.user + "'";
+        let sql = "select password from tests.user_authentication where username = '" + params.user + "' limit 1";
+        return this.#execute(sql);
+    }
+
+    async changeUsersPasswordInDatabase(params) {
+        this.#open();
+        let sql = `UPDATE tests.user_authentication 
+                    SET password = '`+ params.newPassword + `' 
+                     WHERE username = '` + params.user + `'`;
+
         return this.#execute(sql);
     }
 
@@ -41,10 +50,9 @@ class MySqlConnectionImpl {
         return this.#connection.promise()
             .query(sql)
             .then(([rows, fields]) => {
-                return { eror: null, rows }
+                return { error: null, rows }
             })
             .catch((error) => {
-                this.#connection.end();
                 return { error: error.message, rows: [] };
             }).finally(() => {
                 this.#connection.end();

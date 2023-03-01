@@ -11,10 +11,10 @@
 .LoginBox {
     border: solid 2px #1e81b0;
     border-radius: 4px;
-    padding: 15px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    width: 250px;
+    width: 350px;
 }
 
 .LoginHeader {
@@ -31,21 +31,32 @@
     margin-bottom: 10px;
     border: solid 0px red;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: left;
+    justify-content: left;
 }
 
 #span-sign-up {
     cursor: pointer;
-    text-decoration: none;
+    text-decoration: underline;
 }
 
 #span-sign-up:hover {
-    text-decoration: underline;
-    color:#1e81b0;
+    text-decoration: none;
+    color: #1e81b0;
 }
 
-.SignUpText{
+.SignUpText {
     font-weight: 500 !important;
     font-size: 15px !important;
+}
+
+.IncorrectDataBox {
+    display: flex;
+    align-items: left;
+    justify-content: left;
+    margin-bottom: 10px;
+    color: rgb(195, 8, 8);
+    font-size: bold;
+    border: solid 0px red;
+    height: 25px;
 }
