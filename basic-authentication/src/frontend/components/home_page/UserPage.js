@@ -59,7 +59,7 @@ export default class UserPage extends React.Component {
                     <Button className="LoginBtn" variant="contained" onClick={() => this.logOutUser()}>Logout</Button>
                 </Box>
                 <Dialog size="md" open={this.state.openDialog} onClose={() => this.closeDialog()}>
-                    <DialogPopUp secret={this.state.secret} changePassword={this.state.changePassword} closeDialog={this.closeDialog} />
+                    <DialogPopUp secret={this.state.secret} changePassword={this.state.changePassword} closeDialog={this.closeDialog} user={this.state.user} />
                 </Dialog>
             </Box>
         );
