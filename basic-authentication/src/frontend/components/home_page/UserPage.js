@@ -34,7 +34,7 @@ export default class UserPage extends React.Component {
 
     logOutUser() {
         backend.logout_user(() => {
-            window.location = '/';
+            window.location = '/login';
         })
     }
 
