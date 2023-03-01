@@ -68,6 +68,10 @@ export default class SignUp extends React.Component {
         }
     }
 
+    loginUser(){
+        window.location = '/login';
+    }
+
     render() {
         return (
             <>
@@ -79,11 +83,15 @@ export default class SignUp extends React.Component {
                         {this.state.emptyErrPass === false ? <TextField style={{ marginTop: 20, marginBottom: 20 }} type="password" label="Password" variant="outlined" onChange={(e) => this.getPassword(e)} /> :
                             <TextField error helperText="Enter a password" style={{ marginTop: 20, marginBottom: 20 }} type="password" label="Password" variant="outlined" onChange={(e) => this.getPassword(e)} />}
                         {this.state.passwordNotMatch === false ?
-                            <TextField style={{ marginBottom: 30 }} type="password" label="Confirm Password" variant="outlined" onChange={(e) => this.confirmPassword(e)} onKeyDown={(e) => this.confirmPassword(e)} /> :
-                            <TextField error helperText="Passwords not matching" style={{ marginBottom: 30 }} type="password" label="Confirm Password" variant="outlined" onChange={(e) => this.confirmPassword(e)} onKeyDown={(e) => this.confirmPassword(e)} />}
+                            <TextField style={{ marginBottom: 35 }} type="password" label="Confirm Password" variant="outlined" onChange={(e) => this.confirmPassword(e)} onKeyDown={(e) => this.confirmPassword(e)} /> :
+                            <TextField error helperText="Passwords not matching" style={{ marginBottom: 35 }} type="password" label="Confirm Password" variant="outlined" onChange={(e) => this.confirmPassword(e)} onKeyDown={(e) => this.confirmPassword(e)} />}
 
                         <Button className="LoginBtn" variant="contained" color="primary" onClick={() => this.createNewUser()}>SIGNUP</Button>
-
+                        <Box className="SignUpBox">
+                            <Typography variant="body1" className="SignUpText">
+                                Already have an account? <span id="span-sign-up" onClick={() => this.loginUser()}>Login</span>
+                            </Typography>
+                        </Box>
                     </Box>
                 </Box>
             </>
