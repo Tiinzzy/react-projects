@@ -75,6 +75,16 @@ app.post('/sign-up-new-user', async (req, res) => {
     }
 });
 
+app.post('/change_users_password', async (req, res) => {
+    console.log(req.body)
+    let connectionStatus = await connection.connect(MYSQL);
+    if (connectionStatus) {
+        res.send({ result: 'seccessful' })
+    } else {
+        res.send({ error: 'Sorry something went wrong!' });
+    }
+});
+
 
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
