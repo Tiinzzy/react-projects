@@ -19,8 +19,8 @@ export default class LoginForm extends React.Component {
         super(props);
         this.state = {
             callbacktoChangePage: props.callbacktoChangePage,
-            password: null,
-            username: null,
+            password: '',
+            username: '',
             openDialog: false,
             userError: false,
             passError: false,
@@ -43,9 +43,7 @@ export default class LoginForm extends React.Component {
     }
 
     loginUser() {
-        if (this.state.password === null && this.state.username === null) {
-            this.setState({ userError: true, passError: true });
-        } else if (this.state.password === null || this.state.username === null) {
+        if (this.state.password.length === 0 || this.state.username.length === 0) {
             this.setState({ passError: true, userError: true });
         } else {
             let that = this;
@@ -83,7 +81,7 @@ export default class LoginForm extends React.Component {
                             type={this.state.changeType === false ? "password" : "text"} onChange={(e) => this.getPassword(e)} onKeyDown={(e) => this.getPassword(e)} />
 
                         <FormControlLabel control={<Checkbox onChange={() => this.checkBoxClicked()} />} label="Show Password" />
-                        {this.state.wrongData === true ? <Box className="IncorrectDataBox">Icorrect username/ password</Box> : <Box className="IncorrectDataBox"></Box>}
+                        {this.state.wrongData === true ? <Box className="IncorrectDataBox">Incorrect credentials</Box> : <Box className="IncorrectDataBox"></Box>}
 
                         <Button className="LoginBtn" variant="contained" color="primary" onClick={() => this.loginUser()}>Login</Button>
                         <Box className="SignUpBox">
