@@ -15,28 +15,27 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(session({ secret: 'is-used-to-encrypt-info', resave: true, saveUninitialized: true }))
 
-function isValidUser(user, password) {
-    return (user === 'tina' && password === md5('tina123'))
-}
+// function isValidUser(user, password) {
+//     return (user === 'tina' && password === md5('tina123'))
+// }
 
 app.post("/login", async (req, res) => {
     // let authorized = isValidUser(req.body.user, req.body.password);
     let connectionStatus = await connection.connect(MYSQL);
     if (connectionStatus) {
         let checkPassword = await connection.checkUserIsValid(req.body)
-        if (checkPassword.error === null) {
-            let pass = checkPassword.rows;
-            let authorized = pass[0].password === req.body.password;
-            if (authorized) {
-                req.session.authorized = authorized;
-                req.session.user = req.body.user;
-                res.send({ authorized });
-            }
+        let pass = checkPassword.rows;
+        let authorized = pass[0].password === req.body.password;
+        if (authorized) {
+            req.session.authorized = authorized;
+            req.session.user = req.body.user;
+            res.send({ authorized });
         } else {
-            console.log('SOMTHING WENT WRONG AND SOMEONE SHOULD TAKE CARE OF THAT!')
+            res.send({ authorized });
         }
+    } else {
+        res.send({ error: 'Sorry something went wrong!' });
     }
-
 });
 
 app.post("/login-status", (req, res) => {
