@@ -41,10 +41,9 @@ class MySqlConnectionImpl {
         return this.#connection.promise()
             .query(sql)
             .then(([rows, fields]) => {
-                return { eror: null, rows }
+                return { error: null, rows }
             })
             .catch((error) => {
-                this.#connection.end();
                 return { error: error.message, rows: [] };
             }).finally(() => {
                 this.#connection.end();
