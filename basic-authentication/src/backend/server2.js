@@ -24,12 +24,16 @@ app.post("/login", async (req, res) => {
     let connectionStatus = await connection.connect(MYSQL);
     if (connectionStatus) {
         let checkPassword = await connection.checkUserIsValid(req.body)
-        let pass = checkPassword.rows;
-        let authorized = pass[0].password === req.body.password;
-        if (authorized) {
-            req.session.authorized = authorized;
-            req.session.user = req.body.user;
-            res.send({ authorized });
+        if (checkPassword.error === null) {
+            let pass = checkPassword.rows;
+            let authorized = pass[0].password === req.body.password;
+            if (authorized) {
+                req.session.authorized = authorized;
+                req.session.user = req.body.user;
+                res.send({ authorized });
+            }
+        } else {
+            console.log('SOMTHING WENT WRONG AND SOMEONE SHOULD TAKE CARE OF THAT!')
         }
     }
 
