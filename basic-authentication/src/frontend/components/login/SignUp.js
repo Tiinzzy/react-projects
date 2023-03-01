@@ -57,7 +57,7 @@ export default class SignUp extends React.Component {
                             backend.sign_up_new_user(that.state.username, that.state.password, (data) => {
                                 if (data.result.affectedRows === 1) {
                                     backend.login_user(that.state.username, that.state.password, (data) => {
-                                        window.location = '/'
+                                        window.location = '/login'
                                     });
                                 }
                             })
