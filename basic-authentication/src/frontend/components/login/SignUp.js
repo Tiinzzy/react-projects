@@ -4,6 +4,8 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 
 import BackEndConnection from '../tools/BackEndConnection';
 
@@ -22,6 +24,7 @@ export default class SignUp extends React.Component {
             passwordNotMatch: false,
             emptyErrUser: false,
             emptyErrPass: false,
+            changeType: false
         }
     }
 
@@ -63,19 +66,26 @@ export default class SignUp extends React.Component {
         window.location = '/login';
     }
 
+    checkBoxClicked() {
+        this.setState({ changeType: !this.state.changeType });
+    }
+
     render() {
         return (
             <>
                 <Box className="WholePageBox">
                     <Box className="LoginBox">
                         <Typography className="LoginHeader" variant="body1">Creat Account</Typography>
-                        {this.state.emptyErrUser === false ? <TextField style={{ marginTop: 15 }} label="Username" variant="outlined" onChange={(e) => this.getUsername(e)} /> :
-                            <TextField error helperText="Enter a username" style={{ marginTop: 15 }} label="Username" variant="outlined" onChange={(e) => this.getUsername(e)} />}
-                        {this.state.emptyErrPass === false ? <TextField style={{ marginTop: 20, marginBottom: 20 }} type="password" label="Password" variant="outlined" onChange={(e) => this.getPassword(e)} /> :
-                            <TextField error helperText="Enter a password" style={{ marginTop: 20, marginBottom: 20 }} type="password" label="Password" variant="outlined" onChange={(e) => this.getPassword(e)} />}
-                        {this.state.passwordNotMatch === false ?
-                            <TextField style={{ marginBottom: 35 }} type="password" label="Confirm Password" variant="outlined" onChange={(e) => this.confirmPassword(e)} onKeyDown={(e) => this.confirmPassword(e)} /> :
-                            <TextField error helperText="Passwords not matching" style={{ marginBottom: 35 }} type="password" label="Confirm Password" variant="outlined" onChange={(e) => this.confirmPassword(e)} onKeyDown={(e) => this.confirmPassword(e)} />}
+
+                        <TextField error={this.state.emptyErrUser === true} helperText={this.state.emptyErrUser === true && "Enter a username"} style={{ marginTop: 15 }} label="Username" variant="outlined" onChange={(e) => this.getUsername(e)} />
+
+                        <TextField error={this.state.emptyErrPass === true} helperText={this.state.emptyErrPass === true && "Enter a password"} style={{ marginTop: 20, marginBottom: 20 }}
+                            type={this.state.changeType === false ? "password" : "text"} label="Password" variant="outlined" onChange={(e) => this.getPassword(e)} />
+
+                        <TextField error={this.state.passwordNotMatch === true} helperText={this.state.passwordNotMatch === true && "Passwords not matching"} style={{ marginBottom: 10 }}
+                            type={this.state.changeType === false ? "password" : "text"} label="Confirm Password" variant="outlined" onChange={(e) => this.confirmPassword(e)} onKeyDown={(e) => this.confirmPassword(e)} />
+
+                        <FormControlLabel style={{ marginBottom: 25 }} control={<Checkbox onChange={() => this.checkBoxClicked()} />} label="Show Password" />
 
                         <Button className="LoginBtn" variant="contained" color="primary" onClick={() => this.createNewUser()}>SIGNUP</Button>
                         <Box className="SignUpBox">
