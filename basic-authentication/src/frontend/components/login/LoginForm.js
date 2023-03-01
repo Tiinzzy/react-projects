@@ -4,9 +4,10 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 
 import BackEndConnection from '../tools/BackEndConnection';
-import SignUp from "./SignUp";
 
 import './login.css'
 
@@ -18,22 +19,22 @@ export default class LoginForm extends React.Component {
         super(props);
         this.state = {
             callbacktoChangePage: props.callbacktoChangePage,
-            password: null,
-            username: null,
-            login: false,
+            password: '',
+            username: '',
             openDialog: false,
             userError: false,
             passError: false,
-            signUp: false
+            wrongData: false,
+            changeType: false
         }
     }
 
     getUsernmae(e) {
-        this.setState({ username: e.target.value, userError: false });
+        this.setState({ username: e.target.value, userError: false, wrongData: false });
     }
 
     getPassword(e) {
-        this.setState({ password: e.target.value, passError: false });
+        this.setState({ password: e.target.value, passError: false, wrongData: false });
         let key = e.code || "";
         let isEnter = key.toLowerCase().indexOf('enter') >= 0;
         if (isEnter) {
@@ -42,11 +43,16 @@ export default class LoginForm extends React.Component {
     }
 
     loginUser() {
-        if (this.state.password === null && this.state.username === null || this.state.password === null || this.state.username === null) {
-            this.setState({ userError: true, passError: true });
+        if (this.state.password.length === 0 || this.state.username.length === 0) {
+            this.setState({ passError: true, userError: true });
         } else {
+            let that = this;
             backend.login_user(this.state.username, this.state.password, (data) => {
-                window.location = '/'
+                if (data.authorized) {
+                    window.location = '/';
+                } else {
+                    that.setState({ wrongData: true });
+                }
             });
         }
     }
@@ -56,27 +62,26 @@ export default class LoginForm extends React.Component {
     }
 
     signUpNewUser() {
-        let data = { action: 'create-new-user' }
-        this.state.callbacktoChangePage(data);
+        window.location = '/sign-up';
+    }
+
+    checkBoxClicked() {
+        this.setState({ changeType: !this.state.changeType });
     }
 
     render() {
         return (
             <>
                 <Box className="WholePageBox">
-                    {this.state.signUp === false && <Box className="LoginBox">
+                    <Box className="LoginBox">
                         <Typography className="LoginHeader" variant="body1">User Login</Typography>
+                        <TextField error={this.state.userError === true} helperText={this.state.userError === true && "Incorrect entry"} style={{ marginTop: 15 }} label="Username" variant="outlined" onChange={(e) => this.getUsernmae(e)} />
 
-                        {this.state.userError === false ?
-                            <TextField style={{ marginTop: 15 }} label="Username" variant="outlined" onChange={(e) => this.getUsernmae(e)} /> :
-                            <TextField error helperText="Incorrect entry" style={{ marginTop: 15 }} label="Username" variant="outlined" onChange={(e) => this.getUsernmae(e)} />}
+                        <TextField error={this.state.passError === true} helperText={this.state.passError === true && "Incorrect entry"} style={{ marginTop: 20, marginBottom: 10 }} label="Password" variant="outlined"
+                            type={this.state.changeType === false ? "password" : "text"} onChange={(e) => this.getPassword(e)} onKeyDown={(e) => this.getPassword(e)} />
 
-                        {this.state.passError === false ?
-                            <TextField style={{ marginTop: 20, marginBottom: 30 }} label="Password" variant="outlined" type="password" onChange={(e) => this.getPassword(e)}
-                                onKeyDown={(e) => this.getPassword(e)} />
-                            :
-                            <TextField error helperText="Incorrect entry" style={{ marginTop: 20, marginBottom: 30 }} label="Password" variant="outlined" type="password" onChange={(e) => this.getPassword(e)}
-                                onKeyDown={(e) => this.getPassword(e)} />}
+                        <FormControlLabel control={<Checkbox onChange={() => this.checkBoxClicked()} />} label="Show Password" />
+                        {this.state.wrongData === true ? <Box className="IncorrectDataBox">Incorrect credentials</Box> : <Box className="IncorrectDataBox"></Box>}
 
                         <Button className="LoginBtn" variant="contained" color="primary" onClick={() => this.loginUser()}>Login</Button>
                         <Box className="SignUpBox">
@@ -84,7 +89,7 @@ export default class LoginForm extends React.Component {
                                 Not a member? <span id="span-sign-up" onClick={() => this.signUpNewUser()}>Creat an account</span>
                             </Typography>
                         </Box>
-                    </Box>}
+                    </Box>
                 </Box>
             </>
         );

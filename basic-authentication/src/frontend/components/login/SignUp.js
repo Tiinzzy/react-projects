@@ -4,6 +4,8 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 
 import BackEndConnection from '../tools/BackEndConnection';
 
@@ -16,13 +18,14 @@ export default class SignUp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            password: null,
-            confPass: null,
-            username: null,
+            password: '',
+            confPass: '',
+            username: '',
             passwordNotMatch: false,
             emptyErrUser: false,
             emptyErrPass: false,
-            connection: false
+            changeType: false,
+            alreadyExist: false
         }
     }
 
@@ -44,28 +47,30 @@ export default class SignUp extends React.Component {
     }
 
     createNewUser() {
-        if (this.state.username === null && this.state.password === null && this.state.confPass === null) {
+        if (this.state.username.length === 0 || this.state.password.length === 0 || this.state.confPass.length === 0) {
             this.setState({ emptyErrUser: true, emptyErrPass: true });
         } else if (this.state.password !== this.state.confPass) {
             this.setState({ passwordNotMatch: true });
         } else {
             let that = this;
-            backend.get_mysql_connection_status((data) => {
-                if (data.connectionStatus) {
-                    that.setState({ connection: true }, () => {
-                        if (that.state.connection) {
-                            backend.sign_up_new_user(that.state.username, that.state.password, (data) => {
-                                if (data.result.affectedRows === 1) {
-                                    backend.login_user(that.state.username, that.state.password, (data) => {
-                                        window.location = '/'
-                                    });
-                                }
-                            })
-                        }
-                    })
+            backend.sign_up_new_user(that.state.username, that.state.password, (data) => {
+                if (data.result.affectedRows === 1) {
+                    backend.login_user(that.state.username, that.state.password, () => {
+                        window.open('/login', '_sdkfs');
+                    });
+                } else if (data.result.startsWith('Duplicate entry')) {
+                    that.setState({ alreadyExist: true })
                 }
             })
         }
+    }
+
+    loginUser() {
+        window.location = '/login';
+    }
+
+    checkBoxClicked() {
+        this.setState({ changeType: !this.state.changeType });
     }
 
     render() {
@@ -74,16 +79,26 @@ export default class SignUp extends React.Component {
                 <Box className="WholePageBox">
                     <Box className="LoginBox">
                         <Typography className="LoginHeader" variant="body1">Creat Account</Typography>
-                        {this.state.emptyErrUser === false ? <TextField style={{ marginTop: 15 }} label="Username" variant="outlined" onChange={(e) => this.getUsername(e)} /> :
-                            <TextField error helperText="Enter a username" style={{ marginTop: 15 }} label="Username" variant="outlined" onChange={(e) => this.getUsername(e)} />}
-                        {this.state.emptyErrPass === false ? <TextField style={{ marginTop: 20, marginBottom: 20 }} type="password" label="Password" variant="outlined" onChange={(e) => this.getPassword(e)} /> :
-                            <TextField error helperText="Enter a password" style={{ marginTop: 20, marginBottom: 20 }} type="password" label="Password" variant="outlined" onChange={(e) => this.getPassword(e)} />}
-                        {this.state.passwordNotMatch === false ?
-                            <TextField style={{ marginBottom: 30 }} type="password" label="Confirm Password" variant="outlined" onChange={(e) => this.confirmPassword(e)} onKeyDown={(e) => this.confirmPassword(e)} /> :
-                            <TextField error helperText="Passwords not matching" style={{ marginBottom: 30 }} type="password" label="Confirm Password" variant="outlined" onChange={(e) => this.confirmPassword(e)} onKeyDown={(e) => this.confirmPassword(e)} />}
+
+                        <TextField error={this.state.emptyErrUser === true} helperText={this.state.emptyErrUser === true && "Enter a username"} style={{ marginTop: 15 }} label="Username" variant="outlined" onChange={(e) => this.getUsername(e)} />
+
+                        <TextField error={this.state.emptyErrPass === true} helperText={this.state.emptyErrPass === true && "Enter a password"} style={{ marginTop: 20, marginBottom: 20 }}
+                            type={this.state.changeType === false ? "password" : "text"} label="Password" variant="outlined" onChange={(e) => this.getPassword(e)} />
+
+                        <TextField error={this.state.passwordNotMatch === true} helperText={this.state.passwordNotMatch === true && "Passwords not matching"} style={{ marginBottom: 10 }}
+                            type={this.state.changeType === false ? "password" : "text"} label="Confirm Password" variant="outlined" onChange={(e) => this.confirmPassword(e)} onKeyDown={(e) => this.confirmPassword(e)} />
+
+                        <FormControlLabel style={{ marginBottom: 25 }} control={<Checkbox onChange={() => this.checkBoxClicked()} />} label="Show Password" />
+
+                        {this.state.alreadyExist === true ? <Box className="IncorrectDataBox" fontSize="16px">Username already exist</Box> : <Box className="IncorrectDataBox"></Box>}
+
 
                         <Button className="LoginBtn" variant="contained" color="primary" onClick={() => this.createNewUser()}>SIGNUP</Button>
-
+                        <Box className="SignUpBox">
+                            <Typography variant="body1" className="SignUpText">
+                                Already have an account? <span id="span-sign-up" onClick={() => this.loginUser()}>Login</span>
+                            </Typography>
+                        </Box>
                     </Box>
                 </Box>
             </>
