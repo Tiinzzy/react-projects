@@ -24,16 +24,16 @@ export default class LoginForm extends React.Component {
             openDialog: false,
             userError: false,
             passError: false,
-            signUp: false
+            wrongData: false
         }
     }
 
     getUsernmae(e) {
-        this.setState({ username: e.target.value, userError: false });
+        this.setState({ username: e.target.value, userError: false, wrongData: false });
     }
 
     getPassword(e) {
-        this.setState({ password: e.target.value, passError: false });
+        this.setState({ password: e.target.value, passError: false, wrongData: false });
         let key = e.code || "";
         let isEnter = key.toLowerCase().indexOf('enter') >= 0;
         if (isEnter) {
@@ -45,8 +45,13 @@ export default class LoginForm extends React.Component {
         if (this.state.password === null && this.state.username === null || this.state.password === null || this.state.username === null) {
             this.setState({ userError: true, passError: true });
         } else {
+            let that = this;
             backend.login_user(this.state.username, this.state.password, (data) => {
-                window.location = '/'
+                if (data.authorized) {
+                    window.location = '/';
+                } else {
+                    that.setState({ wrongData: true });
+                }
             });
         }
     }
@@ -56,15 +61,14 @@ export default class LoginForm extends React.Component {
     }
 
     signUpNewUser() {
-        let data = { action: 'create-new-user' }
-        window.location = '/sing-up';
+        window.location = '/sign-up';
     }
 
     render() {
         return (
             <>
                 <Box className="WholePageBox">
-                    {this.state.signUp === false && <Box className="LoginBox">
+                    <Box className="LoginBox">
                         <Typography className="LoginHeader" variant="body1">User Login</Typography>
 
                         {this.state.userError === false ?
@@ -72,11 +76,13 @@ export default class LoginForm extends React.Component {
                             <TextField error helperText="Incorrect entry" style={{ marginTop: 15 }} label="Username" variant="outlined" onChange={(e) => this.getUsernmae(e)} />}
 
                         {this.state.passError === false ?
-                            <TextField style={{ marginTop: 20, marginBottom: 30 }} label="Password" variant="outlined" type="password" onChange={(e) => this.getPassword(e)}
+                            <TextField style={{ marginTop: 20, marginBottom: 10 }} label="Password" variant="outlined" type="password" onChange={(e) => this.getPassword(e)}
                                 onKeyDown={(e) => this.getPassword(e)} />
                             :
-                            <TextField error helperText="Incorrect entry" style={{ marginTop: 20, marginBottom: 30 }} label="Password" variant="outlined" type="password" onChange={(e) => this.getPassword(e)}
+                            <TextField error helperText="Incorrect entry" style={{ marginTop: 20, marginBottom: 10 }} label="Password" variant="outlined" type="password" onChange={(e) => this.getPassword(e)}
                                 onKeyDown={(e) => this.getPassword(e)} />}
+
+                        {this.state.wrongData === true ? <Box className="IncorrectDataBox">Icorrect username/ password</Box> : <Box className="IncorrectDataBox"></Box>}
 
                         <Button className="LoginBtn" variant="contained" color="primary" onClick={() => this.loginUser()}>Login</Button>
                         <Box className="SignUpBox">
@@ -84,7 +90,7 @@ export default class LoginForm extends React.Component {
                                 Not a member? <span id="span-sign-up" onClick={() => this.signUpNewUser()}>Creat an account</span>
                             </Typography>
                         </Box>
-                    </Box>}
+                    </Box>
                 </Box>
             </>
         );
