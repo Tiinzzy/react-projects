@@ -32,7 +32,7 @@ function App() {
       {pageReady && <div>
         {(user !== null && isLogin) && <UserPage user={user} />}
         {(CURENT_PATH === '/login' && !isLogin) && <LoginForm />}
-        {(CURENT_PATH === '/sing-up' && !isLogin && user !== null) && <SignUp />}
+        {(CURENT_PATH === '/sign-up' && !isLogin && user !== null) && <SignUp />}
       </div>}
     </div>
   );
