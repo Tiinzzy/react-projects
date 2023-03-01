@@ -18,13 +18,14 @@ export default class SignUp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            password: null,
-            confPass: null,
-            username: null,
+            password: '',
+            confPass: '',
+            username: '',
             passwordNotMatch: false,
             emptyErrUser: false,
             emptyErrPass: false,
-            changeType: false
+            changeType: false,
+            alreadyExist: false
         }
     }
 
@@ -46,7 +47,7 @@ export default class SignUp extends React.Component {
     }
 
     createNewUser() {
-        if (this.state.username === null && this.state.password === null && this.state.confPass === null) {
+        if (this.state.username.length === 0 || this.state.password.length === 0 || this.state.confPass.length === 0) {
             this.setState({ emptyErrUser: true, emptyErrPass: true });
         } else if (this.state.password !== this.state.confPass) {
             this.setState({ passwordNotMatch: true });
@@ -55,8 +56,10 @@ export default class SignUp extends React.Component {
             backend.sign_up_new_user(that.state.username, that.state.password, (data) => {
                 if (data.result.affectedRows === 1) {
                     backend.login_user(that.state.username, that.state.password, () => {
-                        window.location = '/login'
+                        window.open('/login', '_sdkfs');
                     });
+                } else if (data.result.startsWith('Duplicate entry')) {
+                    that.setState({ alreadyExist: true })
                 }
             })
         }
@@ -86,6 +89,9 @@ export default class SignUp extends React.Component {
                             type={this.state.changeType === false ? "password" : "text"} label="Confirm Password" variant="outlined" onChange={(e) => this.confirmPassword(e)} onKeyDown={(e) => this.confirmPassword(e)} />
 
                         <FormControlLabel style={{ marginBottom: 25 }} control={<Checkbox onChange={() => this.checkBoxClicked()} />} label="Show Password" />
+
+                        {this.state.alreadyExist === true ? <Box className="IncorrectDataBox" fontSize="16px">Username already exist</Box> : <Box className="IncorrectDataBox"></Box>}
+
 
                         <Button className="LoginBtn" variant="contained" color="primary" onClick={() => this.createNewUser()}>SIGNUP</Button>
                         <Box className="SignUpBox">
