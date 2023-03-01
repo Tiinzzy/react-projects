@@ -22,7 +22,6 @@ export default class SignUp extends React.Component {
             passwordNotMatch: false,
             emptyErrUser: false,
             emptyErrPass: false,
-            connection: false
         }
     }
 
@@ -50,25 +49,17 @@ export default class SignUp extends React.Component {
             this.setState({ passwordNotMatch: true });
         } else {
             let that = this;
-            backend.get_mysql_connection_status((data) => {
-                if (data.connectionStatus) {
-                    that.setState({ connection: true }, () => {
-                        if (that.state.connection) {
-                            backend.sign_up_new_user(that.state.username, that.state.password, (data) => {
-                                if (data.result.affectedRows === 1) {
-                                    backend.login_user(that.state.username, that.state.password, (data) => {
-                                        window.location = '/login'
-                                    });
-                                }
-                            })
-                        }
-                    })
+            backend.sign_up_new_user(that.state.username, that.state.password, (data) => {
+                if (data.result.affectedRows === 1) {
+                    backend.login_user(that.state.username, that.state.password, () => {
+                        window.location = '/login'
+                    });
                 }
             })
         }
     }
 
-    loginUser(){
+    loginUser() {
         window.location = '/login';
     }
 
