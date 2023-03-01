@@ -6,37 +6,34 @@ import UserPage from "./components/home_page/UserPage";
 import SignUp from "./components/login/SignUp";
 
 const backend = BackEndConnection.INSTANCE();
+const CURENT_PATH = window.location.pathname;
 
-function callLoginStatus(setIsLogin, setUser, setSignUp) {
-  if (setSignUp) {
-    setSignUp(true);
-  }
+function checkLoginStatus(setIsLogin, setUser, setPageReady) {
   backend.checkLoginStatus((result) => {
-    setUser(result.user);
-    setIsLogin(result.authorized);
+    if (CURENT_PATH === '/' && !result.authorized) {
+      window.location = '/login';
+    } else {
+      setUser(result.user);
+      setIsLogin(result.authorized);
+      setPageReady(true);
+    }
   })
 }
 
-
 function App() {
+  const [pageReady, setPageReady] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [user, setUser] = useState(null);
-  const [signUp, setSignUp] = useState(false);
 
-
-  callLoginStatus(setIsLogin, setUser);
-
-  function callbacktoChangePage(e) {
-    if (e.action === 'create-new-user') {
-      callLoginStatus(setIsLogin, setUser, setSignUp);
-    }
-  }
+  checkLoginStatus(setIsLogin, setUser, setPageReady);
 
   return (
     <div>
-      {(isLogin && user !== null && signUp === false) && <UserPage user={user} />}
-      {(!isLogin && signUp === false) && < LoginForm callbacktoChangePage={callbacktoChangePage} />}
-      {(signUp === true && !isLogin && user !== null) && <SignUp />}
+      {pageReady && <div>
+        {(user !== null && isLogin) && <UserPage user={user} />}
+        {(CURENT_PATH === '/login' && !isLogin) && <LoginForm />}
+        {(CURENT_PATH === '/sing-up' && !isLogin && user !== null) && <SignUp />}
+      </div>}
     </div>
   );
 }
