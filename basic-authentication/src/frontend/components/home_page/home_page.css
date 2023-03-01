@@ -19,9 +19,11 @@
 
 .LoginHeader{
     font-weight: 500;
-    font-size: 16px;
+    font-size: 20px;
+    text-align: center;
 }
 
 .LoginBtn {
     background-color: #1e81b0 !important;
+    margin-top: 5px !important;
 }
