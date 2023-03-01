@@ -18,16 +18,17 @@ export default class UserPage extends React.Component {
         super(props);
         this.state = {
             user: props.user,
-            openDialog: false
+            openDialog: false,
+            changePassword: false
         }
+        this.closeDialog = this.closeDialog.bind(this);
     }
 
     getSecret() {
         let that = this;
         backend.callSecrete((data) => {
-            console.log(data);
             if (data.authorized) {
-                that.setState({ openDialog: true, secret: JSON.stringify(data.message) });
+                that.setState({ openDialog: true, secret: JSON.stringify(data.message), changePassword: false });
             }
         })
     }
@@ -42,6 +43,10 @@ export default class UserPage extends React.Component {
         this.setState({ openDialog: false });
     }
 
+    changeUserPassword() {
+        this.setState({ openDialog: true, changePassword: true });
+    }
+
     render() {
         return (
             <Box className="WholePageBox">
@@ -49,10 +54,13 @@ export default class UserPage extends React.Component {
                     <Typography mb={2} className="LoginHeader" variant="body1">
                         Hi <span style={{ fontWeight: 'bold' }}>{this.state.user}</span>, welcome back!
                     </Typography>
-                    <Button style={{ marginBottom: 10 }} className="LoginBtn" variant="contained" onClick={() => this.getSecret()}>SECRET!</Button>
+                    <Button style={{ marginBottom: 15 }} className="LoginBtn" variant="contained" onClick={() => this.getSecret()}>SECRET!</Button>
+                    <Button style={{ marginBottom: 15 }} className="LoginBtn" variant="contained" onClick={() => this.changeUserPassword()}>Change Password</Button>
                     <Button className="LoginBtn" variant="contained" onClick={() => this.logOutUser()}>Logout</Button>
                 </Box>
-                <Dialog size="md" open={this.state.openDialog} onClose={() => this.closeDialog()}> <DialogPopUp secret={this.state.secret} /> </Dialog>
+                <Dialog size="md" open={this.state.openDialog} onClose={() => this.closeDialog()}>
+                    <DialogPopUp secret={this.state.secret} changePassword={this.state.changePassword} closeDialog={this.closeDialog} />
+                </Dialog>
             </Box>
         );
     }
