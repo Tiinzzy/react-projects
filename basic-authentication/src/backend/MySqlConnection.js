@@ -16,6 +16,15 @@ class MySqlConnectionImpl {
         return this.#execute(sql);
     }
 
+    async changeUsersPasswordInDatabase(params) {
+        this.#open();
+        let sql = `UPDATE tests.user_authentication 
+                    SET password = '`+ params.newPassword + `' 
+                     WHERE username = '` + params.user + `'`;
+
+        return this.#execute(sql);
+    }
+
     async connect(params) {
 
         this.#connectionInfo.host = params.host;
