@@ -13,20 +13,33 @@ export default class DialogPopUp extends React.Component {
         this.state = {
             secret: props.secret,
             changePassword: props.changePassword,
-            closeDialog: props.closeDialog
+            closeDialog: props.closeDialog,
+            user: props.user,
+            currPass: null,
+            newPass: null,
+            confPass: null
         }
     }
 
     getCurrentPassword(e) {
-        console.log(e.target.value)
+        this.setState({ currPass: e.target.value });
+    }
+
+    getNewPassword(e) {
+        this.setState({ newPass: e.target.value });
+    }
+
+    getPasswordConfirm(e) {
+        this.setState({ confPass: e.target.value });
     }
 
     cancelChangePass() {
-        this.state.closeDialog()
+        this.state.closeDialog();
     }
 
     submitPassChanges() {
-        this.state.closeDialog()
+        console.log('user:', this.state.user, 'password: ', this.state.currPass, 'new password:', this.state.newPass, 'confirm password: ', this.state.confPass)
+        this.state.closeDialog();
     }
 
     render() {
@@ -39,14 +52,11 @@ export default class DialogPopUp extends React.Component {
                     <Box style={{ width: 600 }}>
                         <Box style={{ display: 'flex', alignItems: 'left', justifyContent: 'left', flexDirection: 'column', marginLeft: 20, marginRight: 20, marginTop: 20, marginBottom: 20 }}>
                             <Typography fontWeight="bold" variant="h5" mt={2}>Change Password</Typography>
-                            <TextField style={{ marginTop: 15, marginBottom: 10 }} label="Curretn Password" variant="outlined" type="password" onChange={(e) => this.getPassword(e)}
-                                onKeyDown={(e) => this.getCurrentPassword(e)} />
+                            <TextField style={{ marginTop: 15, marginBottom: 10 }} label="Curretn Password" variant="outlined" type="password" onChange={(e) => this.getCurrentPassword(e)} />
 
-                            <TextField style={{ marginTop: 10, marginBottom: 10 }} label="New Password" variant="outlined" type="password" onChange={(e) => this.getPassword(e)}
-                                onKeyDown={(e) => this.getCurrentPassword(e)} />
+                            <TextField style={{ marginTop: 10, marginBottom: 10 }} label="New Password" variant="outlined" type="password" onChange={(e) => this.getNewPassword(e)} />
 
-                            <TextField style={{ marginTop: 10, marginBottom: 10 }} label="Confirm New Password" variant="outlined" type="password" onChange={(e) => this.getPassword(e)}
-                                onKeyDown={(e) => this.getCurrentPassword(e)} />
+                            <TextField style={{ marginTop: 10, marginBottom: 10 }} label="Confirm New Password" variant="outlined" type="password" onChange={(e) => this.getPasswordConfirm(e)} />
                         </Box>
                         <Box style={{ display: 'flex', justifyContent: 'right', alignItems: 'right', marginRight: 12 }}>
                             <DialogActions>
