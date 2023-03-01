@@ -43,8 +43,10 @@ export default class LoginForm extends React.Component {
     }
 
     loginUser() {
-        if (this.state.password === null && this.state.username === null || this.state.password === null || this.state.username === null) {
+        if (this.state.password === null && this.state.username === null) {
             this.setState({ userError: true, passError: true });
+        } else if (this.state.password === null || this.state.username === null) {
+            this.setState({ passError: true, userError: true });
         } else {
             let that = this;
             backend.login_user(this.state.username, this.state.password, (data) => {
@@ -75,17 +77,10 @@ export default class LoginForm extends React.Component {
                 <Box className="WholePageBox">
                     <Box className="LoginBox">
                         <Typography className="LoginHeader" variant="body1">User Login</Typography>
+                        <TextField error={this.state.userError === true} helperText={this.state.userError === true && "Incorrect entry"} style={{ marginTop: 15 }} label="Username" variant="outlined" onChange={(e) => this.getUsernmae(e)} />
 
-                        {this.state.userError === false ?
-                            <TextField style={{ marginTop: 15 }} label="Username" variant="outlined" onChange={(e) => this.getUsernmae(e)} /> :
-                            <TextField error helperText="Incorrect entry" style={{ marginTop: 15 }} label="Username" variant="outlined" onChange={(e) => this.getUsernmae(e)} />}
-
-                        {this.state.passError === false ?
-                            <TextField style={{ marginTop: 20, marginBottom: 10 }} label="Password" variant="outlined" type={this.state.changeType === false ? "password" : "text"} onChange={(e) => this.getPassword(e)}
-                                onKeyDown={(e) => this.getPassword(e)} />
-                            :
-                            <TextField error helperText="Incorrect entry" style={{ marginTop: 20, marginBottom: 10 }} label="Password" variant="outlined" type={this.state.changeType === false ? "password" : "text"} onChange={(e) => this.getPassword(e)}
-                                onKeyDown={(e) => this.getPassword(e)} />}
+                        <TextField error={this.state.passError === true} helperText={this.state.passError === true && "Incorrect entry"} style={{ marginTop: 20, marginBottom: 10 }} label="Password" variant="outlined"
+                            type={this.state.changeType === false ? "password" : "text"} onChange={(e) => this.getPassword(e)} onKeyDown={(e) => this.getPassword(e)} />
 
                         <FormControlLabel control={<Checkbox onChange={() => this.checkBoxClicked()} />} label="Show Password" />
                         {this.state.wrongData === true ? <Box className="IncorrectDataBox">Icorrect username/ password</Box> : <Box className="IncorrectDataBox"></Box>}
