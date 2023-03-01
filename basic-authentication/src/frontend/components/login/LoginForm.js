@@ -57,7 +57,7 @@ export default class LoginForm extends React.Component {
 
     signUpNewUser() {
         let data = { action: 'create-new-user' }
-        this.state.callbacktoChangePage(data);
+        window.location = '/sing-up';
     }
 
     render() {
