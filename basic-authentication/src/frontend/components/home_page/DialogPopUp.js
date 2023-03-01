@@ -6,6 +6,10 @@ import Typography from "@mui/material/Typography";
 import Button from '@mui/material/Button';
 import DialogActions from '@mui/material/DialogActions';
 
+import BackEndConnection from '../tools/BackEndConnection';
+
+const backend = BackEndConnection.INSTANCE();
+
 export default class DialogPopUp extends React.Component {
 
     constructor(props) {
@@ -38,8 +42,14 @@ export default class DialogPopUp extends React.Component {
     }
 
     submitPassChanges() {
-        console.log('user:', this.state.user, 'password: ', this.state.currPass, 'new password:', this.state.newPass, 'confirm password: ', this.state.confPass)
-        this.state.closeDialog();
+        if (this.state.newPass === this.state.confPass && this.state.currPass !== null) {
+            backend.change_password(this.state.user, this.state.currPass, this.state.confPass, (data) => {
+                console.log(data);
+            })
+        } else (
+            console.log('there is something wrong')
+        )
+        // this.state.closeDialog();
     }
 
     render() {
