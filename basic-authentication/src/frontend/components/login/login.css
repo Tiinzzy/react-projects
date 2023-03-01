@@ -42,10 +42,21 @@
 
 #span-sign-up:hover {
     text-decoration: underline;
-    color:#1e81b0;
+    color: #1e81b0;
 }
 
-.SignUpText{
+.SignUpText {
     font-weight: 500 !important;
     font-size: 15px !important;
+}
+
+.IncorrectDataBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    color: rgb(195, 8, 8);
+    font-size: bold;
+    border: solid 0px red;
+    height: 25px;
 }
