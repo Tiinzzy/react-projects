@@ -5,6 +5,8 @@ import TextField from '@mui/material/TextField';
 import Typography from "@mui/material/Typography";
 import Button from '@mui/material/Button';
 import DialogActions from '@mui/material/DialogActions';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 
 import BackEndConnection from '../tools/BackEndConnection';
 
@@ -22,7 +24,8 @@ export default class DialogPopUp extends React.Component {
             currPass: null,
             newPass: null,
             confPass: null,
-            wrongCUrrPass: false
+            wrongCUrrPass: false,
+            changeType: false
         }
     }
 
@@ -57,6 +60,10 @@ export default class DialogPopUp extends React.Component {
         )
     }
 
+    checkBoxClicked() {
+        this.setState({ changeType: !this.state.changeType });
+    }
+
     render() {
         return (
             <>
@@ -67,13 +74,16 @@ export default class DialogPopUp extends React.Component {
                     <Box style={{ width: 600 }}>
                         <Box style={{ display: 'flex', alignItems: 'left', justifyContent: 'left', flexDirection: 'column', marginLeft: 20, marginRight: 20, marginTop: 20, marginBottom: 20 }}>
                             <Typography fontWeight="bold" variant="h5" mt={2}>Change Password</Typography>
-                            {this.state.wrongCUrrPass === false ? 
-                            <TextField style={{ marginTop: 15, marginBottom: 10 }} label="Current Password" variant="outlined" type="password" onChange={(e) => this.getCurrentPassword(e)} /> :
-                            <TextField error helperText="Wrong Password" style={{ marginTop: 15, marginBottom: 10 }} label="Current Password" variant="outlined" type="password" onChange={(e) => this.getCurrentPassword(e)} />}
+                            {this.state.wrongCUrrPass === false ?
+                                <TextField style={{ marginTop: 15, marginBottom: 10 }} label="Current Password" variant="outlined" type={this.state.changeType === false ? "password" : "text"} onChange={(e) => this.getCurrentPassword(e)} /> :
+                                <TextField error helperText="Wrong Password" style={{ marginTop: 15, marginBottom: 10 }} label="Current Password" variant="outlined" type={this.state.changeType === false ? "password" : "text"} onChange={(e) => this.getCurrentPassword(e)} />}
 
-                            <TextField style={{ marginTop: 10, marginBottom: 10 }} label="New Password" variant="outlined" type="password" onChange={(e) => this.getNewPassword(e)} />
+                            <TextField style={{ marginTop: 10, marginBottom: 10 }} label="New Password" variant="outlined" type={this.state.changeType === false ? "password" : "text"} onChange={(e) => this.getNewPassword(e)} />
 
-                            <TextField style={{ marginTop: 10, marginBottom: 10 }} label="Confirm New Password" variant="outlined" type="password" onChange={(e) => this.getPasswordConfirm(e)} />
+                            <TextField style={{ marginTop: 10, marginBottom: 10 }} label="Confirm New Password" variant="outlined" type={this.state.changeType === false ? "password" : "text"} onChange={(e) => this.getPasswordConfirm(e)} />
+
+                            <FormControlLabel control={<Checkbox onChange={() => this.checkBoxClicked()} />} label="Show Password" />
+
                         </Box>
                         <Box style={{ display: 'flex', justifyContent: 'right', alignItems: 'right', marginRight: 12 }}>
                             <DialogActions>

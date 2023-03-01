@@ -4,9 +4,10 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 
 import BackEndConnection from '../tools/BackEndConnection';
-import SignUp from "./SignUp";
 
 import './login.css'
 
@@ -20,11 +21,11 @@ export default class LoginForm extends React.Component {
             callbacktoChangePage: props.callbacktoChangePage,
             password: null,
             username: null,
-            login: false,
             openDialog: false,
             userError: false,
             passError: false,
-            wrongData: false
+            wrongData: false,
+            changeType: false
         }
     }
 
@@ -64,6 +65,10 @@ export default class LoginForm extends React.Component {
         window.location = '/sign-up';
     }
 
+    checkBoxClicked() {
+        this.setState({ changeType: !this.state.changeType });
+    }
+
     render() {
         return (
             <>
@@ -76,12 +81,13 @@ export default class LoginForm extends React.Component {
                             <TextField error helperText="Incorrect entry" style={{ marginTop: 15 }} label="Username" variant="outlined" onChange={(e) => this.getUsernmae(e)} />}
 
                         {this.state.passError === false ?
-                            <TextField style={{ marginTop: 20, marginBottom: 10 }} label="Password" variant="outlined" type="password" onChange={(e) => this.getPassword(e)}
+                            <TextField style={{ marginTop: 20, marginBottom: 10 }} label="Password" variant="outlined" type={this.state.changeType === false ? "password" : "text"} onChange={(e) => this.getPassword(e)}
                                 onKeyDown={(e) => this.getPassword(e)} />
                             :
-                            <TextField error helperText="Incorrect entry" style={{ marginTop: 20, marginBottom: 10 }} label="Password" variant="outlined" type="password" onChange={(e) => this.getPassword(e)}
+                            <TextField error helperText="Incorrect entry" style={{ marginTop: 20, marginBottom: 10 }} label="Password" variant="outlined" type={this.state.changeType === false ? "password" : "text"} onChange={(e) => this.getPassword(e)}
                                 onKeyDown={(e) => this.getPassword(e)} />}
 
+                        <FormControlLabel control={<Checkbox onChange={() => this.checkBoxClicked()} />} label="Show Password" />
                         {this.state.wrongData === true ? <Box className="IncorrectDataBox">Icorrect username/ password</Box> : <Box className="IncorrectDataBox"></Box>}
 
                         <Button className="LoginBtn" variant="contained" color="primary" onClick={() => this.loginUser()}>Login</Button>
