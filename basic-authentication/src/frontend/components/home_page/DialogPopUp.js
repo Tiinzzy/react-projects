@@ -21,7 +21,8 @@ export default class DialogPopUp extends React.Component {
             user: props.user,
             currPass: null,
             newPass: null,
-            confPass: null
+            confPass: null,
+            wrongCUrrPass: false
         }
     }
 
@@ -44,12 +45,16 @@ export default class DialogPopUp extends React.Component {
     submitPassChanges() {
         if (this.state.newPass === this.state.confPass && this.state.currPass !== null) {
             backend.change_password(this.state.user, this.state.currPass, this.state.confPass, (data) => {
-                console.log(data);
+                let that = this;
+                if (data.change !== null) {
+                    this.state.closeDialog();
+                } else {
+                    that.setState({ wrongCUrrPass: true })
+                }
             })
         } else (
             console.log('there is something wrong')
         )
-        // this.state.closeDialog();
     }
 
     render() {
@@ -62,7 +67,9 @@ export default class DialogPopUp extends React.Component {
                     <Box style={{ width: 600 }}>
                         <Box style={{ display: 'flex', alignItems: 'left', justifyContent: 'left', flexDirection: 'column', marginLeft: 20, marginRight: 20, marginTop: 20, marginBottom: 20 }}>
                             <Typography fontWeight="bold" variant="h5" mt={2}>Change Password</Typography>
-                            <TextField style={{ marginTop: 15, marginBottom: 10 }} label="Curretn Password" variant="outlined" type="password" onChange={(e) => this.getCurrentPassword(e)} />
+                            {this.state.wrongCUrrPass === false ? 
+                            <TextField style={{ marginTop: 15, marginBottom: 10 }} label="Current Password" variant="outlined" type="password" onChange={(e) => this.getCurrentPassword(e)} /> :
+                            <TextField error helperText="Wrong Password" style={{ marginTop: 15, marginBottom: 10 }} label="Current Password" variant="outlined" type="password" onChange={(e) => this.getCurrentPassword(e)} />}
 
                             <TextField style={{ marginTop: 10, marginBottom: 10 }} label="New Password" variant="outlined" type="password" onChange={(e) => this.getNewPassword(e)} />
 
