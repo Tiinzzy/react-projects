@@ -15,24 +15,28 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(session({ secret: 'is-used-to-encrypt-info', resave: true, saveUninitialized: true }))
 
-// function isValidUser(user, password) {
-//     return (user === 'tina' && password === md5('tina123'))
-// }
+
+function invalidateSession(req) {
+    req.session.authorized = false;
+    req.session.user = null;
+}
 
 app.post("/login", async (req, res) => {
-    // let authorized = isValidUser(req.body.user, req.body.password);
-    let connectionStatus = await connection.connect(MYSQL);
-    if (connectionStatus) {
-        let checkPassword = await connection.checkUserIsValid(req.body);
-        let pass = checkPassword.rows;
-        let authorized = pass[0].password === req.body.password;
-        if (authorized) {
-            req.session.authorized = authorized;
-            req.session.user = req.body.user;
-            res.send({ authorized });
-        } else {
-            res.send({ authorized });
+    let connectionOk = await connection.connect(MYSQL);
+
+    if (connectionOk) {
+        let { rows } = await connection.checkUserIsValid(req.body);        
+        let authorized = false;
+        if (rows.length > 0 && rows[0].password) {
+            authorized = (rows[0].password === req.body.password);
+            if (authorized) {
+                req.session.authorized = authorized;
+                req.session.user = req.body.user;
+            } else {
+                invalidateSession(req);
+            }
         }
+        res.send({ authorized });
     } else {
         res.send({ error: 'Sorry something went wrong!' });
     }
@@ -45,8 +49,7 @@ app.post("/login-status", (req, res) => {
 });
 
 app.post("/logout", (req, res) => {
-    req.session.authorized = false;
-    req.session.user = null;
+    invalidateSession(req);
     let authorized = false;
     res.send({ authorized });
 });
@@ -69,7 +72,12 @@ app.post('/sign-up-new-user', async (req, res) => {
     let connectionStatus = await connection.connect(MYSQL);
     if (connectionStatus) {
         let createUser = await connection.insertIntoMySql(req.body);
-        res.send({ result: createUser.rows })
+        if(createUser.rows.length > 0){
+            res.send({ result: createUser.rows });
+        } else{
+            res.send({ result: createUser.error })
+        }
+ 
     } else {
         res.send({ error: 'Sorry something went wrong!' });
     }
@@ -86,7 +94,6 @@ app.post('/change_users_password', async (req, res) => {
         res.send({ result: 'Sorry something went wrong!', change: null });
     }
 });
-
 
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
