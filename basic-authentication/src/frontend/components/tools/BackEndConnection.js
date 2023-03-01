@@ -93,7 +93,7 @@ class BackEndConnectionImpl {
     }
 
     async change_password(username, currentPassword, newPassword, callback) {
-        let query = { username: username, currentPassword: md5(currentPassword), newPassword: md5(newPassword) }
+        let query = { user: username, password: md5(currentPassword), newPassword: md5(newPassword) }
         return axios.post('/change_users_password', query, {})
             .then(function (response) {
                 if (callback) {
