@@ -91,6 +91,21 @@ class BackEndConnectionImpl {
                 return false;
             })
     }
+
+    async change_password(username, currentPassword, newPassword, callback) {
+        let query = { username: username, currentPassword: md5(currentPassword), newPassword: md5(newPassword) }
+        return axios.post('/change_users_password', query, {})
+            .then(function (response) {
+                if (callback) {
+                    callback(response.data);
+                }
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+                return false;
+            })
+    }
 }
 
 export default class BackEndConnection {
