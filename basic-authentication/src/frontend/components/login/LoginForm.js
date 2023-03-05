@@ -9,6 +9,8 @@ import Checkbox from '@mui/material/Checkbox';
 
 import BackEndConnection from '../tools/BackEndConnection';
 
+import { SIGNUP_PATH, FORGOT_PASSWORD_PATH, LOGIN_PATH } from '../../App';
+
 import './login.css'
 
 const backend = BackEndConnection.INSTANCE();
@@ -27,6 +29,7 @@ export default class LoginForm extends React.Component {
             wrongData: false,
             changeType: false
         }
+        window.history.pushState('', '', LOGIN_PATH);
     }
 
     getUsernmae(e) {
@@ -62,11 +65,15 @@ export default class LoginForm extends React.Component {
     }
 
     signUpNewUser() {
-        window.location = '/sign-up';
+        window.location = SIGNUP_PATH;
     }
 
     checkBoxClicked() {
         this.setState({ changeType: !this.state.changeType });
+    }
+
+    forgotPassword() {
+        window.location = FORGOT_PASSWORD_PATH;
     }
 
     render() {
@@ -87,6 +94,9 @@ export default class LoginForm extends React.Component {
                         <Box className="SignUpBox">
                             <Typography variant="body1" className="SignUpText">
                                 Not a member? <span id="span-sign-up" onClick={() => this.signUpNewUser()}>Creat an account</span>
+                            </Typography>
+                            <Typography variant="body1" className="SignUpText" mt={1}>
+                                <span id="span-sign-up" onClick={() => this.forgotPassword()}>Forgot passowrd?</span>
                             </Typography>
                         </Box>
                     </Box>
