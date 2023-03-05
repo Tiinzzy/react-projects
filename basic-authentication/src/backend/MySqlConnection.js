@@ -20,7 +20,7 @@ class MySqlConnectionImpl {
         this.#open();
         let sql = `UPDATE tests.user_authentication 
                     SET password = '`+ params.newPassword + `' 
-                     WHERE username = '` + params.user + `'`;
+                     WHERE username = '` + params.user + `' or email = '` + params.user + `'`;
 
         return this.#execute(sql);
     }
