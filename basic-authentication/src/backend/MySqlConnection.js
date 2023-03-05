@@ -6,7 +6,7 @@ class MySqlConnectionImpl {
 
     async insertIntoMySql(params) {
         this.#open();
-        let sql = "INSERT INTO tests.user_authentication VALUES('" + params.username + "','" + params.password + "')";
+        let sql = "INSERT INTO tests.user_authentication VALUES('" + params.username + "','" + params.password + "','" + params.email + "')";
         return this.#execute(sql);
     }
 
