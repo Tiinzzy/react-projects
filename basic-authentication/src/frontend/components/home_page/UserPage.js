@@ -26,6 +26,7 @@ export default class UserPage extends React.Component {
             openSnack: false
         }
         this.closeDialog = this.closeDialog.bind(this);
+        window.history.pushState('', '', '/home');
     }
 
     getSecret() {
