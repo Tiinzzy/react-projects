@@ -77,8 +77,8 @@ class BackEndConnectionImpl {
             })
     }
 
-    async sign_up_new_user(username, password, callback) {
-        let query = { username: username, password: md5(password) }
+    async sign_up_new_user(email, username, password, callback) {
+        let query = { email: email, username: username, password: md5(password) }
         return axios.post('/sign-up-new-user', query, {})
             .then(function (response) {
                 if (callback) {

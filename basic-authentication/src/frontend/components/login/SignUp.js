@@ -23,9 +23,11 @@ export default class SignUp extends React.Component {
             password: '',
             confPass: '',
             username: '',
+            email: '',
             passwordNotMatch: false,
             emptyErrUser: false,
             emptyErrPass: false,
+            emptyErrEmail: false,
             changeType: false,
             alreadyExist: false
         }
@@ -33,6 +35,10 @@ export default class SignUp extends React.Component {
 
     getUsername(e) {
         this.setState({ username: e.target.value, emptyErrUser: false });
+    }
+
+    getEmail(e) {
+        this.setState({ email: e.target.value, emptyErrEmail: false });
     }
 
     getPassword(e) {
@@ -49,13 +55,14 @@ export default class SignUp extends React.Component {
     }
 
     createNewUser() {
-        if (this.state.username.length === 0 || this.state.password.length === 0 || this.state.confPass.length === 0) {
-            this.setState({ emptyErrUser: true, emptyErrPass: true });
+        if (this.state.username.length === 0 || this.state.password.length === 0 || this.state.confPass.length === 0 || this.state.email.length === 0) {
+            this.setState({ emptyErrUser: true, emptyErrPass: true, emptyErrEmail: true });
         } else if (this.state.password !== this.state.confPass) {
             this.setState({ passwordNotMatch: true });
         } else {
             let that = this;
-            backend.sign_up_new_user(that.state.username, that.state.password, (data) => {
+            backend.sign_up_new_user(that.state.email, that.state.username, that.state.password, (data) => {
+                console.log(data)
                 if (data.result.affectedRows === 1) {
                     backend.login_user(that.state.username, that.state.password, () => {
                         window.open(LOGIN_PATH, '_blank');
@@ -83,6 +90,7 @@ export default class SignUp extends React.Component {
                         <Typography className="LoginHeader" variant="body1">Creat Account</Typography>
 
                         <TextField error={this.state.emptyErrUser === true} helperText={this.state.emptyErrUser === true && "Enter a username"} style={{ marginTop: 15 }} label="Username" variant="outlined" onChange={(e) => this.getUsername(e)} />
+                        <TextField error={this.state.emptyErrEmail === true} helperText={this.state.emptyErrEmail === true && "Enter an Email"} style={{ marginTop: 15 }} label="Email" type="email" variant="outlined" onChange={(e) => this.getEmail(e)} />
 
                         <TextField error={this.state.emptyErrPass === true} helperText={this.state.emptyErrPass === true && "Enter a password"} style={{ marginTop: 20, marginBottom: 20 }}
                             type={this.state.changeType === false ? "password" : "text"} label="Password" variant="outlined" onChange={(e) => this.getPassword(e)} />
