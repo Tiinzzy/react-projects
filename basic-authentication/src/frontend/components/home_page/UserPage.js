@@ -26,6 +26,7 @@ export default class UserPage extends React.Component {
             openSnack: false
         }
         this.closeDialog = this.closeDialog.bind(this);
+        window.history.pushState('', '', '/home');
     }
 
     getSecret() {
@@ -67,13 +68,15 @@ export default class UserPage extends React.Component {
                     </Snackbar>}
 
                 <Box className="WholePageBox">
-                    <Box style={{ display: 'flex', flexDirection: 'column', }}>
+                    <Box className="ButtonTypographyBox">
                         <Typography mb={3} className="LoginHeader" variant="body1">
                             Hi <span style={{ fontWeight: 'bold' }}>{this.state.user}</span>, welcome back!
                         </Typography>
-                        <Button style={{ marginBottom: 15 }} className="LoginBtn" variant="contained" onClick={() => this.getSecret()}>SECRET!</Button>
-                        <Button style={{ marginBottom: 15 }} className="LoginBtn" variant="contained" onClick={() => this.changeUserPassword()}>Change Password</Button>
-                        <Button className="LoginBtn" variant="contained" onClick={() => this.logOutUser()}>Logout</Button>
+                        <Box className="BtnsBox">
+                            <Button style={{ marginBottom: 15 }} className="LoginBtn" variant="contained" onClick={() => this.getSecret()}>SECRET!</Button>
+                            <Button style={{ marginBottom: 15 }} className="LoginBtn" variant="contained" onClick={() => this.changeUserPassword()}>Change Password</Button>
+                            <Button className="LoginBtn" variant="contained" onClick={() => this.logOutUser()}>Logout</Button>
+                        </Box>
                     </Box>
                     <Dialog size="md" open={this.state.openDialog} onClose={() => this.closeDialog()}>
                         <DialogPopUp secret={this.state.secret} changePassword={this.state.changePassword} closeDialog={this.closeDialog} user={this.state.user} />

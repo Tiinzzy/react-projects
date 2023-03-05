@@ -25,7 +25,7 @@ app.post("/login", async (req, res) => {
     let connectionOk = await connection.connect(MYSQL);
 
     if (connectionOk) {
-        let { rows } = await connection.checkUserIsValid(req.body);        
+        let { rows } = await connection.checkUserIsValid(req.body);
         let authorized = false;
         if (rows.length > 0 && rows[0].password) {
             authorized = (rows[0].password === req.body.password);
@@ -72,12 +72,12 @@ app.post('/sign-up-new-user', async (req, res) => {
     let connectionStatus = await connection.connect(MYSQL);
     if (connectionStatus) {
         let createUser = await connection.insertIntoMySql(req.body);
-        if(createUser.rows.length > 0){
+        if(createUser.rows.affectedRows === 1){
             res.send({ result: createUser.rows });
         } else{
             res.send({ result: createUser.error })
         }
- 
+
     } else {
         res.send({ error: 'Sorry something went wrong!' });
     }
