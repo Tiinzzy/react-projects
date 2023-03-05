@@ -4,9 +4,18 @@ import LoginForm from "./components/login/LoginForm";
 import BackEndConnection from './components/tools/BackEndConnection';
 import UserPage from "./components/home_page/UserPage";
 import SignUp from "./components/login/SignUp";
+import ForgotPassword from "./components/login/ForgotPassword";
 
 const backend = BackEndConnection.INSTANCE();
 const CURENT_PATH = window.location.pathname;
+
+export const SIGNUP_PATH = '/sign-up';
+export const FORGOT_PASSWORD_PATH = '/forgot-password';
+export const LOGIN_PATH = '/login';
+
+const VALID_PATHS = [SIGNUP_PATH, FORGOT_PASSWORD_PATH, LOGIN_PATH]
+
+
 
 function checkLoginStatus(setIsLogin, setUser, setPageReady) {
   backend.checkLoginStatus((result) => {
@@ -30,9 +39,18 @@ function App() {
   return (
     <div>
       {pageReady && <div>
-        {(user !== null && isLogin) && <UserPage user={user} />}
-        {(CURENT_PATH === '/login' && !isLogin) && <LoginForm />}
-        {(CURENT_PATH === '/sign-up' && !isLogin && user !== null) && <SignUp />}
+        {isLogin ?
+          <>
+            {(user !== null) && <UserPage user={user} />}
+          </>
+          :
+          <>
+            {(CURENT_PATH === '/sign-up' && user !== null) && <SignUp />}
+            {(CURENT_PATH === '/forgot-password') && <ForgotPassword />}
+            {(CURENT_PATH === '/login') && <LoginForm />}
+            {(!VALID_PATHS.includes(CURENT_PATH)) && <LoginForm />}
+          </>
+        }
       </div>}
     </div>
   );

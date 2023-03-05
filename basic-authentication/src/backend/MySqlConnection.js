@@ -6,13 +6,13 @@ class MySqlConnectionImpl {
 
     async insertIntoMySql(params) {
         this.#open();
-        let sql = "INSERT INTO tests.user_authentication VALUES('" + params.username + "','" + params.password + "')";
+        let sql = "INSERT INTO tests.user_authentication VALUES('" + params.username + "','" + params.password + "','" + params.email + "')";
         return this.#execute(sql);
     }
 
     async checkUserIsValid(params) {
         this.#open();
-        let sql = "select password from tests.user_authentication where username = '" + params.user + "' limit 1";
+        let sql = "select password from tests.user_authentication where username = '" + params.user + "' or email = '" + params.user + "' limit 1";
         return this.#execute(sql);
     }
 
@@ -20,7 +20,7 @@ class MySqlConnectionImpl {
         this.#open();
         let sql = `UPDATE tests.user_authentication 
                     SET password = '`+ params.newPassword + `' 
-                     WHERE username = '` + params.user + `'`;
+                     WHERE username = '` + params.user + `' or email = '` + params.user + `'`;
 
         return this.#execute(sql);
     }

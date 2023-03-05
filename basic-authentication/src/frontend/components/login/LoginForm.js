@@ -9,6 +9,8 @@ import Checkbox from '@mui/material/Checkbox';
 
 import BackEndConnection from '../tools/BackEndConnection';
 
+import { SIGNUP_PATH, FORGOT_PASSWORD_PATH, LOGIN_PATH } from '../../App';
+
 import './login.css'
 
 const backend = BackEndConnection.INSTANCE();
@@ -27,6 +29,7 @@ export default class LoginForm extends React.Component {
             wrongData: false,
             changeType: false
         }
+        window.history.pushState('', '', LOGIN_PATH);
     }
 
     getUsernmae(e) {
@@ -62,11 +65,15 @@ export default class LoginForm extends React.Component {
     }
 
     signUpNewUser() {
-        window.location = '/sign-up';
+        window.location = SIGNUP_PATH;
     }
 
     checkBoxClicked() {
         this.setState({ changeType: !this.state.changeType });
+    }
+
+    forgotPassword() {
+        window.location = FORGOT_PASSWORD_PATH;
     }
 
     render() {
@@ -75,7 +82,7 @@ export default class LoginForm extends React.Component {
                 <Box className="WholePageBox">
                     <Box className="LoginBox">
                         <Typography className="LoginHeader" variant="body1">User Login</Typography>
-                        <TextField error={this.state.userError === true} helperText={this.state.userError === true && "Incorrect entry"} style={{ marginTop: 15 }} label="Username" variant="outlined" onChange={(e) => this.getUsernmae(e)} />
+                        <TextField error={this.state.userError === true} helperText={this.state.userError === true && "Incorrect entry"} style={{ marginTop: 15 }} label="Username or Email" variant="outlined" onChange={(e) => this.getUsernmae(e)} />
 
                         <TextField error={this.state.passError === true} helperText={this.state.passError === true && "Incorrect entry"} style={{ marginTop: 20, marginBottom: 10 }} label="Password" variant="outlined"
                             type={this.state.changeType === false ? "password" : "text"} onChange={(e) => this.getPassword(e)} onKeyDown={(e) => this.getPassword(e)} />
@@ -87,6 +94,9 @@ export default class LoginForm extends React.Component {
                         <Box className="SignUpBox">
                             <Typography variant="body1" className="SignUpText">
                                 Not a member? <span id="span-sign-up" onClick={() => this.signUpNewUser()}>Creat an account</span>
+                            </Typography>
+                            <Typography variant="body1" className="SignUpText" mt={1}>
+                                <span id="span-sign-up" onClick={() => this.forgotPassword()}>Forgot passowrd?</span>
                             </Typography>
                         </Box>
                     </Box>
