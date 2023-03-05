@@ -9,6 +9,8 @@ import Checkbox from '@mui/material/Checkbox';
 
 import BackEndConnection from '../tools/BackEndConnection';
 
+import { LOGIN_PATH, SIGNUP_PATH } from '../../App';
+
 import './login.css'
 
 const backend = BackEndConnection.INSTANCE();
@@ -56,7 +58,7 @@ export default class SignUp extends React.Component {
             backend.sign_up_new_user(that.state.username, that.state.password, (data) => {
                 if (data.result.affectedRows === 1) {
                     backend.login_user(that.state.username, that.state.password, () => {
-                        window.open('/login', '_sdkfs');
+                        window.open(LOGIN_PATH, '_blank');
                     });
                 } else if (data.result.startsWith('Duplicate entry')) {
                     that.setState({ alreadyExist: true })
@@ -66,7 +68,7 @@ export default class SignUp extends React.Component {
     }
 
     loginUser() {
-        window.location = '/login';
+        window.location = LOGIN_PATH;
     }
 
     checkBoxClicked() {
