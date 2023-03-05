@@ -31,6 +31,7 @@
     margin-bottom: 10px;
     border: solid 0px red;
     display: flex;
+    flex-direction: column;
     align-items: left;
     justify-content: left;
 }
