@@ -61,3 +61,17 @@
     border: solid 0px red;
     height: 25px;
 }
+
+.ForgotPasswordBox{
+    border: solid 2px #1e81b0;
+    border-radius: 4px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+}
+
+.ForgotPassHeader{
+    font-weight: 500;
+    font-size: 16px;
+}
