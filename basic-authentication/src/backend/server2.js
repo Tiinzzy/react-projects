@@ -95,7 +95,7 @@ app.post('/change_users_password', async (req, res) => {
     }
 });
 
-app.post('/send-email-to-reset-password', async (req, res) => {
+app.post('/send-email-to-see-user-exist', async (req, res) => {
     let connectionStatus = await connection.connect(MYSQL);
     let emailExist = await connection.checkEmailExist(req.body);
     if (connectionStatus) {
