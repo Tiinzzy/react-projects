@@ -106,6 +106,21 @@ class BackEndConnectionImpl {
                 return false;
             })
     }
+
+    async reset_password_for_forgotten(email, callback) {
+        let query = { email: email };
+        return axios.post('/send-email-to-reset-password', query, {})
+            .then(function (response) {
+                if (callback) {
+                    callback(response.data);
+                }
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+                return false;
+            })
+    }
 }
 
 export default class BackEndConnection {
