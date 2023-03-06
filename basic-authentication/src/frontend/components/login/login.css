@@ -65,13 +65,18 @@
 .ForgotPasswordBox{
     border: solid 2px #1e81b0;
     border-radius: 4px;
-    padding: 20px;
+    /* padding: 20px; */
     display: flex;
     flex-direction: column;
     width: 500px;
 }
 
-.ForgotPassHeader{
-    font-weight: 500;
-    font-size: 16px;
+.EmailTextfield{
+    width: 430px;
+    margin-top: 20px !important;
+}
+
+.BtnActions{
+    margin-right: 37px !important;
+    margin-bottom: 20px !important;
 }
