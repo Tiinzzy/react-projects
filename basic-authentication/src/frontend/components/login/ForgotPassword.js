@@ -25,6 +25,7 @@ export default class ForgotPassword extends React.Component {
             noEmail: false,
             openDialog: false
         }
+        this.closeDialog = this.closeDialog.bind(this);
     }
 
     getEmail(e) {
@@ -82,7 +83,7 @@ export default class ForgotPassword extends React.Component {
                 </Box>
 
                 <Dialog open={this.state.openDialog} onClose={() => this.closeDialog()}>
-                    <ResetPassword username={this.state.username} email={this.state.email} />
+                    <ResetPassword username={this.state.username} email={this.state.email} closeDialog={this.closeDialog}/>
                 </Dialog>
             </Box>
         );
