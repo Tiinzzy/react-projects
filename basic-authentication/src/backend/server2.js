@@ -151,6 +151,7 @@ app.post('/send-email-for-password-reset', async (req, res) => {
 
             mailTransporter.sendMail(mailDetails, function (err, data) {
                 if (err) {
+                    console.log(err);
                     res.send({ result: 'Error occured, Something went wrong.' });
                 } else {
                     res.send({ result: 'Reset password email sent successfully' });
@@ -162,7 +163,6 @@ app.post('/send-email-for-password-reset', async (req, res) => {
 
 
 app.post('/redirect-to-set-new-password-needed', async (req, res) => {
-    console.log(req.body)
     let connectionStatus = await connection.connect(MYSQL);
     if (connectionStatus) {
         let getEmail = await connection.emailForIdRedirect(req.body);
