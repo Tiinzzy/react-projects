@@ -109,7 +109,7 @@ class BackEndConnectionImpl {
 
     async check_see_if_email_exist(email, callback) {
         let query = { email: email };
-        return axios.post('/send-email-to-see-user-exist', query, {})
+        return axios.post('/check-email-to-see-user-exist', query, {})
             .then(function (response) {
                 if (callback) {
                     callback(response.data);
@@ -121,6 +121,22 @@ class BackEndConnectionImpl {
                 return false;
             })
     }
+
+    async send_email_reset_password(email, callback) {
+        let query = { email: email };
+        return axios.post('/send-email-for-password-reset', query, {})
+            .then(function (response) {
+                if (callback) {
+                    callback(response.data);
+                }
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+                return false;
+            })
+    }
+
 }
 
 export default class BackEndConnection {
