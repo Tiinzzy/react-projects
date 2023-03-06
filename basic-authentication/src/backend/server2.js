@@ -133,30 +133,30 @@ app.post('/send-email-for-password-reset', async (req, res) => {
         let email = req.body.email;
         let query = { email, date, id };
         let insertion = await connection.insertIntoResetPassword(query);
-        console.log(insertion);
+        if (insertion.rows.affectedRows === 1) {
+            let mailTransporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: EMAIL_USERNAME,
+                    pass: EMAIL_PASSWORD
+                }
+            });
 
-        let mailTransporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: EMAIL_USERNAME,
-                pass: EMAIL_PASSWORD
-            }
-        });
+            let mailDetails = {
+                from: EMAIL_USERNAME,
+                to: 'tina.vatanabadi@yahoo.com',
+                subject: 'Test mail',
+                text: 'Node.js testing mail for GeeksforGeeks'
+            };
 
-        let mailDetails = {
-            from: EMAIL_USERNAME,
-            to: 'tina.vatanabadi@yahoo.com',
-            subject: 'Test mail',
-            text: 'Node.js testing mail for GeeksforGeeks'
-        };
-
-        mailTransporter.sendMail(mailDetails, function (err, data) {
-            if (err) {
-                res.send({ result: 'Error occured, Something went wrong.' });
-            } else {
-                res.send({ result: 'Reset password email sent successfully' });
-            }
-        });
+            mailTransporter.sendMail(mailDetails, function (err, data) {
+                if (err) {
+                    res.send({ result: 'Error occured, Something went wrong.' });
+                } else {
+                    res.send({ result: 'Reset password email sent successfully' });
+                }
+            });
+        }
     }
 });
 
