@@ -1,9 +1,8 @@
 const express = require('express')
 const session = require('express-session')
 const bodyParser = require('body-parser');
+const nodemailer = require('nodemailer');
 var md5 = require('md5');
-
-const MYSQL = { host: 'localhost', user: 'dbadmin', password: 'washywashy', database: 'tests' };
 
 const MySqlConnection = require('./MySqlConnection');
 const connection = MySqlConnection.INSTANCE();
@@ -13,12 +12,31 @@ const PORT = process.env.PORT || 5000;
 var app = express()
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(session({ secret: 'is-used-to-encrypt-info', resave: true, saveUninitialized: true }))
+app.use(session({ secret: 'is-used-to-encrypt-info', resave: true, saveUninitialized: true }));
 
+const EMAIL_USERNAME = 'reacttest40@gmail.com';
+const EMAIL_PASSWORD = '789852@Qa';
+
+const MYSQL = { host: 'localhost', user: 'dbadmin', password: 'washywashy', database: 'tests' };
 
 function invalidateSession(req) {
     req.session.authorized = false;
     req.session.user = null;
+}
+
+function passwordResetRandomId() {
+    const RANDOM = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const RANDOM_LENGTH = RANDOM.length;
+    let randomAssignment = '';
+    for (let i = 0; i < 100; i++) {
+        randomAssignment += RANDOM.charAt(Math.floor(Math.random() * RANDOM_LENGTH));
+    }
+    return randomAssignment;
+}
+
+function getDate() {
+    var utc = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
+    return utc
 }
 
 app.post("/login", async (req, res) => {
@@ -72,9 +90,9 @@ app.post('/sign-up-new-user', async (req, res) => {
     let connectionStatus = await connection.connect(MYSQL);
     if (connectionStatus) {
         let createUser = await connection.insertIntoMySql(req.body);
-        if(createUser.rows.affectedRows === 1){
+        if (createUser.rows.affectedRows === 1) {
             res.send({ result: createUser.rows });
-        } else{
+        } else {
             res.send({ result: createUser.error })
         }
 
@@ -83,7 +101,7 @@ app.post('/sign-up-new-user', async (req, res) => {
     }
 });
 
-app.post('/change_users_password', async (req, res) => {
+app.post('/change-users-password', async (req, res) => {
     let connectionStatus = await connection.connect(MYSQL);
     let checkPassword = await connection.checkUserIsValid(req.body);
     let authorized = checkPassword.rows[0].password === req.body.password;
@@ -95,22 +113,66 @@ app.post('/change_users_password', async (req, res) => {
     }
 });
 
+app.post('/check-email-to-see-user-exist', async (req, res) => {
+    let connectionStatus = await connection.connect(MYSQL);
+    let emailExist = await connection.checkEmailExist(req.body);
+    if (connectionStatus) {
+        if (emailExist.rows.length > 0) {
+            res.send({ result: emailExist.rows });
+        } else if (emailExist.rows.length === 0) {
+            res.send({ result: emailExist.rows });
+        }
+    }
+});
+
+app.post('/send-email-for-password-reset', async (req, res) => {
+    let connectionStatus = await connection.connect(MYSQL);
+    if (connectionStatus) {
+        let id = passwordResetRandomId();
+        let date = getDate();
+        let email = req.body.email;
+        let query = { email, date, id };
+        let insertion = await connection.insertIntoResetPassword(query);
+        if (insertion.rows.affectedRows === 1) {
+            let mailTransporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: EMAIL_USERNAME,
+                    pass: EMAIL_PASSWORD
+                }
+            });
+
+            let mailDetails = {
+                from: EMAIL_USERNAME,
+                to: 'tina.vatanabadi@yahoo.com',
+                subject: 'Test mail',
+                text: 'Node.js testing mail for GeeksforGeeks'
+            };
+
+            mailTransporter.sendMail(mailDetails, function (err, data) {
+                if (err) {
+                    console.log(err);
+                    res.send({ result: 'Error occured, Something went wrong.' });
+                } else {
+                    res.send({ result: 'Reset password email sent successfully' });
+                }
+            });
+        }
+    }
+});
+
+
+app.post('/redirect-to-set-new-password-needed', async (req, res) => {
+    let connectionStatus = await connection.connect(MYSQL);
+    if (connectionStatus) {
+        let getEmail = await connection.emailForIdRedirect(req.body);
+        if (getEmail.rows.length > 0) {
+            res.send({ result: getEmail.rows[0], msg: 'correct email' })
+        } else if (getEmail.rows.length === 0) {
+            res.send({ msg: 'Something went wrogn' })
+        }
+    }
+});
+
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
-
-
-
-/*
-
-DO THESE SO CLEAN
-
-1) /login => POST => real username & password login form
-2) /logout => POST => logout
-3) user validity should happen using a table in mysql table columns: (username, password, firstname, lastname, email)
-4) for now we don't have signup or change password, we manually put some users in the table
-5) if user is not login and access to website should go to /login
-6) if user is logged in then /login or /  will go to /home
-7) in /home for now just show firstname, lastname
-8) you can connect mysql directly from node backend
-
-*/

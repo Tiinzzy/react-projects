@@ -25,6 +25,24 @@ class MySqlConnectionImpl {
         return this.#execute(sql);
     }
 
+    async checkEmailExist(params) {
+        this.#open();
+        let sql = "select * from tests.user_authentication where email = '" + params.email + "'";
+        return this.#execute(sql);
+    }
+
+    async insertIntoResetPassword(params) {
+        this.#open();
+        let sql = "INSERT INTO tests.reset_password VALUES('" + params.email + "', '" + params.id + "', '" + params.date + "')";
+        return this.#execute(sql);
+    }
+
+    async emailForIdRedirect(params) {
+        this.#open();
+        let sql = "select email from tests.reset_password where id = '" + params.id + "'";
+        return this.#execute(sql);
+    }
+
     async connect(params) {
 
         this.#connectionInfo.host = params.host;
