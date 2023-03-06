@@ -95,7 +95,7 @@ app.post('/change-users-password', async (req, res) => {
     }
 });
 
-app.post('/send-email-to-see-user-exist', async (req, res) => {
+app.post('/check-email-to-see-user-exist', async (req, res) => {
     let connectionStatus = await connection.connect(MYSQL);
     let emailExist = await connection.checkEmailExist(req.body);
     if (connectionStatus) {
@@ -104,6 +104,15 @@ app.post('/send-email-to-see-user-exist', async (req, res) => {
         } else if (emailExist.rows.length === 0) {
             res.send({ result: emailExist.rows });
         }
+    }
+});
+
+app.post('/send-email-for-password-reset', async (req, res) => {
+    console.log(req.body)
+    let connectionStatus = await connection.connect(MYSQL);
+    if (connectionStatus) {
+        res.send({ result: 'this is a test' });
+
     }
 });
 
