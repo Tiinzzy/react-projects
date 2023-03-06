@@ -46,7 +46,6 @@ export default class ForgotPassword extends React.Component {
             let that = this;
             backend.check_see_if_email_exist(this.state.email, (data) => {
                 if (data.result.length > 0) {
-                    console.log(data.result[0].username);
                     that.setState({ openDialog: true, username: data.result[0].username });
                 } else if (data.result.length === 0) {
                     that.setState({ noEmail: true });
