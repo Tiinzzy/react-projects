@@ -100,9 +100,9 @@ app.post('/send-email-to-reset-password', async (req, res) => {
     let emailExist = await connection.checkEmailExist(req.body);
     if (connectionStatus) {
         if (emailExist.rows.length > 0) {
-            res.send({ result: 'User exist' });
+            res.send({ result: emailExist.rows });
         } else if (emailExist.rows.length === 0) {
-            res.send({ result: 'No account with this email found!' });
+            res.send({ result: emailExist.rows  });
         }
     }
 });
