@@ -28,7 +28,9 @@ export default class ResetPassword extends React.Component {
     }
 
     submitResetPassword() {
-
+        backend.send_email_reset_password(this.state.email, (data) => {
+            console.log(data);
+        })
     }
 
     render() {
