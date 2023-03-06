@@ -72,9 +72,9 @@ app.post('/sign-up-new-user', async (req, res) => {
     let connectionStatus = await connection.connect(MYSQL);
     if (connectionStatus) {
         let createUser = await connection.insertIntoMySql(req.body);
-        if(createUser.rows.affectedRows === 1){
+        if (createUser.rows.affectedRows === 1) {
             res.send({ result: createUser.rows });
-        } else{
+        } else {
             res.send({ result: createUser.error })
         }
 
@@ -95,22 +95,17 @@ app.post('/change_users_password', async (req, res) => {
     }
 });
 
+app.post('/send-email-to-reset-password', async (req, res) => {
+    let connectionStatus = await connection.connect(MYSQL);
+    let emailExist = await connection.checkEmailExist(req.body);
+    if (connectionStatus) {
+        if (emailExist.rows.length > 0) {
+            res.send({ result: 'User exist' });
+        } else if (emailExist.rows.length === 0) {
+            res.send({ result: 'No account with this email found!' });
+        }
+    }
+});
+
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
-
-
-
-/*
-
-DO THESE SO CLEAN
-
-1) /login => POST => real username & password login form
-2) /logout => POST => logout
-3) user validity should happen using a table in mysql table columns: (username, password, firstname, lastname, email)
-4) for now we don't have signup or change password, we manually put some users in the table
-5) if user is not login and access to website should go to /login
-6) if user is logged in then /login or /  will go to /home
-7) in /home for now just show firstname, lastname
-8) you can connect mysql directly from node backend
-
-*/
