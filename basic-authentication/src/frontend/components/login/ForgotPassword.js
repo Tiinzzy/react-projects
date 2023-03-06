@@ -27,8 +27,7 @@ export default class ForgotPassword extends React.Component {
             noEmail: false,
             openDialog: false,
             displaySnack: false,
-            snackError: false,
-            snackSuccess: false
+            snackError: false            
         }
         this.closeDialog = this.closeDialog.bind(this);
     }
@@ -61,7 +60,7 @@ export default class ForgotPassword extends React.Component {
         if (action && action === 'error-occured') {
             this.setState({ email: '', displaySnack: true, openSnack: true, snackError: true });
         } else if (action && action === 'sucessfull-reset') {
-            this.setState({ displaySnack: true, openSnack: true, snackSuccess: true });
+            this.setState({ displaySnack: true, openSnack: true});
         }
     }
     closeAlert() {
@@ -99,8 +98,8 @@ export default class ForgotPassword extends React.Component {
 
                 {this.state.displaySnack === true &&
                     <Snackbar open={this.state.openSnack} onClose={() => this.closeAlert()} autoHideDuration={5000} anchorOrigin={{ vertical: "top", horizontal: "center" }}>
-                        <Alert severity={this.state.snackError === true && "error" || this.state.snackSuccess === true && "success"}>
-                            {this.state.snackError === true ? 'Something went wrong. Try again.' : 'Reset password email sent successfully to ' + this.state.email}
+                        <Alert severity={this.state.snackError ? "error" : "success"}>
+                            {this.state.snackError ? 'Something went wrong. Try again.' : 'Reset password email sent successfully to ' + this.state.email}
                         </Alert>
                     </Snackbar>}
             </Box>
