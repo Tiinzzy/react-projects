@@ -19,17 +19,20 @@ export default class ResetPassword extends React.Component {
         super(props);
         this.state = {
             email: props.email,
-            username: props.username
+            username: props.username,
+            closeDialog: props.closeDialog
         }
     }
 
     cancelandClose() {
-        window.location = '/forgot-password';
+        this.state.closeDialog();
     }
 
     submitResetPassword() {
+        let that = this;
         backend.send_email_reset_password(this.state.email, (data) => {
             console.log(data);
+            that.state.closeDialog();
         })
     }
 
