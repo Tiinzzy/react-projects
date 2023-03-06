@@ -36,7 +36,9 @@ export default class ForgotPassword extends React.Component {
         if (this.state.email.includes('@')) {
             let that = this;
             backend.reset_password_for_forgotten(this.state.email, (data) => {
-                if (data.result.startsWith('No')) {
+                if (data.result.length > 0) {
+                    console.log(data.result[0].username)
+                } else if (data.result.length === 0) {
                     that.setState({ noEmail: true })
                 }
             })
