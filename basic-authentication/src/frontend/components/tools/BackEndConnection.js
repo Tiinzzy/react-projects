@@ -137,6 +137,20 @@ class BackEndConnectionImpl {
             })
     }
 
+    async redirect_if_needed(id, callback) {
+        axios.post('/redirect-to-set-new-password-needed', { id }, {})
+            .then(function (response) {
+                if (callback) {
+                    callback(response.data);
+                }
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+                return false;
+            })
+    }
+
 }
 
 export default class BackEndConnection {
