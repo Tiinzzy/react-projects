@@ -62,7 +62,7 @@
     height: 25px;
 }
 
-.ForgotPasswordBox{
+.ForgotPasswordBox {
     border: solid 2px #1e81b0;
     border-radius: 4px;
     /* padding: 20px; */
@@ -71,17 +71,22 @@
     width: 500px;
 }
 
-.EmailTextfield{
+.EmailTextfield {
     width: 430px;
     margin-top: 20px !important;
 }
 
-.BtnActions{
+.BtnActions {
     margin-right: 37px !important;
     margin-bottom: 20px !important;
 }
 
-.NoEmailFound{
+.NoEmailFound {
     margin-top: 20px !important;
     color: rgb(187, 2, 2) !important;
+}
+
+.BtnActionsDialog{
+    margin-right: 16px !important;
+    margin-bottom: 20px !important;
 }
