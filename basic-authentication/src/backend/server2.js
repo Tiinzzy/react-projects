@@ -27,7 +27,7 @@ function invalidateSession(req) {
 function passwordResetRandomId() {
     const RANDOM = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     const RANDOM_LENGTH = RANDOM.length;
-    let randomAssignment = ' ';
+    let randomAssignment = '';
     for (let i = 0; i < 100; i++) {
         randomAssignment += RANDOM.charAt(Math.floor(Math.random() * RANDOM_LENGTH));
     }
@@ -156,6 +156,20 @@ app.post('/send-email-for-password-reset', async (req, res) => {
                     res.send({ result: 'Reset password email sent successfully' });
                 }
             });
+        }
+    }
+});
+
+
+app.post('/redirect-to-set-new-password-needed', async (req, res) => {
+    console.log(req.body)
+    let connectionStatus = await connection.connect(MYSQL);
+    if (connectionStatus) {
+        let getEmail = await connection.emailForIdRedirect(req.body);
+        if (getEmail.rows.length > 0) {
+            res.send({ result: getEmail.rows[0], msg: 'correct email' })
+        } else if (getEmail.rows.length === 0) {
+            res.send({ msg: 'Something went wrogn' })
         }
     }
 });
