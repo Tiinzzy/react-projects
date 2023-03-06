@@ -107,9 +107,9 @@ class BackEndConnectionImpl {
             })
     }
 
-    async reset_password_for_forgotten(email, callback) {
+    async check_see_if_email_exist(email, callback) {
         let query = { email: email };
-        return axios.post('/send-email-to-reset-password', query, {})
+        return axios.post('/send-email-to-see-user-exist', query, {})
             .then(function (response) {
                 if (callback) {
                     callback(response.data);
