@@ -25,6 +25,12 @@ class MySqlConnectionImpl {
         return this.#execute(sql);
     }
 
+    async checkEmailExist(params) {
+        this.#open();
+        let sql = "select * from tests.user_authentication where email = '" + params.email + "'";
+        return this.#execute(sql);
+    }
+
     async connect(params) {
 
         this.#connectionInfo.host = params.host;
