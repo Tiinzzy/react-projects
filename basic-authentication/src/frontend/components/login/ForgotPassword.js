@@ -8,8 +8,10 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from "@mui/material/Dialog";
 
 import BackEndConnection from '../tools/BackEndConnection';
+import ResetPassword from './ResetPassword';
 
 const backend = BackEndConnection.INSTANCE();
 
@@ -20,7 +22,8 @@ export default class ForgotPassword extends React.Component {
         this.state = {
             email: '',
             emailError: false,
-            noEmail: false
+            noEmail: false,
+            openDialog: false
         }
     }
 
@@ -32,19 +35,24 @@ export default class ForgotPassword extends React.Component {
         window.location = '/'
     }
 
-    submitResetPassword() {
+    submitSearchEmail() {
         if (this.state.email.includes('@')) {
             let that = this;
-            backend.reset_password_for_forgotten(this.state.email, (data) => {
+            backend.check_see_if_email_exist(this.state.email, (data) => {
                 if (data.result.length > 0) {
-                    console.log(data.result[0].username)
+                    console.log(data.result[0].username);
+                    that.setState({ openDialog: true, username: data.result[0].username });
                 } else if (data.result.length === 0) {
-                    that.setState({ noEmail: true })
+                    that.setState({ noEmail: true });
                 }
             })
         } else {
-            this.setState({ emailError: true })
+            this.setState({ emailError: true });
         }
+    }
+
+    closeDialog() {
+        this.setState({ openDialog: false });
     }
 
 
@@ -69,23 +77,14 @@ export default class ForgotPassword extends React.Component {
                     </DialogContent>
                     <DialogActions className="BtnActions">
                         <Button className="LoginBtn" variant="contained" onClick={() => this.cancelResetPassword()}>Cancel</Button>
-                        <Button className="LoginBtn" variant="contained" onClick={() => this.submitResetPassword()}>Search</Button>
+                        <Button className="LoginBtn" variant="contained" onClick={() => this.submitSearchEmail()}>Search</Button>
                     </DialogActions>
                 </Box>
+
+                <Dialog open={this.state.openDialog} onClose={() => this.closeDialog()}>
+                    <ResetPassword username={this.state.username} email={this.state.email} />
+                </Dialog>
             </Box>
         );
     }
 };
-
-
-/*
-
-USERS_TABLE
---------------------
-user_name,
-email,
-passowrd_md5,
-reset_password_id,
-asked_for_reset_date
-
-*/
