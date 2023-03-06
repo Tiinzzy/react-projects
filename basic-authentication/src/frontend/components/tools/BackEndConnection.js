@@ -94,7 +94,7 @@ class BackEndConnectionImpl {
 
     async change_password(username, currentPassword, newPassword, callback) {
         let query = { user: username, password: md5(currentPassword), newPassword: md5(newPassword) }
-        return axios.post('/change_users_password', query, {})
+        return axios.post('/change-users-password', query, {})
             .then(function (response) {
                 if (callback) {
                     callback(response.data);
@@ -106,6 +106,51 @@ class BackEndConnectionImpl {
                 return false;
             })
     }
+
+    async check_see_if_email_exist(email, callback) {
+        let query = { email: email };
+        return axios.post('/check-email-to-see-user-exist', query, {})
+            .then(function (response) {
+                if (callback) {
+                    callback(response.data);
+                }
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+                return false;
+            })
+    }
+
+    async send_email_reset_password(email, callback) {
+        let query = { email: email };
+        return axios.post('/send-email-for-password-reset', query, {})
+            .then(function (response) {
+                if (callback) {
+                    callback(response.data);
+                }
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+                return false;
+            })
+    }
+
+    async redirect_if_needed(id, callback) {
+        axios.post('/redirect-to-set-new-password-needed', { id }, {})
+            .then(function (response) {
+                if (callback) {
+                    callback(response.data);
+                }
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+                return false;
+            })
+    }
+
 }
 
 export default class BackEndConnection {
