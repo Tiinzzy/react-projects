@@ -9,17 +9,22 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
+import BackEndConnection from '../tools/BackEndConnection';
+
+const backend = BackEndConnection.INSTANCE();
+
 export default class ForgotPassword extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            email: ''
+            email: '',
+            emailError: false
         }
     }
 
     getEmail(e) {
-        this.setState({ email: e.target.value })
+        this.setState({ email: e.target.value, emailError: false })
     }
 
     cancelResetPassword() {
@@ -27,7 +32,13 @@ export default class ForgotPassword extends React.Component {
     }
 
     submitResetPassword() {
-        console.log(this.state.email);
+        if (this.state.email.includes('@')) {
+            backend.reset_password_for_forgotten(this.state.email, (data) => {
+                console.log(data);
+            })
+        } else {
+            this.setState({ emailError: true })
+        }
     }
 
 
@@ -43,7 +54,8 @@ export default class ForgotPassword extends React.Component {
                         <DialogContentText id="alert-dialog-description">
                             Please enter your email address to search for your account and reset your password.
                         </DialogContentText>
-                        <TextField className="EmailTextfield" label="Email" variant="outlined" onChange={(e) => this.getEmail(e)} />
+                        <TextField error={this.state.emailError === true} helperText={this.state.emailError === true && 'Enter a valid email'}
+                            className="EmailTextfield" label="Email" variant="outlined" type='email' onChange={(e) => this.getEmail(e)} />
                     </DialogContent>
                     <DialogActions className="BtnActions">
                         <Button className="LoginBtn" variant="contained" onClick={() => this.cancelResetPassword()}>Cancel</Button>
