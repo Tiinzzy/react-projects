@@ -19,12 +19,13 @@ export default class ForgotPassword extends React.Component {
         super(props);
         this.state = {
             email: '',
-            emailError: false
+            emailError: false,
+            noEmail: false
         }
     }
 
     getEmail(e) {
-        this.setState({ email: e.target.value, emailError: false })
+        this.setState({ email: e.target.value, emailError: false, noEmail: false })
     }
 
     cancelResetPassword() {
@@ -33,8 +34,11 @@ export default class ForgotPassword extends React.Component {
 
     submitResetPassword() {
         if (this.state.email.includes('@')) {
+            let that = this;
             backend.reset_password_for_forgotten(this.state.email, (data) => {
-                console.log(data);
+                if (data.result.startsWith('No')) {
+                    that.setState({ noEmail: true })
+                }
             })
         } else {
             this.setState({ emailError: true })
@@ -56,6 +60,10 @@ export default class ForgotPassword extends React.Component {
                         </DialogContentText>
                         <TextField error={this.state.emailError === true} helperText={this.state.emailError === true && 'Enter a valid email'}
                             className="EmailTextfield" label="Email" variant="outlined" type='email' onChange={(e) => this.getEmail(e)} />
+                        {this.state.noEmail === true &&
+                            <DialogContentText id="alert-dialog-description" className="NoEmailFound">
+                                There's no account with the info you provided.
+                            </DialogContentText>}
                     </DialogContent>
                     <DialogActions className="BtnActions">
                         <Button className="LoginBtn" variant="contained" onClick={() => this.cancelResetPassword()}>Cancel</Button>
