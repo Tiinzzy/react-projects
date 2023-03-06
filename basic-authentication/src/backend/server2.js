@@ -83,7 +83,7 @@ app.post('/sign-up-new-user', async (req, res) => {
     }
 });
 
-app.post('/change_users_password', async (req, res) => {
+app.post('/change-users-password', async (req, res) => {
     let connectionStatus = await connection.connect(MYSQL);
     let checkPassword = await connection.checkUserIsValid(req.body);
     let authorized = checkPassword.rows[0].password === req.body.password;
@@ -102,7 +102,7 @@ app.post('/send-email-to-see-user-exist', async (req, res) => {
         if (emailExist.rows.length > 0) {
             res.send({ result: emailExist.rows });
         } else if (emailExist.rows.length === 0) {
-            res.send({ result: emailExist.rows  });
+            res.send({ result: emailExist.rows });
         }
     }
 });
