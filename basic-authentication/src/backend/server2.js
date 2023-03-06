@@ -1,9 +1,8 @@
 const express = require('express')
 const session = require('express-session')
 const bodyParser = require('body-parser');
+const nodemailer = require('nodemailer');
 var md5 = require('md5');
-
-const MYSQL = { host: 'localhost', user: 'dbadmin', password: 'washywashy', database: 'tests' };
 
 const MySqlConnection = require('./MySqlConnection');
 const connection = MySqlConnection.INSTANCE();
@@ -13,12 +12,31 @@ const PORT = process.env.PORT || 5000;
 var app = express()
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(session({ secret: 'is-used-to-encrypt-info', resave: true, saveUninitialized: true }))
+app.use(session({ secret: 'is-used-to-encrypt-info', resave: true, saveUninitialized: true }));
 
+const EMAIL_USERNAME = 'reacttest40@gmail.com';
+const EMAIL_PASSWORD = '789852@Qa';
+
+const MYSQL = { host: 'localhost', user: 'dbadmin', password: 'washywashy', database: 'tests' };
 
 function invalidateSession(req) {
     req.session.authorized = false;
     req.session.user = null;
+}
+
+function passwordResetRandomId() {
+    const RANDOM = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const RANDOM_LENGTH = RANDOM.length;
+    let randomAssignment = ' ';
+    for (let i = 0; i < 100; i++) {
+        randomAssignment += RANDOM.charAt(Math.floor(Math.random() * RANDOM_LENGTH));
+    }
+    return randomAssignment;
+}
+
+function getDate() {
+    var utc = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
+    return utc
 }
 
 app.post("/login", async (req, res) => {
@@ -108,11 +126,37 @@ app.post('/check-email-to-see-user-exist', async (req, res) => {
 });
 
 app.post('/send-email-for-password-reset', async (req, res) => {
-    console.log(req.body)
     let connectionStatus = await connection.connect(MYSQL);
     if (connectionStatus) {
-        res.send({ result: 'this is a test' });
+        let id = passwordResetRandomId();
+        let date = getDate();
+        let email = req.body.email;
+        let query = { email, date, id };
+        let insertion = await connection.insertIntoResetPassword(query);
+        console.log(insertion);
 
+        let mailTransporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: EMAIL_USERNAME,
+                pass: EMAIL_PASSWORD
+            }
+        });
+
+        let mailDetails = {
+            from: EMAIL_USERNAME,
+            to: 'tina.vatanabadi@yahoo.com',
+            subject: 'Test mail',
+            text: 'Node.js testing mail for GeeksforGeeks'
+        };
+
+        mailTransporter.sendMail(mailDetails, function (err, data) {
+            if (err) {
+                res.send({ result: 'Error occured, Something went wrong.' });
+            } else {
+                res.send({ result: 'Reset password email sent successfully' });
+            }
+        });
     }
 });
 
