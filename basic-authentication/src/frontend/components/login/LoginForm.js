@@ -96,7 +96,7 @@ export default class LoginForm extends React.Component {
                                 Not a member? <span id="span-sign-up" onClick={() => this.signUpNewUser()}>Creat an account</span>
                             </Typography>
                             <Typography variant="body1" className="SignUpText" mt={1}>
-                                <span id="span-sign-up" onClick={() => this.forgotPassword()}>Forgot passowrd?</span>
+                                <span id="span-sign-up" onClick={() => this.forgotPassword()}>Forgotten passowrd?</span>
                             </Typography>
                         </Box>
                     </Box>
