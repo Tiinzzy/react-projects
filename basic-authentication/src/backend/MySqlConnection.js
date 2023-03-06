@@ -31,6 +31,12 @@ class MySqlConnectionImpl {
         return this.#execute(sql);
     }
 
+    async insertIntoResetPassword(params) {
+        this.#open();
+        let sql = "INSERT INTO tests.reset_password VALUES('" + params.email + "','" + params.id + "','" + params.date + "')";
+        return this.#execute(sql);
+    }
+
     async connect(params) {
 
         this.#connectionInfo.host = params.host;
