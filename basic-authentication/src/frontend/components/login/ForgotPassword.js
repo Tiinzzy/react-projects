@@ -13,7 +13,7 @@ import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 
 import BackEndConnection from '../tools/BackEndConnection';
-import ResetPassword from './ResetPassword';
+import ResetPasswordDialog from './ResetPasswordDialog';
 
 const backend = BackEndConnection.INSTANCE();
 
@@ -94,7 +94,7 @@ export default class ForgotPassword extends React.Component {
                 </Box>
 
                 <Dialog open={this.state.openDialog} onClose={() => this.closeDialog()}>
-                    <ResetPassword username={this.state.username} email={this.state.email} closeDialog={this.closeDialog} />
+                    <ResetPasswordDialog username={this.state.username} email={this.state.email} closeDialog={this.closeDialog} />
                 </Dialog>
 
                 {this.state.displaySnack === true &&
