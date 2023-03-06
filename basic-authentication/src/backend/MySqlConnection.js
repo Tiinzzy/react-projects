@@ -33,7 +33,13 @@ class MySqlConnectionImpl {
 
     async insertIntoResetPassword(params) {
         this.#open();
-        let sql = "INSERT INTO tests.reset_password VALUES('" + params.email + "','" + params.id + "','" + params.date + "')";
+        let sql = "INSERT INTO tests.reset_password VALUES('" + params.email + "', '" + params.id + "', '" + params.date + "')";
+        return this.#execute(sql);
+    }
+
+    async emailForIdRedirect(params) {
+        this.#open();
+        let sql = "select email from tests.reset_password where id = '" + params.id + "'";
         return this.#execute(sql);
     }
 
