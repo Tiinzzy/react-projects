@@ -54,6 +54,12 @@ export default class ResetPassword extends React.Component {
 
     getNewPassConfrim(e) {
         this.setState({ confirmPassword: e.target.value, samePass: false, notMatching: false });
+
+        let key = e.code || "";
+        let isEnter = key.toLowerCase().indexOf('enter') >= 0;
+        if (isEnter) {
+            this.submitResetPasswordChange();
+        }
     }
 
     submitResetPasswordChange() {
@@ -100,7 +106,7 @@ export default class ResetPassword extends React.Component {
 
                                 <TextField error={this.state.notMatching} helperText={this.state.notMatching && 'Passwords Not Matching'}
                                     type={this.state.changeType === false ? "password" : "text"}
-                                    label="Confirm Password" variant="outlined" onChange={(e) => this.getNewPassConfrim(e)} />
+                                    label="Confirm Password" variant="outlined" onChange={(e) => this.getNewPassConfrim(e)} onKeyDown={(e) => this.getNewPassConfrim(e)}/>
 
                                 {this.state.samePass && <span className="SameOldPassErr">Your new password cannot be your old password.</span>}
 
