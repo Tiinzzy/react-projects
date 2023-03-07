@@ -22,6 +22,8 @@ export default class ResetPassword extends React.Component {
         super(props);
         this.state = {
             restId: props.restId,
+            newPassword: '',
+            confirmPassword: ''
         }
     }
 
@@ -35,6 +37,24 @@ export default class ResetPassword extends React.Component {
         backend.check_email_for_id(this.state.restId, (data) => {
             that.setState({ email: data.result });
         })
+    }
+
+    getNewPassword(e) {
+        this.setState({ newPassword: e.target.value });
+    }
+
+    getNewPassConfrim(e) {
+        this.setState({ confirmPassword: e.target.value });
+    }
+
+    submitResetPasswordChange() {
+        if (this.state.newPassword === this.state.confirmPassword && this.state.confirmPassword.length > 0 && this.state.newPassword.length > 0) {
+            console.log('email: ', this.state.email)
+            console.log('new password: ', this.state.newPassword)
+            console.log('confirm password: ', this.state.confirmPassword)
+        } else {
+            console.log('there is something wrong')
+        }
     }
 
     render() {
@@ -51,16 +71,16 @@ export default class ResetPassword extends React.Component {
                                 Please enter a new password to change your password and recover account.
                             </DialogContentText>
                             <Box className="ResetPassBoxTextField">
-                                <TextField label="Password" variant="outlined" type='password' style={{marginBottom: 20}}/>
-                                <TextField label="Confirm Password" variant="outlined" type='password' />
+                                <TextField label="Password" variant="outlined" type='password' style={{ marginBottom: 20 }} onChange={(e) => this.getNewPassword(e)} />
+                                <TextField label="Confirm Password" variant="outlined" type='password' onChange={(e) => this.getNewPassConfrim(e)} />
                             </Box>
                         </DialogContent>
                         <DialogActions className="BtnActions">
-                            <Button className="LoginBtn" variant="contained" onClick={() => this.submitSearchEmail()}>Search</Button>
+                            <Button className="LoginBtn" variant="contained" onClick={() => this.submitResetPasswordChange()}>Search</Button>
                         </DialogActions>
                     </Box >
                     : "You can't be here"
-    }
+                }
             </Box>
         );
     }
