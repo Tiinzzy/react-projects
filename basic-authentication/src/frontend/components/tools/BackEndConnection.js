@@ -137,8 +137,8 @@ class BackEndConnectionImpl {
             })
     }
 
-    async redirect_if_needed(id, callback) {
-        axios.post('/redirect-to-set-new-password-needed', { id }, {})
+    async check_email_for_id(id, callback) {
+        axios.post('/check-user-email-for-id', { id }, {})
             .then(function (response) {
                 if (callback) {
                     callback(response.data);
