@@ -23,7 +23,8 @@ export default class ResetPassword extends React.Component {
         this.state = {
             restId: props.restId,
             newPassword: '',
-            confirmPassword: ''
+            confirmPassword: '',
+            samePass: false
         }
     }
 
@@ -40,18 +41,19 @@ export default class ResetPassword extends React.Component {
     }
 
     getNewPassword(e) {
-        this.setState({ newPassword: e.target.value });
+        this.setState({ newPassword: e.target.value, samePass: false });
     }
 
     getNewPassConfrim(e) {
-        this.setState({ confirmPassword: e.target.value });
+        this.setState({ confirmPassword: e.target.value, samePass: false });
     }
 
     submitResetPasswordChange() {
         if (this.state.newPassword === this.state.confirmPassword && this.state.confirmPassword.length > 0 && this.state.newPassword.length > 0) {
+            let that = this;
             backend.set_new_password(this.state.email, this.state.confirmPassword, (data) => {
                 if (data.result.startsWith('old')) {
-                    console.log('cant set old password')
+                    that.setState({ samePass: true })
                 } else {
                     console.log(data.result)
                 }
@@ -77,6 +79,7 @@ export default class ResetPassword extends React.Component {
                             <Box className="ResetPassBoxTextField">
                                 <TextField label="Password" variant="outlined" type='password' style={{ marginBottom: 20 }} onChange={(e) => this.getNewPassword(e)} />
                                 <TextField label="Confirm Password" variant="outlined" type='password' onChange={(e) => this.getNewPassConfrim(e)} />
+                                {this.state.samePass && <span className="SameOldPassErr">Your new password cannot be your old password.</span>}
                             </Box>
                         </DialogContent>
                         <DialogActions className="BtnActions">
