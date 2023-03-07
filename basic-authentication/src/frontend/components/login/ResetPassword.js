@@ -56,7 +56,11 @@ export default class ResetPassword extends React.Component {
                 if (data.result.startsWith('old')) {
                     that.setState({ samePass: true })
                 } else {
-                    console.log(data.result)
+                    backend.login_user(this.state.email, this.state.confirmPassword, (data) => {
+                        if (data.authorized) {
+                            window.location = '/';
+                        }
+                    })
                 }
             })
         } else if (this.state.newPassword !== this.state.confirmPassword) {
@@ -88,7 +92,7 @@ export default class ResetPassword extends React.Component {
                             </Box>
                         </DialogContent>
                         <DialogActions className="BtnActions">
-                            <Button className="LoginBtn" variant="contained" onClick={() => this.submitResetPasswordChange()}>Search</Button>
+                            <Button className="LoginBtn" variant="contained" onClick={() => this.submitResetPasswordChange()}>Submit</Button>
                         </DialogActions>
                     </Box >
                     : "You can't be here"
