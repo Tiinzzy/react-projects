@@ -34,7 +34,7 @@ export default class ResetPasswordDialog extends React.Component {
             if (data.result.startsWith('Error')) {
                 let action = 'error-occured';
                 that.state.closeDialog(action);
-            } else if (data.result.startsWith('Reset0')) {
+            } else if (data.result.startsWith('Reset')) {
                 let action = 'sucessfull-reset';
                 that.state.closeDialog(action);
             }

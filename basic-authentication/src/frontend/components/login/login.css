@@ -86,7 +86,28 @@
     color: rgb(187, 2, 2) !important;
 }
 
-.BtnActionsDialog{
+.BtnActionsDialog {
     margin-right: 16px !important;
     margin-bottom: 20px !important;
+}
+
+.ResetPassBox {
+    border: solid 2px #1e81b0;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+}
+
+.ResetPassBoxTextField {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    width: 530px;
+}
+
+.SameOldPassErr {
+    margin-top: 20px !important;
+    color: rgb(187, 2, 2) !important;
 }

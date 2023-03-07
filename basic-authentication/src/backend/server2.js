@@ -14,8 +14,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(session({ secret: 'is-used-to-encrypt-info', resave: true, saveUninitialized: true }));
 
-const EMAIL_USERNAME = 'reacttest40@gmail.com';
-const EMAIL_PASSWORD = '789852@Qa';
+// save pass and email in file and use it tommorrow
+const EMAIL_USERNAME = readUserName('~/download/,,,');
+const EMAIL_PASSWORD = '';
 
 const MYSQL = { host: 'localhost', user: 'dbadmin', password: 'washywashy', database: 'tests' };
 
@@ -128,14 +129,14 @@ app.post('/check-email-to-see-user-exist', async (req, res) => {
 app.post('/send-email-for-password-reset', async (req, res) => {
     let connectionStatus = await connection.connect(MYSQL);
     if (connectionStatus) {
+        let email = req.body.email;
         let id = passwordResetRandomId();
         let date = getDate();
-        let email = req.body.email;
         let query = { email, date, id };
         let insertion = await connection.insertIntoResetPassword(query);
         if (insertion.rows.affectedRows === 1) {
             let mailTransporter = nodemailer.createTransport({
-                service: 'gmail',
+                service: 'Gmail',
                 auth: {
                     user: EMAIL_USERNAME,
                     pass: EMAIL_PASSWORD
@@ -144,14 +145,13 @@ app.post('/send-email-for-password-reset', async (req, res) => {
 
             let mailDetails = {
                 from: EMAIL_USERNAME,
-                to: 'tina.vatanabadi@yahoo.com',
-                subject: 'Test mail',
-                text: 'Node.js testing mail for GeeksforGeeks'
+                to: email,
+                subject: 'Reset Password',
+                text: 'To reset your password please visit the following link: http://localhost:3000/reset-password?id=' + id
             };
 
             mailTransporter.sendMail(mailDetails, function (err, data) {
                 if (err) {
-                    console.log(err);
                     res.send({ result: 'Error occured, Something went wrong.' });
                 } else {
                     res.send({ result: 'Reset password email sent successfully' });
@@ -162,7 +162,7 @@ app.post('/send-email-for-password-reset', async (req, res) => {
 });
 
 
-app.post('/redirect-to-set-new-password-needed', async (req, res) => {
+app.post('/check-user-email-for-id', async (req, res) => {
     let connectionStatus = await connection.connect(MYSQL);
     if (connectionStatus) {
         let getEmail = await connection.emailForIdRedirect(req.body);
@@ -174,5 +174,26 @@ app.post('/redirect-to-set-new-password-needed', async (req, res) => {
     }
 });
 
+
+app.post('/set-new-password-for-user', async (req, res) => {
+    let connectionStatus = await connection.connect(MYSQL);
+    if (connectionStatus) {
+        let samePassword = await connection.checkPasswordIsNotSame(req.body);
+        if (samePassword.rows[0].password === req.body.password) {
+            res.send({ result: 'old pass' })
+        } else {
+            let changedPassword = await connection.resetPassword(req.body);
+            if (changedPassword.rows.affectedRows === 1) {
+                let removeId = await connection.removeIdForResetPass(req.body);
+                if (removeId.rows.affectedRows === 1) {
+                    res.send({ result: 'Password Changed Successfully' });
+                }
+            } else {
+                res.send({ result: 'Sorry something went wrong!' });
+            }
+
+        }
+    }
+});
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
