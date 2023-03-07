@@ -167,13 +167,31 @@ app.post('/check-user-email-for-id', async (req, res) => {
     if (connectionStatus) {
         let getEmail = await connection.emailForIdRedirect(req.body);
         if (getEmail.rows.length > 0) {
-            res.send({ result: md5(getEmail.rows[0]), msg: 'correct email' })
+            res.send({ result: getEmail.rows[0], msg: 'correct email' })
         } else if (getEmail.rows.length === 0) {
             res.send({ msg: 'Something went wrogn' })
         }
     }
 });
 
+
+app.post('/set-new-password-for-user', async (req, res) => {
+    let connectionStatus = await connection.connect(MYSQL);
+    if (connectionStatus) {
+        let samePassword = await connection.checkPasswordIsNotSame(req.body);
+        if (samePassword.rows[0].password === req.body.password) {
+            res.send({ result: 'old pass' })
+        } else {
+            let changedPassword = await connection.resetPassword(req.body);
+            if (changedPassword.rows.affectedRows === 1) {
+                res.send({ result: 'Password Changed Successfully' })
+            } else {
+                res.send({ result: 'Sorry something went wrong!' });
+            }
+
+        }
+    }
+});
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
 
