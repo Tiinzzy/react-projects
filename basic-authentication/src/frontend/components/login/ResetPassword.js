@@ -22,6 +22,7 @@ export default class ResetPassword extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            blockScreen: true,
             restId: props.restId,
             newPassword: '',
             confirmPassword: '',
@@ -36,16 +37,17 @@ export default class ResetPassword extends React.Component {
             return;
         }
         mountCount += 1;
-        if (this.state.restId) {
-            let that = this;
-            backend.check_email_for_id(this.state.restId, (data) => {
-                if (data.msg === 'correct email') {
-                    that.setState({ email: data.result.email });
-                } else if (data.msg.startsWith('Something')) {
-                    that.setState({ restId: '' })
-                }
-            })
-        }
+        let that = this;
+        backend.check_email_for_id(this.state.restId, (data) => {
+            if (data.msg === 'correct email') {
+                that.setState({ email: data.result.email, blockScreen: false });
+                console.log(1)
+            } else if (data.msg.startsWith('Something')) {
+                that.setState({ restId: '', blockScreen: false })
+                console.log(2)
+            }
+        })
+
     }
 
     getNewPassword(e) {
@@ -89,39 +91,46 @@ export default class ResetPassword extends React.Component {
     render() {
         return (
             <Box id='reset-password' className="WholePageBox">
-                {this.state.restId ?
-                    <Box className="ResetPassBox">
-                        <DialogTitle>
-                            {"Reset Password"}
-                        </DialogTitle>
-                        <Divider />
-                        <DialogContent>
-                            <DialogContentText>
-                                Please enter a new password to change your password and recover account.
-                            </DialogContentText>
-                            <Box className="ResetPassBoxTextField">
-                                <TextField error={this.state.notMatching} helperText={this.state.notMatching && 'Passwords Not Matching'}
-                                    type={this.state.changeType === false ? "password" : "text"}
-                                    label="Password" variant="outlined" style={{ marginBottom: 20 }} onChange={(e) => this.getNewPassword(e)} />
+                {this.state.blockScreen ?
+                    <>
+                    </>
+                    :
+                    <>
+                        {this.state.restId ?
+                            <Box className="ResetPassBox">
+                                <DialogTitle>
+                                    {"Reset Password"}
+                                </DialogTitle>
+                                <Divider />
+                                <DialogContent>
+                                    <DialogContentText>
+                                        Please enter a new password to change your password and recover account.
+                                    </DialogContentText>
+                                    <Box className="ResetPassBoxTextField">
+                                        <TextField error={this.state.notMatching} helperText={this.state.notMatching && 'Passwords Not Matching'}
+                                            type={this.state.changeType === false ? "password" : "text"}
+                                            label="Password" variant="outlined" style={{ marginBottom: 20 }} onChange={(e) => this.getNewPassword(e)} />
 
-                                <TextField error={this.state.notMatching} helperText={this.state.notMatching && 'Passwords Not Matching'}
-                                    type={this.state.changeType === false ? "password" : "text"}
-                                    label="Confirm Password" variant="outlined" onChange={(e) => this.getNewPassConfrim(e)} onKeyDown={(e) => this.getNewPassConfrim(e)}/>
+                                        <TextField error={this.state.notMatching} helperText={this.state.notMatching && 'Passwords Not Matching'}
+                                            type={this.state.changeType === false ? "password" : "text"}
+                                            label="Confirm Password" variant="outlined" onChange={(e) => this.getNewPassConfrim(e)} onKeyDown={(e) => this.getNewPassConfrim(e)} />
 
-                                {this.state.samePass && <span className="SameOldPassErr">Your new password cannot be your old password.</span>}
+                                        {this.state.samePass && <span className="SameOldPassErr">Your new password cannot be your old password.</span>}
 
-                                <FormControlLabel style={{ marginTop: 15 }} control={<Checkbox onChange={() => this.checkBoxClicked()} />} label="Show Password" />
+                                        <FormControlLabel style={{ marginTop: 15 }} control={<Checkbox onChange={() => this.checkBoxClicked()} />} label="Show Password" />
+                                    </Box>
+                                </DialogContent>
+                                <DialogActions className="BtnActions">
+                                    <Button className="LoginBtn" variant="contained" onClick={() => this.submitResetPasswordChange()}>Submit</Button>
+                                </DialogActions>
+                            </Box >
+                            : <Box className="ResetPassBox">
+                                <span style={{ padding: 50, justifyContent: 'center', display: 'flex', fontWeight: 'bold', fontSize: 18 }}>
+                                    Oops! Something Went Wrong!
+                                </span>
                             </Box>
-                        </DialogContent>
-                        <DialogActions className="BtnActions">
-                            <Button className="LoginBtn" variant="contained" onClick={() => this.submitResetPasswordChange()}>Submit</Button>
-                        </DialogActions>
-                    </Box >
-                    : <Box className="ResetPassBox">
-                        <span style={{ padding: 50, justifyContent: 'center', display: 'flex', fontWeight: 'bold', fontSize: 18 }}>
-                            Oops! Something Went Wrong!
-                        </span>
-                    </Box>
+                        }
+                    </>
                 }
             </Box>
         );
