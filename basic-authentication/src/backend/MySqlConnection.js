@@ -56,6 +56,14 @@ class MySqlConnectionImpl {
         return this.#execute(sql);
     }
 
+    async removeIdForResetPass(params) {
+        this.#open();
+        let sql = "DELETE FROM tests.reset_password WHERE email = '" + params.email + "'";
+        return this.#execute(sql);
+    }
+
+
+
     async connect(params) {
 
         this.#connectionInfo.host = params.host;
