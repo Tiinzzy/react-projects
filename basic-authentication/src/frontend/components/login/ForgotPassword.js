@@ -34,7 +34,12 @@ export default class ForgotPassword extends React.Component {
     }
 
     getEmail(e) {
-        this.setState({ email: e.target.value, emailError: false, noEmail: false, mail: e.target.value })
+        this.setState({ email: e.target.value, emailError: false, noEmail: false, mail: e.target.value });
+        let key = e.code || "";
+        let isEnter = key.toLowerCase().indexOf('enter') >= 0;
+        if (isEnter) {
+            this.submitSearchEmail();
+        }
     }
 
     cancelResetPassword() {
@@ -81,7 +86,8 @@ export default class ForgotPassword extends React.Component {
                             Please enter your email address to search for your account and reset your password.
                         </DialogContentText>
                         <TextField error={this.state.emailError === true} helperText={this.state.emailError === true && 'Enter a valid email'}
-                            className="EmailTextfield" label="Email" variant="outlined" type='email' onChange={(e) => this.getEmail(e)} value={this.state.email} />
+                            className="EmailTextfield" label="Email" variant="outlined" type='email' onChange={(e) => this.getEmail(e)} value={this.state.email} 
+                            onKeyDown={(e) => this.getEmail(e)}/>
                         {this.state.noEmail === true &&
                             <DialogContentText id="alert-dialog-description" className="NoEmailFound">
                                 There's no account with the info you provided.
