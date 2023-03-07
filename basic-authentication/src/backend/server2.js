@@ -151,7 +151,6 @@ app.post('/send-email-for-password-reset', async (req, res) => {
 
             mailTransporter.sendMail(mailDetails, function (err, data) {
                 if (err) {
-                    console.log(err);
                     res.send({ result: 'Error occured, Something went wrong.' });
                 } else {
                     res.send({ result: 'Reset password email sent successfully' });
@@ -184,7 +183,10 @@ app.post('/set-new-password-for-user', async (req, res) => {
         } else {
             let changedPassword = await connection.resetPassword(req.body);
             if (changedPassword.rows.affectedRows === 1) {
-                res.send({ result: 'Password Changed Successfully' })
+                let removeId = await connection.removeIdForResetPass(req.body);
+                if (removeId.rows.affectedRows === 1) {
+                    res.send({ result: 'Password Changed Successfully' });
+                }
             } else {
                 res.send({ result: 'Sorry something went wrong!' });
             }
