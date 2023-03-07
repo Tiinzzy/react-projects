@@ -128,9 +128,9 @@ app.post('/check-email-to-see-user-exist', async (req, res) => {
 app.post('/send-email-for-password-reset', async (req, res) => {
     let connectionStatus = await connection.connect(MYSQL);
     if (connectionStatus) {
+        let email = req.body.email;
         let id = passwordResetRandomId();
         let date = getDate();
-        let email = req.body.email;
         let query = { email, date, id };
         let insertion = await connection.insertIntoResetPassword(query);
         if (insertion.rows.affectedRows === 1) {
@@ -162,12 +162,12 @@ app.post('/send-email-for-password-reset', async (req, res) => {
 });
 
 
-app.post('/redirect-to-set-new-password-needed', async (req, res) => {
+app.post('/check-user-email-for-id', async (req, res) => {
     let connectionStatus = await connection.connect(MYSQL);
     if (connectionStatus) {
         let getEmail = await connection.emailForIdRedirect(req.body);
         if (getEmail.rows.length > 0) {
-            res.send({ result: getEmail.rows[0], msg: 'correct email' })
+            res.send({ result: md5(getEmail.rows[0]), msg: 'correct email' })
         } else if (getEmail.rows.length === 0) {
             res.send({ msg: 'Something went wrogn' })
         }
@@ -176,3 +176,8 @@ app.post('/redirect-to-set-new-password-needed', async (req, res) => {
 
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
+
+
+// https://stackoverflow.com/questions/26196467/sending-email-via-node-js-using-nodemailer-is-not-working
+// https://developers.google.com/gmail/api/quickstart/nodejs
+// https://console.cloud.google.com/projectselector2/apis/dashboard?pli=1&supportedpurview=project
