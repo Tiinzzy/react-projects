@@ -14,9 +14,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(session({ secret: 'is-used-to-encrypt-info', resave: true, saveUninitialized: true }));
 
-const EMAIL_USERNAME = 'reacttest40@gmail.com';
-const EMAIL_PASSWORD = 'urafscvnmyjfifvv';
-// '789852@Qa';
+// save pass and email in file and use it tommorrow
+const EMAIL_USERNAME = readUserName('~/download/,,,');
+const EMAIL_PASSWORD = '';
 
 const MYSQL = { host: 'localhost', user: 'dbadmin', password: 'washywashy', database: 'tests' };
 
