@@ -96,7 +96,11 @@ export default class ResetPassword extends React.Component {
                             <Button className="LoginBtn" variant="contained" onClick={() => this.submitResetPasswordChange()}>Submit</Button>
                         </DialogActions>
                     </Box >
-                    : "You can't be here"
+                    : <Box className="ResetPassBox">
+                        <span style={{ padding: 50, justifyContent: 'center', display: 'flex', fontWeight:'bold', fontSize:18 }}>
+                            Oops! Something Went Wrong!
+                        </span>
+                    </Box>
                 }
             </Box>
         );
