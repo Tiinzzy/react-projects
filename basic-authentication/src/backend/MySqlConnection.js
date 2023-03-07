@@ -43,6 +43,19 @@ class MySqlConnectionImpl {
         return this.#execute(sql);
     }
 
+    async resetPassword(params) {
+        this.#open();
+        let sql = `UPDATE tests.user_authentication 
+                    SET password = '`+ params.password + `' WHERE email = '` + params.email + `'`
+        return this.#execute(sql);
+    }
+
+    async checkPasswordIsNotSame(params) {
+        this.#open();
+        let sql = "select password from tests.user_authentication where email = '" + params.email + "' limit 1";
+        return this.#execute(sql);
+    }
+
     async connect(params) {
 
         this.#connectionInfo.host = params.host;
