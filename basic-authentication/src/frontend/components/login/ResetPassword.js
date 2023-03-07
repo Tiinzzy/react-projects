@@ -34,11 +34,12 @@ export default class ResetPassword extends React.Component {
             return;
         }
         mountCount += 1;
-
-        let that = this;
-        backend.check_email_for_id(this.state.restId, (data) => {
-            that.setState({ email: data.result.email });
-        })
+        if (this.state.restId) {
+            let that = this;
+            backend.check_email_for_id(this.state.restId, (data) => {
+                that.setState({ email: data.result.email });
+            })
+        }
     }
 
     getNewPassword(e) {
