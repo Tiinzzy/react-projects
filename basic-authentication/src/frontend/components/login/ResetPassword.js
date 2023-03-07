@@ -35,7 +35,7 @@ export default class ResetPassword extends React.Component {
 
         let that = this;
         backend.check_email_for_id(this.state.restId, (data) => {
-            that.setState({ email: data.result });
+            that.setState({ email: data.result.email });
         })
     }
 
@@ -49,9 +49,13 @@ export default class ResetPassword extends React.Component {
 
     submitResetPasswordChange() {
         if (this.state.newPassword === this.state.confirmPassword && this.state.confirmPassword.length > 0 && this.state.newPassword.length > 0) {
-            console.log('email: ', this.state.email)
-            console.log('new password: ', this.state.newPassword)
-            console.log('confirm password: ', this.state.confirmPassword)
+            backend.set_new_password(this.state.email, this.state.confirmPassword, (data) => {
+                if (data.result.startsWith('old')) {
+                    console.log('cant set old password')
+                } else {
+                    console.log(data.result)
+                }
+            })
         } else {
             console.log('there is something wrong')
         }
