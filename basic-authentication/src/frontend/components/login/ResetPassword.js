@@ -24,7 +24,8 @@ export default class ResetPassword extends React.Component {
             restId: props.restId,
             newPassword: '',
             confirmPassword: '',
-            samePass: false
+            samePass: false,
+            notMatching: false,
         }
     }
 
@@ -41,11 +42,11 @@ export default class ResetPassword extends React.Component {
     }
 
     getNewPassword(e) {
-        this.setState({ newPassword: e.target.value, samePass: false });
+        this.setState({ newPassword: e.target.value, samePass: false, notMatching: false });
     }
 
     getNewPassConfrim(e) {
-        this.setState({ confirmPassword: e.target.value, samePass: false });
+        this.setState({ confirmPassword: e.target.value, samePass: false, notMatching: false });
     }
 
     submitResetPasswordChange() {
@@ -58,8 +59,8 @@ export default class ResetPassword extends React.Component {
                     console.log(data.result)
                 }
             })
-        } else {
-            console.log('there is something wrong')
+        } else if (this.state.newPassword !== this.state.confirmPassword) {
+            this.setState({ notMatching: true })
         }
     }
 
@@ -77,8 +78,12 @@ export default class ResetPassword extends React.Component {
                                 Please enter a new password to change your password and recover account.
                             </DialogContentText>
                             <Box className="ResetPassBoxTextField">
-                                <TextField label="Password" variant="outlined" type='password' style={{ marginBottom: 20 }} onChange={(e) => this.getNewPassword(e)} />
-                                <TextField label="Confirm Password" variant="outlined" type='password' onChange={(e) => this.getNewPassConfrim(e)} />
+                                <TextField error={this.state.notMatching} helperText={this.state.notMatching && 'Passwords Not Matching'}
+                                    label="Password" variant="outlined" type='password' style={{ marginBottom: 20 }} onChange={(e) => this.getNewPassword(e)} />
+
+                                <TextField error={this.state.notMatching} helperText={this.state.notMatching && 'Passwords Not Matching'}
+                                    label="Confirm Password" variant="outlined" type='password' onChange={(e) => this.getNewPassConfrim(e)} />
+
                                 {this.state.samePass && <span className="SameOldPassErr">Your new password cannot be your old password.</span>}
                             </Box>
                         </DialogContent>
