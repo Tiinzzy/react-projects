@@ -151,6 +151,21 @@ class BackEndConnectionImpl {
             })
     }
 
+    async set_new_password(email, password, callback) {
+        let query = { email: email, password: md5(password) };
+        axios.post('/set-new-password-for-user', query, {})
+            .then(function (response) {
+                if (callback) {
+                    callback(response.data);
+                }
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+                return false;
+            })
+    }
+
 }
 
 export default class BackEndConnection {
