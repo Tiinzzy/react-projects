@@ -15,7 +15,8 @@ app.use(bodyParser.json());
 app.use(session({ secret: 'is-used-to-encrypt-info', resave: true, saveUninitialized: true }));
 
 const EMAIL_USERNAME = 'reacttest40@gmail.com';
-const EMAIL_PASSWORD = '789852@Qa';
+const EMAIL_PASSWORD = 'urafscvnmyjfifvv';
+// '789852@Qa';
 
 const MYSQL = { host: 'localhost', user: 'dbadmin', password: 'washywashy', database: 'tests' };
 
@@ -135,7 +136,7 @@ app.post('/send-email-for-password-reset', async (req, res) => {
         let insertion = await connection.insertIntoResetPassword(query);
         if (insertion.rows.affectedRows === 1) {
             let mailTransporter = nodemailer.createTransport({
-                service: 'gmail',
+                service: 'Gmail',
                 auth: {
                     user: EMAIL_USERNAME,
                     pass: EMAIL_PASSWORD
@@ -144,9 +145,9 @@ app.post('/send-email-for-password-reset', async (req, res) => {
 
             let mailDetails = {
                 from: EMAIL_USERNAME,
-                to: 'tina.vatanabadi@yahoo.com',
-                subject: 'Test mail',
-                text: 'Node.js testing mail for GeeksforGeeks'
+                to: email,
+                subject: 'Reset Password',
+                text: 'To reset your password please visit the following link: http://localhost:3000/reset-password?id=' + id
             };
 
             mailTransporter.sendMail(mailDetails, function (err, data) {
@@ -196,8 +197,3 @@ app.post('/set-new-password-for-user', async (req, res) => {
 });
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
-
-
-// https://stackoverflow.com/questions/26196467/sending-email-via-node-js-using-nodemailer-is-not-working
-// https://developers.google.com/gmail/api/quickstart/nodejs
-// https://console.cloud.google.com/projectselector2/apis/dashboard?pli=1&supportedpurview=project
