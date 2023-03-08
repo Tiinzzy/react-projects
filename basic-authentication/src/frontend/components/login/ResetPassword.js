@@ -10,6 +10,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import Typography from '@mui/material/Typography';
 
 import BackEndConnection from '../tools/BackEndConnection';
 
@@ -41,10 +42,8 @@ export default class ResetPassword extends React.Component {
         backend.check_email_for_id(this.state.restId, (data) => {
             if (data.msg === 'correct email') {
                 that.setState({ email: data.result.email, blockScreen: false });
-                console.log(1)
             } else if (data.msg.startsWith('Something')) {
                 that.setState({ restId: '', blockScreen: false })
-                console.log(2)
             }
         })
 
@@ -124,9 +123,17 @@ export default class ResetPassword extends React.Component {
                                     <Button className="LoginBtn" variant="contained" onClick={() => this.submitResetPasswordChange()}>Submit</Button>
                                 </DialogActions>
                             </Box >
-                            : <Box className="ResetPassBox">
-                                <span style={{ padding: 50, justifyContent: 'center', display: 'flex', fontWeight: 'bold', fontSize: 18 }}>
-                                    Oops! Something Went Wrong!
+                            : <Box className="ErrorBox">
+                                <span className="ErrorSpan">
+                                    <Typography variant="h5" fontWeight="bolder" fontSize="50px" mr={5} style={{ textShadow: '#f0f0f0 10px 12px' }}>
+                                        Page Not Found!
+                                    </Typography>
+                                    <Typography variant="body2" fontSize="20px" mr={5} mt={2}>
+                                        The Page you're looking for doesn't exist or an error occured.
+                                    </Typography>
+                                    <Typography variant="body2" fontSize="20px" mr={5}>
+                                        Go back, or choose a new direction.
+                                    </Typography>
                                 </span>
                             </Box>
                         }
