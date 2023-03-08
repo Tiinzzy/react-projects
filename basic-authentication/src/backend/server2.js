@@ -38,8 +38,10 @@ function passwordResetRandomId() {
 }
 
 function getDate() {
-    var utc = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
-    return utc
+    let todaysDate = new Date().toLocaleDateString();
+    let time = new Date().toLocaleTimeString();
+    let date = todaysDate + ' ' + time;
+    return date
 }
 
 app.post("/login", async (req, res) => {
@@ -133,7 +135,7 @@ app.post('/send-email-for-password-reset', async (req, res) => {
     if (connectionStatus) {
         let email = req.body.email;
         let id = passwordResetRandomId();
-        let date = getDate();
+        let date = getDate()
         let query = { email, date, id };
         let insertion = await connection.insertIntoResetPassword(query);
         let file = readFIle()
