@@ -3,6 +3,7 @@ const session = require('express-session')
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
 var md5 = require('md5');
+const fs = require('fs');
 
 const MySqlConnection = require('./MySqlConnection');
 const connection = MySqlConnection.INSTANCE();
@@ -14,9 +15,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(session({ secret: 'is-used-to-encrypt-info', resave: true, saveUninitialized: true }));
 
-// save pass and email in file and use it tommorrow
-const EMAIL_USERNAME = readUserName('~/download/,,,');
-const EMAIL_PASSWORD = '';
+function readFIle() {
+    const data = fs.readFileSync('/home/tina/Documents/misc/gmailData.txt', 'utf8');
+    return data
+}
 
 const MYSQL = { host: 'localhost', user: 'dbadmin', password: 'washywashy', database: 'tests' };
 
@@ -134,6 +136,10 @@ app.post('/send-email-for-password-reset', async (req, res) => {
         let date = getDate();
         let query = { email, date, id };
         let insertion = await connection.insertIntoResetPassword(query);
+        let file = readFIle()
+        let data = file.split(',');
+        const EMAIL_USERNAME = data[1];
+        const EMAIL_PASSWORD = data[3].replace('\n', '');
         if (insertion.rows.affectedRows === 1) {
             let mailTransporter = nodemailer.createTransport({
                 service: 'Gmail',
