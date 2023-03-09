@@ -98,7 +98,7 @@ export default class SignUp extends React.Component {
                         <TextField error={this.state.passwordNotMatch === true} helperText={this.state.passwordNotMatch === true && "Passwords not matching"} style={{ marginBottom: 10 }}
                             type={this.state.changeType === false ? "password" : "text"} label="Confirm Password" variant="outlined" onChange={(e) => this.confirmPassword(e)} onKeyDown={(e) => this.confirmPassword(e)} />
 
-                        <FormControlLabel style={{ marginBottom: 25 }} control={<Checkbox onChange={() => this.checkBoxClicked()} />} label="Show Password" />
+                        <FormControlLabel  control={<Checkbox onChange={() => this.checkBoxClicked()} />} label="Show Password" />
 
                         {this.state.alreadyExist === true ? <Box className="IncorrectDataBox" fontSize="16px">Username already exist</Box> : <Box className="IncorrectDataBox"></Box>}
 

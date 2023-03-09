@@ -17,6 +17,12 @@ import ResetPasswordDialog from './ResetPasswordDialog';
 
 const backend = BackEndConnection.INSTANCE();
 
+let thisComponent = null;
+
+export const showMyMessage = (e) => {
+    thisComponent.displayMessage(e);
+}
+
 export default class ForgotPassword extends React.Component {
 
     constructor(props) {
@@ -31,6 +37,8 @@ export default class ForgotPassword extends React.Component {
             mail: ''
         }
         this.closeDialog = this.closeDialog.bind(this);
+        this.displayMessage = this.displayMessage.bind(this);
+        thisComponent = this;
     }
 
     getEmail(e) {
@@ -61,16 +69,20 @@ export default class ForgotPassword extends React.Component {
         }
     }
 
-    closeDialog(action) {
+    closeDialog() {
         this.setState({ openDialog: false });
-        if (action && action === 'error-occured') {
-            this.setState({ email: '', displaySnack: true, openSnack: true, snackError: true });
-        } else if (action && action === 'sucessfull-reset') {
-            this.setState({ displaySnack: true, openSnack: true, email: '' });
-        }
     }
+
     closeAlert() {
         this.setState({ openSnack: false });
+    }
+
+    displayMessage(msg) {
+        if (msg.action === 'error-occured') {
+            this.setState({ email: '', displaySnack: true, openSnack: true, snackError: true });
+        } else if (msg.action === 'sucessfull-reset') {
+            this.setState({ displaySnack: true, openSnack: true, email: '' });
+        }
     }
 
     render() {
@@ -86,8 +98,8 @@ export default class ForgotPassword extends React.Component {
                             Please enter your email address to search for your account and reset your password.
                         </DialogContentText>
                         <TextField error={this.state.emailError === true} helperText={this.state.emailError === true && 'Enter a valid email'}
-                            className="EmailTextfield" label="Email" variant="outlined" type='email' onChange={(e) => this.getEmail(e)} value={this.state.email} 
-                            onKeyDown={(e) => this.getEmail(e)}/>
+                            className="EmailTextfield" label="Email" variant="outlined" type='email' onChange={(e) => this.getEmail(e)} value={this.state.email}
+                            onKeyDown={(e) => this.getEmail(e)} />
                         {this.state.noEmail === true &&
                             <DialogContentText id="alert-dialog-description" className="NoEmailFound">
                                 There's no account with the info you provided.
@@ -100,7 +112,7 @@ export default class ForgotPassword extends React.Component {
                 </Box>
 
                 <Dialog open={this.state.openDialog} onClose={() => this.closeDialog()}>
-                    <ResetPasswordDialog username={this.state.username} email={this.state.email} closeDialog={this.closeDialog} />
+                    <ResetPasswordDialog username={this.state.username} email={this.state.email} closeDialog={this.closeDialog} parent={this} />
                 </Dialog>
 
                 {this.state.displaySnack === true &&

@@ -11,6 +11,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 import BackEndConnection from '../tools/BackEndConnection';
 
+import { showMyMessage } from './ForgotPassword';
+
 const backend = BackEndConnection.INSTANCE();
 
 export default class ResetPasswordDialog extends React.Component {
@@ -20,7 +22,9 @@ export default class ResetPasswordDialog extends React.Component {
         this.state = {
             email: props.email,
             username: props.username,
-            closeDialog: props.closeDialog
+            closeDialog: props.closeDialog,
+            action: '',
+            parent: props.parent
         }
     }
 
@@ -31,14 +35,14 @@ export default class ResetPasswordDialog extends React.Component {
     submitResetPassword() {
         let that = this;
         backend.send_email_reset_password(this.state.email, (data) => {
-            if (data.result.startsWith('Error')) {
-                let action = 'error-occured';
-                that.state.closeDialog(action);
+            that.state.parent.displayMessage('YAYAYAYA');
+            if (data.result.startsWith('Error')) {                
+                showMyMessage({ action: 'error-occured' });
             } else if (data.result.startsWith('Reset')) {
-                let action = 'sucessfull-reset';
-                that.state.closeDialog(action);
+                showMyMessage({ action: 'sucessfull-reset' });
             }
-        })
+        });
+        that.state.closeDialog(that.state.action);
     }
 
     render() {
