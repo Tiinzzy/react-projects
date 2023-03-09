@@ -111,3 +111,19 @@
     margin-top: 20px !important;
     color: rgb(187, 2, 2) !important;
 }
+
+
+.ErrorSpan {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: auto auto auto auto;
+    align-items: center;
+    align-items: center;
+    padding: 50px;
+}
+
+.ErrorBox{
+    display: flex;
+    flex-direction: column;
+}
