@@ -3,7 +3,7 @@
 
 <br/>
 <h3>basic-authentication</h3>
-<div>A project that works on user authentication allowing users to login and have access to certain feuature, also includes creating account, password reset, password changing and sending user email with url link, that is spwcific to the user.</div>
+<div>A project that works on user authentication allowing users to login and have access to certain feature, also includes creating account, password reset, password changing and sending user email with url link, that is specific to the user.</div>
 <br/>
 <img width="400" alt="Screenshot 2023-03-07 at 6 19 58 PM" src="https://user-images.githubusercontent.com/117464310/225964506-55be0198-2a69-4912-aed6-cce6436eba07.png">
 
@@ -21,15 +21,11 @@
 
 <br/>
 <h3>html-tree</h3>
-<div>A project that parses data from a url and draws a graph through Graphiz and saves on computer as csv file.</div>
-<div>Exactly like web crawler project but without any frontend/ UI.</div>
+<div>A project that parses data from a url and draws a graph through Graphviz and saves on computer as csv file.</div> <div>Exactly like web crawler project but without any frontend/ UI.</div>
 
 
 <br/>
-<h3>web-crawler/ web-crawler-new</h3>
-<div>A project focusing on crawling the web based on the given url to extract more urls within the first url.</div>
-<div>Also draw tree with Graphiz and list of links and their depths with MUI list component.</div>
-<br/>
+<h3>web-crawler/ web-crawler-new</h3> <div>A project focusing on crawling the web based on the given url to extract more urls within the first url.</div> <div>Also draw tree with Graphviz and list of links and their depths with MUI list component.</div> <br/>
 <img width="500" alt="Screenshot 2023-03-07 at 6 19 58 PM" src="https://user-images.githubusercontent.com/117464310/223778329-56a8641d-5c72-4fd1-8cb7-f6ad0c9025f3.png">
 
 <img width="500" alt="Screenshot 2023-03-07 at 6 19 58 PM" src="https://user-images.githubusercontent.com/117464310/223778638-03eb7124-fd2e-4fa2-a961-e9794577f14c.png">
