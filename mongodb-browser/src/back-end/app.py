@@ -28,4 +28,25 @@ def databases_mongo_db():
 def collections_mongo_db():
     parameters = get_parameters(request)
     result = app_mongodb.get_collections(parameters)
+    return result
+
+
+@app.route('/mongodb/documents', methods=["POST"])
+def documents_mongo_db():
+    parameters = get_parameters(request)
+    result = app_mongodb.get_documents(parameters)
+    return jsonify(result)
+
+
+@app.route('/mongodb/insert_documents', methods=["POST"])
+def insert_documents_mongo_db():
+    parameters = get_parameters(request)
+    result = app_mongodb.insert_documents(parameters)
+    return jsonify(result)
+
+
+@app.route('/mongodb/drop_collection', methods=["POST"])
+def drop_collection_mongo_db():
+    parameters = get_parameters(request)
+    result = app_mongodb.drop_collection(parameters)
     return jsonify(result)
