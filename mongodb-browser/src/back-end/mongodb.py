@@ -1,5 +1,4 @@
 from pymongo import MongoClient
-from bson.json_util import dumps
 
 
 class MongoDB:
@@ -35,8 +34,7 @@ class MongoDB:
         cursor = collection.find(condition, return_fields)
         result = dict()
         list_curser = list(cursor)
-        json_data = dumps(list_curser)
-        result['documents'] = json_data
+        result['documents'] = list_curser
         result['length'] = len(list(cursor.clone()))
         return result
 
