@@ -17,3 +17,9 @@ class TestMongoDB(unittest.TestCase):
         new_connection.disconnect(connection)
         self.assertTrue(len(available_databases) >= 3)
 
+    def test_getting_collections(self):
+        new_connection = MongoDB()
+        connection = new_connection.connect()
+        collections = new_connection.collections(connection, 'tina_db')
+        new_connection.disconnect(connection)
+        self.assertTrue(len(collections) > 0)
