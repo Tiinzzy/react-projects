@@ -52,6 +52,12 @@ class MongoDB:
         result['current_length'] = len(list(cursor.clone()))
         return result
 
+    @staticmethod
+    def drop_collection(connect, database_name, collection_name):
+        my_database = connect[database_name]
+        collection = my_database.get_collection(collection_name)
+        collection.drop()
+
 
 if __name__ == '__main__':
     # new_connection = MongoDB()
