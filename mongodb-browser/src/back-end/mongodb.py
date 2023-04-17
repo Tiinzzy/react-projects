@@ -57,21 +57,3 @@ class MongoDB:
         my_database = connect[database_name]
         collection = my_database.get_collection(collection_name)
         collection.drop()
-
-
-if __name__ == '__main__':
-    # new_connection = MongoDB()
-    # connection = new_connection.connect()
-    # print(new_connection.databases(connection))
-    # new_connection.disconnect(connection)
-
-    # new_connection = MongoDB()
-    # connection = new_connection.connect()
-    # print(new_connection.collections(connection, 'tina_db'))
-    # new_connection.disconnect(connection)
-
-    new_connection = MongoDB()
-    connection = new_connection.connect()
-    documents = new_connection.search_all_documents(connection, 'tina_db', 'movies')
-    print(documents)
-    new_connection.disconnect(connection)
