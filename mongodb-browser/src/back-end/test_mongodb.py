@@ -39,6 +39,7 @@ class TestMongoDB(unittest.TestCase):
         data = json.load(f)
         insertion = new_connection.insert_documents(connection, 'tina_db', 'test', data)
         f.close()
+        new_connection.disconnect(connection)
         self.assertTrue(insertion['old_length'] >= 0)
         self.assertTrue(insertion['current_length'] > 0)
 
@@ -46,3 +47,4 @@ class TestMongoDB(unittest.TestCase):
         new_connection = MongoDB()
         connection = new_connection.connect()
         new_connection.drop_collection(connection, 'tina_db', 'test')
+        new_connection.disconnect(connection)
