@@ -15,11 +15,17 @@ class MongoDB:
     @staticmethod
     def databases(connect):
         databases = connect.list_database_names()
-        connect.close()
         return databases
+
+    @staticmethod
+    def collections(connect, database_name):
+        my_database = connect[database_name]
+        collections = my_database.list_collection_names()
+        return collections
 
 
 if __name__ == '__main__':
     new_connection = MongoDB()
     connection = new_connection.connect()
     print(new_connection.databases(connection))
+    print(new_connection.collections(connection, 'tina_db'))
