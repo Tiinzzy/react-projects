@@ -13,7 +13,13 @@ class MongoDB:
         print(connection)
         return MongoClient(self.mongo_host, self.mongo_port)
 
+    def databases(self, connection):
+        databases = connection.list_database_names()
+        connection.close()
+        return databases
+
 
 if __name__ == '__main__':
     new_connection = MongoDB()
-    print(new_connection.connect())
+    connection = new_connection.connect()
+    print(new_connection.databases(connection))
