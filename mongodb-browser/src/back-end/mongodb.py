@@ -7,15 +7,15 @@ class MongoDB:
         self.mongo_port = None
 
     def connect(self, host_name='localhost', port_name=27017):
-        connection = MongoDB()
-        connection.mongo_host = host_name
-        connection.mongo_port = port_name
-        print(connection)
+        create_connection = MongoDB()
+        create_connection.mongo_host = host_name
+        create_connection.mongo_port = port_name
         return MongoClient(self.mongo_host, self.mongo_port)
 
-    def databases(self, connection):
-        databases = connection.list_database_names()
-        connection.close()
+    @staticmethod
+    def databases(connect):
+        databases = connect.list_database_names()
+        connect.close()
         return databases
 
 
