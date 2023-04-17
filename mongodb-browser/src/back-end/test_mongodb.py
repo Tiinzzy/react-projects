@@ -41,3 +41,8 @@ class TestMongoDB(unittest.TestCase):
         f.close()
         self.assertTrue(insertion['old_length'] >= 0)
         self.assertTrue(insertion['current_length'] > 0)
+
+    def test_dropping_collection(self):
+        new_connection = MongoDB()
+        connection = new_connection.connect()
+        new_connection.drop_collection(connection, 'tina_db', 'test')
