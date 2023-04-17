@@ -22,3 +22,10 @@ def databases_mongo_db():
     parameters = get_parameters(request)
     result = app_mongodb.get_databases(parameters)
     return jsonify(result)
+
+
+@app.route('/mongodb/collections', methods=["POST"])
+def collections_mongo_db():
+    parameters = get_parameters(request)
+    result = app_mongodb.get_collections(parameters)
+    return jsonify(result)
