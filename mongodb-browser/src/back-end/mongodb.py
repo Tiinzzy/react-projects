@@ -40,6 +40,18 @@ class MongoDB:
         result['length'] = len(list(cursor.clone()))
         return result
 
+    @staticmethod
+    def insert_documents(connect, database_name, collection_name, data):
+        my_database = connect[database_name]
+        collection = my_database.get_collection(collection_name)
+        cursor = collection.find()
+        result = dict()
+        result['old_length'] = len(list(cursor.clone()))
+        for d in data:
+            collection.insert_one(d)
+        result['current_length'] = len(list(cursor.clone()))
+        return result
+
 
 if __name__ == '__main__':
     # new_connection = MongoDB()
