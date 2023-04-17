@@ -23,3 +23,10 @@ class TestMongoDB(unittest.TestCase):
         collections = new_connection.collections(connection, 'tina_db')
         new_connection.disconnect(connection)
         self.assertTrue(len(collections) > 0)
+
+    def test_getting_documents(self):
+        new_connection = MongoDB()
+        connection = new_connection.connect()
+        documents = new_connection.search_all_documents(connection, 'tina_db', 'movies')
+        new_connection.disconnect(connection)
+        self.assertTrue(len(documents['documents']) == documents['length'])
