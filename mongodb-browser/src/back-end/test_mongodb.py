@@ -1,5 +1,6 @@
 import unittest
 from mongodb import MongoDB
+from mongodb_client import MongoDBClient
 import json
 
 
@@ -15,6 +16,7 @@ class TestMongoDB(unittest.TestCase):
         new_connection = MongoDB()
         connection = new_connection.connect()
         available_databases = new_connection.databases(connection)
+        print(available_databases)
         new_connection.disconnect(connection)
         self.assertTrue(len(available_databases) >= 3)
 
@@ -48,3 +50,13 @@ class TestMongoDB(unittest.TestCase):
         connection = new_connection.connect()
         new_connection.drop_collection(connection, 'tina_db', 'test')
         new_connection.disconnect(connection)
+
+    def test_mongo_db_client(self):
+        mongo_db_client = MongoDBClient('localhost', 27017)
+        self.assertTrue(mongo_db_client.connect())
+
+        database_cursor = mongo_db_client.list_databases()
+        database_list = list(database_cursor)
+        self.assertTrue(len(database_list) > 0)
+
+        mongo_db_client.close()
