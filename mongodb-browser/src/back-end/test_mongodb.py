@@ -1,5 +1,6 @@
 import unittest
 from mongodb import MongoDB
+import json
 
 
 class TestMongoDB(unittest.TestCase):
@@ -30,3 +31,13 @@ class TestMongoDB(unittest.TestCase):
         documents = new_connection.search_all_documents(connection, 'tina_db', 'movies')
         new_connection.disconnect(connection)
         self.assertTrue(len(documents['documents']) == documents['length'])
+
+    def test_insert_into_documents(self):
+        new_connection = MongoDB()
+        connection = new_connection.connect()
+        f = open('data.json')
+        data = json.load(f)
+        insertion = new_connection.insert_documents(connection, 'tina_db', 'test', data)
+        f.close()
+        self.assertTrue(insertion['old_length'] >= 0)
+        self.assertTrue(insertion['current_length'] > 0)
