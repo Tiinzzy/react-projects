@@ -15,3 +15,10 @@ def connect_mongo_db():
     parameters = get_parameters(request)
     result = app_mongodb.connect(parameters)
     return jsonify(result)
+
+
+@app.route('/mongodb/databases', methods=["POST"])
+def databases_mongo_db():
+    parameters = get_parameters(request)
+    result = app_mongodb.get_databases(parameters)
+    return jsonify(result)
