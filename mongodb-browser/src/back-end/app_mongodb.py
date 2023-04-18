@@ -1,25 +1,29 @@
-from mongodb import MongoDB
+from mongodb_client import MongoDBClient
 
 
 def connect(parameters):
     host_name = parameters.get('host_name')
     port_name = parameters.get('port_name')
 
-    new_connection = MongoDB()
-    connection = new_connection.connect(host_name, port_name)
-    new_connection.disconnect(connection)
-    return {'result': str(connection)}
+    client = MongoDBClient(host_name, port_name)
+    connection_ok = client.connect()
+    client.disconnect()
+    return {'result': connection_ok}
 
 
 def get_databases(parameters):
     host_name = parameters.get('host_name')
     port_name = parameters.get('port_name')
 
-    new_connection = MongoDB()
-    connection = new_connection.connect(host_name, port_name)
-    available_databases = new_connection.databases(connection)
-    new_connection.disconnect(connection)
-    return {'databases': available_databases}
+    client = MongoDBClient(host_name, port_name)
+    connection = client.connect()
+    if connection:
+        database_cursor = client.list_databases()
+        database_list = list(database_cursor)
+        client.disconnect()
+        return {'available_databases': database_list}
+    else:
+        return {'result': False}
 
 
 def get_collections(parameters):
@@ -27,11 +31,14 @@ def get_collections(parameters):
     port_name = parameters.get('port_name')
     database_name = parameters.get('database_name')
 
-    new_connection = MongoDB()
-    connection = new_connection.connect(host_name, port_name)
-    collections = new_connection.collections(connection, database_name)
-    new_connection.disconnect(connection)
-    return {'collections': collections}
+    client = MongoDBClient(host_name, port_name)
+    connection = client.connect()
+    if connection:
+        collections = client.list_collections(database_name)
+        client.disconnect()
+        return {'collections': collections}
+    else:
+        return {'result': False}
 
 
 def get_documents(parameters):
@@ -39,12 +46,17 @@ def get_documents(parameters):
     port_name = parameters.get('port_name')
     database_name = parameters.get('database_name')
     collection_name = parameters.get('collection_name')
+    search_condition = parameters.get('search_condition')
+    return_fields = parameters.get('return_fields')
 
-    new_connection = MongoDB()
-    connection = new_connection.connect(host_name, port_name)
-    documents = new_connection.search_all_documents(connection, database_name, collection_name)
-    new_connection.disconnect(connection)
-    return documents
+    client = MongoDBClient(host_name, port_name)
+    connection = client.connect()
+    if connection:
+        documents = client.search_all_documents(database_name, collection_name, search_condition, return_fields)
+        client.disconnect()
+        return {'result': documents}
+    else:
+        return {'result': False}
 
 
 def insert_documents(parameters):
@@ -52,14 +64,17 @@ def insert_documents(parameters):
     port_name = parameters.get('port_name')
     database_name = parameters.get('database_name')
     collection_name = parameters.get('collection_name')
-    data = parameters.get('data')
+    documents = parameters.get('documents')
+    print(documents)
 
-    new_connection = MongoDB()
-    connection = new_connection.connect(host_name, port_name)
-    insertion = new_connection.insert_documents(connection, database_name, collection_name, data)
-    documents = new_connection.search_all_documents(connection, database_name, collection_name)
-    new_connection.disconnect(connection)
-    return {'updated_documents': documents, 'insertion_difference': insertion}
+    client = MongoDBClient(host_name, port_name)
+    connection = client.connect()
+    if connection:
+        result = client.insert_documents(database_name, collection_name, documents)
+        client.disconnect()
+        return result
+    else:
+        return {'result': False}
 
 
 def drop_collection(parameters):
@@ -68,9 +83,28 @@ def drop_collection(parameters):
     database_name = parameters.get('database_name')
     collection_name = parameters.get('collection_name')
 
-    new_connection = MongoDB()
-    connection = new_connection.connect(host_name, port_name)
-    new_connection.drop_collection(connection, database_name, collection_name)
-    collections = new_connection.collections(connection, database_name)
-    new_connection.disconnect(connection)
-    return {'collections': collections}
+    client = MongoDBClient(host_name, port_name)
+    connection = client.connect()
+    if connection:
+        result = client.drop_collection(database_name, collection_name)
+        client.disconnect()
+        return result
+    else:
+        return {'result': False}
+
+
+def delete_document(parameters):
+    host_name = parameters.get('host_name')
+    port_name = parameters.get('port_name')
+    database_name = parameters.get('database_name')
+    collection_name = parameters.get('collection_name')
+    _id = parameters.get('_id')
+
+    client = MongoDBClient(host_name, port_name)
+    connection = client.connect()
+    if connection:
+        result = client.delete_document(database_name, collection_name, _id)
+        client.disconnect()
+        return {'result': result}
+    else:
+        return {'result': False}

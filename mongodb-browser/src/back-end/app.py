@@ -17,6 +17,13 @@ def connect_mongo_db():
     return jsonify(result)
 
 
+@app.route('/mongodb/delete_document', methods=["POST"])
+def delete_document_mongo_db():
+    parameters = get_parameters(request)
+    result = app_mongodb.delete_document(parameters)
+    return jsonify(result)
+
+
 @app.route('/mongodb/databases', methods=["POST"])
 def databases_mongo_db():
     parameters = get_parameters(request)

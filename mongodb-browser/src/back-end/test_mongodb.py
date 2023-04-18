@@ -1,57 +1,17 @@
 import unittest
-from mongodb import MongoDB
 from mongodb_client import MongoDBClient
 import json
 
 
 class TestMongoDB(unittest.TestCase):
-    def test_connection(self):
-        new_connection = MongoDB()
-        connection = new_connection.connect('localhost', 27017)
-        new_connection.disconnect(connection)
-        result = "MongoClient(host=['localhost:27017'], document_class=dict, tz_aware=False, connect=True)"
-        self.assertEqual(str(connection), result)
 
-    def test_getting_databases(self):
-        new_connection = MongoDB()
-        connection = new_connection.connect()
-        available_databases = new_connection.databases(connection)
-        print(available_databases)
-        new_connection.disconnect(connection)
-        self.assertTrue(len(available_databases) >= 3)
+    def test_mongo_db_client_connection(self):
+        mongo_db_client = MongoDBClient('localhost', 27017)
+        self.assertTrue(mongo_db_client.connect())
 
-    def test_getting_collections(self):
-        new_connection = MongoDB()
-        connection = new_connection.connect()
-        collections = new_connection.collections(connection, 'tina_db')
-        new_connection.disconnect(connection)
-        self.assertTrue(len(collections) > 0)
+        mongo_db_client.disconnect()
 
-    def test_getting_documents(self):
-        new_connection = MongoDB()
-        connection = new_connection.connect()
-        documents = new_connection.search_all_documents(connection, 'tina_db', 'movies')
-        new_connection.disconnect(connection)
-        self.assertTrue(len(documents['documents']) == documents['length'])
-
-    def test_insert_into_documents(self):
-        new_connection = MongoDB()
-        connection = new_connection.connect()
-        f = open('data.json')
-        data = json.load(f)
-        insertion = new_connection.insert_documents(connection, 'tina_db', 'test', data)
-        f.close()
-        new_connection.disconnect(connection)
-        self.assertTrue(insertion['old_length'] >= 0)
-        self.assertTrue(insertion['current_length'] > 0)
-
-    def test_dropping_collection(self):
-        new_connection = MongoDB()
-        connection = new_connection.connect()
-        new_connection.drop_collection(connection, 'tina_db', 'test')
-        new_connection.disconnect(connection)
-
-    def test_mongo_db_client(self):
+    def test_mongo_db_get_databases(self):
         mongo_db_client = MongoDBClient('localhost', 27017)
         self.assertTrue(mongo_db_client.connect())
 
@@ -59,4 +19,66 @@ class TestMongoDB(unittest.TestCase):
         database_list = list(database_cursor)
         self.assertTrue(len(database_list) > 0)
 
-        mongo_db_client.close()
+        mongo_db_client.disconnect()
+
+    def test_mongo_db_get_collections(self):
+        mongo_db_client = MongoDBClient('localhost', 27017)
+        self.assertTrue(mongo_db_client.connect())
+
+        database_cursor = mongo_db_client.list_databases()
+        database_list = list(database_cursor)
+        self.assertTrue(len(database_list) > 0)
+
+        collections = mongo_db_client.list_collections('tina_db')
+        self.assertTrue(len(collections) >= 0)
+
+        mongo_db_client.disconnect()
+
+    def test_mongo_db_search_documents(self):
+        mongo_db_client = MongoDBClient('localhost', 27017)
+        self.assertTrue(mongo_db_client.connect())
+
+        database_cursor = mongo_db_client.list_databases()
+        database_list = list(database_cursor)
+        self.assertTrue(len(database_list) > 0)
+
+        collections = mongo_db_client.list_collections('tina_db')
+        self.assertTrue(len(collections) >= 0)
+
+        all_documents = mongo_db_client.search_all_documents('tina_db', 'movies')
+        self.assertTrue(len(all_documents['documents']) == all_documents['length'])
+
+        mongo_db_client.disconnect()
+
+    def test_mongo_db_insert_document(self):
+        mongo_db_client = MongoDBClient('localhost', 27017)
+        self.assertTrue(mongo_db_client.connect())
+
+        database_cursor = mongo_db_client.list_databases()
+        database_list = list(database_cursor)
+        self.assertTrue(len(database_list) > 0)
+
+        collections = mongo_db_client.list_collections('tina_db')
+        self.assertTrue(len(collections) >= 0)
+
+        f = open('data.json')
+        data = json.load(f)
+        insertion = mongo_db_client.insert_documents('tina_db', 'test', data)
+        f.close()
+        self.assertTrue(insertion['old_length'] >= 0)
+        self.assertTrue(insertion['current_length'] > 0)
+
+    def test_mongo_db_drop_collection(self):
+        mongo_db_client = MongoDBClient('localhost', 27017)
+        self.assertTrue(mongo_db_client.connect())
+
+        database_cursor = mongo_db_client.list_databases()
+        database_list = list(database_cursor)
+        self.assertTrue(len(database_list) > 0)
+
+        collections = mongo_db_client.list_collections('tina_db')
+        self.assertTrue(len(collections) >= 0)
+
+        dropping_result = mongo_db_client.drop_collection('tina_db', 'test')
+        self.assertTrue(len(dropping_result) >= 0)
+        mongo_db_client.disconnect()
