@@ -107,4 +107,6 @@ dist
 # Python Stuff
 *.cpython-310.pyc
 
+*.drawio.bkp
+
 .idea/
