@@ -15,7 +15,7 @@ export default class Footer extends React.Component {
 
     render() {
         return (
-            <Box>
+            <Box className="footer-main-box">
                 footer
             </Box>
         );
