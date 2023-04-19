@@ -1,8 +1,9 @@
 import axios from 'axios';
 
 class BackEndConnectionImpl {
-    async connect_mongo_db(callback) {
-        return axios.post('/mongodb/connect', {}, {})
+    async connect_mongo_db(host_name, port_name, callback) {
+        let query = { 'host_name': host_name, 'port_name': port_name };
+        return axios.post('/mongodb/connect', query, {})
             .then(function (response) {
                 if (callback) {
                     callback(response.data);
