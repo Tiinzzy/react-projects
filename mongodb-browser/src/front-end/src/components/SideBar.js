@@ -25,7 +25,7 @@ export default class SideBar extends React.Component {
     componentDidMount() {
         backend.get_databases_mongo_db(this.state.connectionInfo, (data) => {
             let that = this;
-            that.setState({databases: data.available_databases});
+            that.setState({ databases: data.available_databases });
         })
     }
 
@@ -33,8 +33,11 @@ export default class SideBar extends React.Component {
         this.setState({ openList: !this.state.openList });
     }
 
-    getCollections(e){
-        console.log(e)
+    getCollections(e) {
+        let query = { 'host_name': this.state.connectionInfo.host, 'port_name': this.state.connectionInfo.port, 'database_name': e };
+        backend.get_collections_mongo_db(query, (data) => {
+            console.log(data.collections);
+        })
     }
 
     render() {
