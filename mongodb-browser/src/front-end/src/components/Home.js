@@ -14,14 +14,17 @@ export default class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            openDialog: true
+            openDialog: true,
+            componentReady: false
         }
         this.handleCLoseDialog = this.handleCLoseDialog.bind(this);
     }
 
     handleCLoseDialog(callback) {
         if (callback && callback.action === 'connect-and-close') {
-            this.setState({ openDialog: false, connectionInfo: callback.info });
+            this.setState({ openDialog: false, connectionInfo: callback.info }, () => {
+                this.setState({ componentReady: true });
+            });
         }
     }
 
@@ -29,10 +32,12 @@ export default class Home extends React.Component {
         return (
             <Box className="home-page-main-box">
                 <Box className="left-side-bar">
-                    <SideBar connectionInfo={this.state.connectionInfo} />
+                    {this.state.componentReady &&
+                        <SideBar connectionInfo={this.state.connectionInfo} />}
                 </Box>
                 <Box className="right-side-box">
-                    <DocumentsDisplay />
+                    {this.state.componentReady &&
+                        <DocumentsDisplay />}
                 </Box>
                 <Dialog maxWidth="md" open={this.state.openDialog} onClose={() => this.handleCLoseDialog()}>
                     <Connection handleCLoseDialog={this.handleCLoseDialog} />
