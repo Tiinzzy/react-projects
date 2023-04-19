@@ -29,7 +29,7 @@ export default class Home extends React.Component {
         return (
             <Box className="home-page-main-box">
                 <Box className="left-side-bar">
-                    <SideBar />
+                    <SideBar connectionInfo={this.state.connectionInfo} />
                 </Box>
                 <Box className="right-side-box">
                     <DocumentsDisplay />
