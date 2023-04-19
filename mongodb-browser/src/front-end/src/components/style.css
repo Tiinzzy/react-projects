@@ -1,0 +1,16 @@
+.home-page-main-box{
+    border: solid 2px black;
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+}
+
+.left-side-bar {
+    border: solid 1px red;
+    padding: 10px;
+}
+
+.right-side-box {
+    border: solid 1px blue;
+    padding: 10px;
+}
