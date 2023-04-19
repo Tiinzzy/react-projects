@@ -12,17 +12,20 @@ export default class Home extends React.Component {
         this.state = {
             openDialog: true
         }
+        this.handleCLoseDialog = this.handleCLoseDialog.bind(this);
     }
 
-    handleCLoseDialog() {
-        this.setState({ openDialog: false });
+    handleCLoseDialog(callback) {
+        if (callback && callback.action === 'connect-and-close') {
+            this.setState({ openDialog: false });
+        }
     }
 
     render() {
         return (
             <Box>
                 <Dialog open={this.state.openDialog} onClose={() => this.handleCLoseDialog()}>
-                    <Connection />
+                    <Connection handleCLoseDialog={this.handleCLoseDialog} />
                 </Dialog>
             </Box>
         );
