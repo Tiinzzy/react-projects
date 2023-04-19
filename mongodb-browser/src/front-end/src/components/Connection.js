@@ -9,6 +9,9 @@ import Input from '@mui/material/Input';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 
+import BackEndConnection from './BackEndConnection';
+
+const backend = BackEndConnection.INSTANCE();
 
 export default class Connection extends React.Component {
 
@@ -30,7 +33,12 @@ export default class Connection extends React.Component {
     }
 
     connectAndClose() {
-        this.state.handleCLoseDialog({ action: 'connect-and-close' });
+        backend.connect_mongo_db(this.state.host_name, this.state.port_name, (data) => {
+            let that = this;
+            if (data.result) {
+                that.state.handleCLoseDialog({ action: 'connect-and-close' });
+            }
+        })
     }
 
     render() {
