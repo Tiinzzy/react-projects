@@ -10,6 +10,9 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import IconButton from '@mui/material/IconButton';
 
 import './style.css';
+import BackEndConnection from './BackEndConnection';
+
+const backend = BackEndConnection.INSTANCE();
 
 const data = [1, 2, 3, 4, 5, 6, 7];
 
@@ -18,8 +21,16 @@ export default class SideBar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            connectionInfo: props.connectionInfo,
             openList: false
         }
+    }
+
+    componentDidMount() {
+        console.log(this.state.connectionInfo);
+        backend.get_databases_mongo_db((data) => {
+            console.log(data);
+        })
     }
 
     handleOPenList() {
@@ -30,11 +41,10 @@ export default class SideBar extends React.Component {
     render() {
         return (
             <>
-                <List
-                    sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+                <List sx={{ width: '100%', maxWidth: 350, bgcolor: 'background.paper' }}
                     component="nav">
                     <ListItemButton onClick={() => this.handleOPenList()}>
-                        <ListItemText primary="Tables" />
+                        <ListItemText primary="Databases" />
                         {this.state.openList ? <ExpandLess /> : <ExpandMore />}
                     </ListItemButton>
                     <Collapse in={this.state.openList} timeout="auto" unmountOnExit>
