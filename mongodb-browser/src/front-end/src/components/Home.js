@@ -24,7 +24,7 @@ export default class Home extends React.Component {
     render() {
         return (
             <Box>
-                <Dialog open={this.state.openDialog} onClose={() => this.handleCLoseDialog()}>
+                <Dialog maxWidth="md" open={this.state.openDialog} onClose={() => this.handleCLoseDialog()}>
                     <Connection handleCLoseDialog={this.handleCLoseDialog} />
                 </Dialog>
             </Box>
