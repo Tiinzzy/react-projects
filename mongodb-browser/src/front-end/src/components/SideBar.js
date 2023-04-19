@@ -27,8 +27,7 @@ export default class SideBar extends React.Component {
     }
 
     componentDidMount() {
-        console.log(this.state.connectionInfo);
-        backend.get_databases_mongo_db((data) => {
+        backend.get_databases_mongo_db(this.state.connectionInfo, (data) => {
             console.log(data);
         })
     }
