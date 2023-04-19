@@ -8,6 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Input from '@mui/material/Input';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
+import Typography from "@mui/material/Typography";
 
 import BackEndConnection from './BackEndConnection';
 
@@ -20,16 +21,18 @@ export default class Connection extends React.Component {
         this.state = {
             handleCLoseDialog: props.handleCLoseDialog,
             host_name: 'localhost',
-            port_name: 27017
+            port_name: 27017,
+            connectionError: false,
+            errorMsg: false
         }
     }
 
     getHostName(e) {
-        this.setState({ host_name: e.target.value });
+        this.setState({ host_name: e.target.value, connectionError: false, errorMsg: false });
     }
 
     getPortName(e) {
-        this.setState({ port_name: e.target.value });
+        this.setState({ port_name: e.target.value, connectionError: false, errorMsg: false });
     }
 
     connectAndClose() {
@@ -37,6 +40,8 @@ export default class Connection extends React.Component {
             let that = this;
             if (data.result) {
                 that.state.handleCLoseDialog({ action: 'connect-and-close' });
+            } else {
+                that.setState({ connectionError: true, errorMsg: true });
             }
         })
     }
@@ -53,13 +58,21 @@ export default class Connection extends React.Component {
                     </DialogContentText>
                     <FormControl variant="standard" style={{ marginTop: 20 }}>
                         <InputLabel htmlFor="component-simple">Host</InputLabel>
-                        <Input id="component-simple" defaultValue={this.state.host_name} style={{ width: 400 }} onChange={(e) => this.getHostName(e)} />
+                        <Input id="component-simple" defaultValue={this.state.host_name} style={{ width: 400 }}
+                            error={this.state.connectionError}
+                            onChange={(e) => this.getHostName(e)} />
                     </FormControl>
                     <br />
                     <FormControl variant="standard" style={{ marginTop: 40, marginBottom: 20 }}>
                         <InputLabel htmlFor="component-simple">Port</InputLabel>
-                        <Input id="component-simple" defaultValue={this.state.port_name} style={{ width: 400 }} onChange={(e) => this.getPortName(e)} />
+                        <Input id="component-simple" defaultValue={this.state.port_name} style={{ width: 400 }}
+                            error={this.state.connectionError}
+                            onChange={(e) => this.getPortName(e)} />
                     </FormControl>
+                    <br />
+                    <div style={{ height: 20 }}>
+                        {this.state.errorMsg && <Typography variant="body2" color="#D22B2B">Sorry, something went wrong!</Typography>}
+                    </div>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => this.connectAndClose()} variant="contained">Connect</Button>
