@@ -39,7 +39,7 @@ export default class Connection extends React.Component {
         backend.connect_mongo_db(this.state.host_name, this.state.port_name, (data) => {
             let that = this;
             if (data.result) {
-                that.state.handleCLoseDialog({ action: 'connect-and-close' });
+                that.state.handleCLoseDialog({ action: 'connect-and-close', info: { 'host': that.state.host_name, 'port': that.state.port_name } });
             } else {
                 that.setState({ connectionError: true, errorMsg: true });
             }
