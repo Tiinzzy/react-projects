@@ -5,6 +5,8 @@ import Dialog from '@mui/material/Dialog';
 
 import Connection from "./Connection";
 
+import './style.css';
+
 export default class Home extends React.Component {
 
     constructor(props) {
@@ -23,7 +25,13 @@ export default class Home extends React.Component {
 
     render() {
         return (
-            <Box>
+            <Box className="home-page-main-box">
+                <Box className="left-side-bar">
+
+                </Box>
+                <Box className="right-side-box">
+
+                </Box>
                 <Dialog maxWidth="md" open={this.state.openDialog} onClose={() => this.handleCLoseDialog()}>
                     <Connection handleCLoseDialog={this.handleCLoseDialog} />
                 </Dialog>
