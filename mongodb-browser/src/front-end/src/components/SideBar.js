@@ -14,8 +14,6 @@ import BackEndConnection from './BackEndConnection';
 
 const backend = BackEndConnection.INSTANCE();
 
-const data = [1, 2, 3, 4, 5, 6, 7];
-
 export default class SideBar extends React.Component {
 
     constructor(props) {
@@ -28,7 +26,8 @@ export default class SideBar extends React.Component {
 
     componentDidMount() {
         backend.get_databases_mongo_db(this.state.connectionInfo, (data) => {
-            console.log(data);
+            let that = this;
+            that.setState({databases: data.available_databases});
         })
     }
 
@@ -48,7 +47,7 @@ export default class SideBar extends React.Component {
                     </ListItemButton>
                     <Collapse in={this.state.openList} timeout="auto" unmountOnExit>
                         <List component="div" disablePadding >
-                            {data.map((e, i) => (
+                            {this.state.databases && this.state.databases.map((e, i) => (
                                 <ListItemButton sx={{ pl: 4 }} key={i} onClick={() => this.sendSqlCommand(e)}>
                                     <ListItemText primary={e} />
                                 </ListItemButton>
