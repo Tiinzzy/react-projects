@@ -19,7 +19,7 @@ export default class Home extends React.Component {
 
     handleCLoseDialog(callback) {
         if (callback && callback.action === 'connect-and-close') {
-            this.setState({ openDialog: false });
+            this.setState({ openDialog: false, connectionInfo: callback.info });
         }
     }
 
