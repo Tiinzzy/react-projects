@@ -1,12 +1,15 @@
 .home-page-main-box {
-    border: solid 2px black;
+    border: solid 0px black;
     padding: 20px;
     display: flex;
     flex-direction: row;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .left-side-bar {
-    border: solid 1px red;
+    border: solid 1px rgb(193, 193, 193);
+    border-radius: 4px;
     width: 20%;
     padding: 10px;
     margin-right: 15px;
@@ -14,10 +17,10 @@
 }
 
 .right-side-box {
-    border: solid 1px blue;
+    border: solid 1px rgb(193, 193, 193);
+    border-radius: 4px;
     width: 80%;
     padding: 10px;
-
 }
 
 .header-main-box {
