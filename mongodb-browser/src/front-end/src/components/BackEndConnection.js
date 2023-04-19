@@ -33,8 +33,8 @@ class BackEndConnectionImpl {
             })
     }
 
-    async get_collections_mongo_db(callback) {
-        return axios.post('/mongodb/collections', {}, {})
+    async get_collections_mongo_db(query, callback) {
+        return axios.post('/mongodb/collections', query, {})
             .then(function (response) {
                 if (callback) {
                     callback(response.data);
