@@ -33,6 +33,9 @@ export default class SideBar extends React.Component {
         this.setState({ openList: !this.state.openList });
     }
 
+    getCollections(e){
+        console.log(e)
+    }
 
     render() {
         return (
@@ -46,7 +49,7 @@ export default class SideBar extends React.Component {
                     <Collapse in={this.state.openList} timeout="auto" unmountOnExit>
                         <List component="div" disablePadding >
                             {this.state.databases && this.state.databases.map((e, i) => (
-                                <ListItemButton sx={{ pl: 4 }} key={i} onClick={() => this.sendSqlCommand(e)}>
+                                <ListItemButton sx={{ pl: 4 }} key={i} onClick={() => this.getCollections(e)}>
                                     <ListItemText primary={e} />
                                 </ListItemButton>
                             ))}
