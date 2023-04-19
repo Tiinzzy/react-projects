@@ -15,7 +15,7 @@ export default class Header extends React.Component {
 
     render() {
         return (
-            <Box>
+            <Box className="header-main-box">
                 header
             </Box>
         );
