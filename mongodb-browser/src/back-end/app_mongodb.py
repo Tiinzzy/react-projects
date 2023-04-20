@@ -1,4 +1,5 @@
 from mongodb_client import MongoDBClient
+from bson import ObjectId
 
 
 def connect(parameters):
@@ -49,12 +50,15 @@ def get_documents(parameters):
     search_condition = parameters.get('search_condition')
     return_fields = parameters.get('return_fields')
 
+    if search_condition is not None and '_id' in search_condition:
+        search_condition['_id'] = ObjectId(search_condition['_id'])
+
     client = MongoDBClient(host_name, port_name)
     connection = client.connect()
     if connection:
         documents = client.search_all_documents(database_name, collection_name, search_condition, return_fields)
         client.disconnect()
-        return {'result': documents}
+        return documents
     else:
         return {'result': False}
 

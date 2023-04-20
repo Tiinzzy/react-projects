@@ -30,7 +30,6 @@ class MongoDBClient:
         return my_database.list_collection_names()
 
     def search_all_documents(self, database_name, collection_name, condition=None, return_fields=None):
-        print(condition)
         my_database = self.mongo_client[database_name]
         collection = my_database.get_collection(collection_name)
         cursor = collection.find(condition, return_fields)
