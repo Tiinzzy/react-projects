@@ -15,9 +15,11 @@ export default class Home extends React.Component {
         super(props);
         this.state = {
             openDialog: true,
-            componentReady: false
+            componentReady: false,
+            dataReady: false
         }
         this.handleCLoseDialog = this.handleCLoseDialog.bind(this);
+        this.getDataforDocuments = this.getDataforDocuments.bind(this);
     }
 
     handleCLoseDialog(callback) {
@@ -28,16 +30,24 @@ export default class Home extends React.Component {
         }
     }
 
+    getDataforDocuments(data) {
+        if (data && data.action === 'ready-to-fetch') {
+            this.setState({ database: data.database, collection: data.collection }, () => {
+                this.setState({ dataReady: true });
+            })
+        }
+    }
+
     render() {
         return (
             <Box className="home-page-main-box">
                 <Box className="left-side-bar">
                     {this.state.componentReady &&
-                        <SideBar connectionInfo={this.state.connectionInfo} />}
+                        <SideBar connectionInfo={this.state.connectionInfo} getDataforDocuments={this.getDataforDocuments} />}
                 </Box>
                 <Box className="right-side-box">
-                    {this.state.componentReady &&
-                        <DocumentsDisplay />}
+                    {this.state.componentReady && this.state.dataReady &&
+                        <DocumentsDisplay collection={this.state.collection} database={this.state.database} />}
                 </Box>
                 <Dialog maxWidth="md" open={this.state.openDialog} onClose={() => this.handleCLoseDialog()}>
                     <Connection handleCLoseDialog={this.handleCLoseDialog} />
