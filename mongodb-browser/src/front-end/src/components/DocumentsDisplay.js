@@ -24,16 +24,6 @@ export default class DocumentsDisplay extends React.Component {
     componentDidMount() {
         this.state.query['host_name'] = this.state.connectionInfo.host;
         this.state.query['port_name'] = this.state.connectionInfo.port;
-        this.state.query['database_name'] = this.state.database;
-        this.state.query['collection_name'] = this.state.collection;
-
-        backend.get_documents_mongo_db(this.state.query, (data) => {
-            let that = this;
-            that.setState({ documents: data.documents, length: data.length });
-        })
-    }
-
-    componentDidUpdate() {
         this.state.query['database_name'] = this.props.database;
         this.state.query['collection_name'] = this.props.collection;
 
@@ -43,8 +33,25 @@ export default class DocumentsDisplay extends React.Component {
         })
     }
 
+    componentDidUpdate() {
+        if (this.state.collection !== this.props.collection) {
+            this.setState({ collection: this.props.collection }, () => {
+                this.state.query['database_name'] = this.props.database;
+                this.state.query['collection_name'] = this.props.collection;
+
+                backend.get_documents_mongo_db(this.state.query, (data) => {
+                    let that = this;
+                    that.setState({ documents: data.documents, length: data.length });
+                })
+            });
+        } else {
+            return;
+        }
+    }
+
     displayData(e) {
         console.log(e)
+        console.log(this.state.query);
     }
 
     render() {
