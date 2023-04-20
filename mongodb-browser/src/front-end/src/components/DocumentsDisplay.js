@@ -17,16 +17,18 @@ export default class DocumentsDisplay extends React.Component {
             database: props.database,
             collection: props.collection,
             connectionInfo: props.connectionInfo,
-            query: {}
+            query: {},
+            oneDocument: {}
         }
     }
 
     componentDidMount() {
         this.state.query['host_name'] = this.state.connectionInfo.host;
         this.state.query['port_name'] = this.state.connectionInfo.port;
-        this.state.query['database_name'] = this.props.database;
-        this.state.query['collection_name'] = this.props.collection;
 
+
+        this.state.query['database_name'] = this.state.database;
+        this.state.query['collection_name'] = this.state.collection;
         backend.get_documents_mongo_db(this.state.query, (data) => {
             let that = this;
             that.setState({ documents: data.documents, length: data.length });
@@ -38,23 +40,23 @@ export default class DocumentsDisplay extends React.Component {
             this.setState({ collection: this.props.collection }, () => {
                 this.state.query['database_name'] = this.props.database;
                 this.state.query['collection_name'] = this.props.collection;
-
                 backend.get_documents_mongo_db(this.state.query, (data) => {
                     let that = this;
                     that.setState({ documents: data.documents, length: data.length });
                 })
             });
-        } else {
-            return;
         }
     }
 
     displayData(e) {
         this.state.query['search_condition'] = { '_id': e };
-        console.log(this.state.query)
         backend.get_documents_mongo_db(this.state.query, (data) => {
             let that = this;
-            console.log(data);
+            that.setState({ oneDocument: data.documents[0] }, () => {
+                if (data.length > 0) {
+                    delete this.state.query['search_condition'];
+                };
+            })
         })
     }
 
@@ -78,7 +80,9 @@ export default class DocumentsDisplay extends React.Component {
                         </table>
                     </Box>
                     <Box className="display-documents-right-box">
-                        right box
+                        <textarea style={{ width: '100%', height: '98%', overflowX: 'hide', resize: 'none' }}
+                            value={JSON.stringify(this.state.oneDocument, null, 3)} readOnly={true} wrap="soft">
+                        </textarea>
                     </Box>
                 </Box>
                 <Box className="display-documents-box-2">
