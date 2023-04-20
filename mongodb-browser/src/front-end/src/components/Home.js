@@ -31,10 +31,13 @@ export default class Home extends React.Component {
     }
 
     getDataforDocuments(data) {
-        if (data && data.action === 'ready-to-fetch') {
+        if (data && data.action === 'ready-to-fetch' && this.state.dataReady === false) {
             this.setState({ database: data.database, collection: data.collection }, () => {
                 this.setState({ dataReady: true });
             })
+        } else if (data && data.action === 'ready-to-fetch' && this.state.dataReady === true) {
+
+            this.setState({ database: data.database, collection: data.collection });
         }
     }
 
@@ -47,7 +50,7 @@ export default class Home extends React.Component {
                 </Box>
                 <Box className="right-side-box">
                     {this.state.componentReady && this.state.dataReady &&
-                        <DocumentsDisplay collection={this.state.collection} database={this.state.database} />}
+                        <DocumentsDisplay collection={this.state.collection} database={this.state.database} connectionInfo={this.state.connectionInfo} />}
                 </Box>
                 <Dialog maxWidth="md" open={this.state.openDialog} onClose={() => this.handleCLoseDialog()}>
                     <Connection handleCLoseDialog={this.handleCLoseDialog} />
