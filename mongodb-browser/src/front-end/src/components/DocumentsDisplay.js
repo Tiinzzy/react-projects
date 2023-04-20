@@ -9,7 +9,10 @@ export default class DocumentsDisplay extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            database: props.database,
+            collection: props.collection
         }
+        console.log(props.database, props.collection)
     }
 
 
