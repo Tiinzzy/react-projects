@@ -47,8 +47,8 @@ class BackEndConnectionImpl {
             })
     }
 
-    async get_documents_mongo_db(callback) {
-        return axios.post('/mongodb/documents', {}, {})
+    async get_documents_mongo_db(query, callback) {
+        return axios.post('/mongodb/documents', query, {})
             .then(function (response) {
                 if (callback) {
                     callback(response.data);
