@@ -20,7 +20,9 @@
     border: solid 1px rgb(193, 193, 193);
     border-radius: 4px;
     width: 80%;
-    padding: 10px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
 }
 
 .header-main-box {
@@ -43,4 +45,18 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
+}
+
+.display-documents-box-1{
+    border: solid 1px rgb(210, 210, 210);
+    border-radius: 4px;
+    height: 45%;
+    margin-top: 20px;
+}
+
+.display-documents-box-2{
+    border: solid 1px rgb(210, 210, 210);
+    border-radius: 4px;
+    height: 45%;
+    margin-top: 30px;
 }
