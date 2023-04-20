@@ -50,8 +50,12 @@ export default class DocumentsDisplay extends React.Component {
     }
 
     displayData(e) {
-        console.log(e)
-        console.log(this.state.query);
+        this.state.query['search_condition'] = { '_id': e };
+        console.log(this.state.query)
+        backend.get_documents_mongo_db(this.state.query, (data) => {
+            let that = this;
+            console.log(data);
+        })
     }
 
     render() {
