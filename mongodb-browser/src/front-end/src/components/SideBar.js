@@ -24,6 +24,7 @@ export default class SideBar extends React.Component {
         super(props);
         this.state = {
             connectionInfo: props.connectionInfo,
+            getDataforDocuments: props.getDataforDocuments,
             openList: false,
             openCollections: ''
         }
@@ -53,8 +54,8 @@ export default class SideBar extends React.Component {
     }
 
     getDocuments(db, col) {
-        console.log(db);
-        console.log(col);
+        let query = { action: 'ready-to-fetch', database: db, collection: col }
+        this.state.getDataforDocuments(query);
     }
 
     render() {
