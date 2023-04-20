@@ -52,6 +52,11 @@ export default class SideBar extends React.Component {
         }
     }
 
+    getDocuments(db, col) {
+        console.log(db);
+        console.log(col);
+    }
+
     render() {
         return (
             <>
@@ -74,7 +79,7 @@ export default class SideBar extends React.Component {
                                     <Collapse in={this.state.openCollections === e} timeout="auto" unmountOnExit>
                                         <List component="div" disablePadding>
                                             {this.state.collections && this.state.collections.map((ee, i) => (
-                                                <ListItemButton key={i} sx={{ pl: 8 }} onClick={() => console.log(e, ee)}>
+                                                <ListItemButton key={i} sx={{ pl: 8 }} onClick={() => this.getDocuments(e, ee)}>
                                                     <UilFileAlt size="15" color="black" />
                                                     <ListItemText primary={ee} sx={{ marginLeft: 1.5 }} />
                                                 </ListItemButton>
