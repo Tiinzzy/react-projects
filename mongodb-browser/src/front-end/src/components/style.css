@@ -13,7 +13,7 @@
     width: 20%;
     padding: 10px;
     margin-right: 15px;
-    height: 700px;
+    height: 725px;
 }
 
 .right-side-box {
@@ -77,10 +77,10 @@ th {
     padding: 5px;
     position: sticky;
     top: 0;
-    background-color: rgb(228, 228, 228);
+    background-color: rgb(225, 225, 225);
 }
 
 tr:hover {
-    background-color: #f2f2f2;
+    background-color: #f0f0f0;
     cursor: pointer;
 }
