@@ -47,16 +47,39 @@
     align-items: center;
 }
 
-.display-documents-box-1{
+.display-documents-box-1 {
     border: solid 1px rgb(210, 210, 210);
     border-radius: 4px;
     height: 45%;
     margin-top: 20px;
+    overflow-y: scroll;
 }
 
-.display-documents-box-2{
+.display-documents-box-2 {
     border: solid 1px rgb(210, 210, 210);
     border-radius: 4px;
     height: 45%;
     margin-top: 30px;
+}
+
+
+table,
+th,
+td {
+    border: 1px solid rgb(146, 146, 146);
+}
+
+td {
+    padding: 5px;
+}
+
+th {
+    padding: 5px;
+    position: sticky;
+    top: 0;
+    background-color: rgb(228, 228, 228);
+}
+
+tr:hover {
+    background-color: #f2f2f2;
 }
