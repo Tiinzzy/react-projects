@@ -8,8 +8,13 @@ import Collapse from '@mui/material/Collapse';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 
-import './style.css';
+import UilDatabase from '@iconscout/react-unicons/icons/uil-database';
+import UilFileAlt from '@iconscout/react-unicons/icons/uil-file-alt';
+
 import BackEndConnection from './BackEndConnection';
+
+import './style.css';
+
 
 const backend = BackEndConnection.INSTANCE();
 
@@ -19,6 +24,7 @@ export default class SideBar extends React.Component {
         super(props);
         this.state = {
             connectionInfo: props.connectionInfo,
+            getDataforDocuments: props.getDataforDocuments,
             openList: false,
             openCollections: ''
         }
@@ -47,13 +53,19 @@ export default class SideBar extends React.Component {
         }
     }
 
+    getDocuments(db, col) {
+        let query = { action: 'ready-to-fetch', database: db, collection: col }
+        this.state.getDataforDocuments(query);
+    }
+
     render() {
         return (
             <>
                 <List sx={{ width: '100%', bgcolor: 'background.paper' }}
                     component="nav">
                     <ListItemButton onClick={() => this.handleOPenList()}>
-                        <ListItemText primary="Databases" />
+                        <UilDatabase size="25" color="black" />
+                        <ListItemText primary="Databases" sx={{ marginLeft: 2 }} />
                         {this.state.openList ? <ExpandLess /> : <ExpandMore />}
                     </ListItemButton>
                     <Collapse in={this.state.openList} timeout="auto" unmountOnExit>
@@ -61,16 +73,18 @@ export default class SideBar extends React.Component {
                             {this.state.databases && this.state.databases.map((e, i) => (
                                 <Box key={i} >
                                     <ListItemButton sx={{ pl: 4 }} onClick={() => this.getCollections(e)}>
-                                        <ListItemText primary={e} />
+                                        <UilDatabase size="15" color="black" />
+                                        <ListItemText primary={e} sx={{ marginLeft: 1.5 }} />
                                         {this.state.openCollections === e ? <ExpandLess /> : <ExpandMore />}
                                     </ListItemButton>
                                     <Collapse in={this.state.openCollections === e} timeout="auto" unmountOnExit>
                                         <List component="div" disablePadding>
-                                                {this.state.collections && this.state.collections.map((ee, i) => (
-                                                    <ListItemButton key={i} sx={{ pl: 8 }} onClick={() => console.log(e, ee)}>
-                                                        <ListItemText  primary={ee} />
-                                                    </ListItemButton>
-                                                ))}
+                                            {this.state.collections && this.state.collections.map((ee, i) => (
+                                                <ListItemButton key={i} sx={{ pl: 8 }} onClick={() => this.getDocuments(e, ee)}>
+                                                    <UilFileAlt size="15" color="black" />
+                                                    <ListItemText primary={ee} sx={{ marginLeft: 1.5 }} />
+                                                </ListItemButton>
+                                            ))}
                                         </List>
                                     </Collapse>
                                 </Box>
