@@ -40,9 +40,14 @@ export default class DocumentsDisplay extends React.Component {
 
     render() {
         return (
-            <Box>
-                this will be documents display content
-            </Box>
+            <>
+                <Box className="display-documents-box-1">
+                    box 1
+                </Box>
+                <Box className="display-documents-box-2">
+                    box 2
+                </Box>
+            </>
         );
     }
 }
