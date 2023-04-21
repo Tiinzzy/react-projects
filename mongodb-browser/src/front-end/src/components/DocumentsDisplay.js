@@ -7,6 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
 import BackEndConnection from './BackEndConnection';
 
@@ -23,7 +24,8 @@ export default class DocumentsDisplay extends React.Component {
             collection: props.collection,
             connectionInfo: props.connectionInfo,
             query: {},
-            oneDocument: {}
+            oneDocument: {},
+            command: "Enter a query"
         }
     }
 
@@ -65,6 +67,18 @@ export default class DocumentsDisplay extends React.Component {
         })
     }
 
+    getFindCommand() {
+        let command = "db.getCollection('" + this.props.collection + "').find({})";
+        this.setState({ command });
+    }
+
+    getInsertCommand() {
+        let command = "db." + this.props.collection + ".insert()";
+        this.setState({ command });
+    }
+
+
+
     render() {
         return (
             <>
@@ -93,17 +107,20 @@ export default class DocumentsDisplay extends React.Component {
                 <Box className="display-documents-box-2">
                     <Box className="display-documents-right-box">
                         <TextField fullWidth id="fullwidth" multiline
-                            rows={6} placeholder="Enter a query" />
+                            rows={6} value={this.state.command} />
                         <Box>
                             <Button variant="contained" size="small">Submit</Button>
-                            <IconButton color="primary" aria-label="upload picture" component="label">
-                                <DeleteOutlineIcon />
+                            <IconButton color="primary" aria-label="upload picture" component="label" title="find document" onClick={() => this.getFindCommand()}>
+                                <SearchOutlinedIcon />
                             </IconButton>
-                            <IconButton color="primary" aria-label="upload picture" component="label">
+                            <IconButton color="primary" aria-label="upload picture" component="label" title="insert document" onClick={() => this.getInsertCommand()} >
                                 <AddCircleOutlineOutlinedIcon />
                             </IconButton>
-                            <IconButton color="primary" aria-label="upload picture" component="label">
+                            <IconButton color="primary" aria-label="upload picture" component="label" title="delete document">
                                 <RemoveCircleOutlineOutlinedIcon />
+                            </IconButton>
+                            <IconButton color="primary" aria-label="upload picture" component="label" title="drop collection">
+                                <DeleteOutlineIcon />
                             </IconButton>
                         </Box>
                     </Box>
