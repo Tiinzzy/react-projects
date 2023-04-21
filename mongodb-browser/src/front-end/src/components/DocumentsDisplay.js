@@ -26,7 +26,8 @@ export default class DocumentsDisplay extends React.Component {
             query: {},
             oneDocument: {},
             command: "Enter a query",
-            selected: 0
+            selected: 0,
+            selectedId: ''
         }
     }
 
@@ -148,7 +149,8 @@ export default class DocumentsDisplay extends React.Component {
                                 </tr>
                                 {this.state.documents && this.state.documents.map((e, i) => (
                                     <tr key={i} onClick={() => this.displayData(e._id)}>
-                                        <td>
+                                        <td style={{ color: this.state.selectedId === e._id ? '#1589FF' : 'black' }}
+                                            onClick={() => this.setState({ selectedId: e._id })}>
                                             {e._id}
                                         </td>
                                     </tr>))}
@@ -156,9 +158,8 @@ export default class DocumentsDisplay extends React.Component {
                         </table>
                     </Box>
                     <Box className="display-documents-right-box">
-                        <textarea style={{ width: '100%', height: '99%', overflowX: 'hide', resize: 'none', marginLeft: 5 }}
-                            value={JSON.stringify(this.state.oneDocument, null, 3)} readOnly={true} wrap="soft">
-                        </textarea>
+                        <TextField fullWidth id="json-content" multiline readOnly={true}
+                            rows={20} value={JSON.stringify(this.state.oneDocument, null, 3)} />
                     </Box>
                 </Box>
                 <Box className="display-documents-box-2">
