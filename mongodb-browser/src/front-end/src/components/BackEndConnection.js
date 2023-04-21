@@ -89,8 +89,8 @@ class BackEndConnectionImpl {
             })
     }
 
-    async drop_collection_mongo_db(callback) {
-        return axios.post('/mongodb/drop_collection', {}, {})
+    async drop_collection_mongo_db(query, callback) {
+        return axios.post('/mongodb/drop_collection', query, {})
             .then(function (response) {
                 if (callback) {
                     callback(response.data);
