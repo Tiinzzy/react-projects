@@ -87,6 +87,10 @@ export default class DocumentsDisplay extends React.Component {
         this.setState({ command });
     }
 
+    submitCommand(){
+        console.log(111)
+    }
+
     render() {
         return (
             <>
@@ -117,7 +121,6 @@ export default class DocumentsDisplay extends React.Component {
                         <TextField fullWidth id="fullwidth" multiline
                             rows={6} value={this.state.command} />
                         <Box>
-                            <Button variant="contained" size="small">Submit</Button>
                             <IconButton color="primary" aria-label="upload picture" component="label" title="find document" onClick={() => this.getFindCommand()}>
                                 <SearchOutlinedIcon />
                             </IconButton>
@@ -130,6 +133,7 @@ export default class DocumentsDisplay extends React.Component {
                             <IconButton color="primary" aria-label="upload picture" component="label" title="drop collection" onClick={() => this.getDropCommand()}>
                                 <DeleteOutlineIcon />
                             </IconButton>
+                            <Button variant="contained" size="small" onClick={() => this.submitCommand()}>Submit</Button>
                         </Box>
                     </Box>
                 </Box >
