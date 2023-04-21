@@ -79,7 +79,7 @@ export default class DocumentsDisplay extends React.Component {
     }
 
     getDeleteCoomand() {
-        let command = "db." + this.props.collection + ".deleteOne({})";
+        let command = "db." + this.props.collection + ".deleteOne({'_id':})";
         this.setState({ command, selected: 3 });
     }
 
@@ -110,13 +110,28 @@ export default class DocumentsDisplay extends React.Component {
         } else if (this.state.selected === 2) {
             let info = this.state.command.substring(this.state.command.indexOf("y(") + 1);
             info = info.replace("(", "").replace(")", "");
-            console.log(info)
+            const myObj = JSON.parse('"' + info + '"');
+
+            this.state.query['documents'] = myObj;
+            console.log(typeof myObj)
+            // backend.insert_documents_mongo_db((data) => {
+            //     console.log(data);
+            //     // if (data.length > 0) {
+            //     //     delete this.state.query['documents'];
+            //     // };
+            // })
+
             console.log('insert')
         } else if (this.state.selected === 3) {
             let info = this.state.command.substring(this.state.command.indexOf("e(") + 1);
-            info = info.replace("(", "").replace(")", "");
-            console.log(info)
-            console.log('delete')
+            info = info.replace("({'_id':", "").replace("})", "");
+
+            this.state.query['_id'] = info;
+            backend.delete_document_mongo_db(this.state.query, (data) => {
+                if (data.result) {
+                    delete this.state.query['_id'];
+                };
+            })
         } else if (this.state.selected === 4) {
             console.log('drop')
         }
