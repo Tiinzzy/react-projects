@@ -88,6 +88,10 @@ export default class DocumentsDisplay extends React.Component {
         this.setState({ command, selected: 4 });
     }
 
+    getCommandChanges(e) {
+        this.setState({ command: e.target.value });
+    }
+
     submitCommand() {
         if (this.state.selected === 1) {
             console.log('find')
@@ -128,7 +132,7 @@ export default class DocumentsDisplay extends React.Component {
                 <Box className="display-documents-box-2">
                     <Box className="display-documents-right-box">
                         <TextField fullWidth id="fullwidth" multiline
-                            rows={6} value={this.state.command} />
+                            rows={6} value={this.state.command} onChange={(e) => this.getCommandChanges(e)} />
                         <Box>
                             <IconButton color="primary" aria-label="upload picture" component="label" title="find document" onClick={() => this.getFindCommand()}>
                                 <SearchOutlinedIcon />
