@@ -2,6 +2,11 @@ import React from "react";
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
 
 import BackEndConnection from './BackEndConnection';
 
@@ -80,14 +85,28 @@ export default class DocumentsDisplay extends React.Component {
                         </table>
                     </Box>
                     <Box className="display-documents-right-box">
-                        <textarea style={{ width: '100%', height: '98%', overflowX: 'hide', resize: 'none' }}
+                        <textarea style={{ width: '100%', height: '99%', overflowX: 'hide', resize: 'none', marginLeft: 5 }}
                             value={JSON.stringify(this.state.oneDocument, null, 3)} readOnly={true} wrap="soft">
                         </textarea>
                     </Box>
                 </Box>
                 <Box className="display-documents-box-2">
-                    <TextField fullWidth id="fullWidth" multiline
-                        rows={6} placeholder="Enter a query" />
+                    <Box className="display-documents-right-box">
+                        <TextField fullWidth id="fullwidth" multiline
+                            rows={6} placeholder="Enter a query" />
+                        <Box>
+                            <Button variant="contained" size="small">Submit</Button>
+                            <IconButton color="primary" aria-label="upload picture" component="label">
+                                <DeleteOutlineIcon />
+                            </IconButton>
+                            <IconButton color="primary" aria-label="upload picture" component="label">
+                                <AddCircleOutlineOutlinedIcon />
+                            </IconButton>
+                            <IconButton color="primary" aria-label="upload picture" component="label">
+                                <RemoveCircleOutlineOutlinedIcon />
+                            </IconButton>
+                        </Box>
+                    </Box>
                 </Box >
             </>
         );
