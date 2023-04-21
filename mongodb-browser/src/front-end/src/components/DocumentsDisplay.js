@@ -94,10 +94,19 @@ export default class DocumentsDisplay extends React.Component {
 
     submitCommand() {
         if (this.state.selected === 1) {
+            console.log('find')
             let info = this.state.command.substring(this.state.command.indexOf("d(") + 1);
             info = info.replace("(", "").replace(")", "");
-            console.log(info)
-            console.log('find')
+
+            this.state.query['search_condition'] = JSON.parse([info]);
+            backend.get_documents_mongo_db(this.state.query, (data) => {
+                let that = this;
+                that.setState({ oneDocument: data.documents }, () => {
+                    if (data.length > 0) {
+                        delete this.state.query['search_condition'];
+                    };
+                })
+            })
         } else if (this.state.selected === 2) {
             let info = this.state.command.substring(this.state.command.indexOf("y(") + 1);
             info = info.replace("(", "").replace(")", "");
