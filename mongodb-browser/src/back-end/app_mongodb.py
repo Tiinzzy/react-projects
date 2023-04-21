@@ -54,7 +54,7 @@ def get_documents(parameters):
         if search_condition['_id'][0].isdigit():
             search_condition['_id'] = ObjectId(search_condition['_id'])
         else:
-            return None
+            return search_condition
 
     client = MongoDBClient(host_name, port_name)
     connection = client.connect()
