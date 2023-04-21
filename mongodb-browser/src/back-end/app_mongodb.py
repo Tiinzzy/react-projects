@@ -51,7 +51,10 @@ def get_documents(parameters):
     return_fields = parameters.get('return_fields')
 
     if search_condition is not None and '_id' in search_condition:
-        search_condition['_id'] = ObjectId(search_condition['_id'])
+        if search_condition['_id'][0].isdigit():
+            search_condition['_id'] = ObjectId(search_condition['_id'])
+        else:
+            return search_condition
 
     client = MongoDBClient(host_name, port_name)
     connection = client.connect()
@@ -69,7 +72,6 @@ def insert_documents(parameters):
     database_name = parameters.get('database_name')
     collection_name = parameters.get('collection_name')
     documents = parameters.get('documents')
-    print(documents)
 
     client = MongoDBClient(host_name, port_name)
     connection = client.connect()

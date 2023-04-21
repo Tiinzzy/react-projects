@@ -7,6 +7,8 @@ import ListItemText from '@mui/material/ListItemText';
 import Collapse from '@mui/material/Collapse';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
+import ReplayOutlinedIcon from '@mui/icons-material/ReplayOutlined';
+import IconButton from '@mui/material/IconButton';
 
 import UilDatabase from '@iconscout/react-unicons/icons/uil-database';
 import UilFileAlt from '@iconscout/react-unicons/icons/uil-file-alt';
@@ -26,7 +28,9 @@ export default class SideBar extends React.Component {
             connectionInfo: props.connectionInfo,
             getDataforDocuments: props.getDataforDocuments,
             openList: false,
-            openCollections: ''
+            openCollections: '',
+            selectedId: '',
+            selectedDb: ''
         }
     }
 
@@ -43,6 +47,7 @@ export default class SideBar extends React.Component {
 
     getCollections(e) {
         if (this.state.openCollections === '') {
+            this.setState({ selectedDb: e });
             let query = { 'host_name': this.state.connectionInfo.host, 'port_name': this.state.connectionInfo.port, 'database_name': e };
             backend.get_collections_mongo_db(query, (data) => {
                 let that = this;
@@ -56,11 +61,21 @@ export default class SideBar extends React.Component {
     getDocuments(db, col) {
         let query = { action: 'ready-to-fetch', database: db, collection: col }
         this.state.getDataforDocuments(query);
+        this.setState({ database: db, collection: col, selectedId: col })
+    }
+
+    reLoadContent() {
+        let query = { action: 'reload-page', database: this.state.database, collection: this.state.collection }
+        this.state.getDataforDocuments(query);
+        this.componentDidMount();
     }
 
     render() {
         return (
             <>
+                <IconButton color="black" title="reload data" onClick={() => this.reLoadContent()}>
+                    <ReplayOutlinedIcon />
+                </IconButton>
                 <List sx={{ width: '100%', bgcolor: 'background.paper' }}
                     component="nav">
                     <ListItemButton onClick={() => this.handleOPenList()}>
@@ -74,7 +89,9 @@ export default class SideBar extends React.Component {
                                 <Box key={i} >
                                     <ListItemButton sx={{ pl: 4 }} onClick={() => this.getCollections(e)}>
                                         <UilDatabase size="15" color="black" />
-                                        <ListItemText primary={e} sx={{ marginLeft: 1.5 }} />
+                                        <ListItemText primary={e} sx={{ marginLeft: 1.5 }}
+                                            style={{ color: this.state.selectedDb === e ? '#1589FF' : 'black' }}
+                                            onClick={() => this.setState({ selectedDb: e })} />
                                         {this.state.openCollections === e ? <ExpandLess /> : <ExpandMore />}
                                     </ListItemButton>
                                     <Collapse in={this.state.openCollections === e} timeout="auto" unmountOnExit>
@@ -82,7 +99,9 @@ export default class SideBar extends React.Component {
                                             {this.state.collections && this.state.collections.map((ee, i) => (
                                                 <ListItemButton key={i} sx={{ pl: 8 }} onClick={() => this.getDocuments(e, ee)}>
                                                     <UilFileAlt size="15" color="black" />
-                                                    <ListItemText primary={ee} sx={{ marginLeft: 1.5 }} />
+                                                    <ListItemText primary={ee} sx={{ marginLeft: 1.5 }}
+                                                        style={{ color: this.state.selectedId === ee ? '#1589FF' : 'black' }}
+                                                        onClick={() => this.setState({ selectedId: ee })} />
                                                 </ListItemButton>
                                             ))}
                                         </List>
