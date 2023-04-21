@@ -44,7 +44,7 @@ export default class DocumentsDisplay extends React.Component {
 
     componentDidUpdate() {
         if (this.state.collection !== this.props.collection) {
-            this.setState({ collection: this.props.collection }, () => {
+            this.setState({ collection: this.props.collection, command: "Enter a query" }, () => {
                 this.state.query['database_name'] = this.props.database;
                 this.state.query['collection_name'] = this.props.collection;
                 backend.get_documents_mongo_db(this.state.query, (data) => {
@@ -73,11 +73,19 @@ export default class DocumentsDisplay extends React.Component {
     }
 
     getInsertCommand() {
-        let command = "db." + this.props.collection + ".insert()";
+        let command = "db." + this.props.collection + ".insertMany()";
         this.setState({ command });
     }
 
+    getDeleteCoomand() {
+        let command = "db." + this.props.collection + ".deleteOne({})";
+        this.setState({ command });
+    }
 
+    getDropCommand() {
+        let command = "db." + this.props.collection + ".drop()";
+        this.setState({ command });
+    }
 
     render() {
         return (
@@ -116,10 +124,10 @@ export default class DocumentsDisplay extends React.Component {
                             <IconButton color="primary" aria-label="upload picture" component="label" title="insert document" onClick={() => this.getInsertCommand()} >
                                 <AddCircleOutlineOutlinedIcon />
                             </IconButton>
-                            <IconButton color="primary" aria-label="upload picture" component="label" title="delete document">
+                            <IconButton color="primary" aria-label="upload picture" component="label" title="delete document" onClick={() => this.getDeleteCoomand()}>
                                 <RemoveCircleOutlineOutlinedIcon />
                             </IconButton>
-                            <IconButton color="primary" aria-label="upload picture" component="label" title="drop collection">
+                            <IconButton color="primary" aria-label="upload picture" component="label" title="drop collection" onClick={() => this.getDropCommand()}>
                                 <DeleteOutlineIcon />
                             </IconButton>
                         </Box>
