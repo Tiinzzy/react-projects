@@ -2,6 +2,12 @@ import React from "react";
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
 import BackEndConnection from './BackEndConnection';
 
@@ -18,7 +24,10 @@ export default class DocumentsDisplay extends React.Component {
             collection: props.collection,
             connectionInfo: props.connectionInfo,
             query: {},
-            oneDocument: {}
+            oneDocument: {},
+            command: "Enter a query",
+            selected: 0,
+            selectedId: ''
         }
     }
 
@@ -37,7 +46,7 @@ export default class DocumentsDisplay extends React.Component {
 
     componentDidUpdate() {
         if (this.state.collection !== this.props.collection) {
-            this.setState({ collection: this.props.collection }, () => {
+            this.setState({ collection: this.props.collection, command: "Enter a query" }, () => {
                 this.state.query['database_name'] = this.props.database;
                 this.state.query['collection_name'] = this.props.collection;
                 backend.get_documents_mongo_db(this.state.query, (data) => {
@@ -60,6 +69,74 @@ export default class DocumentsDisplay extends React.Component {
         })
     }
 
+    getFindCommand() {
+        let command = "db.getCollection('" + this.props.collection + "').find({})";
+        this.setState({ command, selected: 1 });
+    }
+
+    getInsertCommand() {
+        let command = "db." + this.props.collection + ".insertMany()";
+        this.setState({ command, selected: 2 });
+    }
+
+    getDeleteCoomand() {
+        let command = "db." + this.props.collection + ".deleteOne({'_id':})";
+        this.setState({ command, selected: 3 });
+    }
+
+    getDropCommand() {
+        let command = "db." + this.props.collection + ".drop()";
+        this.setState({ command, selected: 4 });
+    }
+
+    getCommandChanges(e) {
+        this.setState({ command: e.target.value });
+    }
+
+    submitCommand() {
+        if (this.state.selected === 1) {
+            let info = this.state.command.substring(this.state.command.indexOf("d(") + 1);
+            info = info.replace("(", "").replace(")", "");
+
+            this.state.query['search_condition'] = JSON.parse([info]);
+            backend.get_documents_mongo_db(this.state.query, (data) => {
+                let that = this;
+                that.setState({ oneDocument: data.documents }, () => {
+                    if (data.length > 0) {
+                        delete this.state.query['search_condition'];
+                    };
+                })
+            })
+        } else if (this.state.selected === 2) {
+            let info = this.state.command.substring(this.state.command.indexOf("y(") + 1);
+            info = info.replace("(", "").replace(")", "");
+            const myObj = JSON.parse(info);
+
+            this.state.query['documents'] = myObj;
+            backend.insert_documents_mongo_db(this.state.query, (data) => {
+                if (data.inserted_count > 0) {
+                    console.log('successful');
+                };
+            })
+        } else if (this.state.selected === 3) {
+            let info = this.state.command.substring(this.state.command.indexOf("e(") + 1);
+            info = info.replace("({'_id':", "").replace("})", "");
+
+            this.state.query['_id'] = info;
+            backend.delete_document_mongo_db(this.state.query, (data) => {
+                if (data.result) {
+                    delete this.state.query['_id'];
+                };
+            })
+        } else if (this.state.selected === 4) {
+            backend.drop_collection_mongo_db(this.state.query, (data) => {
+                if (data.result) {
+                    console.log('collection dropped');
+                };
+            })
+        }
+    }
+
     render() {
         return (
             <>
@@ -72,7 +149,8 @@ export default class DocumentsDisplay extends React.Component {
                                 </tr>
                                 {this.state.documents && this.state.documents.map((e, i) => (
                                     <tr key={i} onClick={() => this.displayData(e._id)}>
-                                        <td>
+                                        <td style={{ color: this.state.selectedId === e._id ? '#1589FF' : 'black' }}
+                                            onClick={() => this.setState({ selectedId: e._id })}>
                                             {e._id}
                                         </td>
                                     </tr>))}
@@ -80,14 +158,30 @@ export default class DocumentsDisplay extends React.Component {
                         </table>
                     </Box>
                     <Box className="display-documents-right-box">
-                        <textarea style={{ width: '100%', height: '98%', overflowX: 'hide', resize: 'none' }}
-                            value={JSON.stringify(this.state.oneDocument, null, 3)} readOnly={true} wrap="soft">
-                        </textarea>
+                        <TextField fullWidth id="json-content" multiline readOnly={true}
+                            rows={20} value={JSON.stringify(this.state.oneDocument, null, 3)} />
                     </Box>
                 </Box>
                 <Box className="display-documents-box-2">
-                    <TextField fullWidth id="fullWidth" multiline
-                        rows={6} placeholder="Enter a query" />
+                    <Box className="display-documents-right-box">
+                        <TextField fullWidth id="fullwidth" multiline
+                            rows={6} value={this.state.command} onChange={(e) => this.getCommandChanges(e)} />
+                        <Box>
+                            <IconButton color="primary" aria-label="upload picture" component="label" title="find document" onClick={() => this.getFindCommand()}>
+                                <SearchOutlinedIcon />
+                            </IconButton>
+                            <IconButton color="primary" aria-label="upload picture" component="label" title="insert document" onClick={() => this.getInsertCommand()} >
+                                <AddCircleOutlineOutlinedIcon />
+                            </IconButton>
+                            <IconButton color="primary" aria-label="upload picture" component="label" title="delete document" onClick={() => this.getDeleteCoomand()}>
+                                <RemoveCircleOutlineOutlinedIcon />
+                            </IconButton>
+                            <IconButton color="primary" aria-label="upload picture" component="label" title="drop collection" onClick={() => this.getDropCommand()}>
+                                <DeleteOutlineIcon />
+                            </IconButton>
+                            <Button variant="contained" size="small" onClick={() => this.submitCommand()}>Submit</Button>
+                        </Box>
+                    </Box>
                 </Box >
             </>
         );

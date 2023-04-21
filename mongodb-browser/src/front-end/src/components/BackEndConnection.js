@@ -60,6 +60,48 @@ class BackEndConnectionImpl {
                 return false;
             })
     }
+
+    async insert_documents_mongo_db(query, callback) {
+        return axios.post('/mongodb/insert_documents', query, {})
+            .then(function (response) {
+                if (callback) {
+                    callback(response.data);
+                }
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+                return false;
+            })
+    }
+
+    async delete_document_mongo_db(query, callback) {
+        return axios.post('/mongodb/delete_document', query, {})
+            .then(function (response) {
+                if (callback) {
+                    callback(response.data);
+                }
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+                return false;
+            })
+    }
+
+    async drop_collection_mongo_db(query, callback) {
+        return axios.post('/mongodb/drop_collection', query, {})
+            .then(function (response) {
+                if (callback) {
+                    callback(response.data);
+                }
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+                return false;
+            })
+    }
 }
 
 export default class BackEndConnection {
