@@ -94,10 +94,19 @@ export default class DocumentsDisplay extends React.Component {
 
     submitCommand() {
         if (this.state.selected === 1) {
+            let info = this.state.command.substring(this.state.command.indexOf("d(") + 1);
+            info = info.replace("(", "").replace(")", "");
+            console.log(info)
             console.log('find')
         } else if (this.state.selected === 2) {
+            let info = this.state.command.substring(this.state.command.indexOf("y(") + 1);
+            info = info.replace("(", "").replace(")", "");
+            console.log(info)
             console.log('insert')
         } else if (this.state.selected === 3) {
+            let info = this.state.command.substring(this.state.command.indexOf("e(") + 1);
+            info = info.replace("(", "").replace(")", "");
+            console.log(info)
             console.log('delete')
         } else if (this.state.selected === 4) {
             console.log('drop')
