@@ -25,7 +25,8 @@ export default class DocumentsDisplay extends React.Component {
             connectionInfo: props.connectionInfo,
             query: {},
             oneDocument: {},
-            command: "Enter a query"
+            command: "Enter a query",
+            selected: 0
         }
     }
 
@@ -69,26 +70,34 @@ export default class DocumentsDisplay extends React.Component {
 
     getFindCommand() {
         let command = "db.getCollection('" + this.props.collection + "').find({})";
-        this.setState({ command });
+        this.setState({ command, selected: 1 });
     }
 
     getInsertCommand() {
         let command = "db." + this.props.collection + ".insertMany()";
-        this.setState({ command });
+        this.setState({ command, selected: 2 });
     }
 
     getDeleteCoomand() {
         let command = "db." + this.props.collection + ".deleteOne({})";
-        this.setState({ command });
+        this.setState({ command, selected: 3 });
     }
 
     getDropCommand() {
         let command = "db." + this.props.collection + ".drop()";
-        this.setState({ command });
+        this.setState({ command, selected: 4 });
     }
 
-    submitCommand(){
-        console.log(111)
+    submitCommand() {
+        if (this.state.selected === 1) {
+            console.log('find')
+        } else if (this.state.selected === 2) {
+            console.log('insert')
+        } else if (this.state.selected === 3) {
+            console.log('delete')
+        } else if (this.state.selected === 4) {
+            console.log('drop')
+        }
     }
 
     render() {
