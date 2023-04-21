@@ -60,7 +60,6 @@ def get_documents(parameters):
     connection = client.connect()
     if connection:
         documents = client.search_all_documents(database_name, collection_name, search_condition, return_fields)
-        print(documents)
         client.disconnect()
         return documents
     else:
