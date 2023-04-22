@@ -20,6 +20,13 @@ export default class DocumentDialog extends React.Component {
         }
     }
 
+    updatedDocument() {
+
+    }
+
+    deleteDocument() {
+
+    }
 
     render() {
         return (
@@ -38,9 +45,12 @@ export default class DocumentDialog extends React.Component {
                         rows={20}
                         value={JSON.stringify(this.props.oneDocument, null, 3)}
                     />
+                    <Box style={{ width: 1000 }}>
+                    </Box>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => this.connectAndClose()} variant="contained">Connect</Button>
+                    <Button variant="outlined" onClick={() => this.updatedDocument()}>Update</Button>
+                    <Button variant="outlined" color="error" onClick={() => this.deleteDocument()}>Delete Document</Button>
                 </DialogActions>
             </>
         );
