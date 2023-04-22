@@ -61,11 +61,10 @@ export default class DocumentsDisplay extends React.Component {
     }
 
     displayData(e) {
-        this.setState({ openDialog: true, clickedRow: e });
         this.state.query['search_condition'] = { '_id': e };
         backend.get_documents_mongo_db(this.state.query, (data) => {
             let that = this;
-            that.setState({ oneDocument: data.documents[0] }, () => {
+            that.setState({ oneDocument: data.documents[0], openDialog: true, clickedRow: e }, () => {
                 if (data.length > 0) {
                     delete this.state.query['search_condition'];
                 };
