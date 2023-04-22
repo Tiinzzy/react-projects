@@ -7,9 +7,13 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
+import Divider from "@mui/material/Divider";
+
+import BackEndConnection from './BackEndConnection';
 
 import './style.css';
-import { Divider } from "@mui/material";
+
+const backend = BackEndConnection.INSTANCE();
 
 export default class DocumentDialog extends React.Component {
 
@@ -18,6 +22,8 @@ export default class DocumentDialog extends React.Component {
         this.state = {
             clickedRow: props.clickedRow,
             oneDocument: JSON.stringify(props.oneDocument, null, 3),
+            handleCLoseDialog: props.handleCLoseDialog,
+            query: props.query,
             errorMessage: ''
         }
     }
@@ -29,7 +35,18 @@ export default class DocumentDialog extends React.Component {
     updatedDocument() {
         try {
             let newOneDocument = JSON.parse(this.state.oneDocument);
-            // post to save
+            delete newOneDocument['_id'];
+
+            this.state.query['document_id'] = this.state.clickedRow;
+            this.state.query['documents'] = newOneDocument;
+
+            backend.update_document_mongo_db(this.state.query, (data) => {
+                if (data.result) {
+                    delete this.state.query['documents'];
+                    delete this.state.query['document_id'];
+                    this.state.handleCLoseDialog({ action: 'close' });
+                };
+            });
         } catch (err) {
             this.setState({ errorMessage: err.toString() })
         }
