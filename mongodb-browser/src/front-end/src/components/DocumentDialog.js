@@ -9,6 +9,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 
 import './style.css';
+import { Divider } from "@mui/material";
 
 export default class DocumentDialog extends React.Component {
 
@@ -16,11 +17,22 @@ export default class DocumentDialog extends React.Component {
         super(props);
         this.state = {
             clickedRow: props.clickedRow,
-            oneDocument: props.oneDocument
+            oneDocument: JSON.stringify(props.oneDocument, null, 3),
+            errorMessage: ''
         }
     }
 
+    getDocumentChanges(e) {
+        this.setState({ oneDocument: e.target.value });
+    }
+
     updatedDocument() {
+        try {
+            let newOneDocument = JSON.parse(this.state.oneDocument);
+            // post to save
+        } catch (err) {
+            this.setState({ errorMessage: err.toString() })
+        }
 
     }
 
@@ -32,22 +44,23 @@ export default class DocumentDialog extends React.Component {
         return (
             <>
                 <DialogTitle>
-                    {'ObjectId("' + this.props.clickedRow + '")'}
+                    {'ObjectId("' + this.state.clickedRow + '")'}
                 </DialogTitle>
+                <Divider />
                 <DialogContent>
-                    <DialogContentText>
-                        You can view and edit the following document.
-                    </DialogContentText>
                     <TextField
-                        fullWidth multiline readOnly={true}
+                        fullWidth multiline
                         id="json-content"
                         sx={{ "& fieldset": { border: 'none' }, '& .MuiInputBase-input': { fontFamily: 'Courier', fontSize: '80%' } }}
                         rows={20}
-                        value={JSON.stringify(this.props.oneDocument, null, 3)}
+                        value={this.state.oneDocument}
+                        onChange={(e) => this.getDocumentChanges(e)}
                     />
                     <Box style={{ width: 1000 }}>
                     </Box>
                 </DialogContent>
+                <Divider />
+                {this.state.errorMessage}
                 <DialogActions>
                     <Button variant="outlined" onClick={() => this.updatedDocument()}>Update</Button>
                     <Button variant="outlined" color="error" onClick={() => this.deleteDocument()}>Delete Document</Button>
