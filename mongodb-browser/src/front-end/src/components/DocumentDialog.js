@@ -32,6 +32,10 @@ export default class DocumentDialog extends React.Component {
         this.setState({ oneDocument: e.target.value });
     }
 
+    cancelAndCLose() {
+        this.state.handleCLoseDialog({ action: 'close' });
+    }
+
     updatedDocument() {
         try {
             let newOneDocument = JSON.parse(this.state.oneDocument);
@@ -41,10 +45,11 @@ export default class DocumentDialog extends React.Component {
             this.state.query['documents'] = newOneDocument;
 
             backend.update_document_mongo_db(this.state.query, (data) => {
+                let that = this;
                 if (data.result) {
-                    delete this.state.query['documents'];
-                    delete this.state.query['document_id'];
-                    this.state.handleCLoseDialog({ action: 'close' });
+                    delete that.state.query['documents'];
+                    delete that.state.query['document_id'];
+                    that.state.handleCLoseDialog({ action: 'close' });
                 };
             });
         } catch (err) {
@@ -79,6 +84,7 @@ export default class DocumentDialog extends React.Component {
                 <Divider />
                 {this.state.errorMessage}
                 <DialogActions>
+                    <Button variant="outlined" onClick={() => this.cancelAndCLose()}>Cancel</Button>
                     <Button variant="outlined" onClick={() => this.updatedDocument()}>Update</Button>
                     <Button variant="outlined" color="error" onClick={() => this.deleteDocument()}>Delete Document</Button>
                 </DialogActions>
