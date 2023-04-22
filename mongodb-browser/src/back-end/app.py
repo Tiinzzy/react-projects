@@ -57,3 +57,10 @@ def drop_collection_mongo_db():
     parameters = get_parameters(request)
     result = app_mongodb.drop_collection(parameters)
     return jsonify(result)
+
+
+@app.route('/mongodb/update_document', methods=["POST"])
+def update_document_mongo_db():
+    parameters = get_parameters(request)
+    result = app_mongodb.update_document(parameters)
+    return jsonify(result)
