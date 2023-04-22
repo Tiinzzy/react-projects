@@ -46,10 +46,26 @@ class MongoDBClient:
         collection = my_database.get_collection(collection_name)
         cursor = collection.find()
         old_len = len(list(cursor.clone()))
-        for d in documents:
-            collection.insert_one(d)
+        # for d in documents:
+        #     collection.insert_one(d)
+        collection.insert_many(documents)
         current_len = len(list(cursor.clone()))
         return {'inserted_count': current_len - old_len}
+
+    def update_document(self, database_name, collection_name, document_id, documents):
+        my_database = self.mongo_client[database_name]
+        collection = my_database.get_collection(collection_name)
+        update_document = {'_id': ObjectId(document_id)}
+        new_values = {"$set": documents}
+        try:
+            update = collection.update_many(update_document, new_values, upsert=True)
+            if update.matched_count == 1:
+                return {'result': True}
+            else:
+                return {'result': False}
+        except Exception as e:
+            print(e)
+            return {'error': e}
 
     def drop_collection(self, database_name, collection_name):
         my_database = self.mongo_client[database_name]

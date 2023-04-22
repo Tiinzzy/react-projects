@@ -114,3 +114,21 @@ def delete_document(parameters):
         return {'result': result}
     else:
         return {'result': False}
+
+
+def update_document(parameters):
+    host_name = parameters.get('host_name')
+    port_name = parameters.get('port_name')
+    database_name = parameters.get('database_name')
+    collection_name = parameters.get('collection_name')
+    document_id = parameters.get('document_id')
+    documents = parameters.get('documents')
+
+    client = MongoDBClient(host_name, port_name)
+    connection = client.connect()
+    if connection:
+        result = client.update_document(database_name, collection_name, document_id, documents)
+        client.disconnect()
+        return result
+    else:
+        return {'result': False}
