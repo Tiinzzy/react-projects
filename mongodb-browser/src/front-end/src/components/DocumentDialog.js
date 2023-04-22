@@ -59,7 +59,14 @@ export default class DocumentDialog extends React.Component {
     }
 
     deleteDocument() {
-
+        this.state.query['_id'] = this.state.clickedRow;
+        backend.delete_document_mongo_db(this.state.query, (data) => {
+            let that = this;
+            if (data.result) {
+                delete that.state.query['_id'];
+                that.state.handleCLoseDialog({ action: 'close' });
+            };
+        })
     }
 
     render() {
