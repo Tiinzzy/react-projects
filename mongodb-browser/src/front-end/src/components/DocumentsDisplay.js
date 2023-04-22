@@ -4,12 +4,14 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
+import Dialog from '@mui/material/Dialog';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
 import BackEndConnection from './BackEndConnection';
+import DocumentDialog from './DocumentDialog';
 
 import './style.css';
 
@@ -27,7 +29,8 @@ export default class DocumentsDisplay extends React.Component {
             oneDocument: {},
             command: "Enter a query",
             selected: 0,
-            selectedId: ''
+            selectedId: '',
+            openDialog: false
         }
     }
 
@@ -58,6 +61,7 @@ export default class DocumentsDisplay extends React.Component {
     }
 
     displayData(e) {
+        this.setState({ openDialog: true, clickedRow: e });
         this.state.query['search_condition'] = { '_id': e };
         backend.get_documents_mongo_db(this.state.query, (data) => {
             let that = this;
@@ -137,6 +141,10 @@ export default class DocumentsDisplay extends React.Component {
         }
     }
 
+    handleCLoseDialog() {
+        this.setState({ openDialog: false });
+    }
+
     render() {
         return (
             <>
@@ -188,6 +196,9 @@ export default class DocumentsDisplay extends React.Component {
                         </Box>
                     </Box>
                 </Box >
+                <Dialog maxWidth="xl" open={this.state.openDialog} onClose={() => this.handleCLoseDialog()}>
+                    <DocumentDialog clickedRow={this.state.clickedRow} oneDocument={this.state.oneDocument} />
+                </Dialog>
             </>
         );
     }
