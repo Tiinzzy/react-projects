@@ -141,7 +141,7 @@ export default class DocumentsDisplay extends React.Component {
         return (
             <>
                 <Box className="display-documents-box-1">
-                    <Box className="display-documents-left-box">
+                    <Box className="display-documents-left-box gray-sharp-border">
                         <table width="100%" style={{ fontSize: '80%' }} cellPadding={0} cellSpacing={0}>
                             <tbody>
                                 <tr>
@@ -157,9 +157,14 @@ export default class DocumentsDisplay extends React.Component {
                             </tbody>
                         </table>
                     </Box>
-                    <Box className="display-documents-right-box">
-                        <TextField fullWidth id="json-content" multiline readOnly={true}
-                            rows={20} value={JSON.stringify(this.state.oneDocument, null, 3)} />
+                    <Box className="display-documents-right-box gray-sharp-border">
+                        <TextField
+                            fullWidth multiline readOnly={true}
+                            id="json-content"
+                            sx={{ "& fieldset": { border: 'none' }, '& .MuiInputBase-input': { fontFamily: 'Courier', fontSize: '80%' } }}
+                            rows={20}
+                            value={JSON.stringify(this.state.oneDocument, null, 3)}
+                        />
                     </Box>
                 </Box>
                 <Box className="display-documents-box-2">
