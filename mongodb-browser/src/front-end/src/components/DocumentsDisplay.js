@@ -196,7 +196,7 @@ export default class DocumentsDisplay extends React.Component {
                         </Box>
                     </Box>
                 </Box >
-                <Dialog maxWidth="xl" open={this.state.openDialog} onClose={() => this.handleCLoseDialog()}>
+                <Dialog maxWidth="xl" open={this.state.openDialog} onClose={() => this.handleCLoseDialog()} className="document-dialog">
                     <DocumentDialog clickedRow={this.state.clickedRow} oneDocument={this.state.oneDocument} />
                 </Dialog>
             </>
