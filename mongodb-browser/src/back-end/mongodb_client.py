@@ -46,8 +46,9 @@ class MongoDBClient:
         collection = my_database.get_collection(collection_name)
         cursor = collection.find()
         old_len = len(list(cursor.clone()))
-        for d in documents:
-            collection.insert_one(d)
+        # for d in documents:
+        #     collection.insert_one(d)
+        collection.insert_many(documents)
         current_len = len(list(cursor.clone()))
         return {'inserted_count': current_len - old_len}
 
