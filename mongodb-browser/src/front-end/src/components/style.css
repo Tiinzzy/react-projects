@@ -11,6 +11,8 @@
     border: solid 1px rgb(193, 193, 193);
     border-radius: 4px;
     width: 20%;
+    min-width: 250px;
+    max-width: 400px;
     padding: 10px;
     margin-right: 15px;
     height: 725px;
@@ -90,11 +92,18 @@ tr:hover {
 
 .display-documents-left-box {
     overflow-y: scroll;
-    border: solid 0px blue;
-    min-width: 30%;
+    min-width: 220px;
+    max-width: 300px;
+    width: 25%;
+    padding: 5px;
+    margin-right: 10px;
 }
 
 .display-documents-right-box {
-    border: solid 0px green;
-    min-width: 69%;
+    width: 100%;
+}
+
+.gray-sharp-border {
+    border: solid 1px #ccc;
+    border-radius: 3px;
 }

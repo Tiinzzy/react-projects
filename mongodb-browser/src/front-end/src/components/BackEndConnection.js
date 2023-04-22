@@ -102,6 +102,20 @@ class BackEndConnectionImpl {
                 return false;
             })
     }
+
+    async update_document_mongo_db(query, callback) {
+        return axios.post('/mongodb/update_document', query, {})
+            .then(function (response) {
+                if (callback) {
+                    callback(response.data);
+                }
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+                return false;
+            })
+    }
 }
 
 export default class BackEndConnection {

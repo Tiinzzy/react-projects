@@ -4,12 +4,14 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
+import Dialog from '@mui/material/Dialog';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
 import BackEndConnection from './BackEndConnection';
+import DocumentDialog from './DocumentDialog';
 
 import './style.css';
 
@@ -27,8 +29,10 @@ export default class DocumentsDisplay extends React.Component {
             oneDocument: {},
             command: "Enter a query",
             selected: 0,
-            selectedId: ''
+            selectedId: '',
+            openDialog: false
         }
+        this.handleCLoseDialog = this.handleCLoseDialog.bind(this);
     }
 
     componentDidMount() {
@@ -61,7 +65,7 @@ export default class DocumentsDisplay extends React.Component {
         this.state.query['search_condition'] = { '_id': e };
         backend.get_documents_mongo_db(this.state.query, (data) => {
             let that = this;
-            that.setState({ oneDocument: data.documents[0] }, () => {
+            that.setState({ oneDocument: data.documents[0], openDialog: true, clickedRow: e }, () => {
                 if (data.length > 0) {
                     delete this.state.query['search_condition'];
                 };
@@ -77,11 +81,6 @@ export default class DocumentsDisplay extends React.Component {
     getInsertCommand() {
         let command = "db." + this.props.collection + ".insertMany()";
         this.setState({ command, selected: 2 });
-    }
-
-    getDeleteCoomand() {
-        let command = "db." + this.props.collection + ".deleteOne({'_id':})";
-        this.setState({ command, selected: 3 });
     }
 
     getDropCommand() {
@@ -118,16 +117,6 @@ export default class DocumentsDisplay extends React.Component {
                     console.log('successful');
                 };
             })
-        } else if (this.state.selected === 3) {
-            let info = this.state.command.substring(this.state.command.indexOf("e(") + 1);
-            info = info.replace("({'_id':", "").replace("})", "");
-
-            this.state.query['_id'] = info;
-            backend.delete_document_mongo_db(this.state.query, (data) => {
-                if (data.result) {
-                    delete this.state.query['_id'];
-                };
-            })
         } else if (this.state.selected === 4) {
             backend.drop_collection_mongo_db(this.state.query, (data) => {
                 if (data.result) {
@@ -137,11 +126,19 @@ export default class DocumentsDisplay extends React.Component {
         }
     }
 
+    handleCLoseDialog(data) {
+        if (data && data.action === 'close') {
+            this.setState({ openDialog: false }, () => {
+                this.componentDidMount();
+            });
+        }
+    }
+
     render() {
         return (
             <>
                 <Box className="display-documents-box-1">
-                    <Box className="display-documents-left-box">
+                    <Box className="display-documents-left-box gray-sharp-border">
                         <table width="100%" style={{ fontSize: '80%' }} cellPadding={0} cellSpacing={0}>
                             <tbody>
                                 <tr>
@@ -157,9 +154,14 @@ export default class DocumentsDisplay extends React.Component {
                             </tbody>
                         </table>
                     </Box>
-                    <Box className="display-documents-right-box">
-                        <TextField fullWidth id="json-content" multiline readOnly={true}
-                            rows={20} value={JSON.stringify(this.state.oneDocument, null, 3)} />
+                    <Box className="display-documents-right-box gray-sharp-border">
+                        <TextField
+                            fullWidth multiline readOnly={true}
+                            id="json-content"
+                            sx={{ "& fieldset": { border: 'none' }, '& .MuiInputBase-input': { fontFamily: 'Courier', fontSize: '80%' } }}
+                            rows={20}
+                            value={JSON.stringify(this.state.oneDocument, null, 3)}
+                        />
                     </Box>
                 </Box>
                 <Box className="display-documents-box-2">
@@ -173,9 +175,6 @@ export default class DocumentsDisplay extends React.Component {
                             <IconButton color="primary" aria-label="upload picture" component="label" title="insert document" onClick={() => this.getInsertCommand()} >
                                 <AddCircleOutlineOutlinedIcon />
                             </IconButton>
-                            <IconButton color="primary" aria-label="upload picture" component="label" title="delete document" onClick={() => this.getDeleteCoomand()}>
-                                <RemoveCircleOutlineOutlinedIcon />
-                            </IconButton>
                             <IconButton color="primary" aria-label="upload picture" component="label" title="drop collection" onClick={() => this.getDropCommand()}>
                                 <DeleteOutlineIcon />
                             </IconButton>
@@ -183,6 +182,9 @@ export default class DocumentsDisplay extends React.Component {
                         </Box>
                     </Box>
                 </Box >
+                <Dialog maxWidth="xl" open={this.state.openDialog} onClose={() => this.handleCLoseDialog()} className="document-dialog">
+                    <DocumentDialog clickedRow={this.state.clickedRow} oneDocument={this.state.oneDocument} query={this.state.query} handleCLoseDialog={this.handleCLoseDialog} />
+                </Dialog>
             </>
         );
     }
