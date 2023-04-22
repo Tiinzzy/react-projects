@@ -32,6 +32,7 @@ export default class DocumentsDisplay extends React.Component {
             selectedId: '',
             openDialog: false
         }
+        this.handleCLoseDialog = this.handleCLoseDialog.bind(this);
     }
 
     componentDidMount() {
@@ -140,8 +141,10 @@ export default class DocumentsDisplay extends React.Component {
         }
     }
 
-    handleCLoseDialog() {
-        this.setState({ openDialog: false });
+    handleCLoseDialog(data) {
+        if (data && data.action === 'close') {
+            this.setState({ openDialog: false });
+        }
     }
 
     render() {
@@ -196,7 +199,7 @@ export default class DocumentsDisplay extends React.Component {
                     </Box>
                 </Box >
                 <Dialog maxWidth="xl" open={this.state.openDialog} onClose={() => this.handleCLoseDialog()} className="document-dialog">
-                    <DocumentDialog clickedRow={this.state.clickedRow} oneDocument={this.state.oneDocument} />
+                    <DocumentDialog clickedRow={this.state.clickedRow} oneDocument={this.state.oneDocument} query={this.state.query} handleCLoseDialog={this.handleCLoseDialog} />
                 </Dialog>
             </>
         );
