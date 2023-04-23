@@ -92,12 +92,3 @@ tr:hover {
     margin-right: 10px;
     height: 300px;
 }
-
-.display-documents-right-box {
-    width: 100%;
-}
-
-.gray-sharp-border {
-    border: solid 1px #ccc;
-    border-radius: 3px;
-}
