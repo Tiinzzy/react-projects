@@ -143,8 +143,9 @@ export default class DocumentsDisplay extends React.Component {
                             <table width="100%" style={{ fontSize: '80%', backgroundColor: 'white', maring: 5 }} cellPadding={0} cellSpacing={0}>
                                 <tbody >
                                     <tr>
-                                        <th width='30%'>ObjectId</th>
-                                        <th>Number of Object Keys</th>
+                                        <th width='20%'>ObjectId</th>
+                                        <th width='20%'>Number of Object Keys</th>
+                                        <th width='60%'>Values</th>
                                     </tr>
                                     {this.state.documents && this.state.documents.map((e, i) => (
                                         <tr key={i} onClick={() => this.displayData(e._id)}>
@@ -155,20 +156,14 @@ export default class DocumentsDisplay extends React.Component {
                                             <td>
                                                 {Object.keys(e).length}
                                             </td>
+                                            <td>
+                                                {this.state.documents[e]}
+                                            </td>
                                         </tr>))}
                                 </tbody>
                             </table>
                         </Box>
                     </div>
-                    {/* <Box className="display-documents-right-box gray-sharp-border">
-                        <TextField
-                            fullWidth multiline readOnly={true}
-                            id="json-content"
-                            sx={{ "& fieldset": { border: 'none' }, '& .MuiInputBase-input': { fontFamily: 'Courier', fontSize: '80%' } }}
-                            rows={20}
-                            value={JSON.stringify(this.state.oneDocument, null, 3)}
-                        />
-                    </Box> */}
                 </Box>
                 <Dialog maxWidth="xl" open={this.state.openDialog} onClose={() => this.handleCLoseDialog()} className="document-dialog">
                     <DocumentDialog clickedRow={this.state.clickedRow} oneDocument={this.state.oneDocument} query={this.state.query} handleCLoseDialog={this.handleCLoseDialog} />
