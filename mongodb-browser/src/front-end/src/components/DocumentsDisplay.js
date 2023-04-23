@@ -138,27 +138,29 @@ export default class DocumentsDisplay extends React.Component {
         return (
             <>
                 <Box className="display-documents-box-1">
-                    <Box className="display-documents-left-box gray-sharp-border">
-                        <table width="100%" style={{ fontSize: '80%' }} cellPadding={0} cellSpacing={0}>
-                            <tbody>
-                                <tr>
-                                    <th>ObjectId</th>
-                                    <th>Object Keys</th>
-                                </tr>
-                                {this.state.documents && this.state.documents.map((e, i) => (
-                                    <tr key={i} onClick={() => this.displayData(e._id)}>
-                                        <td style={{ color: this.state.selectedId === e._id ? '#1589FF' : 'black' }}
-                                            onClick={() => this.setState({ selectedId: e._id })}>
-                                            {e._id}
-                                        </td>
-                                        <td>
-                                            {Object.keys(e).length}
-                                        </td>
-                                    </tr>))}
-                            </tbody>
-                        </table>
-                    </Box>
-                    <Box className="display-documents-right-box gray-sharp-border">
+                    <div style={{ padding: 10, border: 'solid 1px #bbb', width: '100%' }}>
+                        <Box className="display-documents-left-box">
+                            <table width="100%" style={{ fontSize: '80%', backgroundColor: 'white', maring: 5 }} cellPadding={0} cellSpacing={0}>
+                                <tbody >
+                                    <tr>
+                                        <th width='30%'>ObjectId</th>
+                                        <th>Number of Object Keys</th>
+                                    </tr>
+                                    {this.state.documents && this.state.documents.map((e, i) => (
+                                        <tr key={i} onClick={() => this.displayData(e._id)}>
+                                            <td style={{ color: this.state.selectedId === e._id ? '#1589FF' : 'black' }}
+                                                onClick={() => this.setState({ selectedId: e._id })}>
+                                                {e._id}
+                                            </td>
+                                            <td>
+                                                {Object.keys(e).length}
+                                            </td>
+                                        </tr>))}
+                                </tbody>
+                            </table>
+                        </Box>
+                    </div>
+                    {/* <Box className="display-documents-right-box gray-sharp-border">
                         <TextField
                             fullWidth multiline readOnly={true}
                             id="json-content"
@@ -166,7 +168,7 @@ export default class DocumentsDisplay extends React.Component {
                             rows={20}
                             value={JSON.stringify(this.state.oneDocument, null, 3)}
                         />
-                    </Box>
+                    </Box> */}
                 </Box>
                 <Dialog maxWidth="xl" open={this.state.openDialog} onClose={() => this.handleCLoseDialog()} className="document-dialog">
                     <DocumentDialog clickedRow={this.state.clickedRow} oneDocument={this.state.oneDocument} query={this.state.query} handleCLoseDialog={this.handleCLoseDialog} />
