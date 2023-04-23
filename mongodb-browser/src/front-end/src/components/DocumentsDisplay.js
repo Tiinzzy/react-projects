@@ -143,12 +143,16 @@ export default class DocumentsDisplay extends React.Component {
                             <tbody>
                                 <tr>
                                     <th>ObjectId</th>
+                                    <th>Object Keys</th>
                                 </tr>
                                 {this.state.documents && this.state.documents.map((e, i) => (
                                     <tr key={i} onClick={() => this.displayData(e._id)}>
                                         <td style={{ color: this.state.selectedId === e._id ? '#1589FF' : 'black' }}
                                             onClick={() => this.setState({ selectedId: e._id })}>
                                             {e._id}
+                                        </td>
+                                        <td>
+                                            {Object.keys(e).length}
                                         </td>
                                     </tr>))}
                             </tbody>
