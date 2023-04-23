@@ -1,14 +1,7 @@
 import React from "react";
 
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
 import Dialog from '@mui/material/Dialog';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
-import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
 import BackEndConnection from './BackEndConnection';
 import DocumentDialog from './DocumentDialog';
@@ -16,6 +9,15 @@ import DocumentDialog from './DocumentDialog';
 import './style.css';
 
 const backend = BackEndConnection.INSTANCE();
+
+
+function safeLength(s, max) {
+    if (s.length > max) {
+        return s.substring(0, max) + ' ...';
+    } else {
+        return s;
+    }
+}
 
 export default class DocumentsDisplay extends React.Component {
 
@@ -138,50 +140,33 @@ export default class DocumentsDisplay extends React.Component {
         return (
             <>
                 <Box className="display-documents-box-1">
-                    <Box className="display-documents-left-box gray-sharp-border">
-                        <table width="100%" style={{ fontSize: '80%' }} cellPadding={0} cellSpacing={0}>
-                            <tbody>
-                                <tr>
-                                    <th>ObjectId</th>
-                                </tr>
-                                {this.state.documents && this.state.documents.map((e, i) => (
-                                    <tr key={i} onClick={() => this.displayData(e._id)}>
-                                        <td style={{ color: this.state.selectedId === e._id ? '#1589FF' : 'black' }}
-                                            onClick={() => this.setState({ selectedId: e._id })}>
-                                            {e._id}
-                                        </td>
-                                    </tr>))}
-                            </tbody>
-                        </table>
-                    </Box>
-                    <Box className="display-documents-right-box gray-sharp-border">
-                        <TextField
-                            fullWidth multiline readOnly={true}
-                            id="json-content"
-                            sx={{ "& fieldset": { border: 'none' }, '& .MuiInputBase-input': { fontFamily: 'Courier', fontSize: '80%' } }}
-                            rows={20}
-                            value={JSON.stringify(this.state.oneDocument, null, 3)}
-                        />
-                    </Box>
-                </Box>
-                <Box className="display-documents-box-2">
-                    <Box className="display-documents-right-box">
-                        <TextField fullWidth id="fullwidth" multiline
-                            rows={6} value={this.state.command} onChange={(e) => this.getCommandChanges(e)} />
-                        <Box>
-                            <IconButton color="primary" aria-label="upload picture" component="label" title="find document" onClick={() => this.getFindCommand()}>
-                                <SearchOutlinedIcon />
-                            </IconButton>
-                            <IconButton color="primary" aria-label="upload picture" component="label" title="insert document" onClick={() => this.getInsertCommand()} >
-                                <AddCircleOutlineOutlinedIcon />
-                            </IconButton>
-                            <IconButton color="primary" aria-label="upload picture" component="label" title="drop collection" onClick={() => this.getDropCommand()}>
-                                <DeleteOutlineIcon />
-                            </IconButton>
-                            <Button variant="contained" size="small" onClick={() => this.submitCommand()}>Submit</Button>
+                    <div style={{ padding: 10, border: 'solid 1px #bbb', width: '100%' }}>
+                        <Box className="display-documents-left-box">
+                            <table width="100%" style={{ fontSize: '80%', backgroundColor: 'white', maring: 5 }} cellPadding={0} cellSpacing={0}>
+                                <tbody >
+                                    <tr>
+                                        <th width='20%'>ObjectId</th>
+                                        <th width='20%'>Number of Object Keys</th>
+                                        <th width='60%'>Values</th>
+                                    </tr>
+                                    {this.state.documents && this.state.documents.map((e, i) => (
+                                        <tr key={i} onClick={() => this.displayData(e._id)}>
+                                            <td style={{ color: this.state.selectedId === e._id ? '#1589FF' : 'black' }}
+                                                onClick={() => this.setState({ selectedId: e._id })}>
+                                                {e._id}
+                                            </td>
+                                            <td>
+                                                {Object.keys(e).length}
+                                            </td>
+                                            <td>
+                                                {safeLength(JSON.stringify(e), 100)}
+                                            </td>
+                                        </tr>))}
+                                </tbody>
+                            </table>
                         </Box>
-                    </Box>
-                </Box >
+                    </div>
+                </Box>
                 <Dialog maxWidth="xl" open={this.state.openDialog} onClose={() => this.handleCLoseDialog()} className="document-dialog">
                     <DocumentDialog clickedRow={this.state.clickedRow} oneDocument={this.state.oneDocument} query={this.state.query} handleCLoseDialog={this.handleCLoseDialog} />
                 </Dialog>
