@@ -17,6 +17,15 @@ import './style.css';
 
 const backend = BackEndConnection.INSTANCE();
 
+
+function safeLength(s, max) {
+    if (s.length > max) {
+        return s.substring(0, max) + ' ...';
+    } else {
+        return s;
+    }
+}
+
 export default class DocumentsDisplay extends React.Component {
 
     constructor(props) {
@@ -157,7 +166,7 @@ export default class DocumentsDisplay extends React.Component {
                                                 {Object.keys(e).length}
                                             </td>
                                             <td>
-                                                {this.state.documents[e]}
+                                                {safeLength(JSON.stringify(e), 100)}
                                             </td>
                                         </tr>))}
                                 </tbody>
