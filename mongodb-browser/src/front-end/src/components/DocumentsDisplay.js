@@ -164,24 +164,6 @@ export default class DocumentsDisplay extends React.Component {
                         />
                     </Box>
                 </Box>
-                <Box className="display-documents-box-2">
-                    <Box className="display-documents-right-box">
-                        <TextField fullWidth id="fullwidth" multiline
-                            rows={6} value={this.state.command} onChange={(e) => this.getCommandChanges(e)} />
-                        <Box>
-                            <IconButton color="primary" aria-label="upload picture" component="label" title="find document" onClick={() => this.getFindCommand()}>
-                                <SearchOutlinedIcon />
-                            </IconButton>
-                            <IconButton color="primary" aria-label="upload picture" component="label" title="insert document" onClick={() => this.getInsertCommand()} >
-                                <AddCircleOutlineOutlinedIcon />
-                            </IconButton>
-                            <IconButton color="primary" aria-label="upload picture" component="label" title="drop collection" onClick={() => this.getDropCommand()}>
-                                <DeleteOutlineIcon />
-                            </IconButton>
-                            <Button variant="contained" size="small" onClick={() => this.submitCommand()}>Submit</Button>
-                        </Box>
-                    </Box>
-                </Box >
                 <Dialog maxWidth="xl" open={this.state.openDialog} onClose={() => this.handleCLoseDialog()} className="document-dialog">
                     <DocumentDialog clickedRow={this.state.clickedRow} oneDocument={this.state.oneDocument} query={this.state.query} handleCLoseDialog={this.handleCLoseDialog} />
                 </Dialog>
