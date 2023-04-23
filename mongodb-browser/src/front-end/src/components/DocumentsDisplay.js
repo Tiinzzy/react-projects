@@ -1,14 +1,7 @@
 import React from "react";
 
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
 import Dialog from '@mui/material/Dialog';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
-import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
 import BackEndConnection from './BackEndConnection';
 import DocumentDialog from './DocumentDialog';
