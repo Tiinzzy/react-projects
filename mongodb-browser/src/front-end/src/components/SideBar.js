@@ -9,6 +9,7 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import ReplayOutlinedIcon from '@mui/icons-material/ReplayOutlined';
 import IconButton from '@mui/material/IconButton';
+import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 
 import UilDatabase from '@iconscout/react-unicons/icons/uil-database';
 import UilFileAlt from '@iconscout/react-unicons/icons/uil-file-alt';
@@ -70,11 +71,18 @@ export default class SideBar extends React.Component {
         this.componentDidMount();
     }
 
+    insertInNewCollection(){
+        console.log('clicked')
+    }
+
     render() {
         return (
             <>
                 <IconButton color="black" title="reload data" onClick={() => this.reLoadContent()}>
                     <ReplayOutlinedIcon />
+                </IconButton>
+                <IconButton color="black" title="insert document in new collection" onClick={() => this.insertInNewCollection()} >
+                    <AddCircleOutlineOutlinedIcon />
                 </IconButton>
                 <List sx={{ width: '100%', bgcolor: 'background.paper' }}
                     component="nav">
