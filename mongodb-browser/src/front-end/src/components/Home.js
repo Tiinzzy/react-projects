@@ -5,7 +5,7 @@ import Dialog from '@mui/material/Dialog';
 
 import Connection from "./Connection";
 import SideBar from "./SideBar";
-import DocumentsDisplay from "./DocumentsDisplay";
+import DocumentsTable from "./DocumentsTable";
 
 import './style.css';
 
@@ -53,7 +53,7 @@ export default class Home extends React.Component {
                 </Box>
                 <Box className="right-side-box">
                     {this.state.componentReady && this.state.dataReady &&
-                        <DocumentsDisplay collection={this.state.collection} database={this.state.database} connectionInfo={this.state.connectionInfo} />}
+                        <DocumentsTable collection={this.state.collection} database={this.state.database} connectionInfo={this.state.connectionInfo} />}
                 </Box>
                 <Dialog maxWidth="md" open={this.state.openDialog} onClose={() => this.handleCLoseDialog()}>
                     <Connection handleCLoseDialog={this.handleCLoseDialog} />

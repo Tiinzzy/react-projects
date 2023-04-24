@@ -9,14 +9,19 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import ReplayOutlinedIcon from '@mui/icons-material/ReplayOutlined';
 import IconButton from '@mui/material/IconButton';
+import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import Dialog from '@mui/material/Dialog';
 
 import UilDatabase from '@iconscout/react-unicons/icons/uil-database';
 import UilFileAlt from '@iconscout/react-unicons/icons/uil-file-alt';
 
 import BackEndConnection from './BackEndConnection';
+import InsertDocumentNewCollection from './InsertDocumentNewCollection';
+import DropCollection from './DropCollection';
 
 import './style.css';
-
+import { Divider } from "@mui/material";
 
 const backend = BackEndConnection.INSTANCE();
 
@@ -30,8 +35,11 @@ export default class SideBar extends React.Component {
             openList: false,
             openCollections: '',
             selectedId: '',
-            selectedDb: ''
+            selectedDb: '',
+            openDialog: false,
+            selectedIcon: 0
         }
+        this.handleCloseDialog = this.handleCloseDialog.bind(this);
     }
 
     componentDidMount() {
@@ -70,12 +78,36 @@ export default class SideBar extends React.Component {
         this.componentDidMount();
     }
 
+    insertInNewCollection() {
+        this.setState({ openDialog: true, selectedIcon: 1 });
+    }
+
+    dropCOllection() {
+        this.setState({ openDialog: true, selectedIcon: 2 })
+    }
+
+    handleCloseDialog(data) {
+        if (data && data.action === 'close-dialog') {
+            this.setState({ openDialog: false });
+        }
+    }
+
     render() {
         return (
             <>
-                <IconButton color="black" title="reload data" onClick={() => this.reLoadContent()}>
-                    <ReplayOutlinedIcon />
-                </IconButton>
+                <Box display='flex'>
+                    <Box flexGrow={1} />
+                    <IconButton color="black" title="reload data" onClick={() => this.reLoadContent()}>
+                        <ReplayOutlinedIcon />
+                    </IconButton>
+                    <IconButton color="black" title="insert document in new collection" onClick={() => this.insertInNewCollection()} >
+                        <AddCircleOutlineOutlinedIcon />
+                    </IconButton>
+                    <IconButton color="black" title="drop collection" onClick={() => this.dropCOllection()}>
+                        <DeleteOutlineIcon />
+                    </IconButton>
+                </Box>
+                <Divider />
                 <List sx={{ width: '100%', bgcolor: 'background.paper' }}
                     component="nav">
                     <ListItemButton onClick={() => this.handleOPenList()}>
@@ -111,6 +143,12 @@ export default class SideBar extends React.Component {
                         </List>
                     </Collapse>
                 </List>
+                <Dialog maxWidth="xl" open={this.state.openDialog} onClose={() => this.handleCloseDialog()}>
+                    {this.state.selectedIcon === 1 ?
+                        <InsertDocumentNewCollection handleCloseDialog={this.handleCloseDialog} connectionInfo={this.state.connectionInfo} /> :
+                        <DropCollection handleCloseDialog={this.handleCloseDialog} connectionInfo={this.state.connectionInfo} />
+                    }
+                </Dialog>
             </>
         );
     }
