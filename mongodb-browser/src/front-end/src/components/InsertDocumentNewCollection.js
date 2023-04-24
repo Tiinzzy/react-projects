@@ -29,11 +29,11 @@ export default class InsertDocumentNewCollection extends React.Component {
     }
 
     cancelAndClose() {
-        this.state.handleCloseDialog();
+        this.state.handleCloseDialog({ action: 'close-dialog' });
     }
 
     submitAndClose() {
-        this.state.handleCloseDialog();
+        this.state.handleCloseDialog({ action: 'close-dialog' });
     }
 
     render() {
