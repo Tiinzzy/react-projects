@@ -22,7 +22,6 @@ import DropCollection from './DropCollection';
 
 import './style.css';
 
-
 const backend = BackEndConnection.INSTANCE();
 
 export default class SideBar extends React.Component {
@@ -142,7 +141,7 @@ export default class SideBar extends React.Component {
                 <Dialog maxWidth="xl" open={this.state.openDialog} onClose={() => this.handleCloseDialog()}>
                     {this.state.selectedIcon === 1 ?
                         <InsertDocumentNewCollection handleCloseDialog={this.handleCloseDialog} connectionInfo={this.state.connectionInfo} /> :
-                        <DropCollection />
+                        <DropCollection handleCloseDialog={this.handleCloseDialog} connectionInfo={this.state.connectionInfo} />
                     }
                 </Dialog>
             </>
