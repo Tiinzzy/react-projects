@@ -17,6 +17,14 @@ import './style.css';
 
 const backend = BackEndConnection.INSTANCE();
 
+function safeLength(s, max) {
+    if (s.length > max) {
+        return s.substring(0, max) + ' ...';
+    } else {
+        return s;
+    }
+}
+
 export default class DropCollection extends React.Component {
 
     constructor(props) {
@@ -57,7 +65,13 @@ export default class DropCollection extends React.Component {
     }
 
     getCollectionName(e) {
-        this.setState({ collectionName: e.target.value });
+        this.setState({ collectionName: e.target.value }, () => {
+            this.state.query['collection_name'] = this.state.collectionName;
+            backend.get_documents_mongo_db(this.state.query, (data) => {
+                let that = this;
+                that.setState({ documents: data.documents });
+            })
+        });
     }
 
     cancelAndClose() {
@@ -102,13 +116,40 @@ export default class DropCollection extends React.Component {
                             ))}
                         </Select>
                     </FormControl>
-                    <Box style={{ width: 400 }}>
+                    <div style={{ padding: 10, border: 'solid 1px #bbb', width: '97%' }}>
+                        <Box className="display-documents-left-box">
+                            <table width="100%" style={{ fontSize: '80%', backgroundColor: 'white', maring: 5 }} cellPadding={0} cellSpacing={0}>
+                                <tbody >
+                                    <tr>
+                                        <th width='20%'>ObjectId</th>
+                                        <th width='20%'>Number of Object Keys</th>
+                                        <th width='60%'>Values</th>
+                                    </tr>
+                                    {this.state.documents && this.state.documents.map((e, i) => (
+                                        <tr key={i} onClick={() => this.displayData(e._id)}>
+                                            <td style={{ color: this.state.selectedId === e._id ? '#1589FF' : 'black' }}
+                                                onClick={() => this.setState({ selectedId: e._id })}>
+                                                {e._id}
+                                            </td>
+                                            <td>
+                                                {Object.keys(e).length}
+                                            </td>
+                                            <td>
+                                                {safeLength(JSON.stringify(e), 100)}
+                                            </td>
+                                        </tr>))}
+                                </tbody>
+                            </table>
+                        </Box>
+                    </div>
+                    <Box style={{ width: 1000 }}>
                     </Box>
                 </DialogContent>
                 <DialogActions>
                     <Button variant="outlined" onClick={() => this.cancelAndClose()}>Cancel</Button>
-                    <Button variant="outlined" onClick={() => this.submitAndClose()}>Submit</Button>
-                </DialogActions>            </>
+                    <Button variant="outlined" onClick={() => this.submitAndClose()} color="error">Drop Collection</Button>
+                </DialogActions>
+            </>
         );
     }
 }
