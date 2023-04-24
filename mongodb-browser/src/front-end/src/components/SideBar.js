@@ -36,6 +36,7 @@ export default class SideBar extends React.Component {
             selectedDb: '',
             openDialog: false
         }
+        this.handleCloseDialog = this.handleCloseDialog.bind(this);
     }
 
     componentDidMount() {
@@ -127,7 +128,7 @@ export default class SideBar extends React.Component {
                     </Collapse>
                 </List>
                 <Dialog maxWidth="xl" open={this.state.openDialog} onClose={() => this.handleCloseDialog()}>
-                    <InsertDocumentNewCollection />
+                    <InsertDocumentNewCollection handleCloseDialog={this.handleCloseDialog} />
                 </Dialog>
             </>
         );
