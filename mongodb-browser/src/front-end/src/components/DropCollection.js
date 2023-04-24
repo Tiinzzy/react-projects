@@ -127,7 +127,7 @@ export default class DropCollection extends React.Component {
                     </FormControl>
                     <div style={{ padding: 10, border: 'solid 1px #bbb', width: '97.8%', marginBottom: 15 }}>
                         <Box className="display-documents-left-box">
-                            <table width="100%" style={{ fontSize: '80%', backgroundColor: 'white', maring: 5 }} cellPadding={0} cellSpacing={0}>
+                            <table width="100%" style={{ fontSize: '80%', backgroundColor: 'white', maring: 5 }} cellPadding={0} cellSpacing={1}>
                                 <tbody >
                                     <tr>
                                         <th width='20%'>ObjectId</th>
@@ -135,9 +135,8 @@ export default class DropCollection extends React.Component {
                                         <th width='60%'>Values</th>
                                     </tr>
                                     {this.state.documents && this.state.documents.map((e, i) => (
-                                        <tr key={i} onClick={() => this.displayData(e._id)}>
-                                            <td style={{ color: this.state.selectedId === e._id ? '#1589FF' : 'black' }}
-                                                onClick={() => this.setState({ selectedId: e._id })}>
+                                        <tr key={i}>
+                                            <td>
                                                 {e._id}
                                             </td>
                                             <td>
