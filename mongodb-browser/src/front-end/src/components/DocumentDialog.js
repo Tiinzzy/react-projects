@@ -77,6 +77,7 @@ export default class DocumentDialog extends React.Component {
                 <Divider />
                 <DialogContent>
                     <TextField
+                        InputProps={{ spellCheck: 'false' }}
                         fullWidth multiline
                         id="json-content"
                         sx={{ "& fieldset": { border: 'none' }, '& .MuiInputBase-input': { fontFamily: 'Courier', fontSize: '80%' } }}
