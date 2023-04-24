@@ -10,11 +10,13 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import ReplayOutlinedIcon from '@mui/icons-material/ReplayOutlined';
 import IconButton from '@mui/material/IconButton';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import Dialog from '@mui/material/Dialog';
 
 import UilDatabase from '@iconscout/react-unicons/icons/uil-database';
 import UilFileAlt from '@iconscout/react-unicons/icons/uil-file-alt';
 
 import BackEndConnection from './BackEndConnection';
+import InsertDocumentNewCollection from './InsertDocumentNewCollection';
 
 import './style.css';
 
@@ -31,7 +33,8 @@ export default class SideBar extends React.Component {
             openList: false,
             openCollections: '',
             selectedId: '',
-            selectedDb: ''
+            selectedDb: '',
+            openDialog: false
         }
     }
 
@@ -71,8 +74,12 @@ export default class SideBar extends React.Component {
         this.componentDidMount();
     }
 
-    insertInNewCollection(){
-        console.log('clicked')
+    insertInNewCollection() {
+        this.setState({ openDialog: true });
+    }
+
+    handleCloseDialog() {
+        this.setState({ openDialog: false });
     }
 
     render() {
@@ -119,6 +126,9 @@ export default class SideBar extends React.Component {
                         </List>
                     </Collapse>
                 </List>
+                <Dialog open={this.state.openDialog} onClose={() => this.handleCloseDialog()}>
+                    <InsertDocumentNewCollection />
+                </Dialog>
             </>
         );
     }
