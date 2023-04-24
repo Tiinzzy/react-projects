@@ -29,9 +29,6 @@ export default class DocumentsDisplay extends React.Component {
             connectionInfo: props.connectionInfo,
             query: {},
             oneDocument: {},
-            command: "Enter a query",
-            selected: 0,
-            selectedId: '',
             openDialog: false
         }
         this.handleCLoseDialog = this.handleCLoseDialog.bind(this);
@@ -73,48 +70,6 @@ export default class DocumentsDisplay extends React.Component {
                 };
             })
         })
-    }
-
-    getFindCommand() {
-        let command = "db.getCollection('" + this.props.collection + "').find({})";
-        this.setState({ command, selected: 1 });
-    }
-
-    getInsertCommand() {
-        let command = "db." + this.props.collection + ".insertMany()";
-        this.setState({ command, selected: 2 });
-    }
-
-    getDropCommand() {
-        let command = "db." + this.props.collection + ".drop()";
-        this.setState({ command, selected: 4 });
-    }
-
-    getCommandChanges(e) {
-        this.setState({ command: e.target.value });
-    }
-
-    submitCommand() {
-        if (this.state.selected === 1) {
-            let info = this.state.command.substring(this.state.command.indexOf("d(") + 1);
-            info = info.replace("(", "").replace(")", "");
-
-            this.state.query['search_condition'] = JSON.parse([info]);
-            backend.get_documents_mongo_db(this.state.query, (data) => {
-                let that = this;
-                that.setState({ oneDocument: data.documents }, () => {
-                    if (data.length > 0) {
-                        delete this.state.query['search_condition'];
-                    };
-                })
-            })
-        } else if (this.state.selected === 4) {
-            backend.drop_collection_mongo_db(this.state.query, (data) => {
-                if (data.result) {
-                    console.log('collection dropped');
-                };
-            })
-        }
     }
 
     handleCLoseDialog(data) {
