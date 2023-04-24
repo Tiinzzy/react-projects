@@ -14,6 +14,7 @@ export default class InsertDocumentNewCollection extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            handleCloseDialog: props.handleCloseDialog,
             newData: '',
             collectionName: ''
         }
@@ -25,6 +26,14 @@ export default class InsertDocumentNewCollection extends React.Component {
 
     getNewCollectionName(e) {
         this.setState({ collectionName: e.target.value });
+    }
+
+    cancelAndClose() {
+        this.state.handleCloseDialog();
+    }
+
+    submitAndClose() {
+        this.state.handleCloseDialog();
     }
 
     render() {
@@ -49,8 +58,8 @@ export default class InsertDocumentNewCollection extends React.Component {
                     </Box>
                 </DialogContent>
                 <DialogActions>
-                    <Button variant="outlined">Cancel</Button>
-                    <Button variant="outlined">Submit</Button>
+                    <Button variant="outlined" onClick={() => this.cancelAndClose()}>Cancel</Button>
+                    <Button variant="outlined" onClick={() => this.submitAndClose()}>Submit</Button>
                 </DialogActions>
             </>
         );
