@@ -10,6 +10,7 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import ReplayOutlinedIcon from '@mui/icons-material/ReplayOutlined';
 import IconButton from '@mui/material/IconButton';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import Dialog from '@mui/material/Dialog';
 
 import UilDatabase from '@iconscout/react-unicons/icons/uil-database';
@@ -79,6 +80,10 @@ export default class SideBar extends React.Component {
         this.setState({ openDialog: true });
     }
 
+    dropCOllection(){
+        console.log('clicked');
+    }
+
     handleCloseDialog(data) {
         if (data && data.action === 'close-dialog') {
             this.setState({ openDialog: false });
@@ -93,6 +98,9 @@ export default class SideBar extends React.Component {
                 </IconButton>
                 <IconButton color="black" title="insert document in new collection" onClick={() => this.insertInNewCollection()} >
                     <AddCircleOutlineOutlinedIcon />
+                </IconButton>
+                <IconButton color="black" title="drop collection" onClick={() => this.dropCOllection()}>
+                    <DeleteOutlineIcon />
                 </IconButton>
                 <List sx={{ width: '100%', bgcolor: 'background.paper' }}
                     component="nav">
@@ -130,7 +138,7 @@ export default class SideBar extends React.Component {
                     </Collapse>
                 </List>
                 <Dialog maxWidth="xl" open={this.state.openDialog} onClose={() => this.handleCloseDialog()}>
-                    <InsertDocumentNewCollection handleCloseDialog={this.handleCloseDialog} connectionInfo={this.state.connectionInfo}/>
+                    <InsertDocumentNewCollection handleCloseDialog={this.handleCloseDialog} connectionInfo={this.state.connectionInfo} />
                 </Dialog>
             </>
         );
