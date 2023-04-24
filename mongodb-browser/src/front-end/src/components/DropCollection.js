@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -50,7 +50,7 @@ export default class DropCollection extends React.Component {
     }
 
     getDatabaseName(e) {
-        this.setState({ databaseName: e.target.value }, () => {
+        this.setState({ databaseName: e.target.value, collectionName: '', documents: '' }, () => {
             this.getCollectionList();
         });
     }
@@ -116,7 +116,7 @@ export default class DropCollection extends React.Component {
                             ))}
                         </Select>
                     </FormControl>
-                    <div style={{ padding: 10, border: 'solid 1px #bbb', width: '97%' }}>
+                    <div style={{ padding: 10, border: 'solid 1px #bbb', width: '97.8%', marginBottom: 15 }}>
                         <Box className="display-documents-left-box">
                             <table width="100%" style={{ fontSize: '80%', backgroundColor: 'white', maring: 5 }} cellPadding={0} cellSpacing={0}>
                                 <tbody >
@@ -142,7 +142,11 @@ export default class DropCollection extends React.Component {
                             </table>
                         </Box>
                     </div>
-                    <Box style={{ width: 1000 }}>
+                    <Box style={{ width: 999, border: 'solid 0px red', height: 22 }}>
+                        {this.state.collectionName !== '' && this.state.collectionName &&
+                            <Typography >
+                                Are you sure you want to drop <span style={{ fontWeight: 'bold', color: 'red' }}> {this.state.collectionName} </span> collection?
+                            </Typography>}
                     </Box>
                 </DialogContent>
                 <DialogActions>
