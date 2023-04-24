@@ -79,8 +79,10 @@ export default class SideBar extends React.Component {
         this.setState({ openDialog: true });
     }
 
-    handleCloseDialog() {
-        this.setState({ openDialog: false });
+    handleCloseDialog(data) {
+        if (data && data.action === 'close-dialog') {
+            this.setState({ openDialog: false });
+        }
     }
 
     render() {
