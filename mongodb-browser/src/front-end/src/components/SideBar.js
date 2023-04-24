@@ -126,7 +126,7 @@ export default class SideBar extends React.Component {
                         </List>
                     </Collapse>
                 </List>
-                <Dialog open={this.state.openDialog} onClose={() => this.handleCloseDialog()}>
+                <Dialog maxWidth="xl" open={this.state.openDialog} onClose={() => this.handleCloseDialog()}>
                     <InsertDocumentNewCollection />
                 </Dialog>
             </>
