@@ -86,7 +86,7 @@ export default class DocumentsTable extends React.Component {
                 <Box className="display-documents-box-1">
                     <div style={{ padding: 10, border: 'solid 1px #bbb', width: '100%' }}>
                         <Box className="display-documents-left-box">
-                            <table width="100%" style={{ fontSize: '80%', backgroundColor: 'white', maring: 5 }} cellPadding={0} cellSpacing={0}>
+                            <table width="100%" style={{ fontSize: '80%', backgroundColor: 'white', maring: 5 }} cellPadding={0} cellSpacing={1}>
                                 <tbody >
                                     <tr>
                                         <th width='20%'>ObjectId</th>
