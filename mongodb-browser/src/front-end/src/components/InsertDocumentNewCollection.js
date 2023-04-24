@@ -6,8 +6,16 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
+import BackEndConnection from './BackEndConnection';
 
 import './style.css';
+
+const backend = BackEndConnection.INSTANCE();
 
 export default class InsertDocumentNewCollection extends React.Component {
 
@@ -15,9 +23,25 @@ export default class InsertDocumentNewCollection extends React.Component {
         super(props);
         this.state = {
             handleCloseDialog: props.handleCloseDialog,
+            connectionInfo: props.connectionInfo,
             newData: '',
-            collectionName: ''
+            collectionName: '',
+            databaseName: '',
+            query: {}
         }
+    }
+
+    componentDidMount() {
+        this.state.query['host_name'] = this.state.connectionInfo.host;
+        this.state.query['port_name'] = this.state.connectionInfo.port;
+        backend.get_databases_mongo_db(this.state.query, (data) => {
+            let that = this;
+            that.setState({ availableDatabases: data.available_databases })
+        })
+    }
+
+    getDatabaseName(e) {
+        this.setState({ databaseName: e.target.value });
     }
 
     getDocumentData(e) {
@@ -43,7 +67,20 @@ export default class InsertDocumentNewCollection extends React.Component {
                     {"Insert Document in New Collection"}
                 </DialogTitle>
                 <DialogContent>
-                    <TextField fullWidth label="Collection Name" variant="outlined" sx={{ marginTop: 2, marginBottom: 3 }}
+                    <FormControl fullWidth sx={{ marginTop: 2, marginBottom: 3 }}>
+                        <InputLabel id="demo-simple-select-label">Database</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={this.state.databaseName}
+                            label="Database"
+                            onChange={(e) => this.getDatabaseName(e)}>
+                            {this.state.availableDatabases && this.state.availableDatabases.map((e, i) => (
+                                <MenuItem key={i} value={e}>{e}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                    <TextField fullWidth label="Collection Name" variant="outlined" sx={{ marginBottom: 3 }}
                         value={this.state.collectionName}
                         onChange={(e) => this.getNewCollectionName(e)} />
                     <TextField
