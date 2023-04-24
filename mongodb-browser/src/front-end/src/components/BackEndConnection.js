@@ -117,8 +117,8 @@ class BackEndConnectionImpl {
             })
     }
 
-    async get_databases_mongo_db(callback) {
-        return axios.post('/mongodb/databases', {}, {})
+    async get_databases_mongo_db(query, callback) {
+        return axios.post('/mongodb/databases', query, {})
             .then(function (response) {
                 if (callback) {
                     callback(response.data);
