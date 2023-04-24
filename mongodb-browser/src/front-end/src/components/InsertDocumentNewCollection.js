@@ -10,6 +10,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import DialogContentText from '@mui/material/DialogContentText';
 
 import BackEndConnection from './BackEndConnection';
 
@@ -78,6 +79,9 @@ export default class InsertDocumentNewCollection extends React.Component {
                     {"Insert Document in New Collection"}
                 </DialogTitle>
                 <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Select a database and enter a new collection name to insert data in new collection.
+                    </DialogContentText>
                     <FormControl fullWidth sx={{ marginTop: 2, marginBottom: 3 }}>
                         <InputLabel id="demo-simple-select-label">Database</InputLabel>
                         <Select
