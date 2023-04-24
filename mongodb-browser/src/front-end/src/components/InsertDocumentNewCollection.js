@@ -41,7 +41,9 @@ export default class InsertDocumentNewCollection extends React.Component {
     }
 
     getDatabaseName(e) {
-        this.setState({ databaseName: e.target.value });
+        this.setState({ databaseName: e.target.value }, () => {
+            this.state.query['database_name'] = this.state.databaseName;
+        });
     }
 
     getDocumentData(e) {
@@ -49,7 +51,9 @@ export default class InsertDocumentNewCollection extends React.Component {
     }
 
     getNewCollectionName(e) {
-        this.setState({ collectionName: e.target.value });
+        this.setState({ collectionName: e.target.value }, () => {
+            this.state.query['collection_name'] = this.state.collectionName;
+        });
     }
 
     cancelAndClose() {
@@ -57,7 +61,10 @@ export default class InsertDocumentNewCollection extends React.Component {
     }
 
     submitAndClose() {
-        this.state.handleCloseDialog({ action: 'close-dialog' });
+        // let parsedDocument = JSON.parse(this.state.newData);
+        // this.state.query['documents'] = parsedDocument;
+        console.log(this.state.query);
+        // this.state.handleCloseDialog({ action: 'close-dialog' });
     }
 
     render() {
