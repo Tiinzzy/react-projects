@@ -18,6 +18,7 @@ import UilFileAlt from '@iconscout/react-unicons/icons/uil-file-alt';
 
 import BackEndConnection from './BackEndConnection';
 import InsertDocumentNewCollection from './InsertDocumentNewCollection';
+import DropCollection from './DropCollection';
 
 import './style.css';
 
@@ -35,7 +36,8 @@ export default class SideBar extends React.Component {
             openCollections: '',
             selectedId: '',
             selectedDb: '',
-            openDialog: false
+            openDialog: false,
+            selectedIcon: 0
         }
         this.handleCloseDialog = this.handleCloseDialog.bind(this);
     }
@@ -77,11 +79,11 @@ export default class SideBar extends React.Component {
     }
 
     insertInNewCollection() {
-        this.setState({ openDialog: true });
+        this.setState({ openDialog: true, selectedIcon: 1 });
     }
 
-    dropCOllection(){
-        console.log('clicked');
+    dropCOllection() {
+        this.setState({ openDialog: true, selectedIcon: 2 })
     }
 
     handleCloseDialog(data) {
@@ -138,7 +140,10 @@ export default class SideBar extends React.Component {
                     </Collapse>
                 </List>
                 <Dialog maxWidth="xl" open={this.state.openDialog} onClose={() => this.handleCloseDialog()}>
-                    <InsertDocumentNewCollection handleCloseDialog={this.handleCloseDialog} connectionInfo={this.state.connectionInfo} />
+                    {this.state.selectedIcon === 1 ?
+                        <InsertDocumentNewCollection handleCloseDialog={this.handleCloseDialog} connectionInfo={this.state.connectionInfo} /> :
+                        <DropCollection />
+                    }
                 </Dialog>
             </>
         );
