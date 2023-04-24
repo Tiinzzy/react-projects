@@ -108,17 +108,6 @@ export default class DocumentsDisplay extends React.Component {
                     };
                 })
             })
-        } else if (this.state.selected === 2) {
-            let info = this.state.command.substring(this.state.command.indexOf("y(") + 1);
-            info = info.replace("(", "").replace(")", "");
-            const myObj = JSON.parse(info);
-
-            this.state.query['documents'] = myObj;
-            backend.insert_documents_mongo_db(this.state.query, (data) => {
-                if (data.inserted_count > 0) {
-                    console.log('successful');
-                };
-            })
         } else if (this.state.selected === 4) {
             backend.drop_collection_mongo_db(this.state.query, (data) => {
                 if (data.result) {
