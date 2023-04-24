@@ -116,6 +116,20 @@ class BackEndConnectionImpl {
                 return false;
             })
     }
+
+    async get_databases_mongo_db(callback) {
+        return axios.post('/mongodb/databases', {}, {})
+            .then(function (response) {
+                if (callback) {
+                    callback(response.data);
+                }
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+                return false;
+            })
+    }
 }
 
 export default class BackEndConnection {
