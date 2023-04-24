@@ -27,8 +27,8 @@ export default class DropCollection extends React.Component {
             newData: '',
             collectionName: '',
             databaseName: '',
-            collections: '',
-            query: {}
+            query: {},
+            dataReady: true
         }
     }
 
@@ -43,13 +43,21 @@ export default class DropCollection extends React.Component {
 
     getDatabaseName(e) {
         this.setState({ databaseName: e.target.value }, () => {
-            this.state.query['database_name'] = this.state.databaseName;
-            let query = { 'host_name': this.state.connectionInfo.host, 'port_name': this.state.connectionInfo.port, 'database_name': this.state.databaseName };
-            backend.get_collections_mongo_db(query, (data) => {
-                let that = this;
-                that.setState({ collections: data.collections })
-            })
+            this.getCollectionList();
         });
+    }
+
+    getCollectionList() {
+        this.state.query['database_name'] = this.state.databaseName;
+        let query = { 'host_name': this.state.connectionInfo.host, 'port_name': this.state.connectionInfo.port, 'database_name': this.state.databaseName };
+        backend.get_collections_mongo_db(query, (data) => {
+            let that = this;
+            that.setState({ collections: data.collections, dataReady: false })
+        })
+    }
+
+    getCollectionName(e) {
+        this.setState({ collectionName: e.target.value });
     }
 
     cancelAndClose() {
@@ -81,14 +89,14 @@ export default class DropCollection extends React.Component {
                             ))}
                         </Select>
                     </FormControl>
-                    <FormControl fullWidth sx={{ marginTop: 2, marginBottom: 3 }}>
+                    <FormControl fullWidth sx={{ marginBottom: 3 }} disabled={this.state.dataReady}>
                         <InputLabel id="demo-simple-select-label">Collection</InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
-                            value={this.state.databaseName}
+                            value={this.state.collectionName}
                             label="COllection"
-                            onChange={(e) => this.getDatabaseName(e)}>
+                            onChange={(e) => this.getCollectionName(e)}>
                             {this.state.collections && this.state.collections.map((e, i) => (
                                 <MenuItem key={i} value={e}>{e}</MenuItem>
                             ))}
