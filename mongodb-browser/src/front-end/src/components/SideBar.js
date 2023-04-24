@@ -21,6 +21,7 @@ import InsertDocumentNewCollection from './InsertDocumentNewCollection';
 import DropCollection from './DropCollection';
 
 import './style.css';
+import { Divider } from "@mui/material";
 
 const backend = BackEndConnection.INSTANCE();
 
@@ -94,15 +95,19 @@ export default class SideBar extends React.Component {
     render() {
         return (
             <>
-                <IconButton color="black" title="reload data" onClick={() => this.reLoadContent()}>
-                    <ReplayOutlinedIcon />
-                </IconButton>
-                <IconButton color="black" title="insert document in new collection" onClick={() => this.insertInNewCollection()} >
-                    <AddCircleOutlineOutlinedIcon />
-                </IconButton>
-                <IconButton color="black" title="drop collection" onClick={() => this.dropCOllection()}>
-                    <DeleteOutlineIcon />
-                </IconButton>
+                <Box display='flex'>
+                    <Box flexGrow={1} />
+                    <IconButton color="black" title="reload data" onClick={() => this.reLoadContent()}>
+                        <ReplayOutlinedIcon />
+                    </IconButton>
+                    <IconButton color="black" title="insert document in new collection" onClick={() => this.insertInNewCollection()} >
+                        <AddCircleOutlineOutlinedIcon />
+                    </IconButton>
+                    <IconButton color="black" title="drop collection" onClick={() => this.dropCOllection()}>
+                        <DeleteOutlineIcon />
+                    </IconButton>
+                </Box>
+                <Divider />
                 <List sx={{ width: '100%', bgcolor: 'background.paper' }}
                     component="nav">
                     <ListItemButton onClick={() => this.handleOPenList()}>
