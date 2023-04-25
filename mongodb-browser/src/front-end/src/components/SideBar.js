@@ -12,6 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import Dialog from '@mui/material/Dialog';
+import Tooltip from '@mui/material/Tooltip';
 
 import UilDatabase from '@iconscout/react-unicons/icons/uil-database';
 import UilFileAlt from '@iconscout/react-unicons/icons/uil-file-alt';
@@ -59,7 +60,7 @@ export default class SideBar extends React.Component {
             let query = { 'host_name': this.state.connectionInfo.host, 'port_name': this.state.connectionInfo.port, 'database_name': e };
             backend.get_collections_mongo_db(query, (data) => {
                 let that = this;
-                that.setState({ openCollections: e, collections: data.collections })
+                that.setState({ openCollections: e, collections: data.collections, setDatabase: e })
             });
         } else {
             this.setState({ openCollections: '' });
@@ -73,9 +74,9 @@ export default class SideBar extends React.Component {
     }
 
     reLoadContent() {
-        let query = { action: 'reload-page', database: this.state.database, collection: this.state.collection }
+        let query = { action: 'reload-page', database: this.state.database, collection: this.state.collection };
         this.state.getDataforDocuments(query);
-        this.componentDidMount();
+        this.getCollections(this.state.setDatabase);
     }
 
     insertInNewCollection() {
@@ -83,11 +84,15 @@ export default class SideBar extends React.Component {
     }
 
     dropCOllection() {
-        this.setState({ openDialog: true, selectedIcon: 2 })
+        this.setState({ openDialog: true, selectedIcon: 2 });
     }
 
     handleCloseDialog(data) {
         if (data && data.action === 'close-dialog') {
+            this.setState({ openDialog: false }, () => {
+                this.getCollections(this.state.setDatabase);
+            });
+        } else {
             this.setState({ openDialog: false });
         }
     }
@@ -97,15 +102,21 @@ export default class SideBar extends React.Component {
             <>
                 <Box display='flex'>
                     <Box flexGrow={1} />
-                    <IconButton color="black" title="reload data" onClick={() => this.reLoadContent()}>
-                        <ReplayOutlinedIcon />
-                    </IconButton>
-                    <IconButton color="black" title="insert document in new collection" onClick={() => this.insertInNewCollection()} >
-                        <AddCircleOutlineOutlinedIcon />
-                    </IconButton>
-                    <IconButton color="black" title="drop collection" onClick={() => this.dropCOllection()}>
-                        <DeleteOutlineIcon />
-                    </IconButton>
+                    <Tooltip title="Reload Data" arrow>
+                        <IconButton color="black" onClick={() => this.reLoadContent()}>
+                            <ReplayOutlinedIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Insert Document in New Collection" arrow>
+                        <IconButton color="black" onClick={() => this.insertInNewCollection()} >
+                            <AddCircleOutlineOutlinedIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Drop Collection" arrow>
+                        <IconButton color="black" onClick={() => this.dropCOllection()}>
+                            <DeleteOutlineIcon />
+                        </IconButton>
+                    </Tooltip>
                 </Box>
                 <Divider />
                 <List sx={{ width: '100%', bgcolor: 'background.paper' }}

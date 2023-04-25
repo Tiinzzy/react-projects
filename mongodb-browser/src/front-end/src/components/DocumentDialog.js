@@ -6,7 +6,12 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
-import Divider from "@mui/material/Divider";
+import Typography from '@mui/material/Typography';
+import FormControl from '@mui/material/FormControl';
+import DialogContentText from '@mui/material/DialogContentText';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 import BackEndConnection from './BackEndConnection';
 
@@ -23,7 +28,8 @@ export default class DocumentDialog extends React.Component {
             oneDocument: JSON.stringify(props.oneDocument, null, 3),
             handleCLoseDialog: props.handleCLoseDialog,
             query: props.query,
-            errorMessage: ''
+            errorMessage: '',
+            deleteButton: true
         }
     }
 
@@ -68,32 +74,59 @@ export default class DocumentDialog extends React.Component {
         })
     }
 
+    getRadioButton(e) {
+        if (e.target.value === 'Yes') {
+            this.setState({ deleteButton: false });
+        } else if (e.target.value === 'No') {
+            this.setState({ deleteButton: true });
+        }
+    }
+
     render() {
         return (
             <>
                 <DialogTitle>
                     {'ObjectId("' + this.state.clickedRow + '")'}
                 </DialogTitle>
-                <Divider />
                 <DialogContent>
+                    <DialogContentText>
+                        Type in to edit Document.
+                    </DialogContentText>
                     <TextField
                         InputProps={{ spellCheck: 'false' }}
                         fullWidth multiline
                         id="json-content"
-                        sx={{ "& fieldset": { border: 'none' }, '& .MuiInputBase-input': { fontFamily: 'Courier', fontSize: '80%' } }}
+                        variant="outlined"
+                        label="Document"
+                        sx={{ '& .MuiInputBase-input': { fontFamily: 'Courier', fontSize: '80%', color: this.state.errorMessage !== '' ? '#DC143C' : '#555' }, marginTop: 2, marginBottom: 1 }}
                         rows={20}
                         value={this.state.oneDocument}
                         onChange={(e) => this.getDocumentChanges(e)}
                     />
-                    <Box style={{ width: 1000 }}>
+                    <Box style={{ width: 1000, height: 25 }}>
+                        {this.state.clickedRow &&
+                            <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                                <Typography mr={2}>
+                                    Select yes if you want to delete the document.
+                                </Typography>
+                                <FormControl>
+                                    <RadioGroup row onChange={(e) => this.getRadioButton(e)}>
+                                        <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
+                                        <FormControlLabel value="No" control={<Radio />} label="No" />
+                                    </RadioGroup>
+                                </FormControl>
+                            </Box>
+                        }
                     </Box>
                 </DialogContent>
-                <Divider />
-                {this.state.errorMessage}
                 <DialogActions>
+                    <span style={{ marginLeft: 15, color: '#DC143C' }}>
+                        {this.state.errorMessage !== '' && this.state.errorMessage}
+                    </span>
+                    <Box display="flex" flexGrow={1} />
                     <Button variant="outlined" onClick={() => this.cancelAndCLose()}>Cancel</Button>
+                    <Button variant="outlined" color="error" onClick={() => this.deleteDocument()} disabled={this.state.deleteButton}>Delete</Button>
                     <Button variant="outlined" onClick={() => this.updatedDocument()}>Update</Button>
-                    <Button variant="outlined" color="error" onClick={() => this.deleteDocument()}>Delete Document</Button>
                 </DialogActions>
             </>
         );
