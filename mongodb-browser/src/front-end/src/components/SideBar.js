@@ -92,6 +92,8 @@ export default class SideBar extends React.Component {
             this.setState({ openDialog: false }, () => {
                 this.getCollections(this.state.setDatabase);
             });
+        } else {
+            this.setState({ openDialog: false });
         }
     }
 
