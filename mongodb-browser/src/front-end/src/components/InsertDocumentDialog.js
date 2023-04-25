@@ -23,8 +23,17 @@ export default class InsertDocumentDialog extends React.Component {
             handleCLoseDialog: props.handleCLoseDialog,
             connectionInfo: props.connectionInfo,
             database: props.database,
-            newData: ''
+            newData: '',
+            query: {},
+            errorMessage: ''
         }
+    }
+
+    componentDidMount() {
+        this.state.query['host_name'] = this.state.connectionInfo.host;
+        this.state.query['port_name'] = this.state.connectionInfo.port;
+        this.state.query['database_name'] = this.state.database;
+        this.state.query['collection_name'] = this.state.collection;
     }
 
     getDocumentData(e) {
@@ -36,7 +45,19 @@ export default class InsertDocumentDialog extends React.Component {
     }
 
     addDocument() {
-        this.state.handleCLoseDialog({ action: 'close' });
+        try {
+            let parsedDocument = JSON.parse(this.state.newData);
+            this.state.query['documents'] = parsedDocument;
+            backend.insert_documents_mongo_db(this.state.query, (data) => {
+                let that = this;
+                if (data.inserted_count > 0) {
+                    delete that.state.query['documents'];
+                    that.state.handleCLoseDialog({ action: 'close' });
+                };
+            });
+        } catch (err) {
+            this.setState({ errorMessage: err.toString() });
+        }
     }
 
     render() {
@@ -58,7 +79,8 @@ export default class InsertDocumentDialog extends React.Component {
                         value={this.state.newData}
                         onChange={(e) => this.getDocumentData(e)}
                     />
-                    <Box style={{ width: 1000 }}>
+                    <Box style={{ width: 1000, border: 'solid 0px red', height: 10 }}>
+                        {this.state.errorMessage !== '' && this.state.errorMessage}
                     </Box>
                 </DialogContent>
                 <DialogActions>
