@@ -9,6 +9,7 @@ import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOu
 import BackEndConnection from './BackEndConnection';
 import DocumentDialog from './DocumentDialog';
 import DepthTitle from './DepthTitle';
+import InsertDocumentDialog from './InsertDocumentDialog';
 
 import './style.css';
 
@@ -33,7 +34,8 @@ export default class DocumentsTable extends React.Component {
             connectionInfo: props.connectionInfo,
             query: {},
             oneDocument: {},
-            openDialog: false
+            openDialog: false,
+            selected: 0
         }
         this.handleCLoseDialog = this.handleCLoseDialog.bind(this);
     }
@@ -68,7 +70,7 @@ export default class DocumentsTable extends React.Component {
         this.state.query['search_condition'] = { '_id': e };
         backend.get_documents_mongo_db(this.state.query, (data) => {
             let that = this;
-            that.setState({ oneDocument: data.documents[0], openDialog: true, clickedRow: e }, () => {
+            that.setState({ oneDocument: data.documents[0], openDialog: true, clickedRow: e, selected: 1 }, () => {
                 if (data.length > 0) {
                     delete this.state.query['search_condition'];
                 };
@@ -85,7 +87,7 @@ export default class DocumentsTable extends React.Component {
     }
 
     insertDocumentCollection() {
-        console.log('cllicked')
+        this.setState({ openDialog: true, selected: 2 })
     }
 
     render() {
@@ -132,7 +134,9 @@ export default class DocumentsTable extends React.Component {
                     </div>
                 </Box>
                 <Dialog maxWidth="xl" open={this.state.openDialog} onClose={() => this.handleCLoseDialog()} className="document-dialog">
-                    <DocumentDialog clickedRow={this.state.clickedRow} oneDocument={this.state.oneDocument} query={this.state.query} handleCLoseDialog={this.handleCLoseDialog} />
+                    {this.state.selected === 1 ?
+                        <DocumentDialog clickedRow={this.state.clickedRow} oneDocument={this.state.oneDocument} query={this.state.query} handleCLoseDialog={this.handleCLoseDialog} />
+                        : <InsertDocumentDialog />}
                 </Dialog>
             </>
         );
