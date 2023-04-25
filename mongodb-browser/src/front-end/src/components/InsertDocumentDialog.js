@@ -21,6 +21,8 @@ export default class InsertDocumentDialog extends React.Component {
         this.state = {
             collection: props.collection,
             handleCLoseDialog: props.handleCLoseDialog,
+            connectionInfo: props.connectionInfo,
+            database: props.database,
             newData: ''
         }
     }
