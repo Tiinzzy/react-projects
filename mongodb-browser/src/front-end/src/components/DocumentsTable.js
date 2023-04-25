@@ -2,9 +2,13 @@ import React from "react";
 
 import Box from '@mui/material/Box';
 import Dialog from '@mui/material/Dialog';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 
 import BackEndConnection from './BackEndConnection';
 import DocumentDialog from './DocumentDialog';
+import DepthTitle from './DepthTitle';
 
 import './style.css';
 
@@ -83,6 +87,17 @@ export default class DocumentsTable extends React.Component {
     render() {
         return (
             <>
+                <Box style={{ display: 'flex', border: 'solid 1px red', paddingRight: 10 }}>
+                    <Box style={{ border: 'solid 0px red', width: 300 }}>
+                        <DepthTitle database={this.state.database} collection={this.state.collection} />
+                    </Box>
+                    <Box flexGrow={1} />
+                    <Tooltip title="Insert Document in New Collection" arrow>
+                        <IconButton color="black">
+                            <AddCircleOutlineOutlinedIcon />
+                        </IconButton>
+                    </Tooltip>
+                </Box>
                 <Box className="display-documents-box-1">
                     <div style={{ padding: 10, border: 'solid 1px #bbb', width: '100%' }}>
                         <Box className="display-documents-left-box">
