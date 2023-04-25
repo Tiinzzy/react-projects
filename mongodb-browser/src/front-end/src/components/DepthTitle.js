@@ -8,7 +8,7 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 export default function CustomSeparator(props) {
     const breadcrumbs = [
         <Link underline="none" key="1" color="inherit" >
-            {value}
+            {props.database}
         </Link>,
         <Link underline="none" key="1" color="text.primary" >
             {props.collection}
