@@ -94,9 +94,10 @@ export default class DocumentsTable extends React.Component {
                                         <th width='60%'>Values</th>
                                     </tr>
                                     {this.state.documents && this.state.documents.map((e, i) => (
-                                        <tr key={i} onClick={() => this.displayData(e._id)}>
-                                            <td style={{ color: this.state.selectedId === e._id ? '#1589FF' : 'black' }}
-                                                onClick={() => this.setState({ selectedId: e._id })}>
+                                        <tr key={i} onDoubleClick={() => this.displayData(e._id)}
+                                            style={{ color: this.state.selectedId === e._id ? '#1589FF' : 'black' }}
+                                            onClick={() => this.setState({ selectedId: e._id })}>
+                                            <td>
                                                 {e._id}
                                             </td>
                                             <td>
