@@ -60,7 +60,7 @@ export default class SideBar extends React.Component {
             let query = { 'host_name': this.state.connectionInfo.host, 'port_name': this.state.connectionInfo.port, 'database_name': e };
             backend.get_collections_mongo_db(query, (data) => {
                 let that = this;
-                that.setState({ openCollections: e, collections: data.collections })
+                that.setState({ openCollections: e, collections: data.collections, setDatabase: e })
             });
         } else {
             this.setState({ openCollections: '' });
@@ -74,9 +74,9 @@ export default class SideBar extends React.Component {
     }
 
     reLoadContent() {
-        let query = { action: 'reload-page', database: this.state.database, collection: this.state.collection }
+        let query = { action: 'reload-page', database: this.state.database, collection: this.state.collection };
         this.state.getDataforDocuments(query);
-        this.componentDidMount();
+        this.getCollections(this.state.setDatabase);
     }
 
     insertInNewCollection() {
@@ -84,12 +84,14 @@ export default class SideBar extends React.Component {
     }
 
     dropCOllection() {
-        this.setState({ openDialog: true, selectedIcon: 2 })
+        this.setState({ openDialog: true, selectedIcon: 2 });
     }
 
     handleCloseDialog(data) {
         if (data && data.action === 'close-dialog') {
-            this.setState({ openDialog: false });
+            this.setState({ openDialog: false }, () => {
+                this.getCollections(this.state.setDatabase);
+            });
         }
     }
 
