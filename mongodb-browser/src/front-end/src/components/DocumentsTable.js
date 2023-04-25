@@ -136,7 +136,7 @@ export default class DocumentsTable extends React.Component {
                 <Dialog maxWidth="xl" open={this.state.openDialog} onClose={() => this.handleCLoseDialog()} className="document-dialog">
                     {this.state.selected === 1 ?
                         <DocumentDialog clickedRow={this.state.clickedRow} oneDocument={this.state.oneDocument} query={this.state.query} handleCLoseDialog={this.handleCLoseDialog} />
-                        : <InsertDocumentDialog />}
+                        : <InsertDocumentDialog collection={this.state.collection} oneDocument={this.state.oneDocument} query={this.state.query} handleCLoseDialog={this.handleCLoseDialog} />}
                 </Dialog>
             </>
         );
