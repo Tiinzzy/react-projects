@@ -93,8 +93,10 @@ export default class DropCollection extends React.Component {
     }
 
     getRadioButton(e) {
-        if (e.target.value) {
+        if (e.target.value === 'Yes') {
             this.setState({ dropButton: false });
+        } else if(e.target.value === 'No'){
+            this.setState({ dropButton: true });
         }
     }
 
@@ -168,6 +170,7 @@ export default class DropCollection extends React.Component {
                                 <FormControl>
                                     <RadioGroup row onChange={(e) => this.getRadioButton(e)}>
                                         <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
+                                        <FormControlLabel value="No" control={<Radio />} label="No" />
                                     </RadioGroup>
                                 </FormControl>
                             </Box>
