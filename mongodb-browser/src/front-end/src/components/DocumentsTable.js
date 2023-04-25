@@ -84,6 +84,10 @@ export default class DocumentsTable extends React.Component {
         }
     }
 
+    insertDocumentCollection() {
+        console.log('cllicked')
+    }
+
     render() {
         return (
             <>
@@ -92,8 +96,8 @@ export default class DocumentsTable extends React.Component {
                         <DepthTitle database={this.state.database} collection={this.state.collection} />
                     </Box>
                     <Box flexGrow={1} />
-                    <Tooltip title="Insert Document in New Collection" arrow>
-                        <IconButton color="black">
+                    <Tooltip title="Insert Document in Collection" arrow>
+                        <IconButton color="black" onClick={() => this.insertDocumentCollection()}>
                             <AddCircleOutlineOutlinedIcon />
                         </IconButton>
                     </Tooltip>
