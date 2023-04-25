@@ -83,6 +83,8 @@ export default class DocumentsTable extends React.Component {
             this.setState({ openDialog: false }, () => {
                 this.componentDidMount();
             });
+        } else {
+            this.setState({ openDialog: false });
         }
     }
 
