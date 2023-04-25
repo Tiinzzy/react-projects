@@ -14,8 +14,6 @@ import DialogContentText from '@mui/material/DialogContentText';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import FormLabel from '@mui/material/FormLabel';
-
 
 import BackEndConnection from './BackEndConnection';
 
@@ -52,7 +50,7 @@ export default class DropCollection extends React.Component {
         this.state.query['port_name'] = this.state.connectionInfo.port;
         backend.get_databases_mongo_db(this.state.query, (data) => {
             let that = this;
-            that.setState({ availableDatabases: data.available_databases })
+            that.setState({ availableDatabases: data.available_databases });
         })
     }
 
@@ -67,7 +65,7 @@ export default class DropCollection extends React.Component {
         let query = { 'host_name': this.state.connectionInfo.host, 'port_name': this.state.connectionInfo.port, 'database_name': this.state.databaseName };
         backend.get_collections_mongo_db(query, (data) => {
             let that = this;
-            that.setState({ collections: data.collections, dataReady: false, dropButton: true })
+            that.setState({ collections: data.collections, dataReady: false, dropButton: true });
         })
     }
 
