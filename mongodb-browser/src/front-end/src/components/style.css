@@ -98,6 +98,15 @@ tr:hover {
     height: 550px;
 }
 
+.display-documents-drop-collection-box {
+    overflow-y: scroll;
+    min-width: 300px;
+    max-width: 1500px;
+    width: 100%;
+    margin-right: 10px;
+    height: 350px;
+}
+
 .timeline {
     transform: rotate(90deg);
 }
