@@ -105,7 +105,7 @@ export default class InsertDocumentNewCollection extends React.Component {
                         value={this.state.collectionName}
                         onChange={(e) => this.getNewCollectionName(e)} />
                     <TextField
-                        sx={{ marginBottom: 3, '& .MuiInputBase-input': { fontFamily: 'Courier', fontSize: '80%' } }}
+                        sx={{ marginBottom: 3, '& .MuiInputBase-input': { fontFamily: 'Courier', fontSize: '80%', color: this.state.errorMessage !== '' ? '#DC143C' : '#555' } }}
                         fullWidth multiline
                         rows={20}
                         label="Data"
@@ -115,7 +115,9 @@ export default class InsertDocumentNewCollection extends React.Component {
                         onChange={(e) => this.getDocumentData(e)}
                     />
                     <Box style={{ width: 1000, border: 'solid 0px red', height: 10 }}>
-                        {this.state.errorMessage !== '' && this.state.errorMessage}
+                        <span style={{ marginLeft: 15, color: '#DC143C' }}>
+                            {this.state.errorMessage !== '' && this.state.errorMessage}
+                        </span>
                     </Box>
                 </DialogContent>
                 <DialogActions>

@@ -71,7 +71,7 @@ export default class InsertDocumentDialog extends React.Component {
                         Enter the json you would like to save in the collection.
                     </DialogContentText>
                     <TextField
-                        sx={{ marginTop: 2, marginBottom: 3, '& .MuiInputBase-input': { fontFamily: 'Courier', fontSize: '80%' } }}
+                        sx={{ marginTop: 2, marginBottom: 3, '& .MuiInputBase-input': { fontFamily: 'Courier', fontSize: '80%', color: this.state.errorMessage !== '' ? '#DC143C' : '#555' } }}
                         fullWidth multiline
                         rows={20}
                         InputProps={{ spellCheck: 'false' }}
@@ -81,8 +81,9 @@ export default class InsertDocumentDialog extends React.Component {
                         onChange={(e) => this.getDocumentData(e)}
                     />
                     <Box style={{ width: 1000, border: 'solid 0px red', height: 10 }}>
-                        {this.state.errorMessage !== '' && this.state.errorMessage}
-                    </Box>
+                        <span style={{ marginLeft: 15, color: '#DC143C' }}>
+                            {this.state.errorMessage !== '' && this.state.errorMessage}
+                        </span>                    </Box>
                 </DialogContent>
                 <DialogActions>
                     <Button variant="outlined" onClick={() => this.cancelAndCLose()}>Cancel</Button>
