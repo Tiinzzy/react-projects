@@ -12,6 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import Dialog from '@mui/material/Dialog';
+import Tooltip from '@mui/material/Tooltip';
 
 import UilDatabase from '@iconscout/react-unicons/icons/uil-database';
 import UilFileAlt from '@iconscout/react-unicons/icons/uil-file-alt';
@@ -97,15 +98,21 @@ export default class SideBar extends React.Component {
             <>
                 <Box display='flex'>
                     <Box flexGrow={1} />
-                    <IconButton color="black" title="reload data" onClick={() => this.reLoadContent()}>
-                        <ReplayOutlinedIcon />
-                    </IconButton>
-                    <IconButton color="black" title="insert document in new collection" onClick={() => this.insertInNewCollection()} >
-                        <AddCircleOutlineOutlinedIcon />
-                    </IconButton>
-                    <IconButton color="black" title="drop collection" onClick={() => this.dropCOllection()}>
-                        <DeleteOutlineIcon />
-                    </IconButton>
+                    <Tooltip title="Reload Data" arrow>
+                        <IconButton color="black" onClick={() => this.reLoadContent()}>
+                            <ReplayOutlinedIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Insert Document in New Collection" arrow>
+                        <IconButton color="black" onClick={() => this.insertInNewCollection()} >
+                            <AddCircleOutlineOutlinedIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Drop Collection" arrow>
+                        <IconButton color="black" onClick={() => this.dropCOllection()}>
+                            <DeleteOutlineIcon />
+                        </IconButton>
+                    </Tooltip>
                 </Box>
                 <Divider />
                 <List sx={{ width: '100%', bgcolor: 'background.paper' }}
