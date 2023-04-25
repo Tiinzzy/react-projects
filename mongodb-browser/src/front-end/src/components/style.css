@@ -15,7 +15,7 @@
     max-width: 400px;
     padding: 10px;
     margin-right: 15px;
-    min-height: 500px;
+    min-height: 700px;
 }
 
 .right-side-box {
@@ -95,7 +95,7 @@ tr:hover {
     max-width: 1500px;
     width: 100%;
     margin-right: 10px;
-    height: 300px;
+    height: 550px;
 }
 
 .timeline {
