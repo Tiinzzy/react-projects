@@ -105,10 +105,11 @@ export default class InsertDocumentNewCollection extends React.Component {
                         value={this.state.collectionName}
                         onChange={(e) => this.getNewCollectionName(e)} />
                     <TextField
-                        sx={{ marginBottom: 3 }}
+                        sx={{ marginBottom: 3, '& .MuiInputBase-input': { fontFamily: 'Courier', fontSize: '80%' } }}
                         fullWidth multiline
                         rows={20}
                         label="Data"
+                        InputProps={{ spellCheck: 'false' }}
                         variant="outlined"
                         value={this.state.newData}
                         onChange={(e) => this.getDocumentData(e)}

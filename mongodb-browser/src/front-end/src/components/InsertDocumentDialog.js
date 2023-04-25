@@ -71,9 +71,10 @@ export default class InsertDocumentDialog extends React.Component {
                         Enter the json you would like to save in the collection.
                     </DialogContentText>
                     <TextField
-                        sx={{ marginTop: 2, marginBottom: 3 }}
+                        sx={{ marginTop: 2, marginBottom: 3, '& .MuiInputBase-input': { fontFamily: 'Courier', fontSize: '80%' } }}
                         fullWidth multiline
                         rows={20}
+                        InputProps={{ spellCheck: 'false' }}
                         label="Data"
                         variant="outlined"
                         value={this.state.newData}

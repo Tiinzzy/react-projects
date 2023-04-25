@@ -6,7 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
-import Divider from "@mui/material/Divider";
+import DialogContentText from '@mui/material/DialogContentText';
 
 import BackEndConnection from './BackEndConnection';
 
@@ -74,13 +74,17 @@ export default class DocumentDialog extends React.Component {
                 <DialogTitle>
                     {'ObjectId("' + this.state.clickedRow + '")'}
                 </DialogTitle>
-                <Divider />
                 <DialogContent>
+                    <DialogContentText>
+                        Type in to edit Document.
+                    </DialogContentText>
                     <TextField
                         InputProps={{ spellCheck: 'false' }}
                         fullWidth multiline
                         id="json-content"
-                        sx={{ "& fieldset": { border: 'none' }, '& .MuiInputBase-input': { fontFamily: 'Courier', fontSize: '80%' } }}
+                        variant="outlined"
+                        label="Document"
+                        sx={{ '& .MuiInputBase-input': { fontFamily: 'Courier', fontSize: '80%' }, marginTop: 2, marginBottom: 3 }}
                         rows={20}
                         value={this.state.oneDocument}
                         onChange={(e) => this.getDocumentChanges(e)}
@@ -88,8 +92,9 @@ export default class DocumentDialog extends React.Component {
                     <Box style={{ width: 1000 }}>
                     </Box>
                 </DialogContent>
-                <Divider />
-                {this.state.errorMessage}
+                <Box style={{ width: 1000, height: 10 }}>
+                    {this.state.errorMessage !== '' && this.state.errorMessage}
+                </Box>
                 <DialogActions>
                     <Button variant="outlined" onClick={() => this.cancelAndCLose()}>Cancel</Button>
                     <Button variant="outlined" onClick={() => this.updatedDocument()}>Update</Button>
