@@ -12,7 +12,7 @@ function getWindowSize() {
   if (sizes.h < 730) {
     sizes.h = 730;
   }
-  
+
   sizes.h -= FOOTER_OFFSET;
   return sizes;
 }
