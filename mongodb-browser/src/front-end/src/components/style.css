@@ -65,11 +65,6 @@
     width: 100%;
 }
 
-.display-documents-box-2 {
-    height: 25%;
-    margin-top: 30px;
-}
-
 table,
 th,
 td {
@@ -101,4 +96,23 @@ tr:hover {
     width: 100%;
     margin-right: 10px;
     height: 300px;
+}
+
+.timeline {
+    transform: rotate(90deg);
+}
+
+.timelineContentContainer {
+    text-align: left;
+}
+
+.timelineContent {
+    display: inline-block;
+    transform: rotate(-90deg);
+    text-align: center;
+    min-width: 50;
+}
+
+.timelineIcon {
+    transform: rotate(-90deg);
 }
