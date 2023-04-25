@@ -11,6 +11,9 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import DialogContentText from '@mui/material/DialogContentText';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 import BackEndConnection from './BackEndConnection';
 
@@ -37,7 +40,8 @@ export default class DropCollection extends React.Component {
             collectionName: '',
             databaseName: '',
             query: {},
-            dataReady: true
+            dataReady: true,
+            dropButton: true
         }
     }
 
@@ -46,12 +50,12 @@ export default class DropCollection extends React.Component {
         this.state.query['port_name'] = this.state.connectionInfo.port;
         backend.get_databases_mongo_db(this.state.query, (data) => {
             let that = this;
-            that.setState({ availableDatabases: data.available_databases })
+            that.setState({ availableDatabases: data.available_databases });
         })
     }
 
     getDatabaseName(e) {
-        this.setState({ databaseName: e.target.value, collectionName: '', documents: '' }, () => {
+        this.setState({ databaseName: e.target.value, collectionName: '', documents: '', dropButton: true }, () => {
             this.getCollectionList();
         });
     }
@@ -61,7 +65,7 @@ export default class DropCollection extends React.Component {
         let query = { 'host_name': this.state.connectionInfo.host, 'port_name': this.state.connectionInfo.port, 'database_name': this.state.databaseName };
         backend.get_collections_mongo_db(query, (data) => {
             let that = this;
-            that.setState({ collections: data.collections, dataReady: false })
+            that.setState({ collections: data.collections, dataReady: false, dropButton: true });
         })
     }
 
@@ -70,7 +74,7 @@ export default class DropCollection extends React.Component {
             this.state.query['collection_name'] = this.state.collectionName;
             backend.get_documents_mongo_db(this.state.query, (data) => {
                 let that = this;
-                that.setState({ documents: data.documents });
+                that.setState({ documents: data.documents, dropButton: true });
             })
         });
     }
@@ -88,6 +92,13 @@ export default class DropCollection extends React.Component {
         })
     }
 
+    getRadioButton(e) {
+        if (e.target.value === 'Yes') {
+            this.setState({ dropButton: false });
+        } else if(e.target.value === 'No'){
+            this.setState({ dropButton: true });
+        }
+    }
 
     render() {
         return (
@@ -126,7 +137,7 @@ export default class DropCollection extends React.Component {
                         </Select>
                     </FormControl>
                     <div style={{ padding: 10, border: 'solid 1px #bbb', width: '97.8%', marginBottom: 15 }}>
-                        <Box className="display-documents-left-box">
+                        <Box className="display-documents-drop-collection-box">
                             <table width="100%" style={{ fontSize: '80%', backgroundColor: 'white', maring: 5 }} cellPadding={0} cellSpacing={1}>
                                 <tbody >
                                     <tr>
@@ -152,14 +163,23 @@ export default class DropCollection extends React.Component {
                     </div>
                     <Box style={{ width: 999, border: 'solid 0px red', height: 22 }}>
                         {this.state.collectionName !== '' && this.state.collectionName &&
-                            <Typography >
-                                Are you sure you want to drop <span style={{ fontWeight: 'bold', color: 'red' }}> {this.state.collectionName} </span> collection?
-                            </Typography>}
+                            <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                                <Typography mr={2}>
+                                    Are you sure you want to drop <span style={{ fontWeight: 'bold', color: 'red' }}> {this.state.collectionName} </span> collection?
+                                </Typography>
+                                <FormControl>
+                                    <RadioGroup row onChange={(e) => this.getRadioButton(e)}>
+                                        <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
+                                        <FormControlLabel value="No" control={<Radio />} label="No" />
+                                    </RadioGroup>
+                                </FormControl>
+                            </Box>
+                        }
                     </Box>
                 </DialogContent>
                 <DialogActions>
                     <Button variant="outlined" onClick={() => this.cancelAndClose()}>Cancel</Button>
-                    <Button variant="outlined" onClick={() => this.submitAndClose()} color="error">Drop Collection</Button>
+                    <Button variant="outlined" onClick={() => this.submitAndClose()} color="error" disabled={this.state.dropButton}>Drop Collection</Button>
                 </DialogActions>
             </>
         );

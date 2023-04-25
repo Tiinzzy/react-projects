@@ -2,9 +2,14 @@ import React from "react";
 
 import Box from '@mui/material/Box';
 import Dialog from '@mui/material/Dialog';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 
 import BackEndConnection from './BackEndConnection';
 import DocumentDialog from './DocumentDialog';
+import DepthTitle from './DepthTitle';
+import InsertDocumentDialog from './InsertDocumentDialog';
 
 import './style.css';
 
@@ -29,7 +34,8 @@ export default class DocumentsTable extends React.Component {
             connectionInfo: props.connectionInfo,
             query: {},
             oneDocument: {},
-            openDialog: false
+            openDialog: false,
+            selected: 0
         }
         this.handleCLoseDialog = this.handleCLoseDialog.bind(this);
     }
@@ -64,7 +70,7 @@ export default class DocumentsTable extends React.Component {
         this.state.query['search_condition'] = { '_id': e };
         backend.get_documents_mongo_db(this.state.query, (data) => {
             let that = this;
-            that.setState({ oneDocument: data.documents[0], openDialog: true, clickedRow: e }, () => {
+            that.setState({ oneDocument: data.documents[0], openDialog: true, clickedRow: e, selected: 1 }, () => {
                 if (data.length > 0) {
                     delete this.state.query['search_condition'];
                 };
@@ -77,12 +83,27 @@ export default class DocumentsTable extends React.Component {
             this.setState({ openDialog: false }, () => {
                 this.componentDidMount();
             });
+        } else {
+            this.setState({ openDialog: false });
         }
+    }
+
+    insertDocumentCollection() {
+        this.setState({ openDialog: true, selected: 2 })
     }
 
     render() {
         return (
             <>
+                <Box style={{ display: 'flex', paddingRight: 10, alignItems: 'center', paddingLeft: 8 }}>
+                    <DepthTitle database={this.state.database} collection={this.state.collection} />
+                    <Box flexGrow={1} />
+                    <Tooltip title="Insert Document in Collection" arrow>
+                        <IconButton color="black" onClick={() => this.insertDocumentCollection()}>
+                            <AddCircleOutlineOutlinedIcon />
+                        </IconButton>
+                    </Tooltip>
+                </Box>
                 <Box className="display-documents-box-1">
                     <div style={{ padding: 10, border: 'solid 1px #bbb', width: '100%' }}>
                         <Box className="display-documents-left-box">
@@ -94,9 +115,10 @@ export default class DocumentsTable extends React.Component {
                                         <th width='60%'>Values</th>
                                     </tr>
                                     {this.state.documents && this.state.documents.map((e, i) => (
-                                        <tr key={i} onClick={() => this.displayData(e._id)}>
-                                            <td style={{ color: this.state.selectedId === e._id ? '#1589FF' : 'black' }}
-                                                onClick={() => this.setState({ selectedId: e._id })}>
+                                        <tr key={i} onDoubleClick={() => this.displayData(e._id)}
+                                            style={{ color: this.state.selectedId === e._id ? '#1589FF' : 'black' }}
+                                            onClick={() => this.setState({ selectedId: e._id })}>
+                                            <td>
                                                 {e._id}
                                             </td>
                                             <td>
@@ -112,7 +134,9 @@ export default class DocumentsTable extends React.Component {
                     </div>
                 </Box>
                 <Dialog maxWidth="xl" open={this.state.openDialog} onClose={() => this.handleCLoseDialog()} className="document-dialog">
-                    <DocumentDialog clickedRow={this.state.clickedRow} oneDocument={this.state.oneDocument} query={this.state.query} handleCLoseDialog={this.handleCLoseDialog} />
+                    {this.state.selected === 1 ?
+                        <DocumentDialog clickedRow={this.state.clickedRow} oneDocument={this.state.oneDocument} query={this.state.query} handleCLoseDialog={this.handleCLoseDialog} />
+                        : <InsertDocumentDialog collection={this.state.collection} connectionInfo={this.state.connectionInfo} database={this.state.database} handleCLoseDialog={this.handleCLoseDialog} />}
                 </Dialog>
             </>
         );

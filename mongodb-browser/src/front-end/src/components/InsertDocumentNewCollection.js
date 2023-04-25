@@ -28,7 +28,8 @@ export default class InsertDocumentNewCollection extends React.Component {
             newData: '',
             collectionName: '',
             databaseName: '',
-            query: {}
+            query: {},
+            errorMessage: ''
         }
     }
 
@@ -42,17 +43,17 @@ export default class InsertDocumentNewCollection extends React.Component {
     }
 
     getDatabaseName(e) {
-        this.setState({ databaseName: e.target.value }, () => {
+        this.setState({ databaseName: e.target.value, errorMessage: '' }, () => {
             this.state.query['database_name'] = this.state.databaseName;
         });
     }
 
     getDocumentData(e) {
-        this.setState({ newData: e.target.value });
+        this.setState({ newData: e.target.value, errorMessage: '' });
     }
 
     getNewCollectionName(e) {
-        this.setState({ collectionName: e.target.value }, () => {
+        this.setState({ collectionName: e.target.value, errorMessage: '' }, () => {
             this.state.query['collection_name'] = this.state.collectionName;
         });
     }
@@ -62,14 +63,19 @@ export default class InsertDocumentNewCollection extends React.Component {
     }
 
     submitAndClose() {
-        let parsedDocument = JSON.parse(this.state.newData);
-        this.state.query['documents'] = parsedDocument;
-        backend.insert_documents_mongo_db(this.state.query, (data) => {
-            if (data.inserted_count > 0) {
-                this.state.handleCloseDialog({ action: 'close-dialog' });
-                console.log('successful');
-            };
-        })
+        try {
+            let parsedDocument = JSON.parse(this.state.newData);
+            this.state.query['documents'] = parsedDocument;
+            backend.insert_documents_mongo_db(this.state.query, (data) => {
+                if (data.inserted_count > 0) {
+                    this.state.handleCloseDialog({ action: 'close-dialog' });
+                };
+            })
+        }
+        catch (err) {
+            console.log(err)
+            this.setState({ errorMessage: err.toString() });
+        }
     }
 
     render() {
@@ -99,14 +105,19 @@ export default class InsertDocumentNewCollection extends React.Component {
                         value={this.state.collectionName}
                         onChange={(e) => this.getNewCollectionName(e)} />
                     <TextField
+                        sx={{ marginBottom: 3, '& .MuiInputBase-input': { fontFamily: 'Courier', fontSize: '80%', color: this.state.errorMessage !== '' ? '#DC143C' : '#555' } }}
                         fullWidth multiline
                         rows={20}
                         label="Data"
+                        InputProps={{ spellCheck: 'false' }}
                         variant="outlined"
                         value={this.state.newData}
                         onChange={(e) => this.getDocumentData(e)}
                     />
-                    <Box style={{ width: 1000 }}>
+                    <Box style={{ width: 1000, border: 'solid 0px red', height: 10 }}>
+                        <span style={{ marginLeft: 15, color: '#DC143C' }}>
+                            {this.state.errorMessage !== '' && this.state.errorMessage}
+                        </span>
                     </Box>
                 </DialogContent>
                 <DialogActions>
