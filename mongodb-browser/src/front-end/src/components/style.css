@@ -116,3 +116,16 @@ tr:hover {
 .timelineIcon {
     transform: rotate(-90deg);
 }
+
+.MuiStepConnector-line {
+    color: gray !important;
+}
+
+.MuiStepConnector-lineHorizontal {
+    color: gray !important;
+
+}
+
+.css-z7uhs0-MuiStepConnector-line {
+    color: gray !important;
+}
