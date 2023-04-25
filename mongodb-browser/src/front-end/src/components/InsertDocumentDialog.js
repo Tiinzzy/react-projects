@@ -37,7 +37,7 @@ export default class InsertDocumentDialog extends React.Component {
     }
 
     getDocumentData(e) {
-        this.setState({ newData: e.target.value });
+        this.setState({ newData: e.target.value, errorMessage: '' });
     }
 
     cancelAndCLose() {
