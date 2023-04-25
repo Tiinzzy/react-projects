@@ -137,7 +137,7 @@ export default class DropCollection extends React.Component {
                         </Select>
                     </FormControl>
                     <div style={{ padding: 10, border: 'solid 1px #bbb', width: '97.8%', marginBottom: 15 }}>
-                        <Box className="display-documents-left-box">
+                        <Box className="display-documents-drop-collection-box">
                             <table width="100%" style={{ fontSize: '80%', backgroundColor: 'white', maring: 5 }} cellPadding={0} cellSpacing={1}>
                                 <tbody >
                                     <tr>
