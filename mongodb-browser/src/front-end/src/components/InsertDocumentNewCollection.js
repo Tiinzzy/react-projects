@@ -29,7 +29,8 @@ export default class InsertDocumentNewCollection extends React.Component {
             collectionName: '',
             databaseName: '',
             query: {},
-            errorMessage: ''
+            errorMessage: '',
+            textDisable: true
         }
     }
 
@@ -43,7 +44,7 @@ export default class InsertDocumentNewCollection extends React.Component {
     }
 
     getDatabaseName(e) {
-        this.setState({ databaseName: e.target.value, errorMessage: '' }, () => {
+        this.setState({ databaseName: e.target.value, errorMessage: '', textDisable: false }, () => {
             this.state.query['database_name'] = this.state.databaseName;
         });
     }
@@ -102,17 +103,17 @@ export default class InsertDocumentNewCollection extends React.Component {
                     </FormControl>
                     <TextField fullWidth label="Collection Name" variant="outlined" sx={{ marginBottom: 3 }}
                         value={this.state.collectionName}
-                        onChange={(e) => this.getNewCollectionName(e)} />
+                        onChange={(e) => this.getNewCollectionName(e)} disabled={this.state.textDisable} />
                     <TextField
                         sx={{ marginBottom: 3, '& .MuiInputBase-input': { fontFamily: 'Courier', fontSize: '80%', color: this.state.errorMessage !== '' ? '#DC143C' : '#555' } }}
                         fullWidth multiline
+                        disabled={this.state.textDisable}
                         rows={20}
                         label="Data"
                         InputProps={{ spellCheck: 'false' }}
                         variant="outlined"
                         value={this.state.newData}
-                        onChange={(e) => this.getDocumentData(e)}
-                    />
+                        onChange={(e) => this.getDocumentData(e)} />
                     <Box style={{ width: 1000, border: 'solid 0px red', height: 10 }}>
                         <span style={{ color: '#DC143C' }}>
                             {this.state.errorMessage !== '' && this.state.errorMessage}
