@@ -46,15 +46,13 @@ export default class DocumentDialog extends React.Component {
             let newOneDocument = JSON.parse(this.state.oneDocument);
             delete newOneDocument['_id'];
 
-            this.state.query['document_id'] = this.state.clickedRow;
-            this.state.query['documents'] = newOneDocument;
+            let query = { ...this.state.query };
+            query['document_id'] = this.state.clickedRow;
+            query['documents'] = newOneDocument;
 
-            backend.update_document_mongo_db(this.state.query, (data) => {
-                let that = this;
+            backend.update_document_mongo_db(query, (data) => {
                 if (data.result) {
-                    delete that.state.query['documents'];
-                    delete that.state.query['document_id'];
-                    that.state.handleCLoseDialog({ action: 'close' });
+                    this.state.handleCLoseDialog({ action: 'close' });
                 };
             });
         } catch (err) {
@@ -64,12 +62,11 @@ export default class DocumentDialog extends React.Component {
     }
 
     deleteDocument() {
-        this.state.query['_id'] = this.state.clickedRow;
-        backend.delete_document_mongo_db(this.state.query, (data) => {
-            let that = this;
+        let query = { ...this.state.query };
+        query['_id'] = this.state.clickedRow;
+        backend.delete_document_mongo_db(query, (data) => {
             if (data.result) {
-                delete that.state.query['_id'];
-                that.state.handleCLoseDialog({ action: 'close' });
+                this.state.handleCLoseDialog({ action: 'close' });
             };
         })
     }

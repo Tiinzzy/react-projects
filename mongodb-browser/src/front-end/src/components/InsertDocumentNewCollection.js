@@ -24,19 +24,19 @@ export default class InsertDocumentNewCollection extends React.Component {
         super(props);
         this.state = {
             handleCloseDialog: props.handleCloseDialog,
-            connectionInfo: props.connectionInfo,
             newData: '',
             collectionName: '',
             databaseName: '',
-            query: {},
+            query: {
+                host_name: props.connectionInfo.host,
+                port_name: props.connectionInfo.port,
+            },
             errorMessage: '',
             textDisable: true
         }
     }
 
     componentDidMount() {
-        this.state.query['host_name'] = this.state.connectionInfo.host;
-        this.state.query['port_name'] = this.state.connectionInfo.port;
         backend.get_databases_mongo_db(this.state.query, (data) => {
             let that = this;
             that.setState({ availableDatabases: data.available_databases });
@@ -45,7 +45,9 @@ export default class InsertDocumentNewCollection extends React.Component {
 
     getDatabaseName(e) {
         this.setState({ databaseName: e.target.value, errorMessage: '', textDisable: false }, () => {
-            this.state.query['database_name'] = this.state.databaseName;
+            let query = { ...this.state.query };
+            query['database_name'] = this.state.databaseName;
+            this.setState({ query });
         });
     }
 
@@ -55,7 +57,9 @@ export default class InsertDocumentNewCollection extends React.Component {
 
     getNewCollectionName(e) {
         this.setState({ collectionName: e.target.value, errorMessage: '' }, () => {
-            this.state.query['collection_name'] = this.state.collectionName;
+            let query = { ...this.state.query };
+            query['collection_name'] = this.state.collectionName;
+            this.setState({ query });
         });
     }
 
@@ -65,9 +69,10 @@ export default class InsertDocumentNewCollection extends React.Component {
 
     submitAndClose() {
         try {
-            let parsedDocument = JSON.parse(this.state.newData);
-            this.state.query['documents'] = parsedDocument;
-            backend.insert_documents_mongo_db(this.state.query, (data) => {
+            let parsedDocument = JSON.parse(this.state.newData);           
+            let query = { ...this.state.query };
+            query['documents'] = parsedDocument;
+            backend.insert_documents_mongo_db(query, (data) => {
                 if (data.inserted_count > 0) {
                     this.state.handleCloseDialog({ action: 'close-dialog' });
                 };

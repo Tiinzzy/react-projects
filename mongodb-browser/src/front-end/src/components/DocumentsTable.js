@@ -41,40 +41,38 @@ export default class DocumentsTable extends React.Component {
     }
 
     componentDidMount() {
-        this.state.query['host_name'] = this.state.connectionInfo.host;
-        this.state.query['port_name'] = this.state.connectionInfo.port;
-
-
-        this.state.query['database_name'] = this.state.database;
-        this.state.query['collection_name'] = this.state.collection;
-        backend.get_documents_mongo_db(this.state.query, (data) => {
-            let that = this;
-            that.setState({ documents: data.documents, length: data.length });
-        })
+        let query = { ...this.state.query };
+        query['host_name'] = this.state.connectionInfo.host;
+        query['port_name'] = this.state.connectionInfo.port;
+        query['database_name'] = this.state.database;
+        query['collection_name'] = this.state.collection;
+        this.setState({ query }, () => {
+            backend.get_documents_mongo_db(this.state.query, (data) => {
+                this.setState({ documents: data.documents, length: data.length });
+            })
+        });
     }
 
     componentDidUpdate() {
         if (this.state.collection !== this.props.collection) {
             this.setState({ collection: this.props.collection, command: "Enter a query" }, () => {
-                this.state.query['database_name'] = this.props.database;
-                this.state.query['collection_name'] = this.props.collection;
-                backend.get_documents_mongo_db(this.state.query, (data) => {
-                    let that = this;
-                    that.setState({ documents: data.documents, length: data.length });
+                let query = { ...this.state.query };
+                query['database_name'] = this.props.database;
+                query['collection_name'] = this.props.collection;
+                this.setState({ query }, () => {
+                    backend.get_documents_mongo_db(this.state.query, (data) => {
+                        this.setState({ documents: data.documents, length: data.length });
+                    })
                 })
             });
         }
     }
 
     displayData(e) {
-        this.state.query['search_condition'] = { '_id': e };
-        backend.get_documents_mongo_db(this.state.query, (data) => {
-            let that = this;
-            that.setState({ oneDocument: data.documents[0], openDialog: true, clickedRow: e, selected: 1 }, () => {
-                if (data.length > 0) {
-                    delete this.state.query['search_condition'];
-                };
-            })
+        let query = { ...this.state.query };
+        query['search_condition'] = { '_id': e };
+        backend.get_documents_mongo_db(query, (data) => {
+            this.setState({ oneDocument: data.documents[0], openDialog: true, clickedRow: e, selected: 1 });
         })
     }
 
@@ -89,7 +87,7 @@ export default class DocumentsTable extends React.Component {
     }
 
     insertDocumentCollection() {
-        this.setState({ openDialog: true, selected: 2 })
+        this.setState({ openDialog: true, selected: 2 });
     }
 
     render() {
