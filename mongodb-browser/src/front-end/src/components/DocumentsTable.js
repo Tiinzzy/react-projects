@@ -105,7 +105,7 @@ export default class DocumentsTable extends React.Component {
                     </Tooltip>
                 </Box>
                 <Box className="display-documents-box-1">
-                    <div style={{ padding: 10, border: 'solid 1px #bbb', width: '100%' }}>
+                    <div style={{ padding: 10, border: 'solid 1px #bbb', width: '100%', borderRadius: 2 }}>
                         <Box className="display-documents-left-box">
                             <table width="100%" style={{ fontSize: '80%', backgroundColor: 'white', maring: 5 }} cellPadding={0} cellSpacing={1}>
                                 <tbody >
