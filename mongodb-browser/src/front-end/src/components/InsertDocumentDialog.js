@@ -81,9 +81,10 @@ export default class InsertDocumentDialog extends React.Component {
                         onChange={(e) => this.getDocumentData(e)}
                     />
                     <Box style={{ width: 1000, border: 'solid 0px red', height: 10 }}>
-                        <span style={{ marginLeft: 15, color: '#DC143C' }}>
+                        <span style={{ color: '#DC143C' }}>
                             {this.state.errorMessage !== '' && this.state.errorMessage}
-                        </span>                    </Box>
+                        </span>
+                    </Box>
                 </DialogContent>
                 <DialogActions>
                     <Button variant="outlined" onClick={() => this.cancelAndCLose()}>Cancel</Button>
