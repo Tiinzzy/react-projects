@@ -37,11 +37,10 @@ export default class Connection extends React.Component {
 
     connectAndClose() {
         backend.connect_mongo_db(this.state.host_name, this.state.port_name, (data) => {
-            let that = this;
             if (data.result) {
-                that.state.handleCLoseDialog({ action: 'connect-and-close', info: { 'host': that.state.host_name, 'port': that.state.port_name } });
+                this.state.handleCLoseDialog({ action: 'connect-and-close', info: { 'host': this.state.host_name, 'port': this.state.port_name } });
             } else {
-                that.setState({ connectionError: true, errorMsg: true });
+                this.setState({ connectionError: true, errorMsg: true });
             }
         })
     }
@@ -71,7 +70,7 @@ export default class Connection extends React.Component {
                     </FormControl>
                     <br />
                     <div style={{ height: 20 }}>
-                        {this.state.errorMsg && <Typography variant="body2" color="#D22B2B">Sorry, something went wrong!</Typography>}
+                        {this.state.errorMsg && <Typography variant="body2" color="#D22B2B">Could not connect to the server!</Typography>}
                     </div>
                 </DialogContent>
                 <DialogActions>

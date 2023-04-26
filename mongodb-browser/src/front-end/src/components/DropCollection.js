@@ -45,12 +45,21 @@ export default class DropCollection extends React.Component {
         }
     }
 
+
+    cloneQuery() {
+        let query = { ...this.state.query };
+        query['database_name'] = this.state.databaseName;
+        query['host_name'] = this.state.connectionInfo.host;
+        query['port_name'] = this.state.connectionInfo.port;
+        if (this.state.collectionName) {
+            query['collection_name'] = this.state.collectionName;
+        }
+        return query;
+    }
+
     componentDidMount() {
-        this.state.query['host_name'] = this.state.connectionInfo.host;
-        this.state.query['port_name'] = this.state.connectionInfo.port;
-        backend.get_databases_mongo_db(this.state.query, (data) => {
-            let that = this;
-            that.setState({ availableDatabases: data.available_databases });
+        backend.get_databases_mongo_db(this.cloneQuery(), (data) => {
+            this.setState({ availableDatabases: data.available_databases });
         })
     }
 
@@ -61,20 +70,17 @@ export default class DropCollection extends React.Component {
     }
 
     getCollectionList() {
-        this.state.query['database_name'] = this.state.databaseName;
-        let query = { 'host_name': this.state.connectionInfo.host, 'port_name': this.state.connectionInfo.port, 'database_name': this.state.databaseName };
-        backend.get_collections_mongo_db(query, (data) => {
-            let that = this;
-            that.setState({ collections: data.collections, dataReady: false, dropButton: true });
+        console.log(this.cloneQuery());
+        backend.get_collections_mongo_db(this.cloneQuery(), (data) => {
+            this.setState({ collections: data.collections, dataReady: false, dropButton: true });
         })
     }
 
     getCollectionName(e) {
         this.setState({ collectionName: e.target.value }, () => {
-            this.state.query['collection_name'] = this.state.collectionName;
-            backend.get_documents_mongo_db(this.state.query, (data) => {
-                let that = this;
-                that.setState({ documents: data.documents, dropButton: true });
+            let query = this.cloneQuery();
+            backend.get_documents_mongo_db(query, (data) => {
+                this.setState({ documents: data.documents, dropButton: true });
             })
         });
     }
@@ -84,18 +90,17 @@ export default class DropCollection extends React.Component {
     }
 
     submitAndClose() {
-        backend.drop_collection_mongo_db(this.state.query, (data) => {
+        backend.drop_collection_mongo_db(this.cloneQuery(), (data) => {
             if (data.result) {
                 this.state.handleCloseDialog({ action: 'close-dialog' });
-                console.log('collection dropped');
-            };
+            } 
         })
     }
 
     getRadioButton(e) {
         if (e.target.value === 'Yes') {
             this.setState({ dropButton: false });
-        } else if(e.target.value === 'No'){
+        } else if (e.target.value === 'No') {
             this.setState({ dropButton: true });
         }
     }
