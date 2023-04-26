@@ -29,8 +29,6 @@
 
 .header-main-box {
     margin-bottom: 30px;
-    /* background-color: rgb(223, 240, 255); */
-    /* border-bottom: solid 2px rgb(121, 193, 255); */
     background-color: #1C2541;
     padding: 10px 0px 10px 19px;
     color: #65cce4;
@@ -42,19 +40,21 @@
     align-items: center;
     font-weight: bold;
     font-family: Helvetica;
+    font-size: 25px;
+    text-shadow: 3px 2px #65cde463;
 }
 
 .footer-main-box {
     margin-left: 50px;
     margin-right: 50px;
-    border-top: solid 2px #65cde4c9;
+    border-top: solid 2px #65cde42e;
     height: 50px;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     font-size: 12px;
-    color: #1c2541b1;
+    color: #1c254184;
 }
 
 .display-documents-box-1 {
@@ -105,36 +105,4 @@ tr:hover {
     width: 100%;
     margin-right: 10px;
     height: 350px;
-}
-
-.timeline {
-    transform: rotate(90deg);
-}
-
-.timelineContentContainer {
-    text-align: left;
-}
-
-.timelineContent {
-    display: inline-block;
-    transform: rotate(-90deg);
-    text-align: center;
-    min-width: 50;
-}
-
-.timelineIcon {
-    transform: rotate(-90deg);
-}
-
-.MuiStepConnector-line {
-    color: gray !important;
-}
-
-.MuiStepConnector-lineHorizontal {
-    color: gray !important;
-
-}
-
-.css-z7uhs0-MuiStepConnector-line {
-    color: gray !important;
 }
