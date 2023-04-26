@@ -59,8 +59,7 @@ export default class SideBar extends React.Component {
             this.setState({ selectedDb: e });
             let query = { 'host_name': this.state.connectionInfo.host, 'port_name': this.state.connectionInfo.port, 'database_name': e };
             backend.get_collections_mongo_db(query, (data) => {
-                let that = this;
-                that.setState({ openCollections: e, collections: data.collections, setDatabase: e })
+                this.setState({ openCollections: e, collections: data.collections, setDatabase: e })
             });
         } else {
             this.setState({ openCollections: '' });

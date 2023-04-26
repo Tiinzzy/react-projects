@@ -24,16 +24,14 @@ export default class InsertDocumentDialog extends React.Component {
             connectionInfo: props.connectionInfo,
             database: props.database,
             newData: '',
-            query: {},
+            query: {
+                host_name: props.connectionInfo.host,
+                port_name: props.connectionInfo.port,
+                database_name: props.database,
+                collection_name: props.collection,
+            },
             errorMessage: ''
         }
-    }
-
-    componentDidMount() {
-        this.state.query['host_name'] = this.state.connectionInfo.host;
-        this.state.query['port_name'] = this.state.connectionInfo.port;
-        this.state.query['database_name'] = this.state.database;
-        this.state.query['collection_name'] = this.state.collection;
     }
 
     getDocumentData(e) {
@@ -47,12 +45,11 @@ export default class InsertDocumentDialog extends React.Component {
     addDocument() {
         try {
             let parsedDocument = JSON.parse(this.state.newData);
-            this.state.query['documents'] = parsedDocument;
-            backend.insert_documents_mongo_db(this.state.query, (data) => {
-                let that = this;
+            let query = { ...this.state.query };
+            query['documents'] = parsedDocument;
+            backend.insert_documents_mongo_db(query, (data) => {
                 if (data.inserted_count > 0) {
-                    delete that.state.query['documents'];
-                    that.state.handleCLoseDialog({ action: 'close' });
+                    this.state.handleCLoseDialog({ action: 'close' });
                 };
             });
         } catch (err) {
@@ -81,9 +78,10 @@ export default class InsertDocumentDialog extends React.Component {
                         onChange={(e) => this.getDocumentData(e)}
                     />
                     <Box style={{ width: 1000, border: 'solid 0px red', height: 10 }}>
-                        <span style={{ marginLeft: 15, color: '#DC143C' }}>
+                        <span style={{ color: '#DC143C' }}>
                             {this.state.errorMessage !== '' && this.state.errorMessage}
-                        </span>                    </Box>
+                        </span>
+                    </Box>
                 </DialogContent>
                 <DialogActions>
                     <Button variant="outlined" onClick={() => this.cancelAndCLose()}>Cancel</Button>

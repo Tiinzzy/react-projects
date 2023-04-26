@@ -24,27 +24,30 @@ export default class InsertDocumentNewCollection extends React.Component {
         super(props);
         this.state = {
             handleCloseDialog: props.handleCloseDialog,
-            connectionInfo: props.connectionInfo,
             newData: '',
             collectionName: '',
             databaseName: '',
-            query: {},
-            errorMessage: ''
+            query: {
+                host_name: props.connectionInfo.host,
+                port_name: props.connectionInfo.port,
+            },
+            errorMessage: '',
+            textDisable: true
         }
     }
 
     componentDidMount() {
-        this.state.query['host_name'] = this.state.connectionInfo.host;
-        this.state.query['port_name'] = this.state.connectionInfo.port;
         backend.get_databases_mongo_db(this.state.query, (data) => {
             let that = this;
-            that.setState({ availableDatabases: data.available_databases })
+            that.setState({ availableDatabases: data.available_databases });
         })
     }
 
     getDatabaseName(e) {
-        this.setState({ databaseName: e.target.value, errorMessage: '' }, () => {
-            this.state.query['database_name'] = this.state.databaseName;
+        this.setState({ databaseName: e.target.value, errorMessage: '', textDisable: false }, () => {
+            let query = { ...this.state.query };
+            query['database_name'] = this.state.databaseName;
+            this.setState({ query });
         });
     }
 
@@ -54,7 +57,9 @@ export default class InsertDocumentNewCollection extends React.Component {
 
     getNewCollectionName(e) {
         this.setState({ collectionName: e.target.value, errorMessage: '' }, () => {
-            this.state.query['collection_name'] = this.state.collectionName;
+            let query = { ...this.state.query };
+            query['collection_name'] = this.state.collectionName;
+            this.setState({ query });
         });
     }
 
@@ -64,16 +69,16 @@ export default class InsertDocumentNewCollection extends React.Component {
 
     submitAndClose() {
         try {
-            let parsedDocument = JSON.parse(this.state.newData);
-            this.state.query['documents'] = parsedDocument;
-            backend.insert_documents_mongo_db(this.state.query, (data) => {
+            let parsedDocument = JSON.parse(this.state.newData);           
+            let query = { ...this.state.query };
+            query['documents'] = parsedDocument;
+            backend.insert_documents_mongo_db(query, (data) => {
                 if (data.inserted_count > 0) {
                     this.state.handleCloseDialog({ action: 'close-dialog' });
                 };
             })
         }
         catch (err) {
-            console.log(err)
             this.setState({ errorMessage: err.toString() });
         }
     }
@@ -103,19 +108,19 @@ export default class InsertDocumentNewCollection extends React.Component {
                     </FormControl>
                     <TextField fullWidth label="Collection Name" variant="outlined" sx={{ marginBottom: 3 }}
                         value={this.state.collectionName}
-                        onChange={(e) => this.getNewCollectionName(e)} />
+                        onChange={(e) => this.getNewCollectionName(e)} disabled={this.state.textDisable} />
                     <TextField
                         sx={{ marginBottom: 3, '& .MuiInputBase-input': { fontFamily: 'Courier', fontSize: '80%', color: this.state.errorMessage !== '' ? '#DC143C' : '#555' } }}
                         fullWidth multiline
+                        disabled={this.state.textDisable}
                         rows={20}
                         label="Data"
                         InputProps={{ spellCheck: 'false' }}
                         variant="outlined"
                         value={this.state.newData}
-                        onChange={(e) => this.getDocumentData(e)}
-                    />
+                        onChange={(e) => this.getDocumentData(e)} />
                     <Box style={{ width: 1000, border: 'solid 0px red', height: 10 }}>
-                        <span style={{ marginLeft: 15, color: '#DC143C' }}>
+                        <span style={{ color: '#DC143C' }}>
                             {this.state.errorMessage !== '' && this.state.errorMessage}
                         </span>
                     </Box>

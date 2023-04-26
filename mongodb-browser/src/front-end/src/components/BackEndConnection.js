@@ -13,7 +13,10 @@ class BackEndConnectionImpl {
             })
             .catch(function (error) {
                 console.log(error);
-                return false;
+                if (callback) {
+                    callback({ result: false })
+                }
+                return { result: false };
             })
     }
 
@@ -99,7 +102,10 @@ class BackEndConnectionImpl {
             })
             .catch(function (error) {
                 console.log(error);
-                return false;
+                if (callback) {
+                    callback({ result: false });
+                }
+                return { result: false };
             })
     }
 
