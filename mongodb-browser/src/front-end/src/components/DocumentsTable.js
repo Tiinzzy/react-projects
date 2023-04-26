@@ -96,7 +96,7 @@ export default class DocumentsTable extends React.Component {
         return (
             <>
                 <Box style={{ display: 'flex', paddingRight: 10, alignItems: 'center', paddingLeft: 8 }}>
-                    <DepthTitle database={this.state.database} collection={this.state.collection} />
+                    <DepthTitle database={this.props.database} collection={this.state.collection} />
                     <Box flexGrow={1} />
                     <Tooltip title="Insert Document in Collection" arrow>
                         <IconButton color="black" onClick={() => this.insertDocumentCollection()}>
