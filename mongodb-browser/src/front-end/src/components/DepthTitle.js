@@ -9,8 +9,11 @@ export default function CustomSeparator(props) {
         <Link underline="none" key="1" color="inherit" >
             {props.database}
         </Link>,
-        <Link underline="none" key="1" color="text.primary" >
+        <Link underline="none" key="1" color="inherit" >
             {props.collection}
+        </Link>,
+        <Link underline="none" key="1" color="text.primary" >
+            {props.selectedId}
         </Link>
     ];
 
