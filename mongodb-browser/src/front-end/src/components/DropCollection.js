@@ -70,7 +70,6 @@ export default class DropCollection extends React.Component {
     }
 
     getCollectionList() {
-        console.log(this.cloneQuery());
         backend.get_collections_mongo_db(this.cloneQuery(), (data) => {
             this.setState({ collections: data.collections, dataReady: false, dropButton: true });
         })
