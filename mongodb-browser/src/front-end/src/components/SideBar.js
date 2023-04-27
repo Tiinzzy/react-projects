@@ -67,7 +67,7 @@ export default class SideBar extends React.Component {
     }
 
     getDocuments(db, col) {
-        let query = { action: 'ready-to-fetch', database: db, collection: col }
+        let query = { action: 'ready-to-fetch', database: db, collection: col };
         this.state.getDataforDocuments(query);
         this.setState({ database: db, collection: col, selectedId: col });
     }
