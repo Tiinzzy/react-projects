@@ -55,10 +55,7 @@ export default class SideBar extends React.Component {
     }
 
     getCollections(e, data) {
-        console.log(this.state.openCollections);
-        console.log(0)
         if (this.state.openCollections === '') {
-            console.log(1)
             this.setState({ selectedDb: e });
             let query = { 'host_name': this.state.connectionInfo.host, 'port_name': this.state.connectionInfo.port, 'database_name': e };
             backend.get_collections_mongo_db(query, (data) => {
@@ -67,7 +64,6 @@ export default class SideBar extends React.Component {
         } else if (data && data.action === 'reload') {
             this.setState({ openCollections: e });
         } else {
-            console.log(2)
             this.setState({ openCollections: '' });
         }
     }
