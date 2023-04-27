@@ -55,7 +55,6 @@ export default class SideBar extends React.Component {
     }
 
     getCollections(e) {
-        console.log(e, "database name")
         if (this.state.openCollections === '') {
             this.setState({ selectedDb: e });
             let query = { 'host_name': this.state.connectionInfo.host, 'port_name': this.state.connectionInfo.port, 'database_name': e };
