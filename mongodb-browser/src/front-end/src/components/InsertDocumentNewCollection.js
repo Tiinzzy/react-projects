@@ -64,7 +64,7 @@ export default class InsertDocumentNewCollection extends React.Component {
     }
 
     cancelAndClose() {
-        this.state.handleCloseDialog({ action: 'close-dialog', database: this.state.databaseName });
+        this.state.handleCloseDialog({ action: 'plain-close-dialog' });
     }
 
     submitAndClose() {
