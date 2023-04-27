@@ -35,12 +35,8 @@ export default class Home extends React.Component {
             this.setState({ database: data.database, collection: data.collection }, () => {
                 this.setState({ dataReady: true });
             })
-        } else if (data && data.action === 'ready-to-fetch' && this.state.dataReady === true) {
+        } else if ((data && data.action === 'ready-to-fetch' && this.state.dataReady === true) || data && data.action === 'reload-page') {
             this.setState({ database: data.database, collection: data.collection });
-        } else if (data && data.action === 'reload-page' && this.state.dataReady === true) {
-            this.setState({ dataReady: false }, () => {
-                this.setState({ database: data.database, collection: data.collection });
-            });
         }
     }
 

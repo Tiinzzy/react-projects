@@ -12,10 +12,9 @@ export default class Header extends React.Component {
         }
     }
 
-
     render() {
         return (
-            <Box className="header-main-box">
+            <Box className="header-main-box" data-testid='header-main-box'>
                 MongoDB  Browser
             </Box>
         );
