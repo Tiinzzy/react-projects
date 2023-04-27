@@ -86,14 +86,14 @@ export default class DropCollection extends React.Component {
     }
 
     cancelAndClose() {
-        this.state.handleCloseDialog({ action: 'close-dialog' });
+        this.state.handleCloseDialog({ action: 'close-dialog', database: this.state.databaseName });
     }
 
     submitAndClose() {
         backend.drop_collection_mongo_db(this.cloneQuery(), (data) => {
             if (data.result) {
-                this.state.handleCloseDialog({ action: 'close-dialog' });
-            } 
+                this.state.handleCloseDialog({ action: 'close-dialog', database: this.state.databaseName });
+            }
         })
     }
 
