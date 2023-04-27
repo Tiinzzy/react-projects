@@ -64,17 +64,17 @@ export default class InsertDocumentNewCollection extends React.Component {
     }
 
     cancelAndClose() {
-        this.state.handleCloseDialog({ action: 'close-dialog' });
+        this.state.handleCloseDialog({ action: 'close-dialog', database: this.state.databaseName });
     }
 
     submitAndClose() {
         try {
-            let parsedDocument = JSON.parse(this.state.newData);           
+            let parsedDocument = JSON.parse(this.state.newData);
             let query = { ...this.state.query };
             query['documents'] = parsedDocument;
             backend.insert_documents_mongo_db(query, (data) => {
                 if (data.inserted_count > 0) {
-                    this.state.handleCloseDialog({ action: 'close-dialog' });
+                    this.state.handleCloseDialog({ action: 'close-dialog', database: this.state.databaseName });
                 };
             })
         }
