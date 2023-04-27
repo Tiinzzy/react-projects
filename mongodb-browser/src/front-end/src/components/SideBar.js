@@ -69,7 +69,7 @@ export default class SideBar extends React.Component {
     getDocuments(db, col) {
         let query = { action: 'ready-to-fetch', database: db, collection: col }
         this.state.getDataforDocuments(query);
-        this.setState({ database: db, collection: col, selectedId: col })
+        this.setState({ database: db, collection: col, selectedId: col });
     }
 
     reLoadContent() {
@@ -91,6 +91,8 @@ export default class SideBar extends React.Component {
             this.setState({ openDialog: false, setDatabase: data.database }, () => {
                 this.getCollections(data.database);
             });
+        } else if (data && data.action === 'plain-close-dialog') {
+            this.setState({ openDialog: false });
         } else {
             this.setState({ openDialog: false });
         }
