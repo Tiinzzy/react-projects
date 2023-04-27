@@ -55,6 +55,7 @@ export default class SideBar extends React.Component {
     }
 
     getCollections(e) {
+        console.log(e, "database name")
         if (this.state.openCollections === '') {
             this.setState({ selectedDb: e });
             let query = { 'host_name': this.state.connectionInfo.host, 'port_name': this.state.connectionInfo.port, 'database_name': e };
@@ -88,8 +89,8 @@ export default class SideBar extends React.Component {
 
     handleCloseDialog(data) {
         if (data && data.action === 'close-dialog') {
-            this.setState({ openDialog: false }, () => {
-                this.getCollections(this.state.setDatabase);
+            this.setState({ openDialog: false, setDatabase: data.database }, () => {
+                this.getCollections(data.database);
             });
         } else {
             this.setState({ openDialog: false });
