@@ -35,7 +35,8 @@ export default class DocumentsTable extends React.Component {
             query: {},
             oneDocument: {},
             openDialog: false,
-            selected: 0
+            selected: 0,
+            selectedId: ''
         }
         this.handleCLoseDialog = this.handleCLoseDialog.bind(this);
     }
@@ -94,7 +95,7 @@ export default class DocumentsTable extends React.Component {
         return (
             <>
                 <Box style={{ display: 'flex', paddingRight: 10, alignItems: 'center', paddingLeft: 8 }}>
-                    <DepthTitle database={this.props.database} collection={this.state.collection} />
+                    <DepthTitle database={this.props.database} collection={this.state.collection} selectedId={this.state.selectedId} />
                     <Box flexGrow={1} />
                     <Tooltip title="Insert Document in Collection" arrow>
                         <IconButton color="black" onClick={() => this.insertDocumentCollection()}>

@@ -54,28 +54,30 @@ export default class SideBar extends React.Component {
         this.setState({ openList: !this.state.openList });
     }
 
-    getCollections(e) {
+    getCollections(e, data) {
         if (this.state.openCollections === '') {
             this.setState({ selectedDb: e });
             let query = { 'host_name': this.state.connectionInfo.host, 'port_name': this.state.connectionInfo.port, 'database_name': e };
             backend.get_collections_mongo_db(query, (data) => {
                 this.setState({ openCollections: e, collections: data.collections, setDatabase: e })
             });
+        } else if (data && data.action === 'reload') {
+            this.setState({ openCollections: e });
         } else {
             this.setState({ openCollections: '' });
         }
     }
 
     getDocuments(db, col) {
-        let query = { action: 'ready-to-fetch', database: db, collection: col }
+        let query = { action: 'ready-to-fetch', database: db, collection: col };
         this.state.getDataforDocuments(query);
-        this.setState({ database: db, collection: col, selectedId: col })
+        this.setState({ database: db, collection: col, selectedId: col });
     }
 
     reLoadContent() {
         let query = { action: 'reload-page', database: this.state.database, collection: this.state.collection };
         this.state.getDataforDocuments(query);
-        this.getCollections(this.state.setDatabase);
+        this.getCollections(this.state.setDatabase, { action: 'reload' });
     }
 
     insertInNewCollection() {
@@ -88,9 +90,11 @@ export default class SideBar extends React.Component {
 
     handleCloseDialog(data) {
         if (data && data.action === 'close-dialog') {
-            this.setState({ openDialog: false }, () => {
-                this.getCollections(this.state.setDatabase);
+            this.setState({ openDialog: false, setDatabase: data.database }, () => {
+                this.getCollections(data.database);
             });
+        } else if (data && data.action === 'plain-close-dialog') {
+            this.setState({ openDialog: false });
         } else {
             this.setState({ openDialog: false });
         }

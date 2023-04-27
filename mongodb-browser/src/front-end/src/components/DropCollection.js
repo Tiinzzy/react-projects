@@ -70,7 +70,6 @@ export default class DropCollection extends React.Component {
     }
 
     getCollectionList() {
-        console.log(this.cloneQuery());
         backend.get_collections_mongo_db(this.cloneQuery(), (data) => {
             this.setState({ collections: data.collections, dataReady: false, dropButton: true });
         })
@@ -86,14 +85,14 @@ export default class DropCollection extends React.Component {
     }
 
     cancelAndClose() {
-        this.state.handleCloseDialog({ action: 'close-dialog' });
+        this.state.handleCloseDialog({ action: 'plain-close-dialog' });
     }
 
     submitAndClose() {
         backend.drop_collection_mongo_db(this.cloneQuery(), (data) => {
             if (data.result) {
-                this.state.handleCloseDialog({ action: 'close-dialog' });
-            } 
+                this.state.handleCloseDialog({ action: 'close-dialog', database: this.state.databaseName });
+            }
         })
     }
 
