@@ -48,7 +48,7 @@ export default class Connection extends React.Component {
     render() {
         return (
             <>
-                <DialogTitle>
+                <DialogTitle data-testid='dialog-title'>
                     {"Connect to MongoDB"}
                 </DialogTitle>
                 <DialogContent>
