@@ -2,6 +2,17 @@
 <h3> This is a reposity with mini projects that focuses on different aspects of React and Javascript.</h3>
 
 <br/>
+<h3>mongodb-browser</h3>
+<div>A project that allows users to connect to the default host and port or any other that they have set and view databases, collections and run NoSQL commands.</div>
+<div>Since it was a good project with a neat and presentable UI, it also has a separate repository.</div>
+<br/>
+<img width="500" style="-webkit-user-select: none; display: block; margin: auto; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); cursor: zoom-in;" src="https://user-images.githubusercontent.com/117464310/235174180-76509a59-09b8-45db-9f8f-c1f1f2606490.jpg">
+
+<img width="500" style="-webkit-user-select: none; display: block; margin: auto; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); cursor: zoom-in;" src="https://user-images.githubusercontent.com/117464310/235174439-ebbb5681-7ac1-4fbc-98d3-26cc362caab6.jpg">
+
+<img width="500" style="-webkit-user-select: none; display: block; margin: auto; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); cursor: zoom-in;" src="https://user-images.githubusercontent.com/117464310/235175845-eb632a5b-a554-406e-9f7b-294ab8eb3c27.jpg">
+
+<br/>
 <h3>basic-authentication</h3>
 <div>A project that works on user authentication allowing users to login and have access to certain feature, also includes creating account, password reset, password changing and sending user email with url link, that is specific to the user.</div>
 <br/>
