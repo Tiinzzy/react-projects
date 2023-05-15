@@ -1,11 +1,9 @@
-import KanbanTable from "./components/KanbanTable";
+import MainHome from "./components/MainHome";
 
 function App() {
   return (
     <>
-      <div>
-        <KanbanTable />
-      </div>
+      <MainHome />
     </>
   );
 }
