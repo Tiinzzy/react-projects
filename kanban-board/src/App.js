@@ -1,10 +1,10 @@
-import './App.css';
+import KanbanTable from "./components/KanbanTable";
 
 function App() {
   return (
     <>
       <div>
-        this is a test
+        <KanbanTable />
       </div>
     </>
   );
