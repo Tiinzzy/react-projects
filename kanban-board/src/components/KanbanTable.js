@@ -8,11 +8,13 @@ import BacklogDialog from './BacklogDialog';
 import './style.css';
 
 const KANBAN_HEADERS = ['Backlog', 'To Do', 'In Progress', 'Completed'];
+const SAMPLE = [[{ title: 'test1', description: 'some description', status: 'Backlog', priority: 'Low' }], [{ title: 'test2', description: 'some description', status: 'To Do', priority: 'Low' }],
+[{ title: 'test3', description: 'some description', status: 'In Progress', priority: 'Low' }], [{ title: 'test4', description: 'some description', status: 'Completed', priority: 'Low' }]];
 
 export default function KanbanTable() {
     const dragItem = useRef();
     const dragOverItem = useRef();
-    const [list, setList] = useState([['Item 1', 123], ['Item 2', 434], ['Item 3', 5453], ['Item 4', 675]]);
+    const [list, setList] = useState(SAMPLE);
     const [openDialog, setOpenDialog] = useState(false);
 
 
@@ -43,14 +45,23 @@ export default function KanbanTable() {
         setOpenDialog(true);
     }
 
-    const handleCloseDialog = () => {
+    const handleCloseDialog = (query) => {
+        if (query && query.title === KANBAN_HEADERS[0]) {
+        } else if (query && query.title === KANBAN_HEADERS[1]) {
+        }
+        else if (query && query.title === KANBAN_HEADERS[2]) {
+        }
+        else if (query && query.title === KANBAN_HEADERS[3]) {
+        } else {
+            setOpenDialog(false);
+        }
         setOpenDialog(false);
     }
 
     return (
         <>
             <div style={{ width: 1400 }}>
-                <table width="100%" style={{ fontSize: '80%', backgroundColor: 'white', maring: 5, border: 'solid 1px #eaeaea' }} cellPadding={0} cellSpacing={1}>
+                <table width="100%" style={{ fontSize: '80%', backgroundColor: 'white', maring: 5, border: 'solid 1px #eaeaea', borderRadius: 4 }} cellPadding={0} cellSpacing={1}>
                     <tbody>
                         <tr>
                             {KANBAN_HEADERS.map((j, k) => (
@@ -70,12 +81,24 @@ export default function KanbanTable() {
                             {list && list.map((item, index) => (
                                 <td key={index}
                                     width='25%'>{item.map((e, i) => (
-                                        <div draggable
+                                        <div style={{ border: 'solid 1px black', display: 'flex', flexDirection: 'column', padding: 10, borderRadius: 4 }}
+                                            draggable
                                             onDragStart={(e) => dragStart(e, index)}
                                             onDragEnter={(e) => dragEnter(e, index)}
                                             onDragEnd={drop}
                                             key={i}>
-                                            {e}
+                                            <span>
+                                                Title: {e.title}
+                                            </span>
+                                            <span>
+                                                Description: {e.description}
+                                            </span>
+                                            <span>
+                                                Status: {e.status}
+                                            </span>
+                                            <span>
+                                                Priority: {e.priority}
+                                            </span>
                                         </div>
                                     ))}
                                 </td>
@@ -86,7 +109,7 @@ export default function KanbanTable() {
                 </table>
             </div>
             <Dialog open={openDialog} onClose={handleCloseDialog}>
-                <BacklogDialog handleCloseDialog={handleCloseDialog}/>
+                <BacklogDialog handleCloseDialog={handleCloseDialog} />
             </Dialog>
         </>
     );
