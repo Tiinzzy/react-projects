@@ -86,7 +86,7 @@ export default function KanbanTable() {
                 </table>
             </div>
             <Dialog open={openDialog} onClose={handleCloseDialog}>
-                <BacklogDialog />
+                <BacklogDialog handleCloseDialog={handleCloseDialog}/>
             </Dialog>
         </>
     );
