@@ -49,8 +49,7 @@ export default class BacklogDialog extends React.Component {
 
     submitAndClose() {
         let query = { title: this.state.title, description: this.state.description, status: this.state.status, priority: this.state.priority };
-        console.log(query)
-        this.state.handleCloseDialog();
+        this.state.handleCloseDialog(query);
     }
 
     render() {
