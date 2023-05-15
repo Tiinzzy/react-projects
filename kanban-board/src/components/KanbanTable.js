@@ -8,8 +8,15 @@ import BacklogDialog from './BacklogDialog';
 import './style.css';
 
 const KANBAN_HEADERS = ['Backlog', 'To Do', 'In Progress', 'Completed'];
-const SAMPLE = [[{ title: 'test1', description: 'some description', status: 'Backlog', priority: 'Low' }], [{ title: 'test2', description: 'some description', status: 'To Do', priority: 'Low' }],
-[{ title: 'test3', description: 'some description', status: 'In Progress', priority: 'Low' }], [{ title: 'test4', description: 'some description', status: 'Completed', priority: 'Low' }]];
+const SAMPLE = [
+    [{ title: 'test1', description: 'some description', status: 'Backlog', priority: 'Low' }, { title: 'test11', description: 'some description', status: 'Backlog', priority: 'Low' }],
+    [{ title: 'test2', description: 'some description', status: 'To Do', priority: 'Low' }],
+    [{ title: 'test3', description: 'some description', status: 'In Progress', priority: 'Low' }],
+    [{ title: 'test4', description: 'some description', status: 'Completed', priority: 'Low' }]];
+
+
+const draggedTask = {};
+const droppedLocation = {}
 
 export default function KanbanTable() {
     const dragItem = useRef();
@@ -18,16 +25,17 @@ export default function KanbanTable() {
     const [openDialog, setOpenDialog] = useState(false);
 
 
-    const dragStart = (e, position) => {
-        dragItem.current = position;
-        // console.log(position, 1)
-        // console.log(e.target.innerHTML, '<<');
+    const dragStart = (e, columnId, taskId) => {
+        draggedTask.columnId = columnId;
+        draggedTask.taskId = taskId;
+        dragItem.current = columnId;
+        console.log('draggedTask', draggedTask);
     };
 
     const dragEnter = (e, position) => {
         dragOverItem.current = position;
-        // console.log(position, 2)
-        // console.log(e.target.innerHTML, '<<');
+        droppedLocation.columnId = position;
+        console.log('droppedLocation', droppedLocation)
     };
 
     const drop = (e) => {
@@ -39,6 +47,7 @@ export default function KanbanTable() {
         dragOverItem.current = null;
         setList(copyListItems);
         e.preventDefault();
+        console.log(draggedTask, ' ==> ', droppedLocation);
     };
 
     const handleOpenDialog = () => {
@@ -77,13 +86,13 @@ export default function KanbanTable() {
                                 </th>
                             ))}
                         </tr>
-                        <tr>
+                        <tr valign='top'>
                             {list && list.map((item, index) => (
                                 <td key={index}
                                     width='25%'>{item.map((e, i) => (
-                                        <div style={{ border: 'solid 1px black', display: 'flex', flexDirection: 'column', padding: 10, borderRadius: 4 }}
+                                        <div style={{ border: 'solid 1px black', display: 'flex', flexDirection: 'column', padding: 10, borderRadius: 4, marginBottom:10 }}
                                             draggable
-                                            onDragStart={(e) => dragStart(e, index)}
+                                            onDragStart={(e) => dragStart(e, index, i)}
                                             onDragEnter={(e) => dragEnter(e, index)}
                                             onDragEnd={drop}
                                             key={i}>
