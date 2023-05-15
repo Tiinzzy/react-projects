@@ -2,6 +2,7 @@ table,
 th,
 td {
     border-bottom: 1px solid rgb(228, 228, 228);
+    border-radius: 4px;
 }
 
 td {
@@ -13,6 +14,7 @@ th {
     position: sticky;
     top: 0;
     background-color: rgb(225, 225, 225);
+    border-radius: 4px;
     text-align: left;
     border-bottom: #b2b2b2 solid 1px;
 }
