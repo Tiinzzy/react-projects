@@ -20,8 +20,19 @@ export default class BacklogDialog extends React.Component {
         super(props);
         this.state = {
             status: STATUS[0],
-            priority: PRIORITY[1]
+            priority: PRIORITY[1],
+            handleCloseDialog: props.handleCloseDialog,
+            title: '',
+            description: ''
         }
+    }
+
+    getTitle(e) {
+        this.setState({ title: e.target.value });
+    }
+
+    getDescription(e) {
+        this.setState({ description: e.target.value });
     }
 
     handleChangeStatus(e) {
@@ -32,6 +43,16 @@ export default class BacklogDialog extends React.Component {
         this.setState({ priority: e.target.value });
     }
 
+    cancelAndClose() {
+        this.state.handleCloseDialog();
+    }
+
+    submitAndClose() {
+        let query = { title: this.state.title, description: this.state.description, status: this.state.status, priority: this.state.priority };
+        console.log(query)
+        this.state.handleCloseDialog();
+    }
+
     render() {
         return (
             <>
@@ -40,8 +61,8 @@ export default class BacklogDialog extends React.Component {
                 </DialogTitle>
                 <DialogContent>
                     <Box style={{ marginTop: 20, display: 'flex', flexDirection: 'column', width: 500 }}>
-                        <TextField label="Title" variant="outlined" style={{ marginBottom: 18 }} />
-                        <TextField fullWidth multiline rows={5} label="Description" variant="outlined" style={{ marginBottom: 18 }} />
+                        <TextField label="Title" variant="outlined" style={{ marginBottom: 18 }} onChange={(e) => this.getTitle(e)} />
+                        <TextField fullWidth multiline rows={3} label="Description" variant="outlined" style={{ marginBottom: 18 }} onChange={(e) => this.getDescription(e)} />
                         <FormControl fullWidth style={{ marginBottom: 18 }}>
                             <InputLabel >Status</InputLabel>
                             <Select
@@ -67,8 +88,8 @@ export default class BacklogDialog extends React.Component {
                     </Box>
                 </DialogContent>
                 <DialogActions>
-                    <Button variant="outlined">Cancel</Button>
-                    <Button variant="outlined">Submit</Button>
+                    <Button variant="outlined" onClick={() => this.cancelAndClose()}>Cancel</Button>
+                    <Button variant="outlined" onClick={() => this.submitAndClose()}>Submit</Button>
                 </DialogActions>
             </>
         );
