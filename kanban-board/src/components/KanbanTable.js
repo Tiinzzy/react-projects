@@ -20,14 +20,14 @@ export default function KanbanTable() {
 
     const dragStart = (e, position) => {
         dragItem.current = position;
-        console.log(position, 1)
-        console.log(e.target.innerHTML, '<<');
+        // console.log(position, 1)
+        // console.log(e.target.innerHTML, '<<');
     };
 
     const dragEnter = (e, position) => {
         dragOverItem.current = position;
-        console.log(position, 2)
-        console.log(e.target.innerHTML, '<<');
+        // console.log(position, 2)
+        // console.log(e.target.innerHTML, '<<');
     };
 
     const drop = (e) => {
@@ -88,16 +88,28 @@ export default function KanbanTable() {
                                             onDragEnd={drop}
                                             key={i}>
                                             <span>
-                                                Title: {e.title}
+                                                <span style={{ fontWeight: 'bold', marginRight: 10 }}>
+                                                    Title:
+                                                </span>
+                                                {e.title}
                                             </span>
                                             <span>
-                                                Description: {e.description}
+                                                <span style={{ fontWeight: 'bold', marginRight: 10 }}>
+                                                    Description:
+                                                </span>
+                                                {e.description}
                                             </span>
                                             <span>
-                                                Status: {e.status}
+                                                <span style={{ fontWeight: 'bold', marginRight: 10 }}>
+                                                    Status:
+                                                </span>
+                                                {e.status}
                                             </span>
                                             <span>
-                                                Priority: {e.priority}
+                                                <span style={{ fontWeight: 'bold', marginRight: 10 }}>
+                                                    Priority:
+                                                </span>
+                                                {e.priority}
                                             </span>
                                         </div>
                                     ))}
