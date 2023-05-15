@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import IconButton from '@mui/material/IconButton';
@@ -18,9 +18,18 @@ const SAMPLE = [
 const draggedTask = {};
 const droppedLocation = {}
 
+function moveTask(list, draggedTask, droppedLocation) {
+    let task = list[draggedTask.columnId][draggedTask.taskId];
+    list[draggedTask.columnId].splice(draggedTask.taskId, 1);
+    if (droppedLocation.taskId === -1) {
+        list[droppedLocation.columnId].push(task);
+    } else {
+        list[droppedLocation.columnId].splice(droppedLocation.taskId + 1, 0, task);
+    }
+    return list;
+}
+
 export default function KanbanTable() {
-    const dragItem = useRef();
-    const dragOverItem = useRef();
     const [list, setList] = useState(SAMPLE);
     const [openDialog, setOpenDialog] = useState(false);
 
@@ -28,26 +37,26 @@ export default function KanbanTable() {
     const dragStart = (e, columnId, taskId) => {
         draggedTask.columnId = columnId;
         draggedTask.taskId = taskId;
-        dragItem.current = columnId;
-        console.log('draggedTask', draggedTask);
     };
 
-    const dragEnter = (e, position) => {
-        dragOverItem.current = position;
-        droppedLocation.columnId = position;
-        console.log('droppedLocation', droppedLocation)
+    const dragOver = (e, columnId, taskId) => {
+        droppedLocation.columnId = columnId;
+        if (list[columnId].length === 0) {
+            droppedLocation.taskId = -1;
+        } else if (taskId >= 0) {
+            droppedLocation.taskId = taskId;
+        }
     };
 
     const drop = (e) => {
-        const copyListItems = [...list];
-        const dragItemContent = copyListItems[dragItem.current];
-        copyListItems.splice(dragItem.current, 1);
-        copyListItems.splice(dragOverItem.current, 0, dragItemContent);
-        dragItem.current = null;
-        dragOverItem.current = null;
-        setList(copyListItems);
-        e.preventDefault();
-        console.log(draggedTask, ' ==> ', droppedLocation);
+        if (draggedTask.columnId === droppedLocation.columnId) {
+            e.preventDefault();
+            return;
+        }
+        setList(moveTask([...list], draggedTask, droppedLocation));
+        draggedTask.columnId = -1;
+        draggedTask.taskId = -1;
+        droppedLocation.columnId = -1;
     };
 
     const handleOpenDialog = () => {
@@ -70,11 +79,12 @@ export default function KanbanTable() {
     return (
         <>
             <div style={{ width: 1400 }}>
-                <table width="100%" style={{ fontSize: '80%', backgroundColor: 'white', maring: 5, border: 'solid 1px #eaeaea', borderRadius: 4 }} cellPadding={0} cellSpacing={1}>
+                <table width="100%" style={{ fontSize: '80%', backgroundColor: 'white', maring: 5, border: 'solid 1px #eaeaea', borderRadius: 4 }} cellPadding={2} cellSpacing={1}>
                     <tbody>
                         <tr>
                             {KANBAN_HEADERS.map((j, k) => (
-                                <th key={k} width='25%'>{j}
+                                <th key={k} width='25%' >
+                                    {j}
                                     {j === 'Backlog' ?
                                         <span style={{ marginLeft: 10 }}>
                                             <IconButton onClick={handleOpenDialog}>
@@ -89,12 +99,13 @@ export default function KanbanTable() {
                         <tr valign='top'>
                             {list && list.map((item, index) => (
                                 <td key={index}
+                                    onDragEnd={drop}
+                                    onDragOver={(e) => dragOver(e, index, -1)}
                                     width='25%'>{item.map((e, i) => (
-                                        <div style={{ border: 'solid 1px black', display: 'flex', flexDirection: 'column', padding: 10, borderRadius: 4, marginBottom:10 }}
-                                            draggable
+                                        <div style={{ border: 'solid 1px black', display: 'flex', flexDirection: 'column', padding: 10, borderRadius: 4, marginBottom: 10 }}
+                                            draggable={true}
                                             onDragStart={(e) => dragStart(e, index, i)}
-                                            onDragEnter={(e) => dragEnter(e, index)}
-                                            onDragEnd={drop}
+                                            onDragOver={(e) => dragOver(e, index, i)}
                                             key={i}>
                                             <span>
                                                 <span style={{ fontWeight: 'bold', marginRight: 10 }}>
