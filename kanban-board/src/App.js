@@ -1,11 +1,10 @@
 import KanbanTable from "./components/KanbanTable";
-import Test from "./components/Test";
 
 function App() {
   return (
     <>
       <div>
-        <Test />
+        <KanbanTable />
       </div>
     </>
   );
