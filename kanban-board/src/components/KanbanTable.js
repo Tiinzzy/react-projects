@@ -79,7 +79,7 @@ export default function KanbanTable() {
     return (
         <>
             <div style={{ width: 1400 }}>
-                <table width="100%" style={{ fontSize: '80%', backgroundColor: 'white', maring: 5, border: 'solid 1px #eaeaea', borderRadius: 4 }} cellPadding={2} cellSpacing={1}>
+                <table width="100%" style={{ fontSize: '80%', backgroundColor: 'white', maring: 5, border: 'solid 1px #f7f7f7', borderRadius: 4 }} cellPadding={2} cellSpacing={2}>
                     <tbody>
                         <tr>
                             {KANBAN_HEADERS.map((j, k) => (
@@ -102,7 +102,7 @@ export default function KanbanTable() {
                                     onDragEnd={drop}
                                     onDragOver={(e) => dragOver(e, index, -1)}
                                     width='25%'>{item.map((e, i) => (
-                                        <div style={{ border: 'solid 1px black', display: 'flex', flexDirection: 'column', padding: 10, borderRadius: 4, marginBottom: 10 }}
+                                        <div style={{ backgroundColor: 'white', border: 'solid 1px rgb(54, 54, 54)', display: 'flex', flexDirection: 'column', padding: 10, borderRadius: 3, marginBottom: 10 }}
                                             draggable={true}
                                             onDragStart={(e) => dragStart(e, index, i)}
                                             onDragOver={(e) => dragOver(e, index, i)}
