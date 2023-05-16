@@ -5,7 +5,11 @@ import IconButton from '@mui/material/IconButton';
 import Dialog from '@mui/material/Dialog';
 
 import BacklogDialog from './BacklogDialog';
+import BackEndConnection from './BackEndConnection';
+
 import './style.css';
+
+const backend = BackEndConnection.INSTANCE();
 
 const KANBAN_HEADERS = ['Backlog', 'To Do', 'In Progress', 'Completed'];
 const SAMPLE = [
@@ -33,6 +37,9 @@ export default function KanbanTable() {
     const [list, setList] = useState(SAMPLE);
     const [openDialog, setOpenDialog] = useState(false);
 
+    backend.get_documents_from_mongo_db((data) => {
+        console.log(data);
+    })
 
     const dragStart = (e, columnId, taskId) => {
         draggedTask.columnId = columnId;
