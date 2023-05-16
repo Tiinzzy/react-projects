@@ -38,7 +38,21 @@ export default function KanbanTable() {
     const [openDialog, setOpenDialog] = useState(false);
 
     backend.get_documents_from_mongo_db((data) => {
-        console.log(data);
+        for (let i in data.documents) {
+            if (data.documents[i].status === KANBAN_HEADERS[0]) {
+                SAMPLE[0].push(data.documents[i]);
+                setList(SAMPLE);
+            } else if (data.documents[i].status === KANBAN_HEADERS[1]) {
+                SAMPLE[1].push(data.documents[i]);
+                setList(SAMPLE);
+            } else if (data.documents[i].status === KANBAN_HEADERS[2]) {
+                SAMPLE[2].push(data.documents[i]);
+                setList(SAMPLE);
+            } else if (data.documents[i].status === KANBAN_HEADERS[3]) {
+                SAMPLE[3].push(data.documents[i]);
+                setList(SAMPLE);
+            }
+        }
     })
 
     const dragStart = (e, columnId, taskId) => {
@@ -70,16 +84,7 @@ export default function KanbanTable() {
         setOpenDialog(true);
     }
 
-    const handleCloseDialog = (query) => {
-        if (query && query.title === KANBAN_HEADERS[0]) {
-        } else if (query && query.title === KANBAN_HEADERS[1]) {
-        }
-        else if (query && query.title === KANBAN_HEADERS[2]) {
-        }
-        else if (query && query.title === KANBAN_HEADERS[3]) {
-        } else {
-            setOpenDialog(false);
-        }
+    const handleCloseDialog = () => {
         setOpenDialog(false);
     }
 
