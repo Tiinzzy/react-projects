@@ -5,11 +5,8 @@ import IconButton from '@mui/material/IconButton';
 import Dialog from '@mui/material/Dialog';
 
 import BacklogDialog from './BacklogDialog';
-import BackEndConnection from './BackEndConnection';
 
 import './style.css';
-
-const backend = BackEndConnection.INSTANCE();
 
 const KANBAN_HEADERS = ['Backlog', 'To Do', 'In Progress', 'Completed'];
 const SAMPLE = [
@@ -33,27 +30,11 @@ function moveTask(list, draggedTask, droppedLocation) {
     return list;
 }
 
-export default function KanbanTable() {
+export default function KanbanTable(props) {
     const [list, setList] = useState(SAMPLE);
     const [openDialog, setOpenDialog] = useState(false);
 
-    backend.get_documents_from_mongo_db((data) => {
-        for (let i in data.documents) {
-            if (data.documents[i].status === KANBAN_HEADERS[0]) {
-                SAMPLE[0].push(data.documents[i]);
-                setList(SAMPLE);
-            } else if (data.documents[i].status === KANBAN_HEADERS[1]) {
-                SAMPLE[1].push(data.documents[i]);
-                setList(SAMPLE);
-            } else if (data.documents[i].status === KANBAN_HEADERS[2]) {
-                SAMPLE[2].push(data.documents[i]);
-                setList(SAMPLE);
-            } else if (data.documents[i].status === KANBAN_HEADERS[3]) {
-                SAMPLE[3].push(data.documents[i]);
-                setList(SAMPLE);
-            }
-        }
-    })
+    console.log(props.logs)
 
     const dragStart = (e, columnId, taskId) => {
         draggedTask.columnId = columnId;
