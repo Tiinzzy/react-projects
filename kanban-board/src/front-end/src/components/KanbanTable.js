@@ -5,6 +5,7 @@ import IconButton from '@mui/material/IconButton';
 import Dialog from '@mui/material/Dialog';
 
 import BacklogDialog from './BacklogDialog';
+
 import './style.css';
 
 const KANBAN_HEADERS = ['Backlog', 'To Do', 'In Progress', 'Completed'];
@@ -29,10 +30,11 @@ function moveTask(list, draggedTask, droppedLocation) {
     return list;
 }
 
-export default function KanbanTable() {
+export default function KanbanTable(props) {
     const [list, setList] = useState(SAMPLE);
     const [openDialog, setOpenDialog] = useState(false);
 
+    console.log(props.logs)
 
     const dragStart = (e, columnId, taskId) => {
         draggedTask.columnId = columnId;
@@ -63,23 +65,14 @@ export default function KanbanTable() {
         setOpenDialog(true);
     }
 
-    const handleCloseDialog = (query) => {
-        if (query && query.title === KANBAN_HEADERS[0]) {
-        } else if (query && query.title === KANBAN_HEADERS[1]) {
-        }
-        else if (query && query.title === KANBAN_HEADERS[2]) {
-        }
-        else if (query && query.title === KANBAN_HEADERS[3]) {
-        } else {
-            setOpenDialog(false);
-        }
+    const handleCloseDialog = () => {
         setOpenDialog(false);
     }
 
     return (
         <>
             <div style={{ width: 1400 }}>
-                <table width="100%" style={{ fontSize: '80%', backgroundColor: 'white', maring: 5, border: 'solid 1px #eaeaea', borderRadius: 4 }} cellPadding={2} cellSpacing={1}>
+                <table width="100%" style={{ fontSize: '80%', backgroundColor: 'white', maring: 5, border: 'solid 1px #f7f7f7', borderRadius: 4 }} cellPadding={2} cellSpacing={2}>
                     <tbody>
                         <tr>
                             {KANBAN_HEADERS.map((j, k) => (
@@ -102,7 +95,7 @@ export default function KanbanTable() {
                                     onDragEnd={drop}
                                     onDragOver={(e) => dragOver(e, index, -1)}
                                     width='25%'>{item.map((e, i) => (
-                                        <div style={{ border: 'solid 1px black', display: 'flex', flexDirection: 'column', padding: 10, borderRadius: 4, marginBottom: 10 }}
+                                        <div style={{ backgroundColor: 'white', border: 'solid 1px rgb(54, 54, 54)', display: 'flex', flexDirection: 'column', padding: 10, borderRadius: 3, marginBottom: 10 }}
                                             draggable={true}
                                             onDragStart={(e) => dragStart(e, index, i)}
                                             onDragOver={(e) => dragOver(e, index, i)}

@@ -11,6 +11,10 @@ import Select from '@mui/material/Select';
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 
+import BackEndConnection from './BackEndConnection';
+
+const backend = BackEndConnection.INSTANCE();
+
 const STATUS = ['Backlog', 'To Do', 'In Progress', 'Completed'];
 const PRIORITY = ['High', 'Low', 'Medium'];
 
@@ -48,8 +52,12 @@ export default class BacklogDialog extends React.Component {
     }
 
     submitAndClose() {
-        let query = { title: this.state.title, description: this.state.description, status: this.state.status, priority: this.state.priority };
-        this.state.handleCloseDialog(query);
+        let query = { documents: [{ 'title': this.state.title, 'description': this.state.description, 'status': this.state.status, 'priority': this.state.priority }] };
+        backend.insert_documents_into_mongo_db(query, (data) => {
+            if (data.inserted_count >= 1) {
+                this.state.handleCloseDialog(query);
+            }
+        })
     }
 
     render() {
