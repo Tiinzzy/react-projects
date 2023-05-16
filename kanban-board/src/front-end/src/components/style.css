@@ -1,0 +1,22 @@
+table,
+th,
+td {
+    border-radius: 2px;
+}
+
+td {
+    padding: 8px 5px 8px 5px;
+}
+
+th {
+    padding: 5px;
+    position: sticky;
+    top: 0;
+    background-color: rgb(225, 225, 225);
+    border-radius: 2px;
+    text-align: left;
+}
+
+tr {
+    background-color: rgba(243, 243, 243, 0.449);
+}
