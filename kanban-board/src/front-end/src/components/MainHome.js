@@ -34,7 +34,7 @@ class MainHome extends React.Component {
                 <Box style={{ width: 1400, marginBottom: 35 }}>
                     <Typography fontWeight="bold" fontFamily="helvetica" fontSize="18px"> Kanban Board</Typography>
                 </Box>
-                <KanbanTable logs={this.state.logs} />
+                {this.state.logs && <KanbanTable logs={this.state.logs} />}
             </Box>
         );
     }
