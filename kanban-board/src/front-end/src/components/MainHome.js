@@ -7,6 +7,8 @@ import BackEndConnection from './BackEndConnection';
 import KanbanTable from "./KanbanTable";
 
 const backend = BackEndConnection.INSTANCE();
+const LOGS = [[], [], [], []];
+let count = 1;
 
 class MainHome extends React.Component {
 
@@ -18,10 +20,24 @@ class MainHome extends React.Component {
     }
 
     componentDidMount() {
-        backend.get_documents_from_mongo_db((data) => {
-            let that = this;
-            that.setState({ logs: data.documents });
-        })
+        if (count > 1) {
+            backend.get_documents_from_mongo_db((data) => {
+                let that = this;
+                that.setState({ logs: data.documents });
+                // for (let i in data.documents) {
+                //     if (data.documents[i].status === 'Backlog') {
+                //         LOGS[0].push(data.documents[i]);
+                //     } else if (data.documents[i].status === 'To Do') {
+                //         LOGS[1].push(data.documents[i]);
+                //     } else if (data.documents[i].status === 'In Progress') {
+                //         LOGS[2].push(data.documents[i]);
+                //     } else if (data.documents[i].status === 'Completed') {
+                //         LOGS[3].push(data.documents[i]);
+                //     }
+                // }
+            })
+        }
+        count += 1;
     }
 
     render() {
