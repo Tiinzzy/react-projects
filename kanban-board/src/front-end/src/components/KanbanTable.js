@@ -31,7 +31,7 @@ function moveTask(list, draggedTask, droppedLocation) {
 }
 
 function checkContains(array, key, value, data) {
-    const exists = array.some(obj => obj[key] === value);
+    const exists = SAMPLE.some(array => array.some(obj => obj[key] === value))
     if (!exists) {
         array.push(data);
     }
