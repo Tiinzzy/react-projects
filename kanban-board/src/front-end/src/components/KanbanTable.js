@@ -21,21 +21,15 @@ const droppedLocation = {}
 
 function moveTask(list, draggedTask, droppedLocation) {
     let task = list[draggedTask.columnId][draggedTask.taskId];
-    let obj = list[droppedLocation.taskId];
     list[draggedTask.columnId].splice(draggedTask.taskId, 1);
 
     if (droppedLocation.taskId === -1) {
         list[droppedLocation.columnId].push(task);
-        for (let i in obj) {
-            obj[i].status = KANBAN_HEADERS[droppedLocation.columnId]
-        }
+        task.status = KANBAN_HEADERS[droppedLocation.columnId]
     } else {
         list[droppedLocation.columnId].splice(droppedLocation.taskId + 1, 0, task);
-        for (let i in obj) {
-            obj[i].status = KANBAN_HEADERS[droppedLocation.columnId]
-        }
+        task.status = KANBAN_HEADERS[droppedLocation.columnId]
     }
-    console.log(list);
     return list;
 }
 
