@@ -1,47 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import IconButton from '@mui/material/IconButton';
 import Dialog from '@mui/material/Dialog';
 
 import BacklogDialog from './BacklogDialog';
+import { moveTask, getLogList } from './functions';
 
 import './style.css';
 
-const KANBAN_HEADERS = ['Backlog', 'To Do', 'In Progress', 'Completed'];
-const SAMPLE = [
-    [{ title: 'test1', description: 'some description', status: 'Backlog', priority: 'Low' }, { title: 'test11', description: 'some description', status: 'Backlog', priority: 'Low' }],
-    [{ title: 'test2', description: 'some description', status: 'To Do', priority: 'Low' }],
-    [{ title: 'test3', description: 'some description', status: 'In Progress', priority: 'Low' }],
-    [{ title: 'test4', description: 'some description', status: 'Completed', priority: 'Low' }]];
-
-
+const HEADER_TO_INDEX = { 'Backlog': 0, 'To Do': 1, 'In Progress': 2, 'Completed': 3 };
+const KANBAN_HEADERS = Object.keys(HEADER_TO_INDEX)
 const draggedTask = {};
 const droppedLocation = {}
 
-function moveTask(list, draggedTask, droppedLocation) {
-    let task = list[draggedTask.columnId][draggedTask.taskId];
-    list[draggedTask.columnId].splice(draggedTask.taskId, 1);
-    if (droppedLocation.taskId === -1) {
-        list[droppedLocation.columnId].push(task);
-    } else {
-        list[droppedLocation.columnId].splice(droppedLocation.taskId + 1, 0, task);
-    }
-    return list;
-}
-
 export default function KanbanTable(props) {
-    const [list, setList] = useState(SAMPLE);
+    const [list, setList] = useState(getLogList(props.logs, HEADER_TO_INDEX));
     const [openDialog, setOpenDialog] = useState(false);
 
-    console.log(props.logs)
 
-    const dragStart = (e, columnId, taskId) => {
+    useEffect(() => {
+        let uniqueArrays = [...new Set(list)];
+        setList(uniqueArrays);
+    }, []);
+
+    const dragStart = (columnId, taskId) => {
         draggedTask.columnId = columnId;
         draggedTask.taskId = taskId;
     };
 
-    const dragOver = (e, columnId, taskId) => {
+    const dragOver = (columnId, taskId) => {
         droppedLocation.columnId = columnId;
         if (list[columnId].length === 0) {
             droppedLocation.taskId = -1;
@@ -55,10 +43,11 @@ export default function KanbanTable(props) {
             e.preventDefault();
             return;
         }
-        setList(moveTask([...list], draggedTask, droppedLocation));
+        setList(moveTask([...list], draggedTask, droppedLocation, KANBAN_HEADERS));
         draggedTask.columnId = -1;
         draggedTask.taskId = -1;
         droppedLocation.columnId = -1;
+
     };
 
     const handleOpenDialog = () => {
