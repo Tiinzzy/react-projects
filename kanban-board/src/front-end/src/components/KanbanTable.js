@@ -21,12 +21,21 @@ const droppedLocation = {}
 
 function moveTask(list, draggedTask, droppedLocation) {
     let task = list[draggedTask.columnId][draggedTask.taskId];
+    let obj = list[droppedLocation.taskId];
     list[draggedTask.columnId].splice(draggedTask.taskId, 1);
+
     if (droppedLocation.taskId === -1) {
         list[droppedLocation.columnId].push(task);
+        for (let i in obj) {
+            obj[i].status = KANBAN_HEADERS[droppedLocation.columnId]
+        }
     } else {
         list[droppedLocation.columnId].splice(droppedLocation.taskId + 1, 0, task);
+        for (let i in obj) {
+            obj[i].status = KANBAN_HEADERS[droppedLocation.columnId]
+        }
     }
+    console.log(list);
     return list;
 }
 
@@ -42,25 +51,25 @@ export default function KanbanTable(props) {
     const [list, setList] = useState(SAMPLE);
     const [openDialog, setOpenDialog] = useState(false);
 
-    const firstUpdate = useRef(true);
-    useLayoutEffect(() => {
-        if (firstUpdate.current) {
-            firstUpdate.current = false;
-            return;
-        }
+    // const firstUpdate = useRef(true);
+    // useLayoutEffect(() => {
+    //     if (firstUpdate.current) {
+    //         firstUpdate.current = false;
+    //         return;
+    //     }
 
-        for (let i in props.logs) {
-            if (props.logs[i].status === 'Backlog') {
-                checkContains(SAMPLE[0], '-id', props.logs[i]._id, props.logs[i])
-            } else if (props.logs[i].status === 'To Do') {
-                checkContains(SAMPLE[1], '-id', props.logs[i]._id, props.logs[i])
-            } else if (props.logs[i].status === 'In Progress') {
-                checkContains(SAMPLE[2], '-id', props.logs[i]._id, props.logs[i])
-            } else if (props.logs[i].status === 'Completed') {
-                checkContains(SAMPLE[3], '-id', props.logs[i]._id, props.logs[i])
-            }
-        }
-    });
+    //     for (let i in props.logs) {
+    //         if (props.logs[i].status === 'Backlog') {
+    //             checkContains(SAMPLE[0], '-id', props.logs[i]._id, props.logs[i])
+    //         } else if (props.logs[i].status === 'To Do') {
+    //             checkContains(SAMPLE[1], '-id', props.logs[i]._id, props.logs[i])
+    //         } else if (props.logs[i].status === 'In Progress') {
+    //             checkContains(SAMPLE[2], '-id', props.logs[i]._id, props.logs[i])
+    //         } else if (props.logs[i].status === 'Completed') {
+    //             checkContains(SAMPLE[3], '-id', props.logs[i]._id, props.logs[i])
+    //         }
+    //     }
+    // });
 
 
     useEffect(() => {
@@ -93,6 +102,7 @@ export default function KanbanTable(props) {
         draggedTask.columnId = -1;
         draggedTask.taskId = -1;
         droppedLocation.columnId = -1;
+
     };
 
     const handleOpenDialog = () => {
