@@ -52,20 +52,12 @@ export default function KanbanTable(props) {
         for (let i in props.logs) {
             if (props.logs[i].status === 'Backlog') {
                 checkContains(SAMPLE[0], '-id', props.logs[i]._id, props.logs[i])
-                // SAMPLE[0].push(props.logs[i]);
-
             } else if (props.logs[i].status === 'To Do') {
                 checkContains(SAMPLE[1], '-id', props.logs[i]._id, props.logs[i])
-
-                // SAMPLE[1].push(props.logs[i]);
             } else if (props.logs[i].status === 'In Progress') {
                 checkContains(SAMPLE[2], '-id', props.logs[i]._id, props.logs[i])
-
-                // SAMPLE[2].push(props.logs[i]);
             } else if (props.logs[i].status === 'Completed') {
                 checkContains(SAMPLE[3], '-id', props.logs[i]._id, props.logs[i])
-
-                // SAMPLE[3].push(props.logs[i]);
             }
         }
     });
