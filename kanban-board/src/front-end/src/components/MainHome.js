@@ -7,21 +7,25 @@ import BackEndConnection from './BackEndConnection';
 import KanbanTable from "./KanbanTable";
 
 const backend = BackEndConnection.INSTANCE();
+const LOGS = [[], [], [], []];
+let count = 1;
 
 class MainHome extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            logs: {}
         }
     }
 
     componentDidMount() {
-        backend.get_documents_from_mongo_db((data) => {
-            let that = this;
-            that.setState({ logs: data.documents });
-        })
+        if (count > 1) {
+            backend.get_documents_from_mongo_db((data) => {
+                let that = this;
+                that.setState({ logs: data.documents });
+            })
+        }
+        count += 1;
     }
 
     render() {
@@ -30,7 +34,7 @@ class MainHome extends React.Component {
                 <Box style={{ width: 1400, marginBottom: 35 }}>
                     <Typography fontWeight="bold" fontFamily="helvetica" fontSize="18px"> Kanban Board</Typography>
                 </Box>
-                <KanbanTable logs={this.state.logs} />
+                {this.state.logs && <KanbanTable logs={this.state.logs} />}
             </Box>
         );
     }
