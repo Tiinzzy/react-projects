@@ -65,3 +65,21 @@ def get_comments():
         return documents
     else:
         return {'result': False}
+
+
+def update_document(parameters):
+    host_name = 'localhost'
+    port_name = 27017
+    database_name = 'kanban'
+    collection_name = 'kanban_comment'
+    document_id = parameters.get('document_id')
+    documents = parameters.get('documents')
+
+    client = MongoDBClient(host_name, port_name)
+    connection = client.connect()
+    if connection:
+        result = client.update_document(database_name, collection_name, document_id, documents)
+        client.disconnect()
+        return result
+    else:
+        return {'result': False}
