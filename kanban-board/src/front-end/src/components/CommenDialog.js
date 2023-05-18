@@ -12,7 +12,20 @@ export default class CommenDialog extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            comment: ''
         }
+    }
+
+    getComment(e) {
+        this.setState({ comment: e.target.value });
+    }
+
+    cancelAndClose(){
+
+    }
+
+    submitAndClose(){
+        
     }
 
     render() {
@@ -24,12 +37,12 @@ export default class CommenDialog extends React.Component {
                 <DialogContent>
                     <Box style={{ marginTop: 20, display: 'flex', flexDirection: 'column', width: 500 }}>
                         <TextField fullWidth multiline rows={6} label="Comment"
-                            variant="outlined" style={{ marginBottom: 12 }} />
+                            variant="outlined" style={{ marginBottom: 12 }} onChange={(e) => this.getComment(e)} />
                     </Box>
                 </DialogContent>
                 <DialogActions>
-                    <Button variant="outlined" >Cancel</Button>
-                    <Button variant="outlined" >Submit</Button>
+                    <Button variant="outlined" onClick={() => this.cancelAndClose()}>Cancel</Button>
+                    <Button variant="outlined" onClick={() => this.submitAndClose()}>Submit</Button>
                 </DialogActions>
             </>
         );
