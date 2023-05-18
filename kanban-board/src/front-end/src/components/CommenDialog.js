@@ -20,7 +20,9 @@ export default class CommenDialog extends React.Component {
             comment: '',
             handleCloseDialog: props.handleCloseDialog,
             selectedTask: props.selectedTask,
-            commentError: false
+            commentError: false,
+            alreadyHasComment: false,
+            commentId: ''
         }
     }
 
@@ -29,7 +31,7 @@ export default class CommenDialog extends React.Component {
             let that = this;
             let exist = valueExist(data.documents, 'task_id', this.state.selectedTask);
             if (exist !== null) {
-                that.setState({ comment: exist.comment });
+                that.setState({ comment: exist.comment, alreadyHasComment: true, commentId: exist._id });
             } else {
                 that.setState({ comment: '' });
             }
@@ -49,12 +51,17 @@ export default class CommenDialog extends React.Component {
         let finalDate = todaysDate.getFullYear() + '-' + (todaysDate.getMonth() + 1) + '-' + todaysDate.getDate();
 
         let query = { documents: [{ 'comment': this.state.comment, 'task_id': this.state.selectedTask, 'timestamp': finalDate }] };
-        if (this.state.comment.length > 0) {
+        if (this.state.comment.length > 0 && this.state.alreadyHasComment === false) {
             backend.insert_comments_in_mongo_db(query, (data) => {
                 let that = this;
                 if (data.inserted_count > 0) {
                     that.state.handleCloseDialog();
                 }
+            })
+        } else if (this.state.comment.length > 0 && this.state.alreadyHasComment === true) {
+            let query = { document_id: this.state.commentId, documents: [{ 'comment': this.state.comment, 'task_id': this.state.selectedTask, 'timestamp': finalDate }] };
+            backend.update_comment_mongo_db(query, (data) => {
+                console.log(data);
             })
         } else {
             this.setState({ commentError: true });
