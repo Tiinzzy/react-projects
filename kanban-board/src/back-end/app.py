@@ -27,3 +27,9 @@ def insert_comments_mongo_db():
     parameters = get_parameters(request)
     result = app_mongodb.insert_comment(parameters)
     return jsonify(result)
+
+
+@app.route('/mongodb/get_comments', methods=["POST"])
+def get_comments_mongo_db():
+    result = app_mongodb.get_comments()
+    return jsonify(result)
