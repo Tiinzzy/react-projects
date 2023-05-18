@@ -21,3 +21,12 @@ export function getLogList(serialLogs, HEADER_TO_INDEX) {
 
     return list;
 }
+
+export function valueExist(array, key, value) {
+    for (let i = 0; i < array.length; i++) {
+        if (array[i][key] === value) {
+            return array[i];
+        }
+    }
+    return null;
+}
