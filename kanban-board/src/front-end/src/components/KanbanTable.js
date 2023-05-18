@@ -6,14 +6,38 @@ import Dialog from '@mui/material/Dialog';
 
 import BacklogDialog from './BacklogDialog';
 import CommenDialog from './CommenDialog';
-import { moveTask, getLogList } from './functions';
+import { getLogList } from './functions';
+import BackEndConnection from './BackEndConnection';
 
 import './style.css';
+
+const backend = BackEndConnection.INSTANCE();
 
 const HEADER_TO_INDEX = { 'Backlog': 0, 'To Do': 1, 'In Progress': 2, 'Completed': 3 };
 const KANBAN_HEADERS = Object.keys(HEADER_TO_INDEX)
 const draggedTask = {};
 const droppedLocation = {}
+
+function moveTask(list, draggedTask, droppedLocation, KANBAN_HEADERS) {
+    let task = list[draggedTask.columnId][draggedTask.taskId];
+    list[draggedTask.columnId].splice(draggedTask.taskId, 1);
+    let query = { document_id: task._id, documents: { 'description': task.description, 'priority': task.priority, 'title': task.title } };
+    if (droppedLocation.taskId === -1) {
+        list[droppedLocation.columnId].push(task);
+        task.status = KANBAN_HEADERS[droppedLocation.columnId];
+        query.documents['status'] = KANBAN_HEADERS[droppedLocation.columnId];
+    } else {
+        list[droppedLocation.columnId].splice(droppedLocation.taskId + 1, 0, task);
+        task.status = KANBAN_HEADERS[droppedLocation.columnId];
+        query.documents['status'] = KANBAN_HEADERS[droppedLocation.columnId];
+    }
+    backend.update_document_mongo_db(query, (data) => {
+        if (data.result) {
+            console.log('status changed!')
+        }
+    })
+    return list;
+}
 
 export default function KanbanTable(props) {
     const [list, setList] = useState(getLogList(props.logs, HEADER_TO_INDEX));
@@ -49,7 +73,6 @@ export default function KanbanTable(props) {
         draggedTask.columnId = -1;
         draggedTask.taskId = -1;
         droppedLocation.columnId = -1;
-
     };
 
     const handleOpenDialog = () => {
@@ -134,7 +157,7 @@ export default function KanbanTable(props) {
             </div>
             <Dialog open={openDialog} onClose={handleCloseDialog}>
                 {displayComponent === false ? <BacklogDialog handleCloseDialog={handleCloseDialog} />
-                    : <CommenDialog handleCloseDialog={handleCloseDialog} selectedTask={selectedTask}/>}
+                    : <CommenDialog handleCloseDialog={handleCloseDialog} selectedTask={selectedTask} />}
             </Dialog>
         </>
     );
