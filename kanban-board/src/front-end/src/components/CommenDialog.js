@@ -12,7 +12,9 @@ export default class CommenDialog extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            comment: ''
+            comment: '',
+            handleCloseDialog: props.handleCloseDialog,
+            selectedTask: props.selectedTask
         }
     }
 
@@ -20,12 +22,12 @@ export default class CommenDialog extends React.Component {
         this.setState({ comment: e.target.value });
     }
 
-    cancelAndClose(){
-
+    cancelAndClose() {
+        this.state.handleCloseDialog();
     }
 
-    submitAndClose(){
-        
+    submitAndClose() {
+        this.state.handleCloseDialog();
     }
 
     render() {
