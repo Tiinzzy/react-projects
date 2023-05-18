@@ -8,17 +8,9 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 
 import BackEndConnection from './BackEndConnection';
+import { valueExist } from './functions';
 
 const backend = BackEndConnection.INSTANCE();
-
-function valueExist(array, key, value) {
-    for (let i = 0; i < array.length; i++) {
-        if (array[i][key] === value) {
-            return array[i];
-        }
-    }
-    return null;
-}
 
 export default class CommenDialog extends React.Component {
 
