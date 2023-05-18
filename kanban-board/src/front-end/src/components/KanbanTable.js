@@ -5,31 +5,57 @@ import IconButton from '@mui/material/IconButton';
 import Dialog from '@mui/material/Dialog';
 
 import BacklogDialog from './BacklogDialog';
-import { moveTask, getLogList } from './functions';
+import CommenDialog from './CommenDialog';
+import { getLogList } from './functions';
+import BackEndConnection from './BackEndConnection';
 
 import './style.css';
+
+const backend = BackEndConnection.INSTANCE();
 
 const HEADER_TO_INDEX = { 'Backlog': 0, 'To Do': 1, 'In Progress': 2, 'Completed': 3 };
 const KANBAN_HEADERS = Object.keys(HEADER_TO_INDEX)
 const draggedTask = {};
 const droppedLocation = {}
 
+function moveTask(list, draggedTask, droppedLocation, KANBAN_HEADERS) {
+    let task = list[draggedTask.columnId][draggedTask.taskId];
+    list[draggedTask.columnId].splice(draggedTask.taskId, 1);
+    let query = { document_id: task._id, documents: { 'description': task.description, 'priority': task.priority, 'title': task.title } };
+    if (droppedLocation.taskId === -1) {
+        list[droppedLocation.columnId].push(task);
+        task.status = KANBAN_HEADERS[droppedLocation.columnId];
+        query.documents['status'] = KANBAN_HEADERS[droppedLocation.columnId];
+    } else {
+        list[droppedLocation.columnId].splice(droppedLocation.taskId + 1, 0, task);
+        task.status = KANBAN_HEADERS[droppedLocation.columnId];
+        query.documents['status'] = KANBAN_HEADERS[droppedLocation.columnId];
+    }
+    backend.update_document_mongo_db(query, (data) => {
+        if (data.result) {
+            console.log('status changed!')
+        }
+    })
+    return list;
+}
+
 export default function KanbanTable(props) {
     const [list, setList] = useState(getLogList(props.logs, HEADER_TO_INDEX));
     const [openDialog, setOpenDialog] = useState(false);
-
+    const [displayComponent, setDisplayComponent] = useState(false);
+    const [selectedTask, setSelectedTask] = useState('');
 
     useEffect(() => {
         let uniqueArrays = [...new Set(list)];
         setList(uniqueArrays);
     }, []);
 
-    const dragStart = (columnId, taskId) => {
+    const dragStart = (e, columnId, taskId) => {
         draggedTask.columnId = columnId;
         draggedTask.taskId = taskId;
     };
 
-    const dragOver = (columnId, taskId) => {
+    const dragOver = (e, columnId, taskId) => {
         droppedLocation.columnId = columnId;
         if (list[columnId].length === 0) {
             droppedLocation.taskId = -1;
@@ -47,15 +73,21 @@ export default function KanbanTable(props) {
         draggedTask.columnId = -1;
         draggedTask.taskId = -1;
         droppedLocation.columnId = -1;
-
     };
 
     const handleOpenDialog = () => {
+        setDisplayComponent(false);
         setOpenDialog(true);
     }
 
     const handleCloseDialog = () => {
         setOpenDialog(false);
+    }
+
+    function makeComment(j, e) {
+        setSelectedTask(e)
+        setDisplayComponent(true);
+        setOpenDialog(true);
     }
 
     return (
@@ -86,6 +118,7 @@ export default function KanbanTable(props) {
                                     width='25%'>{item.map((e, i) => (
                                         <div style={{ backgroundColor: 'white', border: 'solid 1px rgb(54, 54, 54)', display: 'flex', flexDirection: 'column', padding: 10, borderRadius: 3, marginBottom: 10 }}
                                             draggable={true}
+                                            onDoubleClick={(j) => makeComment(j, e._id)}
                                             onDragStart={(e) => dragStart(e, index, i)}
                                             onDragOver={(e) => dragOver(e, index, i)}
                                             key={i}>
@@ -123,7 +156,8 @@ export default function KanbanTable(props) {
                 </table>
             </div>
             <Dialog open={openDialog} onClose={handleCloseDialog}>
-                <BacklogDialog handleCloseDialog={handleCloseDialog} />
+                {displayComponent === false ? <BacklogDialog handleCloseDialog={handleCloseDialog} />
+                    : <CommenDialog handleCloseDialog={handleCloseDialog} selectedTask={selectedTask} />}
             </Dialog>
         </>
     );
