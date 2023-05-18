@@ -11,6 +11,15 @@ import BackEndConnection from './BackEndConnection';
 
 const backend = BackEndConnection.INSTANCE();
 
+function valueExist(array, key, value) {
+    for (let i = 0; i < array.length; i++) {
+        if (array[i][key] === value) {
+            return array[i];
+        }
+    }
+    return null;
+}
+
 export default class CommenDialog extends React.Component {
 
     constructor(props) {
@@ -21,6 +30,18 @@ export default class CommenDialog extends React.Component {
             selectedTask: props.selectedTask,
             commentError: false
         }
+    }
+
+    componentDidMount() {
+        backend.get_comments_from_mongo_db((data) => {
+            let that = this;
+            let exist = valueExist(data.documents, 'task_id', this.state.selectedTask);
+            if (exist !== null) {
+                that.setState({ comment: exist.comment });
+            } else {
+                that.setState({ comment: '' });
+            }
+        })
     }
 
     getComment(e) {
