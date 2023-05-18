@@ -38,5 +38,12 @@ def get_comments_mongo_db():
 @app.route('/mongodb/update_comment', methods=["POST"])
 def update_comment_mongo_db():
     parameters = get_parameters(request)
+    result = app_mongodb.update_comment(parameters)
+    return jsonify(result)
+
+
+@app.route('/mongodb/update_document', methods=["POST"])
+def update_document_mongo_db():
+    parameters = get_parameters(request)
     result = app_mongodb.update_document(parameters)
     return jsonify(result)
