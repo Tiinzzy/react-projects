@@ -33,3 +33,10 @@ def insert_comments_mongo_db():
 def get_comments_mongo_db():
     result = app_mongodb.get_comments()
     return jsonify(result)
+
+
+@app.route('/mongodb/update_comment', methods=["POST"])
+def update_comment_mongo_db():
+    parameters = get_parameters(request)
+    result = app_mongodb.update_document(parameters)
+    return jsonify(result)
