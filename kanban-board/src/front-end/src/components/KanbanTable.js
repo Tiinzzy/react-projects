@@ -19,7 +19,7 @@ export default function KanbanTable(props) {
     const [list, setList] = useState(getLogList(props.logs, HEADER_TO_INDEX));
     const [openDialog, setOpenDialog] = useState(false);
     const [displayComponent, setDisplayComponent] = useState(false);
-
+    const [selectedTask, setSelectedTask] = useState('');
 
     useEffect(() => {
         let uniqueArrays = [...new Set(list)];
@@ -61,7 +61,8 @@ export default function KanbanTable(props) {
         setOpenDialog(false);
     }
 
-    function makeComment() {
+    function makeComment(j, e) {
+        setSelectedTask(e)
         setDisplayComponent(true);
         setOpenDialog(true);
     }
@@ -94,7 +95,7 @@ export default function KanbanTable(props) {
                                     width='25%'>{item.map((e, i) => (
                                         <div style={{ backgroundColor: 'white', border: 'solid 1px rgb(54, 54, 54)', display: 'flex', flexDirection: 'column', padding: 10, borderRadius: 3, marginBottom: 10 }}
                                             draggable={true}
-                                            onDoubleClick={() => makeComment()}
+                                            onDoubleClick={(j) => makeComment(j, e._id)}
                                             onDragStart={(e) => dragStart(e, index, i)}
                                             onDragOver={(e) => dragOver(e, index, i)}
                                             key={i}>
@@ -133,7 +134,7 @@ export default function KanbanTable(props) {
             </div>
             <Dialog open={openDialog} onClose={handleCloseDialog}>
                 {displayComponent === false ? <BacklogDialog handleCloseDialog={handleCloseDialog} />
-                    : <CommenDialog handleCloseDialog={handleCloseDialog}/>}
+                    : <CommenDialog handleCloseDialog={handleCloseDialog} selectedTask={selectedTask}/>}
             </Dialog>
         </>
     );
