@@ -49,3 +49,19 @@ def insert_comment(parameters):
         return result
     else:
         return {'result': False}
+
+
+def get_comments():
+    host_name = 'localhost'
+    port_name = 27017
+    database_name = 'kanban'
+    collection_name = 'kanban_comment'
+
+    client = MongoDBClient(host_name, port_name)
+    connection = client.connect()
+    if connection:
+        documents = client.get_all_documents(database_name, collection_name)
+        client.disconnect()
+        return documents
+    else:
+        return {'result': False}
