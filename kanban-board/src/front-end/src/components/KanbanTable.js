@@ -5,6 +5,7 @@ import IconButton from '@mui/material/IconButton';
 import Dialog from '@mui/material/Dialog';
 
 import BacklogDialog from './BacklogDialog';
+import CommenDialog from './CommenDialog';
 import { moveTask, getLogList } from './functions';
 
 import './style.css';
@@ -17,6 +18,7 @@ const droppedLocation = {}
 export default function KanbanTable(props) {
     const [list, setList] = useState(getLogList(props.logs, HEADER_TO_INDEX));
     const [openDialog, setOpenDialog] = useState(false);
+    const [displayComponent, setDisplayComponent] = useState(false);
 
 
     useEffect(() => {
@@ -24,12 +26,12 @@ export default function KanbanTable(props) {
         setList(uniqueArrays);
     }, []);
 
-    const dragStart = (columnId, taskId) => {
+    const dragStart = (e, columnId, taskId) => {
         draggedTask.columnId = columnId;
         draggedTask.taskId = taskId;
     };
 
-    const dragOver = (columnId, taskId) => {
+    const dragOver = (e, columnId, taskId) => {
         droppedLocation.columnId = columnId;
         if (list[columnId].length === 0) {
             droppedLocation.taskId = -1;
@@ -51,11 +53,17 @@ export default function KanbanTable(props) {
     };
 
     const handleOpenDialog = () => {
+        setDisplayComponent(false);
         setOpenDialog(true);
     }
 
     const handleCloseDialog = () => {
         setOpenDialog(false);
+    }
+
+    function makeComment() {
+        setDisplayComponent(true);
+        setOpenDialog(true);
     }
 
     return (
@@ -86,6 +94,7 @@ export default function KanbanTable(props) {
                                     width='25%'>{item.map((e, i) => (
                                         <div style={{ backgroundColor: 'white', border: 'solid 1px rgb(54, 54, 54)', display: 'flex', flexDirection: 'column', padding: 10, borderRadius: 3, marginBottom: 10 }}
                                             draggable={true}
+                                            onDoubleClick={() => makeComment()}
                                             onDragStart={(e) => dragStart(e, index, i)}
                                             onDragOver={(e) => dragOver(e, index, i)}
                                             key={i}>
@@ -123,7 +132,8 @@ export default function KanbanTable(props) {
                 </table>
             </div>
             <Dialog open={openDialog} onClose={handleCloseDialog}>
-                <BacklogDialog handleCloseDialog={handleCloseDialog} />
+                {displayComponent === false ? <BacklogDialog handleCloseDialog={handleCloseDialog} />
+                    : <CommenDialog />}
             </Dialog>
         </>
     );
