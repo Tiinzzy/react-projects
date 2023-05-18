@@ -7,7 +7,6 @@ def insert_documents(parameters):
     database_name = 'kanban'
     collection_name = 'kanban_board'
     documents = parameters.get('documents')
-    print(documents, '<<<')
 
     client = MongoDBClient(host_name, port_name)
     connection = client.connect()
@@ -31,5 +30,74 @@ def get_documents():
         documents = client.get_all_documents(database_name, collection_name)
         client.disconnect()
         return documents
+    else:
+        return {'result': False}
+
+
+def insert_comment(parameters):
+    host_name = 'localhost'
+    port_name = 27017
+    database_name = 'kanban'
+    collection_name = 'kanban_comment'
+    documents = parameters.get('documents')
+
+    client = MongoDBClient(host_name, port_name)
+    connection = client.connect()
+    if connection:
+        result = client.insert_documents(database_name, collection_name, documents)
+        client.disconnect()
+        return result
+    else:
+        return {'result': False}
+
+
+def get_comments():
+    host_name = 'localhost'
+    port_name = 27017
+    database_name = 'kanban'
+    collection_name = 'kanban_comment'
+
+    client = MongoDBClient(host_name, port_name)
+    connection = client.connect()
+    if connection:
+        documents = client.get_all_documents(database_name, collection_name)
+        client.disconnect()
+        return documents
+    else:
+        return {'result': False}
+
+
+def update_comment(parameters):
+    host_name = 'localhost'
+    port_name = 27017
+    database_name = 'kanban'
+    collection_name = 'kanban_comment'
+    document_id = parameters.get('document_id')
+    documents = parameters.get('documents')
+
+    client = MongoDBClient(host_name, port_name)
+    connection = client.connect()
+    if connection:
+        result = client.update_document(database_name, collection_name, document_id, documents)
+        client.disconnect()
+        return result
+    else:
+        return {'result': False}
+
+
+def update_document(parameters):
+    host_name = 'localhost'
+    port_name = 27017
+    database_name = 'kanban'
+    collection_name = 'kanban_board'
+    document_id = parameters.get('document_id')
+    documents = parameters.get('documents')
+
+    client = MongoDBClient(host_name, port_name)
+    connection = client.connect()
+    if connection:
+        result = client.update_document(database_name, collection_name, document_id, documents)
+        client.disconnect()
+        return result
     else:
         return {'result': False}

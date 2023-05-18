@@ -1,17 +1,3 @@
-export function moveTask(list, draggedTask, droppedLocation, KANBAN_HEADERS) {
-    let task = list[draggedTask.columnId][draggedTask.taskId];
-    list[draggedTask.columnId].splice(draggedTask.taskId, 1);
-
-    if (droppedLocation.taskId === -1) {
-        list[droppedLocation.columnId].push(task);
-        task.status = KANBAN_HEADERS[droppedLocation.columnId];
-    } else {
-        list[droppedLocation.columnId].splice(droppedLocation.taskId + 1, 0, task);
-        task.status = KANBAN_HEADERS[droppedLocation.columnId];
-    }
-    return list;
-}
-
 export function getLogList(serialLogs, HEADER_TO_INDEX) {
     let list = [[], [], [], []];
 
@@ -20,4 +6,13 @@ export function getLogList(serialLogs, HEADER_TO_INDEX) {
     });
 
     return list;
+}
+
+export function valueExist(array, key, value) {
+    for (let i = 0; i < array.length; i++) {
+        if (array[i][key] === value) {
+            return array[i];
+        }
+    }
+    return null;
 }
