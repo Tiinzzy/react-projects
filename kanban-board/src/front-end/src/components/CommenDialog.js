@@ -59,9 +59,12 @@ export default class CommenDialog extends React.Component {
                 }
             })
         } else if (this.state.comment.length > 0 && this.state.alreadyHasComment === true) {
-            let query = { document_id: this.state.commentId, documents: [{ 'comment': this.state.comment, 'task_id': this.state.selectedTask, 'timestamp': finalDate }] };
+            let query = { document_id: this.state.commentId, documents: { 'comment': this.state.comment, 'task_id': this.state.selectedTask, 'timestamp': finalDate } };
             backend.update_comment_mongo_db(query, (data) => {
-                console.log(data);
+                let that = this;
+                if (data.result) {
+                    that.state.handleCloseDialog();
+                };
             })
         } else {
             this.setState({ commentError: true });
