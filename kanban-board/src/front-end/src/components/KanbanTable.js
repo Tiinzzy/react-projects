@@ -133,7 +133,7 @@ export default function KanbanTable(props) {
             </div>
             <Dialog open={openDialog} onClose={handleCloseDialog}>
                 {displayComponent === false ? <BacklogDialog handleCloseDialog={handleCloseDialog} />
-                    : <CommenDialog />}
+                    : <CommenDialog handleCloseDialog={handleCloseDialog}/>}
             </Dialog>
         </>
     );
