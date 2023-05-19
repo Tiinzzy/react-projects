@@ -5,16 +5,16 @@ import IconButton from '@mui/material/IconButton';
 import Dialog from '@mui/material/Dialog';
 
 import BacklogDialog from './BacklogDialog';
-import CommenDialog from './CommenDialog';
+import CommentDialog from './CommentDialog';
 import { getLogList } from './functions';
 import BackEndConnection from './BackEndConnection';
 
 import './style.css';
 
 const backend = BackEndConnection.INSTANCE();
-
+const STATE_BACKGROUND_COLOR = { 'Backlog': '#c0392b30', 'To Do': '#e67e2230', 'In Progress': '#2980b930', 'Completed': '#27ae6030' };
 const HEADER_TO_INDEX = { 'Backlog': 0, 'To Do': 1, 'In Progress': 2, 'Completed': 3 };
-const KANBAN_HEADERS = Object.keys(HEADER_TO_INDEX)
+const KANBAN_HEADERS = Object.keys(HEADER_TO_INDEX);
 const draggedTask = {};
 const droppedLocation = {}
 
@@ -65,10 +65,6 @@ export default function KanbanTable(props) {
     };
 
     const drop = (e) => {
-        if (draggedTask.columnId === droppedLocation.columnId) {
-            e.preventDefault();
-            return;
-        }
         setList(moveTask([...list], draggedTask, droppedLocation, KANBAN_HEADERS));
         draggedTask.columnId = -1;
         draggedTask.taskId = -1;
@@ -80,8 +76,17 @@ export default function KanbanTable(props) {
         setOpenDialog(true);
     }
 
-    const handleCloseDialog = () => {
-        setOpenDialog(false);
+    const handleCloseDialog = (query) => {
+        if (query && query.action === 'reload') {
+            backend.get_documents_from_mongo_db((data) => {
+                setList(getLogList(data.documents, HEADER_TO_INDEX))
+                if (data.documents.length > 0) {
+                    setOpenDialog(false);
+                }
+            })
+        } else {
+            setOpenDialog(false);
+        }
     }
 
     function makeComment(j, e) {
@@ -116,7 +121,15 @@ export default function KanbanTable(props) {
                                     onDragEnd={drop}
                                     onDragOver={(e) => dragOver(e, index, -1)}
                                     width='25%'>{item.map((e, i) => (
-                                        <div style={{ backgroundColor: 'white', border: 'solid 1px rgb(54, 54, 54)', display: 'flex', flexDirection: 'column', padding: 10, borderRadius: 3, marginBottom: 10 }}
+                                        <div style={{
+                                            backgroundColor: STATE_BACKGROUND_COLOR[e.status],
+                                            border: 'solid 2px ' + STATE_BACKGROUND_COLOR[e.status].substr(0, 7) + 'AA',
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            padding: 10,
+                                            borderRadius: 3,
+                                            marginBottom: 10
+                                        }}
                                             draggable={true}
                                             onDoubleClick={(j) => makeComment(j, e._id)}
                                             onDragStart={(e) => dragStart(e, index, i)}
@@ -157,7 +170,7 @@ export default function KanbanTable(props) {
             </div>
             <Dialog open={openDialog} onClose={handleCloseDialog}>
                 {displayComponent === false ? <BacklogDialog handleCloseDialog={handleCloseDialog} />
-                    : <CommenDialog handleCloseDialog={handleCloseDialog} selectedTask={selectedTask} />}
+                    : <CommentDialog handleCloseDialog={handleCloseDialog} selectedTask={selectedTask} />}
             </Dialog>
         </>
     );
