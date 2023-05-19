@@ -5,7 +5,7 @@ import IconButton from '@mui/material/IconButton';
 import Dialog from '@mui/material/Dialog';
 
 import BacklogDialog from './BacklogDialog';
-import CommenDialog from './CommenDialog';
+import CommentDialog from './CommentDialog';
 import { getLogList } from './functions';
 import BackEndConnection from './BackEndConnection';
 
@@ -39,6 +39,15 @@ function moveTask(list, draggedTask, droppedLocation, KANBAN_HEADERS) {
     return list;
 }
 
+function changeColour() {
+    let colours = ['#ff7eb9', '#ff65a3', '#7afcff', '#feff9c', '#fff740'];
+    let boxes = document.querySelectorAll(".box");
+    for (let i = 0; i < boxes.length; i++) {
+        let selectedCOlor = colours[Math.floor(Math.random() * colours.length)];
+        boxes[i].style.backgroundColor = selectedCOlor;
+    }
+}
+
 export default function KanbanTable(props) {
     const [list, setList] = useState(getLogList(props.logs, HEADER_TO_INDEX));
     const [openDialog, setOpenDialog] = useState(false);
@@ -48,6 +57,7 @@ export default function KanbanTable(props) {
     useEffect(() => {
         let uniqueArrays = [...new Set(list)];
         setList(uniqueArrays);
+        changeColour();
     }, []);
 
     const dragStart = (e, columnId, taskId) => {
@@ -80,7 +90,7 @@ export default function KanbanTable(props) {
         setOpenDialog(true);
     }
 
-    const handleCloseDialog = () => {
+    const handleCloseDialog = (query) => {
         setOpenDialog(false);
     }
 
@@ -116,7 +126,7 @@ export default function KanbanTable(props) {
                                     onDragEnd={drop}
                                     onDragOver={(e) => dragOver(e, index, -1)}
                                     width='25%'>{item.map((e, i) => (
-                                        <div style={{ backgroundColor: 'white', border: 'solid 1px rgb(54, 54, 54)', display: 'flex', flexDirection: 'column', padding: 10, borderRadius: 3, marginBottom: 10 }}
+                                        <div className="box" style={{ border: 'solid 1px #f6f6f6', display: 'flex', flexDirection: 'column', padding: 10, borderRadius: 3, marginBottom: 10 }}
                                             draggable={true}
                                             onDoubleClick={(j) => makeComment(j, e._id)}
                                             onDragStart={(e) => dragStart(e, index, i)}
@@ -157,7 +167,7 @@ export default function KanbanTable(props) {
             </div>
             <Dialog open={openDialog} onClose={handleCloseDialog}>
                 {displayComponent === false ? <BacklogDialog handleCloseDialog={handleCloseDialog} />
-                    : <CommenDialog handleCloseDialog={handleCloseDialog} selectedTask={selectedTask} />}
+                    : <CommentDialog handleCloseDialog={handleCloseDialog} selectedTask={selectedTask} />}
             </Dialog>
         </>
     );
