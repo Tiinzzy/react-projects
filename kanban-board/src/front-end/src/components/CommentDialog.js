@@ -12,7 +12,7 @@ import { valueExist } from './functions';
 
 const backend = BackEndConnection.INSTANCE();
 
-export default class CommenDialog extends React.Component {
+export default class CommentDialog extends React.Component {
 
     constructor(props) {
         super(props);

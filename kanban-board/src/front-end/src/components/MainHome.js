@@ -7,7 +7,6 @@ import BackEndConnection from './BackEndConnection';
 import KanbanTable from "./KanbanTable";
 
 const backend = BackEndConnection.INSTANCE();
-const LOGS = [[], [], [], []];
 let count = 1;
 
 class MainHome extends React.Component {

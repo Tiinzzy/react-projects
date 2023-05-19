@@ -55,7 +55,7 @@ export default class BacklogDialog extends React.Component {
         let query = { documents: [{ 'title': this.state.title, 'description': this.state.description, 'status': this.state.status, 'priority': this.state.priority }] };
         backend.insert_documents_into_mongo_db(query, (data) => {
             if (data.inserted_count >= 1) {
-                this.state.handleCloseDialog(query);
+                this.state.handleCloseDialog({ action: 'reload' });
             }
         })
     }
