@@ -43,8 +43,8 @@ function changeColour() {
     let colours = ['#ff7eb9', '#ff65a3', '#7afcff', '#feff9c', '#fff740'];
     let boxes = document.querySelectorAll(".box");
     for (let i = 0; i < boxes.length; i++) {
-        let selectedCOlor = colours[Math.floor(Math.random() * colours.length)];
-        boxes[i].style.backgroundColor = selectedCOlor;
+        let selectedColor = colours[Math.floor(Math.random() * colours.length)];
+        boxes[i].style.backgroundColor = selectedColor;
     }
 }
 
