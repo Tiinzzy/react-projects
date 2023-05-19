@@ -53,11 +53,12 @@ export default function KanbanTable(props) {
     const [openDialog, setOpenDialog] = useState(false);
     const [displayComponent, setDisplayComponent] = useState(false);
     const [selectedTask, setSelectedTask] = useState('');
+    const [color, setCOlor] = useState(changeColour());
+
 
     useEffect(() => {
         let uniqueArrays = [...new Set(list)];
         setList(uniqueArrays);
-        changeColour();
     }, []);
 
     const dragStart = (e, columnId, taskId) => {
@@ -91,7 +92,16 @@ export default function KanbanTable(props) {
     }
 
     const handleCloseDialog = (query) => {
-        setOpenDialog(false);
+        if (query && query.action === 'reload') {
+            backend.get_documents_from_mongo_db((data) => {
+                setList(getLogList(data.documents, HEADER_TO_INDEX))
+                if (data.documents.length > 0) {
+                    setOpenDialog(false);
+                }
+            })
+        } else {
+            setOpenDialog(false);
+        }
     }
 
     function makeComment(j, e) {
@@ -126,7 +136,7 @@ export default function KanbanTable(props) {
                                     onDragEnd={drop}
                                     onDragOver={(e) => dragOver(e, index, -1)}
                                     width='25%'>{item.map((e, i) => (
-                                        <div className="box" style={{ border: 'solid 1px #f6f6f6', display: 'flex', flexDirection: 'column', padding: 10, borderRadius: 3, marginBottom: 10 }}
+                                        <div className="box" style={{ backgroundColor: color, border: 'solid 1px #f6f6f6', display: 'flex', flexDirection: 'column', padding: 10, borderRadius: 3, marginBottom: 10 }}
                                             draggable={true}
                                             onDoubleClick={(j) => makeComment(j, e._id)}
                                             onDragStart={(e) => dragStart(e, index, i)}
