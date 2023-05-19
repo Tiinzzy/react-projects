@@ -12,9 +12,9 @@ import BackEndConnection from './BackEndConnection';
 import './style.css';
 
 const backend = BackEndConnection.INSTANCE();
-
+const STATE_BACKGROUND_COLOR = { 'Backlog': '#c0392b30', 'To Do': '#e67e2230', 'In Progress': '#2980b930', 'Completed': '#27ae6030' };
 const HEADER_TO_INDEX = { 'Backlog': 0, 'To Do': 1, 'In Progress': 2, 'Completed': 3 };
-const KANBAN_HEADERS = Object.keys(HEADER_TO_INDEX)
+const KANBAN_HEADERS = Object.keys(HEADER_TO_INDEX);
 const draggedTask = {};
 const droppedLocation = {}
 
@@ -39,22 +39,11 @@ function moveTask(list, draggedTask, droppedLocation, KANBAN_HEADERS) {
     return list;
 }
 
-function changeColour() {
-    let colours = ['#ff7eb9', '#ff65a3', '#7afcff', '#feff9c', '#fff740'];
-    let boxes = document.querySelectorAll(".box");
-    for (let i = 0; i < boxes.length; i++) {
-        let selectedColor = colours[Math.floor(Math.random() * colours.length)];
-        boxes[i].style.backgroundColor = selectedColor;
-    }
-}
-
 export default function KanbanTable(props) {
     const [list, setList] = useState(getLogList(props.logs, HEADER_TO_INDEX));
     const [openDialog, setOpenDialog] = useState(false);
     const [displayComponent, setDisplayComponent] = useState(false);
     const [selectedTask, setSelectedTask] = useState('');
-    const [color, setCOlor] = useState(changeColour());
-
 
     useEffect(() => {
         let uniqueArrays = [...new Set(list)];
@@ -76,10 +65,6 @@ export default function KanbanTable(props) {
     };
 
     const drop = (e) => {
-        if (draggedTask.columnId === droppedLocation.columnId) {
-            e.preventDefault();
-            return;
-        }
         setList(moveTask([...list], draggedTask, droppedLocation, KANBAN_HEADERS));
         draggedTask.columnId = -1;
         draggedTask.taskId = -1;
@@ -136,7 +121,15 @@ export default function KanbanTable(props) {
                                     onDragEnd={drop}
                                     onDragOver={(e) => dragOver(e, index, -1)}
                                     width='25%'>{item.map((e, i) => (
-                                        <div className="box" style={{ backgroundColor: color, border: 'solid 1px #f6f6f6', display: 'flex', flexDirection: 'column', padding: 10, borderRadius: 3, marginBottom: 10 }}
+                                        <div style={{
+                                            backgroundColor: STATE_BACKGROUND_COLOR[e.status],
+                                            border: 'solid 2px ' + STATE_BACKGROUND_COLOR[e.status].substr(0, 7) + 'AA',
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            padding: 10,
+                                            borderRadius: 3,
+                                            marginBottom: 10
+                                        }}
                                             draggable={true}
                                             onDoubleClick={(j) => makeComment(j, e._id)}
                                             onDragStart={(e) => dragStart(e, index, i)}
