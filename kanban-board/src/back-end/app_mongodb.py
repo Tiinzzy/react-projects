@@ -1,17 +1,18 @@
 from mongo_db_client import MongoDBClient
 
+HOST_NAME = 'localhost'
+PORT_NUMBER = 27017
+DATABASE_NAME = 'kanban'
+
 
 def insert_documents(parameters):
-    host_name = 'localhost'
-    port_name = 27017
-    database_name = 'kanban'
     collection_name = 'kanban_board'
     documents = parameters.get('documents')
 
-    client = MongoDBClient(host_name, port_name)
+    client = MongoDBClient(HOST_NAME, PORT_NUMBER)
     connection = client.connect()
     if connection:
-        result = client.insert_documents(database_name, collection_name, documents)
+        result = client.insert_documents(DATABASE_NAME, collection_name, documents)
         client.disconnect()
         return result
     else:
@@ -19,15 +20,12 @@ def insert_documents(parameters):
 
 
 def get_documents():
-    host_name = 'localhost'
-    port_name = 27017
-    database_name = 'kanban'
     collection_name = 'kanban_board'
 
-    client = MongoDBClient(host_name, port_name)
+    client = MongoDBClient(HOST_NAME, PORT_NUMBER)
     connection = client.connect()
     if connection:
-        documents = client.get_all_documents(database_name, collection_name)
+        documents = client.get_all_documents(DATABASE_NAME, collection_name)
         client.disconnect()
         return documents
     else:
@@ -35,16 +33,13 @@ def get_documents():
 
 
 def insert_comment(parameters):
-    host_name = 'localhost'
-    port_name = 27017
-    database_name = 'kanban'
     collection_name = 'kanban_comment'
     documents = parameters.get('documents')
 
-    client = MongoDBClient(host_name, port_name)
+    client = MongoDBClient(HOST_NAME, PORT_NUMBER)
     connection = client.connect()
     if connection:
-        result = client.insert_documents(database_name, collection_name, documents)
+        result = client.insert_documents(DATABASE_NAME, collection_name, documents)
         client.disconnect()
         return result
     else:
@@ -52,15 +47,12 @@ def insert_comment(parameters):
 
 
 def get_comments():
-    host_name = 'localhost'
-    port_name = 27017
-    database_name = 'kanban'
     collection_name = 'kanban_comment'
 
-    client = MongoDBClient(host_name, port_name)
+    client = MongoDBClient(HOST_NAME, PORT_NUMBER)
     connection = client.connect()
     if connection:
-        documents = client.get_all_documents(database_name, collection_name)
+        documents = client.get_all_documents(DATABASE_NAME, collection_name)
         client.disconnect()
         return documents
     else:
@@ -68,17 +60,14 @@ def get_comments():
 
 
 def update_comment(parameters):
-    host_name = 'localhost'
-    port_name = 27017
-    database_name = 'kanban'
     collection_name = 'kanban_comment'
     document_id = parameters.get('document_id')
     documents = parameters.get('documents')
 
-    client = MongoDBClient(host_name, port_name)
+    client = MongoDBClient(HOST_NAME, PORT_NUMBER)
     connection = client.connect()
     if connection:
-        result = client.update_document(database_name, collection_name, document_id, documents)
+        result = client.update_document(DATABASE_NAME, collection_name, document_id, documents)
         client.disconnect()
         return result
     else:
@@ -86,17 +75,14 @@ def update_comment(parameters):
 
 
 def update_document(parameters):
-    host_name = 'localhost'
-    port_name = 27017
-    database_name = 'kanban'
     collection_name = 'kanban_board'
     document_id = parameters.get('document_id')
     documents = parameters.get('documents')
 
-    client = MongoDBClient(host_name, port_name)
+    client = MongoDBClient(HOST_NAME, PORT_NUMBER)
     connection = client.connect()
     if connection:
-        result = client.update_document(database_name, collection_name, document_id, documents)
+        result = client.update_document(DATABASE_NAME, collection_name, document_id, documents)
         client.disconnect()
         return result
     else:
