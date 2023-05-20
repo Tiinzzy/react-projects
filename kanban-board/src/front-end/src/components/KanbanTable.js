@@ -12,12 +12,18 @@ import BackEndConnection from './BackEndConnection';
 import './style.css';
 
 const backend = BackEndConnection.INSTANCE();
+
+// TODO: Join these two constances
+// const HEADER_INFO = { 'Backlog': { index: 0, color: '#c0392b30' }, 'To Do': 1, 'In Progress': 2, 'Completed': 3 };
 const STATE_BACKGROUND_COLOR = { 'Backlog': '#c0392b30', 'To Do': '#e67e2230', 'In Progress': '#2980b930', 'Completed': '#27ae6030' };
 const HEADER_TO_INDEX = { 'Backlog': 0, 'To Do': 1, 'In Progress': 2, 'Completed': 3 };
+
+
 const KANBAN_HEADERS = Object.keys(HEADER_TO_INDEX);
 const draggedTask = {};
 const droppedLocation = {}
 
+// TODO: Save oder of the tasks in columns as well. I need to add a new property to task object that keeps the order in the column.
 function moveTask(list, draggedTask, droppedLocation, KANBAN_HEADERS) {
     let task = list[draggedTask.columnId][draggedTask.taskId];
     list[draggedTask.columnId].splice(draggedTask.taskId, 1);
