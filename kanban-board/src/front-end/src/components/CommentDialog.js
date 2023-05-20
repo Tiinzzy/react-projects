@@ -1,3 +1,12 @@
+// TODO:
+// 1- Every task could have multiple comments
+// 2- We only add comments
+// 3- When double-clicking on a task, show task infor in dialog and history of the comments and just let user add a new comment. NOT EDIT.
+
+// TODO: Writing an application using React.createContext() and understanding it. <= MONDAY
+// TODO: Also testing { lazy, Suspense } 
+
+
 import React from "react";
 
 import Button from '@mui/material/Button';
@@ -28,12 +37,11 @@ export default class CommentDialog extends React.Component {
 
     componentDidMount() {
         backend.get_comments_from_mongo_db((data) => {
-            let that = this;
             let exist = valueExist(data.documents, 'task_id', this.state.selectedTask);
             if (exist !== null) {
-                that.setState({ comment: exist.comment, alreadyHasComment: true, commentId: exist._id });
+                this.setState({ comment: exist.comment, alreadyHasComment: true, commentId: exist._id });
             } else {
-                that.setState({ comment: '' });
+                this.setState({ comment: '' });
             }
         })
     }
@@ -53,17 +61,15 @@ export default class CommentDialog extends React.Component {
         let query = { documents: [{ 'comment': this.state.comment, 'task_id': this.state.selectedTask, 'timestamp': finalDate }] };
         if (this.state.comment.length > 0 && this.state.alreadyHasComment === false) {
             backend.insert_comments_in_mongo_db(query, (data) => {
-                let that = this;
                 if (data.inserted_count > 0) {
-                    that.state.handleCloseDialog();
+                    this.state.handleCloseDialog();
                 }
             })
         } else if (this.state.comment.length > 0 && this.state.alreadyHasComment === true) {
             let query = { document_id: this.state.commentId, documents: { 'comment': this.state.comment, 'task_id': this.state.selectedTask, 'timestamp': finalDate } };
             backend.update_comment_mongo_db(query, (data) => {
-                let that = this;
                 if (data.result) {
-                    that.state.handleCloseDialog();
+                    this.state.handleCloseDialog();
                 };
             })
         } else {

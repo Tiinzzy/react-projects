@@ -20,8 +20,7 @@ class MainHome extends React.Component {
     componentDidMount() {
         if (count > 1) {
             backend.get_documents_from_mongo_db((data) => {
-                let that = this;
-                that.setState({ logs: data.documents });
+                this.setState({ logs: data.documents });
             })
         }
         count += 1;

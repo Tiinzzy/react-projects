@@ -1,9 +1,13 @@
 import MainHome from "./components/MainHome";
 
+import ReactDOM from 'react-dom';
+
 function App() {
   return (
     <>
-      <MainHome />
+      <div id="test"></div>
+      {/* <MainHome /> */}
+      {ReactDOM.createPortal(<h1>CHILD</h1>, document.body)}
     </>
   );
 }
