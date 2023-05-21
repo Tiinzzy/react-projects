@@ -5,6 +5,7 @@
 
 // TODO: Writing an application using React.createContext() and understanding it. <= MONDAY
 // TODO: Also testing { lazy, Suspense } 
+// TODO: Start a type script example next time (You may convert kanban to typescript as well)
 
 
 import React from "react";
