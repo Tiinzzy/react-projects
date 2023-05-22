@@ -1,0 +1,40 @@
+#kanban-board .title {
+    padding: 10px 10px 0px 10px;
+    font-size: xx-large;
+    text-align: center;
+  }
+  
+  #kanban-board .paragraph {
+    font-size: small;
+    text-align: center;
+    margin-bottom: 20px;
+  } 
+  
+  #kanban-board table {
+    width: 90%;
+    border: solid 1px gray;
+    padding: 5px;
+    margin: auto;
+  }
+  
+  #kanban-board th {
+    background-color: lightblue;
+    border: solid 1px gray;
+    width: 25%;
+  }
+  
+  #kanban-board td {
+    border: solid 1px gray;
+  }
+
+  #kanban-board tr {
+    vertical-align: top;
+  }
+
+
+  #kanban-board #task {
+    background-color:  rgb(213, 219, 224);
+    margin: 5px;
+    padding: 10px;
+    text-align: center;
+  }
