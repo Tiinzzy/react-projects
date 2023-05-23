@@ -44,6 +44,9 @@ class MongoDBClient:
     def update_document(self, database_name, collection_name, documents):
         my_database = self.mongo_client[database_name]
         collection = my_database.get_collection(collection_name)
+
+        collection.delete_many({})
+        
         try:
             for i in range(len(documents)):
                 for task in documents[i]:
