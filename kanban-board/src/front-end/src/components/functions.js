@@ -10,5 +10,7 @@ export function getLogList(serialLogs, HEADER_TO_INDEX) {
 
 export function valueExist(kanbanBoard, key, value) {
     let result = kanbanBoard.filter(d => d[key] === value);
-    return result.length > 0 ? result[0] : null;
+    // console.log(result)
+    // return result.length > 0 ? result[0] : null;
+    return result;
 }
