@@ -67,7 +67,7 @@ def update_comment(parameters):
     client = MongoDBClient(HOST_NAME, PORT_NUMBER)
     connection = client.connect()
     if connection:
-        result = client.update_document(DATABASE_NAME, collection_name, document_id, documents)
+        result = client.update_comment(DATABASE_NAME, collection_name, document_id, documents)
         client.disconnect()
         return result
     else:
