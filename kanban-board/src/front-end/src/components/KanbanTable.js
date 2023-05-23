@@ -13,13 +13,13 @@ import './style.css';
 
 const backend = BackEndConnection.INSTANCE();
 
-// TODO: Join these two constances
-// const HEADER_INFO = { 'Backlog': { index: 0, color: '#c0392b30' }, 'To Do': 1, 'In Progress': 2, 'Completed': 3 };
-const STATE_BACKGROUND_COLOR = { 'Backlog': '#c0392b30', 'To Do': '#e67e2230', 'In Progress': '#2980b930', 'Completed': '#27ae6030' };
 const HEADER_TO_INDEX = { 'Backlog': 0, 'To Do': 1, 'In Progress': 2, 'Completed': 3 };
+const HEADER_INFO = {
+    'Backlog': { index: 0, color: '#c0392b30' }, 'To Do': { index: 1, color: '#e67e2230' },
+    'In Progress': { index: 2, color: '#2980b930' }, 'Completed': { index: 3, color: '#27ae6030' }
+}
 
-
-const KANBAN_HEADERS = Object.keys(HEADER_TO_INDEX);
+const KANBAN_HEADERS = Object.keys(HEADER_INFO);
 const draggedTask = {};
 const droppedLocation = {}
 
@@ -128,8 +128,8 @@ export default function KanbanTable(props) {
                                     onDragOver={(e) => dragOver(e, index, -1)}
                                     width='25%'>{item.map((e, i) => (
                                         <div style={{
-                                            backgroundColor: STATE_BACKGROUND_COLOR[e.status],
-                                            border: 'solid 2px ' + STATE_BACKGROUND_COLOR[e.status].substr(0, 7) + 'AA',
+                                            backgroundColor: HEADER_INFO[e.status].color,
+                                            border: 'solid 2px ' + HEADER_INFO[e.status].color.substr(0, 7) + 'AA',
                                             display: 'flex',
                                             flexDirection: 'column',
                                             padding: 10,
