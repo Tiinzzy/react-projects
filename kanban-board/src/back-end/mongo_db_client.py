@@ -56,3 +56,18 @@ class MongoDBClient:
         except Exception as e:
             print(e)
             return {'error': e}
+
+    def update_comment(self, database_name, collection_name, document_id, documents):
+        my_database = self.mongo_client[database_name]
+        collection = my_database.get_collection(collection_name)
+        update_document = {'_id': ObjectId(document_id)}
+        new_values = {"$set": documents}
+        try:
+            update = collection.update_many(update_document, new_values, upsert=True)
+            if update.matched_count == 1:
+                return {'result': True}
+            else:
+                return {'result': False}
+        except Exception as e:
+            print(e)
+            return {'error': e}
