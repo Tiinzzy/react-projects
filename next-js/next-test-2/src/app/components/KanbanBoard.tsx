@@ -29,7 +29,7 @@ export const KanbanBoard = ({ title, paragraph }: KanbanBoardProps) => {
     const [droppedColumn, setDroppedColumn] = useState(-1);
 
     const dragStart = (colIndex: number, rowIndex: number): void => {
-        backend.get_documents_from_mongo_db((data: any): void => {
+        backend.get_documents_from_mongo_db((data: any)=>{
             console.log(data);
         })
         setDraggedItemPosition({ colIndex, rowIndex });
