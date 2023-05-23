@@ -47,6 +47,8 @@ export const KanbanBoard = ({ title, paragraph }: KanbanBoardProps) => {
     }
 
     useEffect(() => {
+
+
     }, [board]);
 
     return (
