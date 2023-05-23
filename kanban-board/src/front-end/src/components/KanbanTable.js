@@ -131,7 +131,7 @@ export default function KanbanTable(props) {
                                             marginBottom: 10
                                         }}
                                             draggable={true}
-                                            onDoubleClick={(j) => makeComment(j, e._id)}
+                                            onDoubleClick={(j) => makeComment(j, e)}
                                             onDragStart={(e) => dragStart(e, index, i)}
                                             onDragOver={(e) => dragOver(e, index, i)}
                                             key={i}>
