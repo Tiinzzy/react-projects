@@ -7,7 +7,6 @@ function App() {
     <>
       <div id="test"></div>
       <MainHome /> 
-      {ReactDOM.createPortal(<h1>CHILD</h1>, document.body)}
     </>
   );
 }

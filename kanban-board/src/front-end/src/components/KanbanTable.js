@@ -13,13 +13,13 @@ import './style.css';
 
 const backend = BackEndConnection.INSTANCE();
 
-// TODO: Join these two constances
-// const HEADER_INFO = { 'Backlog': { index: 0, color: '#c0392b30' }, 'To Do': 1, 'In Progress': 2, 'Completed': 3 };
-const STATE_BACKGROUND_COLOR = { 'Backlog': '#c0392b30', 'To Do': '#e67e2230', 'In Progress': '#2980b930', 'Completed': '#27ae6030' };
 const HEADER_TO_INDEX = { 'Backlog': 0, 'To Do': 1, 'In Progress': 2, 'Completed': 3 };
+const HEADER_INFO = {
+    'Backlog': { index: 0, color: '#c0392b30' }, 'To Do': { index: 1, color: '#e67e2230' },
+    'In Progress': { index: 2, color: '#2980b930' }, 'Completed': { index: 3, color: '#27ae6030' }
+}
 
-
-const KANBAN_HEADERS = Object.keys(HEADER_TO_INDEX);
+const KANBAN_HEADERS = Object.keys(HEADER_INFO);
 const draggedTask = {};
 const droppedLocation = {}
 
@@ -27,21 +27,15 @@ const droppedLocation = {}
 function moveTask(list, draggedTask, droppedLocation, KANBAN_HEADERS) {
     let task = list[draggedTask.columnId][draggedTask.taskId];
     list[draggedTask.columnId].splice(draggedTask.taskId, 1);
-    let query = { document_id: task._id, documents: { 'description': task.description, 'priority': task.priority, 'title': task.title } };
     if (droppedLocation.taskId === -1) {
         list[droppedLocation.columnId].push(task);
         task.status = KANBAN_HEADERS[droppedLocation.columnId];
-        query.documents['status'] = KANBAN_HEADERS[droppedLocation.columnId];
     } else {
         list[droppedLocation.columnId].splice(droppedLocation.taskId + 1, 0, task);
         task.status = KANBAN_HEADERS[droppedLocation.columnId];
-        query.documents['status'] = KANBAN_HEADERS[droppedLocation.columnId];
     }
-    backend.update_document_mongo_db(query, (data) => {
-        if (data.result) {
-            console.log('status changed!')
-        }
-    })
+    backend.update_document_mongo_db({ documents: list });
+    console.log(list)
     return list;
 }
 
@@ -103,7 +97,7 @@ export default function KanbanTable(props) {
 
     return (
         <>
-            <div style={{ width: 1400 }}>
+            <div style={{ width: '85%' }}>
                 <table width="100%" style={{ fontSize: '80%', backgroundColor: 'white', maring: 5, border: 'solid 1px #f7f7f7', borderRadius: 4 }} cellPadding={2} cellSpacing={2}>
                     <tbody>
                         <tr>
@@ -128,8 +122,8 @@ export default function KanbanTable(props) {
                                     onDragOver={(e) => dragOver(e, index, -1)}
                                     width='25%'>{item.map((e, i) => (
                                         <div style={{
-                                            backgroundColor: STATE_BACKGROUND_COLOR[e.status],
-                                            border: 'solid 2px ' + STATE_BACKGROUND_COLOR[e.status].substr(0, 7) + 'AA',
+                                            backgroundColor: HEADER_INFO[e.status].color,
+                                            border: 'solid 2px ' + HEADER_INFO[e.status].color.substr(0, 7) + 'AA',
                                             display: 'flex',
                                             flexDirection: 'column',
                                             padding: 10,
@@ -137,7 +131,7 @@ export default function KanbanTable(props) {
                                             marginBottom: 10
                                         }}
                                             draggable={true}
-                                            onDoubleClick={(j) => makeComment(j, e._id)}
+                                            onDoubleClick={(j) => makeComment(j, e)}
                                             onDragStart={(e) => dragStart(e, index, i)}
                                             onDragOver={(e) => dragOver(e, index, i)}
                                             key={i}>
