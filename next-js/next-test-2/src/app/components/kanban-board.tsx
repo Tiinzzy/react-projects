@@ -1,12 +1,7 @@
+import { TaskType } from './kanban-types';
+
 const NAME_2_INDEX: { [key: string]: number; } = { 'back-log': 0, 'to-do': 1, 'in-progress': 2, 'completed': 3 };
 const INDEX_2_NAME: { [key: number]: string; } = { 0: 'back-log', 1: 'to-do', 2: 'in-progress', 3: 'completed' };
-
-
-export type TaskType = {
-    id: number,
-    status: string,
-    title: string
-}
 
 export const getData = (): TaskType[] => {
     return [

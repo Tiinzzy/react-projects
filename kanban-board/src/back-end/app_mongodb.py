@@ -67,7 +67,7 @@ def update_comment(parameters):
     client = MongoDBClient(HOST_NAME, PORT_NUMBER)
     connection = client.connect()
     if connection:
-        result = client.update_document(DATABASE_NAME, collection_name, document_id, documents)
+        result = client.update_comment(DATABASE_NAME, collection_name, document_id, documents)
         client.disconnect()
         return result
     else:
@@ -76,13 +76,12 @@ def update_comment(parameters):
 
 def update_document(parameters):
     collection_name = 'kanban_board'
-    document_id = parameters.get('document_id')
     documents = parameters.get('documents')
 
     client = MongoDBClient(HOST_NAME, PORT_NUMBER)
     connection = client.connect()
     if connection:
-        result = client.update_document(DATABASE_NAME, collection_name, document_id, documents)
+        result = client.update_document(DATABASE_NAME, collection_name, documents)
         client.disconnect()
         return result
     else:

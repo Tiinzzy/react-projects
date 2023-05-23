@@ -4,18 +4,13 @@ import React, { useState, useEffect } from 'react';
 
 import './kanban-board.css'
 
-import { getBoardData, getData, updateBoard, TaskType } from './kanban-board';
+import { getBoardData, getData, updateBoard } from './kanban-board';
+import { KanbanBoardProps, StateInfoType, TaskType } from './kanban-types';
 
-type KanbanBoardProps = {
-    title: string,
-    paragraph: string
-}
+import BackEndConnection from './BackEndConnection';
 
-type StateInfoType = {
-    index: number,
-    color: string,
-    name: string
-}
+const backend = BackEndConnection.INSTANCE();
+
 
 const STATES: { [key: string]: StateInfoType; } = {
     'back-log': { index: 0, color: 'red', name: 'Back Log' },
@@ -34,6 +29,9 @@ export const KanbanBoard = ({ title, paragraph }: KanbanBoardProps) => {
     const [droppedColumn, setDroppedColumn] = useState(-1);
 
     const dragStart = (colIndex: number, rowIndex: number): void => {
+        backend.get_documents_from_mongo_db((data: any)=>{
+            console.log(data);
+        })
         setDraggedItemPosition({ colIndex, rowIndex });
     }
 
@@ -47,6 +45,8 @@ export const KanbanBoard = ({ title, paragraph }: KanbanBoardProps) => {
     }
 
     useEffect(() => {
+
+
     }, [board]);
 
     return (
