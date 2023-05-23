@@ -4,18 +4,8 @@ import React, { useState, useEffect } from 'react';
 
 import './kanban-board.css'
 
-import { getBoardData, getData, updateBoard, TaskType } from './kanban-board';
-
-type KanbanBoardProps = {
-    title: string,
-    paragraph: string
-}
-
-type StateInfoType = {
-    index: number,
-    color: string,
-    name: string
-}
+import { getBoardData, getData, updateBoard } from './kanban-board';
+import { KanbanBoardProps, StateInfoType, TaskType } from './kanban-types';
 
 const STATES: { [key: string]: StateInfoType; } = {
     'back-log': { index: 0, color: 'red', name: 'Back Log' },
