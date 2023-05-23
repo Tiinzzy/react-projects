@@ -103,7 +103,7 @@ export default function KanbanTable(props) {
 
     return (
         <>
-            <div style={{ width: 1400 }}>
+            <div style={{ width: '85%' }}>
                 <table width="100%" style={{ fontSize: '80%', backgroundColor: 'white', maring: 5, border: 'solid 1px #f7f7f7', borderRadius: 4 }} cellPadding={2} cellSpacing={2}>
                     <tbody>
                         <tr>
