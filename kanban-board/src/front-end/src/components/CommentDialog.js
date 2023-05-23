@@ -58,8 +58,10 @@ export default class CommentDialog extends React.Component {
     submitAndClose() {
         let todaysDate = new Date();
         let finalDate = todaysDate.getFullYear() + '-' + (todaysDate.getMonth() + 1) + '-' + todaysDate.getDate();
+        let finalHours = todaysDate.getHours() + ':' + todaysDate.getMinutes() + ':' + todaysDate.getSeconds();
+        let timestamp = finalDate + " at " + finalHours;
 
-        let query = { documents: [{ 'comment': this.state.comment, 'task_id': this.state.selectedTask, 'timestamp': finalDate }] };
+        let query = { documents: [{ 'comment': this.state.comment, 'task_id': this.state.selectedTask, 'timestamp': timestamp }] };
         if (this.state.comment.length > 0 && this.state.alreadyHasComment === false) {
             backend.insert_comments_in_mongo_db(query, (data) => {
                 if (data.inserted_count > 0) {
@@ -67,7 +69,7 @@ export default class CommentDialog extends React.Component {
                 }
             })
         } else if (this.state.comment.length > 0 && this.state.alreadyHasComment === true) {
-            let query = { document_id: this.state.commentId, documents: { 'comment': this.state.comment, 'task_id': this.state.selectedTask, 'timestamp': finalDate } };
+            let query = { document_id: this.state.commentId, documents: { 'comment': this.state.comment, 'task_id': this.state.selectedTask, 'timestamp': timestamp } };
             backend.update_comment_mongo_db(query, (data) => {
                 if (data.result) {
                     this.state.handleCloseDialog();
