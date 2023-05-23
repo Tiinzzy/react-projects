@@ -27,21 +27,15 @@ const droppedLocation = {}
 function moveTask(list, draggedTask, droppedLocation, KANBAN_HEADERS) {
     let task = list[draggedTask.columnId][draggedTask.taskId];
     list[draggedTask.columnId].splice(draggedTask.taskId, 1);
-    let query = { document_id: task._id, documents: { 'description': task.description, 'priority': task.priority, 'title': task.title } };
     if (droppedLocation.taskId === -1) {
         list[droppedLocation.columnId].push(task);
         task.status = KANBAN_HEADERS[droppedLocation.columnId];
-        query.documents['status'] = KANBAN_HEADERS[droppedLocation.columnId];
     } else {
         list[droppedLocation.columnId].splice(droppedLocation.taskId + 1, 0, task);
         task.status = KANBAN_HEADERS[droppedLocation.columnId];
-        query.documents['status'] = KANBAN_HEADERS[droppedLocation.columnId];
     }
-    backend.update_document_mongo_db(query, (data) => {
-        if (data.result) {
-            console.log('status changed!')
-        }
-    })
+    backend.update_document_mongo_db({ documents: list });
+    console.log(list)
     return list;
 }
 
