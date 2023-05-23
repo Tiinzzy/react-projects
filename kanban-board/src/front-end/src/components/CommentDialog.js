@@ -77,7 +77,7 @@ export default class CommentDialog extends React.Component {
                 </DialogTitle>
                 <DialogContent>
                     <Box style={{ marginTop: 20, display: 'flex', flexDirection: 'column', width: 500 }}>
-                        <TextField fullWidth multiline rows={6} label="Comment"
+                        <TextField fullWidth multiline rows={4} label="Comment"
                             variant="outlined" style={{ marginBottom: 12 }} onChange={(e) => this.getComment(e)}
                             value={this.state.comment}
                             error={this.state.commentError}
