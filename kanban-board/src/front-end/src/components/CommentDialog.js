@@ -1,8 +1,3 @@
-// TODO:
-// 1- Every task could have multiple comments
-// 2- We only add comments
-// 3- When double-clicking on a task, show task infor in dialog and history of the comments and just let user add a new comment. NOT EDIT.
-
 // TODO: Writing an application using React.createContext() and understanding it. <= MONDAY
 // TODO: Also testing { lazy, Suspense } 
 // TODO: Start a type script example next time (You may convert kanban to typescript as well)
