@@ -2,6 +2,7 @@ import axios from 'axios';
 
 class BackEndConnectionImpl {
     async get_documents_from_mongo_db(callback: any) {
+        console.log('CALLING /mongodb/get_documents');
         return axios.post('/mongodb/get_documents', {}, {})
             .then(function (response) {
                 if (callback) {
