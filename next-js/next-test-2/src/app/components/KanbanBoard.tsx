@@ -7,6 +7,11 @@ import './kanban-board.css'
 import { getBoardData, getData, updateBoard } from './kanban-board';
 import { KanbanBoardProps, StateInfoType, TaskType } from './kanban-types';
 
+import BackEndConnection from './BackEndConnection';
+
+const backend = BackEndConnection.INSTANCE();
+
+
 const STATES: { [key: string]: StateInfoType; } = {
     'back-log': { index: 0, color: 'red', name: 'Back Log' },
     'to-do': { index: 1, color: 'brown', name: 'To Do' },
@@ -24,6 +29,9 @@ export const KanbanBoard = ({ title, paragraph }: KanbanBoardProps) => {
     const [droppedColumn, setDroppedColumn] = useState(-1);
 
     const dragStart = (colIndex: number, rowIndex: number): void => {
+        backend.get_documents_from_mongo_db((data: any): void => {
+            console.log(data);
+        })
         setDraggedItemPosition({ colIndex, rowIndex });
     }
 
