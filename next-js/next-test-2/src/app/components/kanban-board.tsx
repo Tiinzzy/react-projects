@@ -41,7 +41,8 @@ export const getBoardData = (data: TaskType[]): TaskType[][] => {
     return boardData;
 }
 
-export const updateBoard = (data: TaskType[][], taskPosition: { colIndex: number, rowIndex: number }, toColumnIndex: number): TaskType[][] => {
+export const updateBoard = (data: ArrayOfObjects, taskPosition: { colIndex: number, rowIndex: number }, toColumnIndex: number): ArrayOfObjects => {
+    console.log(data)
     data = [...data];
     let task = data[taskPosition.colIndex][taskPosition.rowIndex];
     task.status = INDEX_2_NAME[toColumnIndex];
@@ -50,9 +51,9 @@ export const updateBoard = (data: TaskType[][], taskPosition: { colIndex: number
     return data;
 }
 
-export function getLogList(serialLogs: Array<object>): object {
+export function getLogList(serialLogs: Array<{ [key: string]: string }>): object {
     let list: ArrayOfObjects = [[], [], [], []];
-    
+
     serialLogs.forEach(e => {
         list[HEADER_TO_INDEX[e.status]].push(e);
     });
