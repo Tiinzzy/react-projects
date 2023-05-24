@@ -14,3 +14,5 @@ export type TaskType = {
     status: string,
     title: string
 }
+
+export type ArrayOfObjects = [Array<object>, Array<object>, Array<object>, Array<object>];
