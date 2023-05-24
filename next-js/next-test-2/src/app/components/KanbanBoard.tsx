@@ -23,6 +23,8 @@ const NULL_TASK_POSITION = { colIndex: -1, rowIndex: -1 };
 
 
 export const KanbanBoard = ({ title, paragraph, boardData }: KanbanBoardProps) => {
+
+
     const [board, setBoard] = useState(boardData);
     const [draggedItemPosition, setDraggedItemPosition] = useState(NULL_TASK_POSITION);
     const [droppedColumn, setDroppedColumn] = useState(-1);
@@ -40,13 +42,13 @@ export const KanbanBoard = ({ title, paragraph, boardData }: KanbanBoardProps) =
         setBoard(updatedBoard);
     }
 
-    useEffect(() => {
-        backend.get_documents_from_mongo_db((data: any) => {
-            let newBoard: any = getLogList(data.documents);
-            setBoard(newBoard);
-        })
+    // useEffect(() => {
+    //     backend.get_documents_from_mongo_db((data: any) => {
+    //         let newBoard: any = getLogList(data.documents);
+    //         setBoard(newBoard);
+    //     })
 
-    }, [board]);
+    // }, [board]);
 
     return (
         <div id='kanban-board'>
