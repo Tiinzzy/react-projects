@@ -1,4 +1,4 @@
-import { TaskType, ArrayOfObjects } from './kanban-types';
+import { TaskType, BoardType, TaskColumnType } from './kanban-types';
 import BackEndConnection from './BackEndConnection';
 
 const backend = BackEndConnection.INSTANCE();
@@ -35,16 +35,14 @@ export const getData = (): TaskType[] => {
 
 export const getBoardData = (data: TaskType[]): TaskType[][] => {
     let boardData: TaskType[][] = [[], [], [], []];
-
     for (let e in data) {
         let colIndex = NAME_2_INDEX[data[e].status]
         boardData[colIndex].push(data[e]);
     };
-
     return boardData;
 }
 
-export const updateBoard = (data: ArrayOfObjects, taskPosition: { colIndex: number, rowIndex: number }, toColumnIndex: number): ArrayOfObjects => {
+export const updateBoard = (data: BoardType, taskPosition: { colIndex: number, rowIndex: number }, toColumnIndex: number): BoardType => {
     data = [...data];
     let task = data[taskPosition.colIndex][taskPosition.rowIndex];
     task.status = INDEX_2_NAME[toColumnIndex];
@@ -54,8 +52,8 @@ export const updateBoard = (data: ArrayOfObjects, taskPosition: { colIndex: numb
     return data;
 }
 
-export function getLogList(serialLogs: Array<{ [key: string]: string }>): object {
-    let list: ArrayOfObjects = [[], [], [], []];
+export function getLogList(serialLogs: TaskColumnType): BoardType {
+    let list: BoardType = [[], [], [], []];
     serialLogs.forEach(e => {
         list[HEADER_TO_INDEX[e.status]].push(e);
     });
