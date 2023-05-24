@@ -1,7 +1,9 @@
-import { TaskType } from './kanban-types';
+import { TaskType, ArrayOfObjects } from './kanban-types';
 
 const NAME_2_INDEX: { [key: string]: number; } = { 'back-log': 0, 'to-do': 1, 'in-progress': 2, 'completed': 3 };
 const INDEX_2_NAME: { [key: number]: string; } = { 0: 'back-log', 1: 'to-do', 2: 'in-progress', 3: 'completed' };
+const HEADER_TO_INDEX: { [key: string]: number; } = { 'Backlog': 0, 'To Do': 1, 'In Progress': 2, 'Completed': 3 };
+
 
 export const getData = (): TaskType[] => {
     return [
@@ -48,5 +50,12 @@ export const updateBoard = (data: TaskType[][], taskPosition: { colIndex: number
     return data;
 }
 
+export function getLogList(serialLogs: Array<object>): object {
+    let list: ArrayOfObjects = [[], [], [], []];
+    
+    serialLogs.forEach(e => {
+        list[HEADER_TO_INDEX[e.status]].push(e);
+    });
 
-
+    return list;
+}
