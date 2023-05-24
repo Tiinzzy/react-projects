@@ -1,7 +1,7 @@
 export type KanbanBoardProps = {
     title: string,
     paragraph: string,
-    boardData: Array<object>
+    boardData: Array<{ [key: string]: string }>
 }
 
 export type StateInfoType = {
