@@ -1,6 +1,4 @@
 export type KanbanBoardProps = {
-    title: string,
-    paragraph: string,
     boardData: Array<{ [key: string]: string }>
 }
 
