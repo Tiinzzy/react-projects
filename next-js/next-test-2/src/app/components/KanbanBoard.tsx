@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 
 import './kanban-board.css'
 
-import { getBoardData, getData, updateBoard } from './kanban-board';
+import { getBoardData, getData, updateBoard, getLogList } from './kanban-board';
 import { KanbanBoardProps, StateInfoType, TaskType } from './kanban-types';
 
 import BackEndConnection from './BackEndConnection';
@@ -23,15 +23,12 @@ const BOARD_DATA: TaskType[][] = getBoardData(getData());
 const NULL_TASK_POSITION = { colIndex: -1, rowIndex: -1 };
 
 
-export const KanbanBoard = ({ title, paragraph }: KanbanBoardProps) => {
-    const [board, setBoard] = useState(BOARD_DATA);
+export const KanbanBoard = ({ title, paragraph, boardData }: KanbanBoardProps) => {
+    const [board, setBoard] = useState(boardData);
     const [draggedItemPosition, setDraggedItemPosition] = useState(NULL_TASK_POSITION);
     const [droppedColumn, setDroppedColumn] = useState(-1);
 
     const dragStart = (colIndex: number, rowIndex: number): void => {
-        backend.get_documents_from_mongo_db((data: any)=>{
-            console.log(data);
-        })
         setDraggedItemPosition({ colIndex, rowIndex });
     }
 
@@ -45,7 +42,10 @@ export const KanbanBoard = ({ title, paragraph }: KanbanBoardProps) => {
     }
 
     useEffect(() => {
-
+        backend.get_documents_from_mongo_db((data: any) => {
+            let newBoard: any = getLogList(data.documents);
+            setBoard(newBoard);
+        })
 
     }, [board]);
 
@@ -71,7 +71,30 @@ export const KanbanBoard = ({ title, paragraph }: KanbanBoardProps) => {
                                 {col.map((task, rowIndex) => (
                                     <div id='task' key={rowIndex}
                                         draggable={true} onDragStart={() => dragStart(colIndex, rowIndex)}>
-                                        {task.title}
+                                        <span>
+                                            <span style={{ fontWeight: 'bold', marginRight: 10 }}>
+                                                Title:
+                                            </span>
+                                            {task.title}
+                                        </span>
+                                        <span>
+                                            <span style={{ fontWeight: 'bold', marginRight: 10 }}>
+                                                Description:
+                                            </span>
+                                            {task.description}
+                                        </span>
+                                        <span>
+                                            <span style={{ fontWeight: 'bold', marginRight: 10 }}>
+                                                Status:
+                                            </span>
+                                            {task.status}
+                                        </span>
+                                        <span>
+                                            <span style={{ fontWeight: 'bold', marginRight: 10 }}>
+                                                Priority:
+                                            </span>
+                                            {task.priority}
+                                        </span>
                                     </div>
                                 ))}
                             </td>
