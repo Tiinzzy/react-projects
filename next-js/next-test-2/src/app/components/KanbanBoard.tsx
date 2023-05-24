@@ -11,7 +11,6 @@ import BackEndConnection from './BackEndConnection';
 
 const backend = BackEndConnection.INSTANCE();
 
-
 const STATES: { [key: string]: StateInfoType; } = {
     'back-log': { index: 0, color: 'red', name: 'Back Log' },
     'to-do': { index: 1, color: 'brown', name: 'To Do' },
