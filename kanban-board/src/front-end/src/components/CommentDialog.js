@@ -66,35 +66,36 @@ export default class CommentDialog extends React.Component {
 
     render() {
         return (
-            <>
+            <Box style={{ width: 600 }}>
                 <DialogTitle>
                     Make Comment for {this.state.selectedTask.title}
                 </DialogTitle>
                 <DialogContent>
-                    <Box style={{ marginTop: 20, display: 'flex', flexDirection: 'column', width: 500 }}>
+                    <Box style={{ marginTop: 20, display: 'flex', flexDirection: 'column', width: 550 }}>
                         <TextField fullWidth multiline rows={4} label="Comment"
                             variant="outlined" style={{ marginBottom: 12 }} onChange={(e) => this.getComment(e)}
                             value={this.state.comment}
                             error={this.state.commentError}
                             helperText={this.state.commentError && 'You need to make a comment!'} />
-                        <Box style={{ height: 120, overflowY: 'scroll', border: 'solid 1px #eaeaea', borderRadius: 3 }}>
-                            <table width="100%">
+                        <Box style={{ height: 150, overflowY: 'scroll', border: 'solid 1px #eaeaea', borderRadius: 3 }}>
+                            <table id="comment-table" width="100%" cellPadding={2} cellSpacing={2}
+                                style={{ backgroundColor: 'white', maring: 5, border: 'solid 1px #f7f7f7', borderRadius: 4 }}>
                                 <tbody>
-                                    <tr>
-                                        <th >
+                                    <tr id="comment-row">
+                                        <th style={{ backgroundColor: 'white', fontWeight: 'normal' }}>
                                             Comment
                                         </th>
-                                        <th>
+                                        <th style={{ backgroundColor: 'white', fontWeight: 'normal' }}>
                                             TimeStamp
                                         </th>
                                     </tr>
                                     {this.state.avialableComments && this.state.avialableComments.map((e, i) => (
-                                        <tr key={i}>
-                                            <td>
-                                                {e.comment}
+                                        <tr key={i} id="comment-row">
+                                            <td id="comment-column">
+                                                <span id="info-styling">{e.comment}</span>
                                             </td>
-                                            <td>
-                                                {e.timestamp}
+                                            <td id="comment-column">
+                                                <span id="info-styling">{e.timestamp}</span>
                                             </td>
                                         </tr>))}
                                 </tbody>
@@ -106,7 +107,7 @@ export default class CommentDialog extends React.Component {
                     <Button variant="outlined" onClick={() => this.cancelAndClose()}>Cancel</Button>
                     <Button variant="outlined" onClick={() => this.submitAndClose()}>Submit</Button>
                 </DialogActions>
-            </>
+            </Box>
         );
     }
 };
