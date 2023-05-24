@@ -24,9 +24,7 @@ export default function Home() {
     <div style={{ width: '100%' }}>
       {boardData !== null &&
         <KanbanBoard
-          boardData={boardData}
-          title="Kanban Board"
-          paragraph="This is my personal tasks board which i track my projects in it!" />}
+          boardData={boardData}/>}
 
     </div>
   )
