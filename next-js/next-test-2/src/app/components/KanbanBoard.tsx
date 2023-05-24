@@ -22,7 +22,7 @@ const BOARD_DATA: TaskType[][] = getBoardData(getData());
 const NULL_TASK_POSITION = { colIndex: -1, rowIndex: -1 };
 
 
-export const KanbanBoard = ({ boardData }: KanbanBoardProps) => {
+export const KanbanBoard = ({ title, paragraph, boardData }: KanbanBoardProps) => {
     const [board, setBoard] = useState(boardData);
     const [draggedItemPosition, setDraggedItemPosition] = useState(NULL_TASK_POSITION);
     const [droppedColumn, setDroppedColumn] = useState(-1);
