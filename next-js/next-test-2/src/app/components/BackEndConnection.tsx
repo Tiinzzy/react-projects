@@ -1,8 +1,7 @@
 import axios from 'axios';
 
 class BackEndConnectionImpl {
-    async get_documents_from_mongo_db(callback: any) {
-        console.log('CALLING /mongodb/get_documents');
+    async get_documents_from_mongo_db(callback: Function): Promise<object> {
         return axios.post('/mongodb/get_documents', {}, {})
             .then(function (response) {
                 if (callback) {
@@ -18,10 +17,20 @@ class BackEndConnectionImpl {
                 return { result: false };
             })
     }
+    async update_document_mongo_db(query: object): Promise<object> {
+        return axios.post('/mongodb/update_document', query, {})
+            .then(function (response) {
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+                return { result: false };
+            })
+    }
 }
 
 export default class BackEndConnection {
-    static #object: any | object = null;
+    static #object: any = null;
 
     static INSTANCE() {
         if (BackEndConnection.#object === null) {

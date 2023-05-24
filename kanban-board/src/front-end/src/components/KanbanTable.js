@@ -35,7 +35,6 @@ function moveTask(list, draggedTask, droppedLocation, KANBAN_HEADERS) {
         task.status = KANBAN_HEADERS[droppedLocation.columnId];
     }
     backend.update_document_mongo_db({ documents: list });
-    console.log(list)
     return list;
 }
 
@@ -100,7 +99,7 @@ export default function KanbanTable(props) {
             <div style={{ width: '85%' }}>
                 <table width="100%" style={{ fontSize: '80%', backgroundColor: 'white', maring: 5, border: 'solid 1px #f7f7f7', borderRadius: 4 }} cellPadding={2} cellSpacing={2}>
                     <tbody>
-                        <tr>
+                        <tr >
                             {KANBAN_HEADERS.map((j, k) => (
                                 <th key={k} width='25%' >
                                     {j}
@@ -168,7 +167,7 @@ export default function KanbanTable(props) {
                     </tbody>
                 </table>
             </div>
-            <Dialog open={openDialog} onClose={handleCloseDialog}>
+            <Dialog fullWidth={true} open={openDialog} onClose={handleCloseDialog}>
                 {displayComponent === false ? <BacklogDialog handleCloseDialog={handleCloseDialog} />
                     : <CommentDialog handleCloseDialog={handleCloseDialog} selectedTask={selectedTask} />}
             </Dialog>
