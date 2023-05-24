@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import './kanban-board.css'
 
 import { getBoardData, getData, updateBoard, getLogList } from './kanban-board';
-import { KanbanBoardProps, StateInfoType, TaskType } from './kanban-types';
+import { KanbanBoardProps, StateInfoType, TaskType, ArrayOfObjects } from './kanban-types';
 
 import BackEndConnection from './BackEndConnection';
 
@@ -37,7 +37,7 @@ export const KanbanBoard = ({ title, paragraph, boardData }: KanbanBoardProps) =
     }
 
     const onDragEnd = (): void => {
-        const updatedBoard = updateBoard(board, draggedItemPosition, droppedColumn);
+        const updatedBoard: ArrayOfObjects = updateBoard(board, draggedItemPosition, droppedColumn);
         setBoard(updatedBoard);
     }
 
