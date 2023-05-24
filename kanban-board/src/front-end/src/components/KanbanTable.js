@@ -35,7 +35,6 @@ function moveTask(list, draggedTask, droppedLocation, KANBAN_HEADERS) {
         task.status = KANBAN_HEADERS[droppedLocation.columnId];
     }
     backend.update_document_mongo_db({ documents: list });
-    console.log(list)
     return list;
 }
 
