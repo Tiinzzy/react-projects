@@ -11,7 +11,7 @@ import BackEndConnection from './components/BackEndConnection';
 const backend = BackEndConnection.INSTANCE();
 
 export default function Home() {
-  const [boardData, setBoardData] = useState(Array<object>);
+  const [boardData, setBoardData] = useState(Array<{ [key: string]: string }>);
 
   useEffect(() => {
     backend.get_documents_from_mongo_db((data: any) => {
