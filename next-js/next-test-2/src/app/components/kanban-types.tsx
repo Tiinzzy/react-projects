@@ -16,4 +16,4 @@ export type TaskType = {
     title: string
 }
 
-export type ArrayOfObjects = [Array<object>, Array<object>, Array<object>, Array<object>];
+export type ArrayOfObjects = [Array<{ [key: string]: string }>, Array<{ [key: string]: string }>, Array<{ [key: string]: string }>, Array<{ [key: string]: string }>];
