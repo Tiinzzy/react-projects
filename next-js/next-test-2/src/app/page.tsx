@@ -32,7 +32,7 @@ export default function Home() {
         <KanbanBoard
           boardData={boardData}
           title="Kanban Board"
-          paragraph="This is my personal tasks board which i track my projects in it!" />}
+          paragraph="This is kanban board created with NEXT.js and written with TypeScript" />}
 
     </div>
   )
