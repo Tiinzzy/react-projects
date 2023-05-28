@@ -9,6 +9,8 @@ import CommentDialog from './CommentDialog';
 import { getLogList } from './functions';
 import BackEndConnection from './BackEndConnection';
 
+import KanbanContext from "../KanbanContext";
+
 import './style.css';
 
 const backend = BackEndConnection.INSTANCE();
@@ -23,7 +25,6 @@ const KANBAN_HEADERS = Object.keys(HEADER_INFO);
 const draggedTask = {};
 const droppedLocation = {}
 
-// TODO: Save oder of the tasks in columns as well. I need to add a new property to task object that keeps the order in the column.
 function moveTask(list, draggedTask, droppedLocation, KANBAN_HEADERS) {
     let task = list[draggedTask.columnId][draggedTask.taskId];
     list[draggedTask.columnId].splice(draggedTask.taskId, 1);
@@ -95,82 +96,87 @@ export default function KanbanTable(props) {
     }
 
     return (
-        <>
-            <div style={{ width: '85%' }}>
-                <table width="100%" style={{ fontSize: '80%', backgroundColor: 'white', maring: 5, border: 'solid 1px #f7f7f7', borderRadius: 4 }} cellPadding={2} cellSpacing={2}>
-                    <tbody>
-                        <tr >
-                            {KANBAN_HEADERS.map((j, k) => (
-                                <th key={k} width='25%' >
-                                    {j}
-                                    {j === 'Backlog' ?
-                                        <span style={{ marginLeft: 10 }}>
-                                            <IconButton onClick={handleOpenDialog}>
-                                                <ControlPointIcon />
-                                            </IconButton>
-                                        </span>
-                                        :
-                                        <span></span>}
-                                </th>
-                            ))}
-                        </tr>
-                        <tr valign='top'>
-                            {list && list.map((item, index) => (
-                                <td key={index}
-                                    onDragEnd={drop}
-                                    onDragOver={(e) => dragOver(e, index, -1)}
-                                    width='25%'>{item.map((e, i) => (
-                                        <div style={{
-                                            backgroundColor: HEADER_INFO[e.status].color,
-                                            border: 'solid 2px ' + HEADER_INFO[e.status].color.substr(0, 7) + 'AA',
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            padding: 10,
-                                            borderRadius: 3,
-                                            marginBottom: 10
-                                        }}
-                                            draggable={true}
-                                            onDoubleClick={(j) => makeComment(j, e)}
-                                            onDragStart={(e) => dragStart(e, index, i)}
-                                            onDragOver={(e) => dragOver(e, index, i)}
-                                            key={i}>
-                                            <span>
-                                                <span style={{ fontWeight: 'bold', marginRight: 10 }}>
-                                                    Title:
+        <KanbanContext.Consumer>
+            {(context) => (
+                <>
+                    <div style={{ width: '85%' }}>
+                        <table width="100%" style={{ fontSize: '80%', backgroundColor: 'white', maring: 5, border: 'solid 1px #f7f7f7', borderRadius: 4 }} cellPadding={2} cellSpacing={2}>
+                            <tbody>
+                                <tr >
+                                    {KANBAN_HEADERS.map((j, k) => (
+                                        <th key={k} width='25%' >
+                                            {j}
+                                            {j === 'Backlog' ?
+                                                <span style={{ marginLeft: 10 }}>
+                                                    <IconButton onClick={handleOpenDialog}>
+                                                        <ControlPointIcon />
+                                                    </IconButton>
                                                 </span>
-                                                {e.title}
-                                            </span>
-                                            <span>
-                                                <span style={{ fontWeight: 'bold', marginRight: 10 }}>
-                                                    Description:
-                                                </span>
-                                                {e.description}
-                                            </span>
-                                            <span>
-                                                <span style={{ fontWeight: 'bold', marginRight: 10 }}>
-                                                    Status:
-                                                </span>
-                                                {e.status}
-                                            </span>
-                                            <span>
-                                                <span style={{ fontWeight: 'bold', marginRight: 10 }}>
-                                                    Priority:
-                                                </span>
-                                                {e.priority}
-                                            </span>
-                                        </div>
+                                                :
+                                                <span></span>}
+                                        </th>
                                     ))}
-                                </td>
-                            ))}
-                        </tr>
+                                </tr>
+                                <tr valign='top'>
+                                    {list && list.map((item, index) => (
+                                        <td key={index}
+                                            onDragEnd={drop}
+                                            onDragOver={(e) => dragOver(e, index, -1)}
+                                            width='25%'>{item.map((e, i) => (
+                                                <div style={{
+                                                    backgroundColor: HEADER_INFO[e.status].color,
+                                                    border: 'solid 2px ' + HEADER_INFO[e.status].color.substr(0, 7) + 'AA',
+                                                    display: 'flex',
+                                                    flexDirection: 'column',
+                                                    padding: 10,
+                                                    borderRadius: 3,
+                                                    marginBottom: 10
+                                                }}
+                                                    draggable={true}
+                                                    onDoubleClick={(j) => makeComment(j, e)}
+                                                    onDragStart={(e) => dragStart(e, index, i)}
+                                                    onDragOver={(e) => dragOver(e, index, i)}
+                                                    key={i}>
+                                                    <span>
+                                                        <span style={{ fontWeight: 'bold', marginRight: 10 }}>
+                                                            Title:
+                                                        </span>
+                                                        {e.title} - {context.counter}
+                                                    </span>
+                                                    <span>
+                                                        <span style={{ fontWeight: 'bold', marginRight: 10 }}>
+                                                            Description:
+                                                        </span>
+                                                        {e.description}
+                                                    </span>
+                                                    <span>
+                                                        <span style={{ fontWeight: 'bold', marginRight: 10 }}>
+                                                            Status:
+                                                        </span>
+                                                        {e.status}
+                                                    </span>
+                                                    <span>
+                                                        <span style={{ fontWeight: 'bold', marginRight: 10 }}>
+                                                            Priority:
+                                                        </span>
+                                                        {e.priority}
+                                                    </span>
+                                                </div>
+                                            ))}
+                                        </td>
+                                    ))}
+                                </tr>
 
-                    </tbody>
-                </table>
-            </div>
-            <Dialog fullWidth={true} open={openDialog} onClose={handleCloseDialog}>
-                {displayComponent === false ? <BacklogDialog handleCloseDialog={handleCloseDialog} />
-                    : <CommentDialog handleCloseDialog={handleCloseDialog} selectedTask={selectedTask} />}
-            </Dialog>
-        </>
+                            </tbody>
+                        </table>
+                    </div>
+                    <Dialog fullWidth={true} open={openDialog} onClose={handleCloseDialog}>
+                        {displayComponent === false ? <BacklogDialog handleCloseDialog={handleCloseDialog} />
+                            : <CommentDialog handleCloseDialog={handleCloseDialog} selectedTask={selectedTask} />}
+                    </Dialog>
+                </>
+            )}
+        </KanbanContext.Consumer>
+
     );
 };

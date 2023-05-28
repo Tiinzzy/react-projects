@@ -31,6 +31,7 @@ export default class BacklogDialog extends React.Component {
         }
     }
 
+
     getTitle(e) {
         this.setState({ title: e.target.value });
     }
@@ -49,6 +50,7 @@ export default class BacklogDialog extends React.Component {
 
     cancelAndClose() {
         this.state.handleCloseDialog();
+        // console.log(this.context);
     }
 
     submitAndClose() {
@@ -102,3 +104,5 @@ export default class BacklogDialog extends React.Component {
         );
     }
 };
+
+

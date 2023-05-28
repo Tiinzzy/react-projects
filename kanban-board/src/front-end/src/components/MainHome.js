@@ -6,11 +6,12 @@ import Typography from "@mui/material/Typography";
 import BackEndConnection from './BackEndConnection';
 import KanbanTable from "./KanbanTable";
 
+import KanbanContext from "../KanbanContext";
+
 const backend = BackEndConnection.INSTANCE();
 let count = 1;
 
 class MainHome extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -28,13 +29,18 @@ class MainHome extends React.Component {
 
     render() {
         return (
-            <Box style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginTop: 20 }}>
-                <Box style={{ width: '85%', marginBottom: 35 }}>
-                    <Typography fontWeight="bold" fontFamily="helvetica" fontSize="18px"> Kanban Board</Typography>
-                </Box>
-                {this.state.logs && <KanbanTable logs={this.state.logs} />}
-            </Box>
+            <KanbanContext.Consumer>
+                {(context) => (
+                    <Box style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginTop: 20 }}>
+                        <Box style={{ width: '85%', marginBottom: 35 }}>
+                            <Typography onClick={() => context.callback(new Date())}  fontWeight="bold" fontFamily="helvetica" fontSize="18px"> Kanban Board {context.counter}</Typography>
+                        </Box>
+                        {this.state.logs && <KanbanTable logs={this.state.logs} />}
+                    </Box>
+                )}
+            </KanbanContext.Consumer>
         );
     }
 }
 export default MainHome;
+
