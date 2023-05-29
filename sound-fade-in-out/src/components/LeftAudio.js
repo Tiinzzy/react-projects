@@ -5,6 +5,10 @@ import Typography from "@mui/material/Typography";
 import Slider from '@mui/material/Slider';
 import VolumeDown from '@mui/icons-material/VolumeDown';
 import VolumeUp from '@mui/icons-material/VolumeUp';
+import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
+import PlayCircleFilledWhiteOutlinedIcon from '@mui/icons-material/PlayCircleFilledWhiteOutlined';
+import PauseCircleOutlinedIcon from '@mui/icons-material/PauseCircleOutlined';
 
 var a;
 
@@ -58,16 +62,17 @@ class LeftAudio extends React.Component {
                     </Button>
                     <Typography variant="body1" ml={1}>{this.state.fileName}</Typography>
                 </Box>
-                <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 20 }}>
-                    {/* <audio id="sound" controls src={this.state.audioSound}></audio> */}
-                    <button onClick={() => this.handleClick()}>{this.state.buttonName}</button>
+                <Box style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginTop: 20 }}>
+                    <IconButton aria-label="delete" onClick={() => this.handleClick()}>
+                        {this.state.buttonName === "Play" ? <PlayCircleFilledWhiteOutlinedIcon /> : <PauseCircleOutlinedIcon />}
+                    </IconButton>
+                    <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center" style={{ width: 250 }}>
+                        <VolumeDown />
+                        <Slider aria-label="Volume" value={this.state.volumeValue} onChange={(e, i) => this.handleChangeVolume(e, i)} />
+                        <VolumeUp />
+                    </Stack>
 
                 </Box>
-                <div>
-                    <VolumeDown />
-                    <Slider aria-label="Volume" value={this.state.volumeValue} onChange={(e, i) => this.handleChangeVolume(e, i)} />
-                    <VolumeUp />
-                </div>
             </Box>
         );
     }
