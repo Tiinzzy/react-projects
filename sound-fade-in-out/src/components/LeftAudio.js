@@ -26,7 +26,6 @@ class LeftAudio extends React.Component {
     }
 
     getAudio(e) {
-        console.log(e)
         if (e) {
             let audio = URL.createObjectURL(e.target.files[0]);
             this.setState({ audioSound: audio, fileName: e.target.files[0].name, selectFile: '' }, () => {
@@ -46,10 +45,12 @@ class LeftAudio extends React.Component {
         }
     }
 
-    handleChangeVolume(event, newValue) {
-        this.setState({ volumeValue: newValue }, () => {
-            a.volume = this.state.volumeValue;
-        });
+    handleChangeVolume(e, newVolume) {
+        if (this.state.audioSound !== null) {
+            this.setState({ volumeValue: newVolume }, () => {
+                a.volume = this.state.volumeValue;
+            });
+        }
     }
 
     render() {
