@@ -19,7 +19,8 @@ class LeftAudio extends React.Component {
             audioSound: null,
             fileName: 'No File Chosen',
             buttonName: 'Play',
-            volumeValue: 0
+            volumeValue: 0,
+            buttonDisabled: true
         }
     }
 
@@ -28,7 +29,7 @@ class LeftAudio extends React.Component {
             let audio = URL.createObjectURL(e.target.files[0]);
             this.setState({ audioSound: audio, fileName: e.target.files[0].name }, () => {
                 a = new Audio(this.state.audioSound);
-                this.setState({ audioSound: a });
+                this.setState({ buttonDisabled: false, audioSound: a });
             });
         }
     }
@@ -63,8 +64,8 @@ class LeftAudio extends React.Component {
                     <Typography variant="body1" ml={1}>{this.state.fileName}</Typography>
                 </Box>
                 <Box style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginTop: 20 }}>
-                    <IconButton aria-label="delete" onClick={() => this.handleClick()}>
-                        {this.state.buttonName === "Play" ? <PlayCircleFilledWhiteOutlinedIcon /> : <PauseCircleOutlinedIcon />}
+                    <IconButton aria-label="delete" onClick={() => this.handleClick()} color="primary" disabled={this.state.buttonDisabled}>
+                        {this.state.buttonName === "Play" ? <PlayCircleFilledWhiteOutlinedIcon fontSize="large" /> : <PauseCircleOutlinedIcon fontSize="large" />}
                     </IconButton>
                     <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center" style={{ width: 250 }}>
                         <VolumeDown />
