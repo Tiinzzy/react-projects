@@ -45,7 +45,6 @@ class LeftAudio extends React.Component {
     }
 
     handleChangeVolume(event, newValue) {
-        console.log(newValue)
         this.setState({ volumeValue: newValue }, () => {
             a.volume = this.state.volumeValue;
         });
@@ -69,7 +68,11 @@ class LeftAudio extends React.Component {
                     </IconButton>
                     <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center" style={{ width: 250 }}>
                         <VolumeDown />
-                        <Slider aria-label="Volume" value={this.state.volumeValue} onChange={(e, i) => this.handleChangeVolume(e, i)} />
+                        <Slider step={0.1}
+                            max={1.0}
+                            min={0.0}
+                            aria-label="Volume"
+                            value={this.state.volumeValue} onChange={(e, i) => this.handleChangeVolume(e, i)} />
                         <VolumeUp />
                     </Stack>
 
