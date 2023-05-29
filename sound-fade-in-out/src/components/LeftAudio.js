@@ -2,6 +2,9 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Button from '@mui/material/Button';
 import Typography from "@mui/material/Typography";
+import Slider from '@mui/material/Slider';
+import VolumeDown from '@mui/icons-material/VolumeDown';
+import VolumeUp from '@mui/icons-material/VolumeUp';
 
 var a;
 
@@ -11,7 +14,8 @@ class LeftAudio extends React.Component {
         this.state = {
             audioSound: null,
             fileName: 'No File Chosen',
-            buttonName: 'Play'
+            buttonName: 'Play',
+            volumeValue: 0
         }
     }
 
@@ -20,13 +24,12 @@ class LeftAudio extends React.Component {
             let audio = URL.createObjectURL(e.target.files[0]);
             this.setState({ audioSound: audio, fileName: e.target.files[0].name }, () => {
                 a = new Audio(this.state.audioSound);
-                this.setState({audioSound: a});
+                this.setState({ audioSound: a });
             });
         }
     }
 
     handleClick() {
-        console.log(this.state.buttonName)
         if (this.state.buttonName === "Play") {
             this.state.audioSound.play();
             this.setState({ buttonName: 'Pause' });
@@ -34,6 +37,13 @@ class LeftAudio extends React.Component {
             this.state.audioSound.pause();
             this.setState({ buttonName: 'Play' });
         }
+    }
+
+    handleChangeVolume(event, newValue) {
+        console.log(newValue)
+        this.setState({ volumeValue: newValue }, () => {
+            a.volume = this.state.volumeValue;
+        });
     }
 
     render() {
@@ -51,7 +61,13 @@ class LeftAudio extends React.Component {
                 <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 20 }}>
                     {/* <audio id="sound" controls src={this.state.audioSound}></audio> */}
                     <button onClick={() => this.handleClick()}>{this.state.buttonName}</button>
+
                 </Box>
+                <div>
+                    <VolumeDown />
+                    <Slider aria-label="Volume" value={this.state.volumeValue} onChange={(e, i) => this.handleChangeVolume(e, i)} />
+                    <VolumeUp />
+                </div>
             </Box>
         );
     }
