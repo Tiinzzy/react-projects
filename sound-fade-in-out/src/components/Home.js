@@ -12,11 +12,14 @@ class Home extends React.Component {
 
     render() {
         return (
-            <div style={{ width: '100%', display: 'flex', flexDirection: 'row', height: '100%' }}>
-                <div style={{ width: '50%', border: 'solid 1px red' }}>
+            <div style={{ width: '100%', display: 'flex', flexDirection: 'row', height: '500px' }}>
+                <div style={{ width: '50%', border: 'dotted 5px #145490', alignItems: 'center', justifyContent: 'center', display: 'flex' }}>
                     <LeftAudio />
                 </div>
-                <div style={{ width: '50%', border: 'solid 1px blue' }}>
+                <div style={{
+                    width: '50%', borderTop: 'dotted 5px #145490', borderBottom: 'dotted 5px #145490', borderRight: 'dotted 5px #145490',
+                    alignItems: 'center', justifyContent: 'center', display: 'flex'
+                }}>
                     <RightAudio />
                 </div>
             </div>
