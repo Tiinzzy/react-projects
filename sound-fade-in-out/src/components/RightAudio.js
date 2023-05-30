@@ -16,14 +16,22 @@ import { newEmitter } from './LeftAudio';
 var a;
 
 function increaseVolume(currentVolume) {
-    const loppThrough = setInterval(() => {
-        if (currentVolume < 1) {
-            currentVolume += 0.1;
-            a.volume = currentVolume;
-        } else {
-            clearInterval(loppThrough);
-        }
-    }, 2000);
+    console.log(currentVolume)
+    if (currentVolume === 0) {
+        let audioElement = Math.max(currentVolume + 0.1, 0);
+        a.volume = audioElement;
+        setTimeout(function () {
+            increaseVolume(audioElement);
+        }, 2000);
+    } else if (currentVolume < 1 && currentVolume > 0) {
+        let audioElement = Math.min(currentVolume + 0.1, 1);
+        a.volume = audioElement;
+        setTimeout(function () {
+            increaseVolume(audioElement);
+        }, 2000);
+    }else if(currentVolume === 1){
+        a.volume = 1;
+    }
 }
 
 class RightAudio extends React.Component {
