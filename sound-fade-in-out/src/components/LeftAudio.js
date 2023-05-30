@@ -16,21 +16,7 @@ import EventEmitter from 'eventemitter3';
 
 export const newEmitter = new EventEmitter();
 
-
 var a;
-
-function decreaseVolume(currentVolume) {
-    if (currentVolume > 0) {
-        let audioElement = Math.max(currentVolume - 0.1, 0);
-        a.volume = audioElement;
-        setTimeout(function () {
-            decreaseVolume(audioElement);
-        }, 2000);
-    } else {
-        const data = { message: 'turn up the volume' };
-        newEmitter.emit('upTheVolume', data);
-    }
-}
 
 class LeftAudio extends React.Component {
     constructor(props) {
@@ -46,20 +32,29 @@ class LeftAudio extends React.Component {
     }
 
     componentDidMount() {
-        eventEmitter.on('customEvent', (data) => {
-            if (data.message === 'Play' && this.state.audioSound !== null) {
-                this.setState({ buttonName: "Play" }, () => {
+        eventEmitter.on('leftPlayer', (data) => {
+            if (data.message === 'Play' && data.goto === 0) {
+                this.setState({ volumeValue: 1, buttonName: data.message }, () => {
+                    a.volume = this.state.volumeValue;
                     this.state.audioSound.play();
-                    decreaseVolume(1);
-                    this.setState({ buttonName: 'Pause' });
                     data.callBack('Pause');
-                })
-            } else if (data.message === 'Pause' && this.state.audioSound !== null) {
+                });
+                let timerHandle = setInterval(() => {
+                    let volumeValue = this.state.volumeValue - 0.1;
+                    volumeValue = volumeValue <= 0 ? 0 : volumeValue;
+                    this.setState({ volumeValue }, function () {
+                        a.volume = this.state.volumeValue;
+                        if (this.state.volumeValue <= 0) {
+                            clearInterval(timerHandle);
+                        }
+                    });
+                }, 1000);
+            } else if (data.message === 'Pause') {
                 this.setState({ buttonName: "Pause" }, () => {
                     this.state.audioSound.pause();
                     this.setState({ buttonName: 'Play' });
                     data.callBack('Play');
-                })
+                });
             }
         });
     }
@@ -85,6 +80,7 @@ class LeftAudio extends React.Component {
     }
 
     handleChangeVolume(e, newVolume) {
+        console.log(newVolume);
         if (this.state.audioSound !== null) {
             this.setState({ volumeValue: newVolume }, () => {
                 a.volume = this.state.volumeValue;
