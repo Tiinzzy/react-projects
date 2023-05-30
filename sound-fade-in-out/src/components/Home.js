@@ -22,19 +22,19 @@ class Home extends React.Component {
 
     playBothAudio() {
         if (this.state.buttonName === "Play") {
-            const data = { message: 'Play', callBack: this.callBack };
-            eventEmitter.emit('customEvent', data);
+            eventEmitter.emit('leftPlayer', { goto: 0, steps: 10, message: 'Play', callBack: this.callBack });
+            eventEmitter.emit('rightPlayer', { goto: 1, steps: 10, message: 'Play', callBack: this.callBack });
         } else if (this.state.buttonName === "Pause") {
-            const data = { message: 'Pause', callBack: this.callBack };
-            eventEmitter.emit('customEvent', data);
+            eventEmitter.emit('leftPlayer', { goto: 0, steps: 10, message: 'Pause', callBack: this.callBack });
+            eventEmitter.emit('rightPlayer', { goto: 1, steps: 10, message: 'Pause', callBack: this.callBack });
         }
     }
 
     callBack(data) {
         if (data && data === 'Pause') {
-            this.setState({ buttonName: 'Pause' })
+            this.setState({ buttonName: 'Pause' });
         } else if (data && data === 'Play') {
-            this.setState({ buttonName: 'Play' })
+            this.setState({ buttonName: 'Play' });
         }
     }
 
