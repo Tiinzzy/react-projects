@@ -12,7 +12,25 @@ import PauseCircleOutlinedIcon from '@mui/icons-material/PauseCircleOutlined';
 
 import { eventEmitter } from './Home';
 
+import EventEmitter from 'eventemitter3';
+
+export const newEmitter = new EventEmitter();
+
+
 var a;
+
+function decreaseVolume(currentVolume) {
+    if (currentVolume > 0) {
+        let audioElement = Math.max(currentVolume - 0.1, 0);
+        a.volume = audioElement;
+        setTimeout(function () {
+            decreaseVolume(audioElement);
+        }, 2000);
+    }else{
+        const data = { message: 'turn up the volume' };
+        newEmitter.emit('upTheVolume', data);
+    }
+}
 
 class LeftAudio extends React.Component {
     constructor(props) {
@@ -32,6 +50,9 @@ class LeftAudio extends React.Component {
             if (data.message === 'Play' && this.state.audioSound !== null) {
                 this.setState({ buttonName: "Play" }, () => {
                     this.state.audioSound.play();
+                    setTimeout(function () {
+                        decreaseVolume(1);
+                    }, 2000);
                     this.setState({ buttonName: 'Pause' });
                     data.callBack('Pause');
                 })
