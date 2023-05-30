@@ -11,8 +11,19 @@ import PlayCircleFilledWhiteOutlinedIcon from '@mui/icons-material/PlayCircleFil
 import PauseCircleOutlinedIcon from '@mui/icons-material/PauseCircleOutlined';
 
 import { eventEmitter } from './Home';
+import { newEmitter } from './LeftAudio';
 
 var a;
+
+function increaseVolume(currentVolume) {
+    if (currentVolume <= 0) {
+        let audioElement = Math.max(currentVolume + 0.1, 1);
+        a.volume = audioElement;
+        setTimeout(function () {
+            increaseVolume(audioElement);
+        }, 2000);
+    }
+}
 
 class RightAudio extends React.Component {
     constructor(props) {
@@ -32,6 +43,7 @@ class RightAudio extends React.Component {
             if (data.message === 'Play' && this.state.audioSound !== null) {
                 this.setState({ buttonName: "Play" }, () => {
                     this.state.audioSound.play();
+                    a.volume = 0
                     this.setState({ buttonName: 'Pause' });
                     data.callBack('Pause');
                 })
@@ -43,6 +55,14 @@ class RightAudio extends React.Component {
                 })
             }
         });
+
+        newEmitter.on('upTheVolume', (data) => {
+            if (data && data.message === 'turn up the volume') {
+                setTimeout(function () {
+                    increaseVolume(0);
+                }, 2000);
+            }
+        })
     }
 
     getAudio(e) {
