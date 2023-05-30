@@ -2,7 +2,9 @@ import React from "react";
 
 import LeftAudio from "./LeftAudio";
 import RightAudio from "./RightAudio";
-import Button from "@mui/material/Button";
+import IconButton from '@mui/material/IconButton';
+import PlayCircleFilledWhiteOutlinedIcon from '@mui/icons-material/PlayCircleFilledWhiteOutlined';
+import PauseCircleOutlinedIcon from '@mui/icons-material/PauseCircleOutlined';
 
 import EventEmitter from 'eventemitter3';
 
@@ -12,18 +14,27 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            buttonName: 'Play'
         }
+        this.callBack = this.callBack.bind(this);
     }
 
     playBothAudio() {
-        const data = {
-            message: 'play audio', callBack: function (data) {
-                if (data) {
-                    console.log(data);
-                }
-            }
-        };
-        eventEmitter.emit('customEvent', data);
+        if (this.state.buttonName === "Play") {
+            const data = { message: 'Play', callBack: this.callBack };
+            eventEmitter.emit('customEvent', data);
+        } else if (this.state.buttonName === "Pause") {
+            const data = { message: 'Pause', callBack: this.callBack };
+            eventEmitter.emit('customEvent', data);
+        }
+    }
+
+    callBack(data) {
+        if (data && data === 'Pause') {
+            this.setState({ buttonName: 'Pause' })
+        } else if (data && data === 'Play') {
+            this.setState({ buttonName: 'Play' })
+        }
     }
 
     render() {
@@ -40,7 +51,9 @@ class Home extends React.Component {
                         <RightAudio />
                     </div>
                 </div>
-                <Button variant="contained" onClick={() => this.playBothAudio()}>PLay</Button>
+                <IconButton aria-label="delete" onClick={() => this.playBothAudio()} color="primary" >
+                    {this.state.buttonName === "Play" ? <PlayCircleFilledWhiteOutlinedIcon fontSize="large" /> : <PauseCircleOutlinedIcon fontSize="large" />}
+                </IconButton>
             </>
         );
     }
