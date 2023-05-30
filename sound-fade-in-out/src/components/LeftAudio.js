@@ -26,7 +26,7 @@ function decreaseVolume(currentVolume) {
         setTimeout(function () {
             decreaseVolume(audioElement);
         }, 2000);
-    }else{
+    } else {
         const data = { message: 'turn up the volume' };
         newEmitter.emit('upTheVolume', data);
     }
@@ -50,9 +50,7 @@ class LeftAudio extends React.Component {
             if (data.message === 'Play' && this.state.audioSound !== null) {
                 this.setState({ buttonName: "Play" }, () => {
                     this.state.audioSound.play();
-                    setTimeout(function () {
-                        decreaseVolume(1);
-                    }, 2000);
+                    decreaseVolume(1);
                     this.setState({ buttonName: 'Pause' });
                     data.callBack('Pause');
                 })
