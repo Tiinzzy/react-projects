@@ -10,6 +10,8 @@ import Stack from '@mui/material/Stack';
 import PlayCircleFilledWhiteOutlinedIcon from '@mui/icons-material/PlayCircleFilledWhiteOutlined';
 import PauseCircleOutlinedIcon from '@mui/icons-material/PauseCircleOutlined';
 
+import { eventEmitter } from './Home';
+
 var a;
 
 class RightAudio extends React.Component {
@@ -23,6 +25,34 @@ class RightAudio extends React.Component {
             volumeValue: 1,
             buttonDisabled: true
         }
+    }
+
+    componentDidMount() {
+        eventEmitter.on('rightPlayer', (data) => {
+            if (data.message === 'Play' && data.goto === 1) {
+                this.setState({ volumeValue: 0, buttonName: data.message }, () => {
+                    a.volume = this.state.volumeValue;
+                    this.state.audioSound.play();
+                    data.callBack('Pause');
+                });
+                let timerHandle = setInterval(() => {
+                    let volumeValue = this.state.volumeValue + 0.1;
+                    volumeValue = volumeValue >= 1 ? 1 : volumeValue;
+                    this.setState({ volumeValue }, function () {
+                        a.volume = this.state.volumeValue;
+                        if (this.state.volumeValue >= 1) {
+                            clearInterval(timerHandle);
+                        }
+                    });
+                }, 1000);
+            } else if (data.message === 'Pause') {
+                this.setState({ buttonName: "Pause" }, () => {
+                    this.state.audioSound.pause();
+                    this.setState({ buttonName: 'Play' });
+                    data.callBack('Play');
+                });
+            }
+        });
     }
 
     getAudio(e) {
@@ -51,6 +81,10 @@ class RightAudio extends React.Component {
                 a.volume = this.state.volumeValue;
             });
         }
+    }
+
+    componentWillUnmount() {
+        // eventEmitter.off('customEvent', (data) => { });
     }
 
     render() {
