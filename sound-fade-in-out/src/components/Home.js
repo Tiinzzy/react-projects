@@ -5,6 +5,7 @@ import RightAudio from "./RightAudio";
 import IconButton from '@mui/material/IconButton';
 import PlayCircleFilledWhiteOutlinedIcon from '@mui/icons-material/PlayCircleFilledWhiteOutlined';
 import PauseCircleOutlinedIcon from '@mui/icons-material/PauseCircleOutlined';
+import Typography from "@mui/material/Typography";
 
 import EventEmitter from 'eventemitter3';
 
@@ -51,9 +52,12 @@ class Home extends React.Component {
                         <RightAudio />
                     </div>
                 </div>
-                <IconButton aria-label="delete" onClick={() => this.playBothAudio()} color="primary" >
-                    {this.state.buttonName === "Play" ? <PlayCircleFilledWhiteOutlinedIcon fontSize="large" /> : <PauseCircleOutlinedIcon fontSize="large" />}
-                </IconButton>
+                <div style={{ width: '100%', display: 'flex', flexDirection: 'column', height: '200px', alignItems: 'center', justifyContent: 'center' }}>
+                    <Typography variant="body1">Select two separate audios and click play button</Typography>
+                    <IconButton aria-label="delete" onClick={() => this.playBothAudio()} color="primary" >
+                        {this.state.buttonName === "Play" ? <PlayCircleFilledWhiteOutlinedIcon fontSize="large" /> : <PauseCircleOutlinedIcon fontSize="large" />}
+                    </IconButton>
+                </div>
             </>
         );
     }
