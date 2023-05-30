@@ -10,6 +10,8 @@ import Stack from '@mui/material/Stack';
 import PlayCircleFilledWhiteOutlinedIcon from '@mui/icons-material/PlayCircleFilledWhiteOutlined';
 import PauseCircleOutlinedIcon from '@mui/icons-material/PauseCircleOutlined';
 
+import { eventEmitter } from './Home';
+
 var a;
 
 class LeftAudio extends React.Component {
@@ -23,6 +25,16 @@ class LeftAudio extends React.Component {
             volumeValue: 1,
             buttonDisabled: true
         }
+    }
+
+    componentDidMount() {
+        eventEmitter.on('customEvent', (data) => {
+            console.log(data)
+            if (data.message === 'play audio' && this.state.audioSound !== null) {
+                this.state.audioSound.play();
+                data.callBack('working');
+            }
+        });
     }
 
     getAudio(e) {
@@ -51,6 +63,10 @@ class LeftAudio extends React.Component {
                 a.volume = this.state.volumeValue;
             });
         }
+    }
+
+    componentWillUnmount() {
+        eventEmitter.off('customEvent', (data) => { });
     }
 
     render() {
