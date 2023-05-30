@@ -16,13 +16,14 @@ import { newEmitter } from './LeftAudio';
 var a;
 
 function increaseVolume(currentVolume) {
-    if (currentVolume <= 0) {
-        let audioElement = Math.max(currentVolume + 0.1, 1);
-        a.volume = audioElement;
-        setTimeout(function () {
-            increaseVolume(audioElement);
-        }, 2000);
-    }
+    const loppThrough = setInterval(() => {
+        if (currentVolume < 1) {
+            currentVolume += 0.1;
+            a.volume = currentVolume;
+        } else {
+            clearInterval(loppThrough);
+        }
+    }, 2000);
 }
 
 class RightAudio extends React.Component {
@@ -58,9 +59,7 @@ class RightAudio extends React.Component {
 
         newEmitter.on('upTheVolume', (data) => {
             if (data && data.message === 'turn up the volume') {
-                setTimeout(function () {
-                    increaseVolume(0);
-                }, 2000);
+                increaseVolume(0);
             }
         })
     }
