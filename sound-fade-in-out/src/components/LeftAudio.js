@@ -29,10 +29,18 @@ class LeftAudio extends React.Component {
 
     componentDidMount() {
         eventEmitter.on('customEvent', (data) => {
-            console.log(data)
-            if (data.message === 'play audio' && this.state.audioSound !== null) {
-                this.state.audioSound.play();
-                data.callBack('working');
+            if (data.message === 'Play' && this.state.audioSound !== null) {
+                this.setState({ buttonName: "Play" }, () => {
+                    this.state.audioSound.play();
+                    this.setState({ buttonName: 'Pause' });
+                    data.callBack('Pause');
+                })
+            } else if (data.message === 'Pause' && this.state.audioSound !== null) {
+                this.setState({ buttonName: "Pause" }, () => {
+                    this.state.audioSound.pause();
+                    this.setState({ buttonName: 'Play' });
+                    data.callBack('Play');
+                })
             }
         });
     }
