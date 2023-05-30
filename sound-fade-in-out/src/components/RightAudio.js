@@ -16,7 +16,6 @@ import { newEmitter } from './LeftAudio';
 var a;
 
 function increaseVolume(currentVolume) {
-    console.log(currentVolume)
     if (currentVolume === 0) {
         let audioElement = Math.max(currentVolume + 0.1, 0);
         a.volume = audioElement;
