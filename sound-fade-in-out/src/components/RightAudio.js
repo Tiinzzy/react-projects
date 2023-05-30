@@ -11,27 +11,8 @@ import PlayCircleFilledWhiteOutlinedIcon from '@mui/icons-material/PlayCircleFil
 import PauseCircleOutlinedIcon from '@mui/icons-material/PauseCircleOutlined';
 
 import { eventEmitter } from './Home';
-import { newEmitter } from './LeftAudio';
 
 var a;
-
-function increaseVolume(currentVolume) {
-    if (currentVolume === 0) {
-        let audioElement = Math.max(currentVolume + 0.1, 0);
-        a.volume = audioElement;
-        setTimeout(function () {
-            increaseVolume(audioElement);
-        }, 2000);
-    } else if (currentVolume < 1 && currentVolume > 0) {
-        let audioElement = Math.min(currentVolume + 0.1, 1);
-        a.volume = audioElement;
-        setTimeout(function () {
-            increaseVolume(audioElement);
-        }, 2000);
-    }else if(currentVolume === 1){
-        a.volume = 1;
-    }
-}
 
 class RightAudio extends React.Component {
     constructor(props) {
@@ -47,28 +28,31 @@ class RightAudio extends React.Component {
     }
 
     componentDidMount() {
-        eventEmitter.on('customEvent', (data) => {
-            if (data.message === 'Play' && this.state.audioSound !== null) {
-                this.setState({ buttonName: "Play" }, () => {
+        eventEmitter.on('rightPlayer', (data) => {
+            if (data.message === 'Play' && data.goto === 1) {
+                this.setState({ volumeValue: 0, buttonName: data.message }, () => {
+                    a.volume = this.state.volumeValue;
                     this.state.audioSound.play();
-                    a.volume = 0
-                    this.setState({ buttonName: 'Pause' });
                     data.callBack('Pause');
-                })
-            } else if (data.message === 'Pause' && this.state.audioSound !== null) {
+                });
+                let timerHandle = setInterval(() => {
+                    let volumeValue = this.state.volumeValue + 0.1;
+                    volumeValue = volumeValue >= 1 ? 1 : volumeValue;
+                    this.setState({ volumeValue }, function () {
+                        a.volume = this.state.volumeValue;
+                        if (this.state.volumeValue >= 1) {
+                            clearInterval(timerHandle);
+                        }
+                    });
+                }, 1000);
+            } else if (data.message === 'Pause') {
                 this.setState({ buttonName: "Pause" }, () => {
                     this.state.audioSound.pause();
                     this.setState({ buttonName: 'Play' });
                     data.callBack('Play');
-                })
+                });
             }
         });
-
-        newEmitter.on('upTheVolume', (data) => {
-            if (data && data.message === 'turn up the volume') {
-                increaseVolume(0);
-            }
-        })
     }
 
     getAudio(e) {
@@ -100,7 +84,7 @@ class RightAudio extends React.Component {
     }
 
     componentWillUnmount() {
-        eventEmitter.off('customEvent', (data) => { });
+        // eventEmitter.off('customEvent', (data) => { });
     }
 
     render() {
