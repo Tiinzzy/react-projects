@@ -33,7 +33,7 @@ class LeftAudio extends React.Component {
 
     componentDidMount() {
         eventEmitter.on('leftPlayer', (data) => {
-            if (data.message === 'Play' && data.goto === 0) {
+            if (data.message === 'Play' && data.goto === 0 && this.state.audioSound !== null) {
                 this.setState({ volumeValue: 1, buttonName: data.message }, () => {
                     a.volume = this.state.volumeValue;
                     this.state.audioSound.play();
@@ -94,7 +94,7 @@ class LeftAudio extends React.Component {
     render() {
         return (
             <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 10, flexDirection: 'column', marginTop: 20, marginBottom: 20, width: 500 }}>
-                <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'left', width: 300}}>
+                <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'left', width: 300 }}>
                     <Button variant="contained" component="label">
                         Choose File
                         <input hidden type="file"

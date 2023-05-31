@@ -29,7 +29,7 @@ class RightAudio extends React.Component {
 
     componentDidMount() {
         eventEmitter.on('rightPlayer', (data) => {
-            if (data.message === 'Play' && data.goto === 1) {
+            if (data.message === 'Play' && data.goto === 1 && this.state.audioSound !== null) {
                 this.setState({ volumeValue: 0, buttonName: data.message }, () => {
                     a.volume = this.state.volumeValue;
                     this.state.audioSound.play();
