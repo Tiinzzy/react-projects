@@ -93,8 +93,8 @@ class LeftAudio extends React.Component {
 
     render() {
         return (
-            <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 10, flexDirection: 'column', marginTop: 20, marginBottom: 20, border: 'solid 1px red', width: 500 }}>
-                <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'left', width: 300, border: 'solid 1px purple' }}>
+            <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 10, flexDirection: 'column', marginTop: 20, marginBottom: 20, width: 500 }}>
+                <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'left', width: 300}}>
                     <Button variant="contained" component="label">
                         Choose File
                         <input hidden type="file"
@@ -103,7 +103,7 @@ class LeftAudio extends React.Component {
                     </Button>
                     <Typography variant="body1" ml={2}>{this.state.selectFile}</Typography>
                 </Box>
-                <Box style={{ border: 'solid 1px green', width: 500, marginTop: 10, marginBottom: 10 }}>
+                <Box style={{ width: 500, marginTop: 30, marginBottom: 30 }}>
                     <Typography variant="body1">{this.state.fileName}</Typography>
                 </Box>
                 <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'left', border: 'solid 2px #1769aa', borderRadius: 25, backgroundColor: '#F4FBFF' }}>
