@@ -7,7 +7,8 @@ import Typography from '@mui/material/Typography';
 const INSTRUCTIONS = ['1.Select two different audio files on either side of the audi player.',
     '2.You can play each audio seprately one at a time, or play both together.',
     '3.You can control the audios volume, once you select an audio file.',
-    '4.You can play both audios with fade in-n-out button, which starts both audios at the same time, with first audio being max and decrease and the second audio increase.',
+    '4.You can play both audios with fade in-n-out button, which starts both audios at the same time, with first audio having maximum\
+     volume and decrease as the second audio increases from the minimum volume to the max.',
     '5.You can also fade in-n-out in the middle of the audios if you wish to play them on your own at any time, just click on the in-n-out button.'];
 
 export default class Header extends React.Component {
