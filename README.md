@@ -2,6 +2,10 @@
 <h3> This is a reposity with mini projects that focuses on different aspects of React and Javascript.</h3>
 
 <br/>
+<h3>sound-fade-in-out</h3>
+<div>A project which allows user to upload two separate audio files and manipulate their volumes and also apply fading effect to the audi, where it fades in and out from one tune to another</div>
+<br/>
+
 <h3>next-js</h3>
 <div>This folder consist of two project, in which the first one was just for testing NEXT.js and getting the gist of it.</div>
 <div>The second folder is a copy of kanban-board project, but made with NEXT.js instead of React and used TypesScript intead of JavaScript to handle the front-end.</div>
