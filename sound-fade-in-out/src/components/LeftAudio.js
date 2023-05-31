@@ -33,7 +33,7 @@ class LeftAudio extends React.Component {
 
     componentDidMount() {
         eventEmitter.on('leftPlayer', (data) => {
-            if (data.message === 'Play' && data.goto === 0) {
+            if (data.message === 'Play' && data.goto === 0 && this.state.audioSound !== null) {
                 this.setState({ volumeValue: 1, buttonName: data.message }, () => {
                     a.volume = this.state.volumeValue;
                     this.state.audioSound.play();
@@ -80,7 +80,6 @@ class LeftAudio extends React.Component {
     }
 
     handleChangeVolume(e, newVolume) {
-        console.log(newVolume);
         if (this.state.audioSound !== null) {
             this.setState({ volumeValue: newVolume }, () => {
                 a.volume = this.state.volumeValue;
@@ -94,8 +93,8 @@ class LeftAudio extends React.Component {
 
     render() {
         return (
-            <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 10, flexDirection: 'column', marginTop: 20, marginBottom: 20 }}>
-                <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: 300 }}>
+            <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 10, flexDirection: 'column', marginTop: 20, marginBottom: 20, width: 500 }}>
+                <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'left', width: 300 }}>
                     <Button variant="contained" component="label">
                         Choose File
                         <input hidden type="file"
@@ -104,22 +103,22 @@ class LeftAudio extends React.Component {
                     </Button>
                     <Typography variant="body1" ml={2}>{this.state.selectFile}</Typography>
                 </Box>
-                <Typography variant="body1" mt={2} mb={2}>{this.state.fileName}</Typography>
-
-                <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                <Box style={{ width: 500, marginTop: 30, marginBottom: 30 }}>
+                    <Typography variant="body1">{this.state.fileName}</Typography>
+                </Box>
+                <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'left', border: 'solid 2px #1769aa', borderRadius: 25, backgroundColor: '#F4FBFF' }}>
                     <IconButton aria-label="delete" onClick={() => this.handlePlayAudio()} color="primary" disabled={this.state.buttonDisabled}>
                         {this.state.buttonName === "Play" ? <PlayCircleFilledWhiteOutlinedIcon fontSize="large" /> : <PauseCircleOutlinedIcon fontSize="large" />}
                     </IconButton>
-                    <Stack spacing={2} direction="row" sx={{ ml: 1 }} alignItems="center" style={{ width: 250 }}>
+                    <Stack spacing={2} direction="row" sx={{ ml: 1, mr: 2 }} alignItems="center" style={{ width: 250 }}>
                         <VolumeDown />
                         <Slider step={0.1}
                             max={1.0}
                             min={0.0}
                             aria-label="Volume"
                             value={this.state.volumeValue} onChange={(e, i) => this.handleChangeVolume(e, i)} />
-                        <VolumeUp />
+                        <VolumeUp ml={1} />
                     </Stack>
-
                 </Box>
             </Box>
         );
