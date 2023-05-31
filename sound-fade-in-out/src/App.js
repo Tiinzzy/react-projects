@@ -5,8 +5,13 @@ function App() {
   return (
     <>
       <Header />
-      <Home />
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ width: '65%' }}>
+          <Home />
+        </div>
+      </div>
     </>
+
   );
 }
 
