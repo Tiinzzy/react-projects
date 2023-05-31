@@ -80,7 +80,6 @@ class LeftAudio extends React.Component {
     }
 
     handleChangeVolume(e, newVolume) {
-        console.log(newVolume);
         if (this.state.audioSound !== null) {
             this.setState({ volumeValue: newVolume }, () => {
                 a.volume = this.state.volumeValue;
