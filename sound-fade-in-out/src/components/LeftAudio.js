@@ -119,7 +119,6 @@ class LeftAudio extends React.Component {
                             value={this.state.volumeValue} onChange={(e, i) => this.handleChangeVolume(e, i)} />
                         <VolumeUp ml={1} />
                     </Stack>
-
                 </Box>
             </Box>
         );
