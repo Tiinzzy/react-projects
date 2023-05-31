@@ -90,7 +90,7 @@ class RightAudio extends React.Component {
     render() {
         return (
             <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 10, flexDirection: 'column', marginTop: 20, marginBottom: 20 }}>
-                <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: 300 }}>
+                <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'left', width: 300 }}>
                     <Button variant="contained" component="label">
                         Choose File
                         <input hidden type="file"
@@ -99,20 +99,20 @@ class RightAudio extends React.Component {
                     </Button>
                     <Typography variant="body1" ml={2}>{this.state.selectFile}</Typography>
                 </Box>
-                <Typography variant="body1" mt={2} mb={2}>{this.state.fileName}</Typography>
+                <Typography variant="body1" mt={5} mb={5}>{this.state.fileName}</Typography>
 
-                <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'left', border: 'solid 2px #1769aa', borderRadius: 25, backgroundColor: '#F4FBFF' }}>
                     <IconButton aria-label="delete" onClick={() => this.handlePlayAudio()} color="primary" disabled={this.state.buttonDisabled}>
                         {this.state.buttonName === "Play" ? <PlayCircleFilledWhiteOutlinedIcon fontSize="large" /> : <PauseCircleOutlinedIcon fontSize="large" />}
                     </IconButton>
-                    <Stack spacing={2} direction="row" sx={{ ml: 1 }} alignItems="center" style={{ width: 250 }}>
+                    <Stack spacing={2} direction="row" sx={{ ml: 1, mr: 2 }} alignItems="center" style={{ width: 250 }}>
                         <VolumeDown />
                         <Slider step={0.1}
                             max={1.0}
                             min={0.0}
                             aria-label="Volume"
                             value={this.state.volumeValue} onChange={(e, i) => this.handleChangeVolume(e, i)} />
-                        <VolumeUp />
+                        <VolumeUp ml={1} />
                     </Stack>
 
                 </Box>
