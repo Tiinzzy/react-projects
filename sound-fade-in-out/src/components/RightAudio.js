@@ -84,7 +84,7 @@ class RightAudio extends React.Component {
     }
 
     componentWillUnmount() {
-        // eventEmitter.off('customEvent', (data) => { });
+        eventEmitter.off('customEvent', (data) => { });
     }
 
     render() {
