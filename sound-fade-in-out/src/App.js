@@ -42,7 +42,6 @@ function App() {
   const [theme, setTheme] = useState('light');
 
   useEffect(() => {
-    document.body.style.backgroundColor = (theme === 'light' ? 'white' : '#555555');
     styleEventEmitter.on('settingStyle', (data) => {
       setTheme(data.className);
     })
