@@ -11,10 +11,7 @@ import PlayCircleFilledWhiteOutlinedIcon from '@mui/icons-material/PlayCircleFil
 import PauseCircleOutlinedIcon from '@mui/icons-material/PauseCircleOutlined';
 
 import { eventEmitter } from './Home';
-
-import EventEmitter from 'eventemitter3';
-
-export const newEmitter = new EventEmitter();
+import { styleEventEmitter } from './Header';
 
 var a;
 
@@ -27,7 +24,8 @@ class LeftAudio extends React.Component {
             selectFile: 'No File Chosen',
             buttonName: 'Play',
             volumeValue: 1,
-            buttonDisabled: true
+            buttonDisabled: true,
+            audioPlayerTheme: 'light-audio-player'
         }
     }
 
@@ -40,7 +38,7 @@ class LeftAudio extends React.Component {
                     data.callBack('Pause');
                 });
                 let timerHandle = setInterval(() => {
-                    let volumeValue = this.state.volumeValue - 0.1;
+                    let volumeValue = this.state.volumeValue - data.steps;
                     volumeValue = volumeValue <= 0 ? 0 : volumeValue;
                     this.setState({ volumeValue }, function () {
                         a.volume = this.state.volumeValue;
@@ -56,6 +54,10 @@ class LeftAudio extends React.Component {
                     data.callBack('Play');
                 });
             }
+        });
+
+        styleEventEmitter.on('settingStyle', (data) => {
+            this.setState({ audioPlayerTheme: data.className + '-audio-player' });
         });
     }
 
@@ -88,7 +90,8 @@ class LeftAudio extends React.Component {
     }
 
     componentWillUnmount() {
-        eventEmitter.off('customEvent', (data) => { });
+        eventEmitter.off('customEvent');
+        styleEventEmitter.off('settingStyle');
     }
 
     render() {
@@ -106,18 +109,18 @@ class LeftAudio extends React.Component {
                 <Box style={{ width: 500, marginTop: 30, marginBottom: 30 }}>
                     <Typography variant="body1">{this.state.fileName}</Typography>
                 </Box>
-                <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'left', border: 'solid 2px #1769aa', borderRadius: 25, backgroundColor: '#F4FBFF' }}>
+                <Box className={this.state.audioPlayerTheme} >
                     <IconButton aria-label="delete" onClick={() => this.handlePlayAudio()} color="primary" disabled={this.state.buttonDisabled}>
                         {this.state.buttonName === "Play" ? <PlayCircleFilledWhiteOutlinedIcon fontSize="large" /> : <PauseCircleOutlinedIcon fontSize="large" />}
                     </IconButton>
                     <Stack spacing={2} direction="row" sx={{ ml: 1, mr: 2 }} alignItems="center" style={{ width: 250 }}>
-                        <VolumeDown />
+                        <VolumeDown color="tertiary" />
                         <Slider step={0.1}
                             max={1.0}
                             min={0.0}
                             aria-label="Volume"
                             value={this.state.volumeValue} onChange={(e, i) => this.handleChangeVolume(e, i)} />
-                        <VolumeUp ml={1} />
+                        <VolumeUp ml={1} color="tertiary" />
                     </Stack>
                 </Box>
             </Box>
