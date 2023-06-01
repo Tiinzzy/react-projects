@@ -3,7 +3,7 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Button from "@mui/material/Button";
+import Tooltip from '@mui/material/Tooltip';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import Brightness3Icon from '@mui/icons-material/Brightness3';
 import IconButton from '@mui/material/IconButton';
@@ -14,12 +14,12 @@ import './style.css';
 
 export const styleEventEmitter = new EventEmitter();
 
-const INSTRUCTIONS = ['1.Select two different audio files on either side of the audi player.',
-    '2.You can play each audio seprately one at a time, or play both together.',
-    '3.You can control the audios volume, once you select an audio file.',
-    '4.You can play both audios with fade in-n-out button, which starts both audios at the same time, with first audio having maximum\
+const INSTRUCTIONS = ['1. Select two different audio files on either side of the audi player.',
+    '2. You can play each audio seprately one at a time, or play both together.',
+    '3. You can control the audios volume, once you select an audio file.',
+    '4. You can play both audios with fade in-n-out button, which starts both audios at the same time, with first audio having maximum\
      volume and decrease as the second audio increases from the minimum volume to the max.',
-    '5.You can also fade in-n-out in the middle of the audios if you wish to play them on your own at any time, just click on the in-n-out button.'];
+    '5. You can also fade in-n-out in the middle of the audios if you wish to play them on your own at any time, just click on the in-n-out button.'];
 
 export default class Header extends React.Component {
     constructor(props) {
@@ -48,9 +48,11 @@ export default class Header extends React.Component {
                             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} color="white" fontWeight='bold'>
                                 Sound Mix
                             </Typography>
-                            <IconButton onClick={() => this.toggleTheme()}>
-                                {this.state.setTheme === 'light' ? <WbSunnyIcon color="secondary" fontSize="large" /> : <Brightness3Icon color="secondary" fontSize="large" />}
-                            </IconButton>
+                            <Tooltip title={this.state.setTheme === 'light'? 'Light Mode' : 'Dark Mode'} placement="bottom">
+                                <IconButton onClick={() => this.toggleTheme()}>
+                                    {this.state.setTheme === 'light' ? <WbSunnyIcon color="secondary" fontSize="large" /> : <Brightness3Icon color="secondary" fontSize="large" />}
+                                </IconButton>
+                            </Tooltip>
                         </Toolbar>
                     </AppBar>
                 </Box>
