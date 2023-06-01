@@ -3,7 +3,10 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { Button } from "@mui/material";
+import Button from "@mui/material/Button";
+import WbSunnyIcon from '@mui/icons-material/WbSunny';
+import Brightness3Icon from '@mui/icons-material/Brightness3';
+import IconButton from '@mui/material/IconButton';
 
 import EventEmitter from 'eventemitter3';
 
@@ -43,15 +46,17 @@ export default class Header extends React.Component {
                             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} color="white" fontWeight='bold'>
                                 Sound Mix
                             </Typography>
+                            <IconButton onClick={() => this.toggleTheme()}>
+                                {this.state.setTheme === 'light' ? <WbSunnyIcon color="sun" /> : <Brightness3Icon color="moon" />}
+                            </IconButton>
                         </Toolbar>
                     </AppBar>
                 </Box>
                 <Box className={this.state.setTheme} >
-                    <Typography variant="h5" pt={2} mb={2} ml={3} fontWeight="500">Instructions:</Typography>
+                    <Typography variant="h5" pt={2} pb={2} ml={3} fontWeight="500">Instructions:</Typography>
                     {INSTRUCTIONS.map((e, i) => (
-                        <Typography variant="body1" mt={.5} mb={.5} ml={3} key={i}>{e}</Typography>
+                        <Typography variant="body1" ml={3} key={i}>{e}</Typography>
                     ))}
-                    <Button variant="contained" onClick={() => this.toggleTheme()}>{this.state.setTheme}</Button>
                 </Box>
             </>
         );
