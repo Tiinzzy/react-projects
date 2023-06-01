@@ -25,7 +25,6 @@ export default class Header extends React.Component {
     }
 
     toggleTheme() {
-        console.log(this.state.setTheme, 'header')
         if (this.state.setTheme === 'light') {
             this.setState({ setTheme: 'dark' });
             styleEventEmitter.emit('settingStyle', { className: 'dark' });
