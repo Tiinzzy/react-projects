@@ -27,7 +27,6 @@ class Home extends React.Component {
     componentDidMount() {
         styleEventEmitter.on('settingStyle', (data) => {
             this.setState({ themeName: data.className });
-            console.log(this.state.themeName, 'home')
         })
     }
 
@@ -47,6 +46,10 @@ class Home extends React.Component {
         } else if (data && data === 'Play') {
             this.setState({ buttonName: 'Play' });
         }
+    }
+
+    componentWillUnmount() {
+        styleEventEmitter.off('settingStyle', (data) => { });
     }
 
     render() {
