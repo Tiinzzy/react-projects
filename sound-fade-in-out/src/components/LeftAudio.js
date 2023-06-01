@@ -58,7 +58,7 @@ class LeftAudio extends React.Component {
 
         styleEventEmitter.on('settingStyle', (data) => {
             this.setState({ audioPlayerTheme: data.className + '-audio-player' });
-        })
+        });
     }
 
     getAudio(e) {
@@ -91,6 +91,7 @@ class LeftAudio extends React.Component {
 
     componentWillUnmount() {
         eventEmitter.off('customEvent', (data) => { });
+        styleEventEmitter.off('settingStyle', (data) => { });
     }
 
     render() {
