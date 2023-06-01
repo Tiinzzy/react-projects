@@ -17,16 +17,22 @@ const lightTheme = createTheme({
     secondary: {
       main: '#FDB813',
     },
+    tertiary: {
+      main: '#0D7EE9'
+    }
   }
 });
 
 const darkTheme = createTheme({
   palette: {
     primary: {
-      main: '#424242'
+      main: '#2E2E2E'
     },
     secondary: {
       main: '#CCCCCC',
+    },
+    tertiary: {
+      main: '#7B7676'
     }
   }
 });
