@@ -10,6 +10,8 @@ import IconButton from '@mui/material/IconButton';
 
 import EventEmitter from 'eventemitter3';
 
+import './style.css';
+
 export const styleEventEmitter = new EventEmitter();
 
 const INSTRUCTIONS = ['1.Select two different audio files on either side of the audi player.',
