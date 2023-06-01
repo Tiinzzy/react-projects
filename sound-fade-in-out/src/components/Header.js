@@ -5,6 +5,10 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { Button } from "@mui/material";
 
+import EventEmitter from 'eventemitter3';
+
+export const styleEventEmitter = new EventEmitter();
+
 const INSTRUCTIONS = ['1.Select two different audio files on either side of the audi player.',
     '2.You can play each audio seprately one at a time, or play both together.',
     '3.You can control the audios volume, once you select an audio file.',
@@ -21,10 +25,13 @@ export default class Header extends React.Component {
     }
 
     toggleTheme() {
+        console.log(this.state.setTheme, 'header')
         if (this.state.setTheme === 'light') {
             this.setState({ setTheme: 'dark' });
+            styleEventEmitter.emit('settingStyle', { className: 'dark' });
         } else {
             this.setState({ setTheme: 'light' });
+            styleEventEmitter.emit('settingStyle', { className: 'light' });
         }
     }
 
@@ -40,11 +47,13 @@ export default class Header extends React.Component {
                         </Toolbar>
                     </AppBar>
                 </Box>
-                <Typography variant="h5" mt={2} mb={2} ml={3} fontWeight="500">Instructions:</Typography>
-                {INSTRUCTIONS.map((e, i) => (
-                    <Typography variant="body1" mt={.5} mb={.5} ml={3} key={i}>{e}</Typography>
-                ))}
-                <Button variant="contained" onClick={() => this.toggleTheme()}>{this.state.setTheme}</Button>
+                <Box className={this.state.setTheme} >
+                    <Typography variant="h5" pt={2} mb={2} ml={3} fontWeight="500">Instructions:</Typography>
+                    {INSTRUCTIONS.map((e, i) => (
+                        <Typography variant="body1" mt={.5} mb={.5} ml={3} key={i}>{e}</Typography>
+                    ))}
+                    <Button variant="contained" onClick={() => this.toggleTheme()}>{this.state.setTheme}</Button>
+                </Box>
             </>
         );
     }
