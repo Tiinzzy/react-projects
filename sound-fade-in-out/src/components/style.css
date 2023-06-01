@@ -4,13 +4,13 @@
 }
 
 .dark {
-    background-color: rgb(161, 161, 161);
-    color: white;
+    background-color: rgb(128, 128, 128);
+    color: rgb(255, 255, 255);
 }
 
 .dark-audio {
     width: 50%;
-    border: dotted 5px #ffffff;
+    border: dotted 5px #dbd6d6;
     align-items: center;
     justify-content: center;
     display: flex;
@@ -22,4 +22,24 @@
     align-items: center;
     justify-content: center;
     display: flex;
+}
+
+.light-audio-player {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
+    border: solid 2px #1769aa;
+    border-radius: 25px;
+    background-color: #F4FBFF;
+}
+
+.dark-audio-player {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
+    border: solid 2px #525252;
+    border-radius: 25px;
+    background-color: #dde0e2;
 }
