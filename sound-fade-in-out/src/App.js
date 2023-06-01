@@ -27,7 +27,7 @@ const darkTheme = createTheme({
 
 
 function App() {
-  const [theme, setTheme] = useState('');
+  const [theme, setTheme] = useState('light');
 
   useEffect(() => {
     styleEventEmitter.on('settingStyle', (data) => {
