@@ -12,8 +12,11 @@ import './components/style.css';
 const lightTheme = createTheme({
   palette: {
     primary: {
-      main: '#1769aa',
-    }
+      main: '#1769aa'
+    },
+    secondary: {
+      main: '#FDB813',
+    },
   }
 });
 
@@ -21,6 +24,9 @@ const darkTheme = createTheme({
   palette: {
     primary: {
       main: '#424242'
+    },
+    secondary: {
+      main: '#CCCCCC',
     }
   }
 });
