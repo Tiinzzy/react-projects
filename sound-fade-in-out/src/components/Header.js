@@ -3,6 +3,7 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import { Button } from "@mui/material";
 
 const INSTRUCTIONS = ['1.Select two different audio files on either side of the audi player.',
     '2.You can play each audio seprately one at a time, or play both together.',
@@ -15,6 +16,16 @@ export default class Header extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            setTheme: 'light'
+        }
+    }
+
+    toggleTheme() {
+        console.log(this.state.setTheme)
+        if (this.state.setTheme === 'light') {
+            this.setState({ setTheme: 'dark' });
+        } else {
+            this.setState({ setTheme: 'light' });
         }
     }
 
@@ -34,6 +45,7 @@ export default class Header extends React.Component {
                 {INSTRUCTIONS.map((e, i) => (
                     <Typography variant="body1" mt={.5} mb={.5} ml={3} key={i}>{e}</Typography>
                 ))}
+                <Button variant="contained" onClick={() => this.toggleTheme()}>{this.state.setTheme}</Button>
             </>
         );
     }
