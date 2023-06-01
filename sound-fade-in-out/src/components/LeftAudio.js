@@ -114,13 +114,13 @@ class LeftAudio extends React.Component {
                         {this.state.buttonName === "Play" ? <PlayCircleFilledWhiteOutlinedIcon fontSize="large" /> : <PauseCircleOutlinedIcon fontSize="large" />}
                     </IconButton>
                     <Stack spacing={2} direction="row" sx={{ ml: 1, mr: 2 }} alignItems="center" style={{ width: 250 }}>
-                        <VolumeDown color="primary" />
+                        <VolumeDown color="tertiary" />
                         <Slider step={0.1}
                             max={1.0}
                             min={0.0}
                             aria-label="Volume"
                             value={this.state.volumeValue} onChange={(e, i) => this.handleChangeVolume(e, i)} />
-                        <VolumeUp ml={1} color="primary" />
+                        <VolumeUp ml={1} color="tertiary" />
                     </Stack>
                 </Box>
             </Box>
