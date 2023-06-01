@@ -47,7 +47,7 @@ export default class Header extends React.Component {
                                 Sound Mix
                             </Typography>
                             <IconButton onClick={() => this.toggleTheme()}>
-                                {this.state.setTheme === 'light' ? <WbSunnyIcon color="sun" /> : <Brightness3Icon color="moon" />}
+                                {this.state.setTheme === 'light' ? <WbSunnyIcon color="secondary" /> : <Brightness3Icon color="secondary" />}
                             </IconButton>
                         </Toolbar>
                     </AppBar>
