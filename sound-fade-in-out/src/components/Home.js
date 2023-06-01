@@ -29,7 +29,6 @@ class Home extends React.Component {
 
     componentDidMount() {
         styleEventEmitter.on('settingStyle', (data) => {
-            console.log(this.state.audioTheme)
             this.setState({ themeName: data.className, audioTheme: data.className + '-audio' });
         })
     }
