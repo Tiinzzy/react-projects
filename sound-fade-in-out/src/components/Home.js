@@ -58,7 +58,7 @@ class Home extends React.Component {
     render() {
         return (
             <>
-                <div className={this.state.themeName} style={{ width: '100%', marginTop: 50 }}>
+                <div className={this.state.themeName} style={{ width: '100%', marginTop: 50, height: 678 }}>
                     <div style={{ minWidth: 800, width: '100%', display: 'flex', flexDirection: 'row', height: '400px' }}>
                         <Tooltip title="Fade Out" placement="top-start">
                             <div className={this.state.audioTheme} style={{ marginRight: 50 }}>
@@ -71,7 +71,7 @@ class Home extends React.Component {
                             </div>
                         </Tooltip>
                     </div>
-                    <div style={{ width: '100%', display: 'flex', flexDirection: 'column', height: '200px', alignItems: 'center', justifyContent: 'center' }}>
+                    <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                         <Tooltip title="Fade In-n-Out" placement="top">
                             <IconButton aria-label="delete" onClick={() => this.playBothAudio()} color="primary" >
                                 {this.state.buttonName === "Play" ? <PlayCircleFilledWhiteOutlinedIcon fontSize="large" /> : <PauseCircleOutlinedIcon fontSize="large" />}
