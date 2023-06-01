@@ -34,12 +34,13 @@ class Home extends React.Component {
     }
 
     playBothAudio() {
+        let steps = 0.025;
         if (this.state.buttonName === "Play") {
-            eventEmitter.emit('leftPlayer', { goto: 0, steps: 10, message: 'Play', callBack: this.callBack });
-            eventEmitter.emit('rightPlayer', { goto: 1, steps: 10, message: 'Play', callBack: this.callBack });
+            eventEmitter.emit('leftPlayer', { goto: 0, steps, message: 'Play', callBack: this.callBack });
+            eventEmitter.emit('rightPlayer', { goto: 1, steps, message: 'Play', callBack: this.callBack });
         } else if (this.state.buttonName === "Pause") {
-            eventEmitter.emit('leftPlayer', { goto: 0, steps: 10, message: 'Pause', callBack: this.callBack });
-            eventEmitter.emit('rightPlayer', { goto: 1, steps: 10, message: 'Pause', callBack: this.callBack });
+            eventEmitter.emit('leftPlayer', { goto: 0, steps, message: 'Pause', callBack: this.callBack });
+            eventEmitter.emit('rightPlayer', { goto: 1, steps, message: 'Pause', callBack: this.callBack });
         }
     }
 
@@ -52,7 +53,7 @@ class Home extends React.Component {
     }
 
     componentWillUnmount() {
-        styleEventEmitter.off('settingStyle', (data) => { });
+        styleEventEmitter.off('settingStyle');
     }
 
     render() {
