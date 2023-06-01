@@ -13,9 +13,9 @@ function App() {
   useEffect(() => {
     styleEventEmitter.on('settingStyle', (data) => {
       setTheme(data.className);
-      console.log(data, 'app')
     })
   }, []);
+
   return (
     <>
       <Header />
