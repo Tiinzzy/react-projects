@@ -1,0 +1,45 @@
+.light {
+    background-color: white;
+    color: black;
+}
+
+.dark {
+    background-color: #535353;
+    color: white;
+}
+
+.dark-audio {
+    width: 50%;
+    border: dotted 5px #6f6b6b;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.light-audio {
+    width: 50%;
+    border: dotted 5px #145490;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.light-audio-player {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
+    border: solid 3px #1769aa;
+    border-radius: 25px;
+    background-color: #ecf7fe;
+}
+
+.dark-audio-player {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
+    border: solid 3px #383737;
+    border-radius: 25px;
+    background-color: #ddddde;
+}

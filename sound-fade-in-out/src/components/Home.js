@@ -10,24 +10,37 @@ import Tooltip from '@mui/material/Tooltip';
 
 import EventEmitter from 'eventemitter3';
 
+import { styleEventEmitter } from './Header';
+
+import './style.css';
+
 export const eventEmitter = new EventEmitter();
 
 class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            buttonName: 'Play'
+            buttonName: 'Play',
+            themeName: 'light',
+            audioTheme: 'light-audio'
         }
         this.callBack = this.callBack.bind(this);
     }
 
+    componentDidMount() {
+        styleEventEmitter.on('settingStyle', (data) => {
+            this.setState({ themeName: data.className, audioTheme: data.className + '-audio' });
+        })
+    }
+
     playBothAudio() {
+        let steps = 0.025;
         if (this.state.buttonName === "Play") {
-            eventEmitter.emit('leftPlayer', { goto: 0, steps: 10, message: 'Play', callBack: this.callBack });
-            eventEmitter.emit('rightPlayer', { goto: 1, steps: 10, message: 'Play', callBack: this.callBack });
+            eventEmitter.emit('leftPlayer', { goto: 0, steps, message: 'Play', callBack: this.callBack });
+            eventEmitter.emit('rightPlayer', { goto: 1, steps, message: 'Play', callBack: this.callBack });
         } else if (this.state.buttonName === "Pause") {
-            eventEmitter.emit('leftPlayer', { goto: 0, steps: 10, message: 'Pause', callBack: this.callBack });
-            eventEmitter.emit('rightPlayer', { goto: 1, steps: 10, message: 'Pause', callBack: this.callBack });
+            eventEmitter.emit('leftPlayer', { goto: 0, steps, message: 'Pause', callBack: this.callBack });
+            eventEmitter.emit('rightPlayer', { goto: 1, steps, message: 'Pause', callBack: this.callBack });
         }
     }
 
@@ -39,23 +52,27 @@ class Home extends React.Component {
         }
     }
 
+    componentWillUnmount() {
+        styleEventEmitter.off('settingStyle');
+    }
+
     render() {
         return (
             <>
-                <div style={{ width: '100%', marginTop: 50 }}>
+                <div className={this.state.themeName} style={{ width: '100%', marginTop: 50, height: 678 }}>
                     <div style={{ minWidth: 800, width: '100%', display: 'flex', flexDirection: 'row', height: '400px' }}>
                         <Tooltip title="Fade Out" placement="top-start">
-                            <div style={{ width: '50%', border: 'dotted 5px #145490', alignItems: 'center', justifyContent: 'center', display: 'flex', marginRight: 50 }}>
+                            <div className={this.state.audioTheme} style={{ marginRight: 50 }}>
                                 <LeftAudio />
                             </div>
                         </Tooltip>
                         <Tooltip title="Fade In" placement="top-start">
-                            <div style={{ width: '50%', border: 'dotted 5px #145490', alignItems: 'center', justifyContent: 'center', display: 'flex', marginLeft: 50 }}>
+                            <div className={this.state.audioTheme} style={{ marginLeft: 50 }}>
                                 <RightAudio />
                             </div>
                         </Tooltip>
                     </div>
-                    <div style={{ width: '100%', display: 'flex', flexDirection: 'column', height: '200px', alignItems: 'center', justifyContent: 'center' }}>
+                    <div className={this.state.themeName} style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingTop: 40 }}>
                         <Tooltip title="Fade In-n-Out" placement="top">
                             <IconButton aria-label="delete" onClick={() => this.playBothAudio()} color="primary" >
                                 {this.state.buttonName === "Play" ? <PlayCircleFilledWhiteOutlinedIcon fontSize="large" /> : <PauseCircleOutlinedIcon fontSize="large" />}
@@ -63,7 +80,7 @@ class Home extends React.Component {
                         </Tooltip>
                         <Typography variant="body1">Fade in-n-out Button</Typography>
                     </div>
-                </div>
+                </div >
             </>
         );
     }
