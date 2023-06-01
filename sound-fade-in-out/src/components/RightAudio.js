@@ -38,7 +38,7 @@ class RightAudio extends React.Component {
                     data.callBack('Pause');
                 });
                 let timerHandle = setInterval(() => {
-                    let volumeValue = this.state.volumeValue + 0.1;
+                    let volumeValue = this.state.volumeValue + data.steps;
                     volumeValue = volumeValue >= 1 ? 1 : volumeValue;
                     this.setState({ volumeValue }, function () {
                         a.volume = this.state.volumeValue;
@@ -90,8 +90,8 @@ class RightAudio extends React.Component {
     }
 
     componentWillUnmount() {
-        eventEmitter.off('customEvent', (data) => { });
-        styleEventEmitter.off('settingStyle', (data) => { });
+        eventEmitter.off('customEvent');
+        styleEventEmitter.off('settingStyle');
     }
 
     render() {
