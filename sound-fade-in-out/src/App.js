@@ -42,22 +42,21 @@ function App() {
   const [theme, setTheme] = useState('light');
 
   useEffect(() => {
+    document.body.style.backgroundColor = (theme === 'light' ? 'white' : '#555555');
     styleEventEmitter.on('settingStyle', (data) => {
       setTheme(data.className);
     })
   }, []);
 
   return (
-    <>
-      <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
-        <Header />
-        <div className={theme} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ width: '65%' }}>
-            <Home />
-          </div>
+    <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
+      <Header />
+      <div className={theme} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ width: '75%' }}>
+          <Home />
         </div>
-      </ThemeProvider>
-    </>
+      </div>
+    </ThemeProvider>
 
   );
 }
