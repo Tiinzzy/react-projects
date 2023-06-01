@@ -1,7 +1,25 @@
-.light{
+.light {
     background-color: white;
+    color: black;
 }
 
-.dark{
+.dark {
     background-color: rgb(161, 161, 161);
+    color: white;
+}
+
+.dark-audio {
+    width: 50%;
+    border: dotted 5px #ffffff;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.light-audio {
+    width: 50%;
+    border: dotted 5px #145490;
+    align-items: center;
+    justify-content: center;
+    display: flex;
 }
