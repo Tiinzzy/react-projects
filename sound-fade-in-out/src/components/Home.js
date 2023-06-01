@@ -71,7 +71,7 @@ class Home extends React.Component {
                             </div>
                         </Tooltip>
                     </div>
-                    <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                    <div className={this.state.themeName} style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingTop: 40 }}>
                         <Tooltip title="Fade In-n-Out" placement="top">
                             <IconButton aria-label="delete" onClick={() => this.playBothAudio()} color="primary" >
                                 {this.state.buttonName === "Play" ? <PlayCircleFilledWhiteOutlinedIcon fontSize="large" /> : <PauseCircleOutlinedIcon fontSize="large" />}
