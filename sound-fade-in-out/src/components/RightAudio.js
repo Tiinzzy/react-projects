@@ -56,6 +56,22 @@ class RightAudio extends React.Component {
             }
         });
 
+        eventEmitter.on('rightAudioPlayer', (data) => {
+            if (data.message === 'Play' && this.state.audioSound !== null) {
+                this.setState({ volumeValue: 1, buttonName: data.message }, () => {
+                    a.volume = this.state.volumeValue;
+                    this.state.audioSound.play();
+                    data.callBack('Pause Right');
+                })
+            } else if (data.message === 'Pause') {
+                this.setState({ buttonName: "Pause" }, () => {
+                    this.state.audioSound.pause();
+                    this.setState({ buttonName: 'Play' });
+                    data.callBack('Play Right');
+                });
+            }
+        })
+
         styleEventEmitter.on('settingStyle', (data) => {
             this.setState({ audioPlayerTheme: data.className + '-audio-player' });
         })
