@@ -22,7 +22,8 @@ class Home extends React.Component {
         this.state = {
             buttonName: 'Play',
             themeName: 'light',
-            audioTheme: 'light-audio'
+            audioTheme: 'light-audio',
+            leftButtonName: 'Play'
         }
         this.callBack = this.callBack.bind(this);
     }
@@ -44,11 +45,25 @@ class Home extends React.Component {
         }
     }
 
+    playLeftAudio() {
+        console.log(this.state.leftButtonName)
+        if (this.state.leftButtonName === "Play") {
+            eventEmitter.emit('leftAudioPlayer', { message: 'Play', callBack: this.callBack });
+        } else if (this.state.leftButtonName === "Pause") {
+            eventEmitter.emit('leftAudioPlayer', { message: 'Pause', callBack: this.callBack });
+        }
+    }
+
     callBack(data) {
+        console.log(data)
         if (data && data === 'Pause') {
             this.setState({ buttonName: 'Pause' });
         } else if (data && data === 'Play') {
             this.setState({ buttonName: 'Play' });
+        } else if (data === 'Pause Left') {
+            this.setState({ leftButtonName: 'Pause' });
+        } else if (data === 'Play Left') {
+            this.setState({ leftButtonName: 'Play' });
         }
     }
 
@@ -72,12 +87,22 @@ class Home extends React.Component {
                             </div>
                         </Tooltip>
                     </div>
-                    <div className={this.state.themeName} style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingTop: 40 }}>
-                        <Tooltip title="Fade In-n-Out" placement="top">
-                            <IconButton aria-label="delete" onClick={() => this.playBothAudio()} color="primary" >
-                                {this.state.buttonName === "Play" ? <PlayCircleFilledWhiteOutlinedIcon fontSize="large" /> : <PauseCircleOutlinedIcon fontSize="large" />}
-                            </IconButton>
-                        </Tooltip>
+                    <div className={this.state.themeName}
+                        style={{ width: '100%', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'left', paddingTop: 40, border: 'solid 1px red', marginTop: 20 }}>
+                        <div>
+                            <Tooltip title="Fade In-n-Out" placement="top">
+                                <IconButton aria-label="delete" onClick={() => this.playBothAudio()} color="primary" >
+                                    {this.state.buttonName === "Play" ? <PlayCircleFilledWhiteOutlinedIcon fontSize="large" /> : <PauseCircleOutlinedIcon fontSize="large" />}
+                                </IconButton>
+                            </Tooltip>
+                        </div>
+                        <div>
+                            <Tooltip title="Play Left Audio" placement="top">
+                                <IconButton aria-label="delete" onClick={() => this.playLeftAudio()} color="primary" >
+                                    {this.state.leftButtonName === "Play" ? <PlayCircleFilledWhiteOutlinedIcon fontSize="large" /> : <PauseCircleOutlinedIcon fontSize="large" />}
+                                </IconButton>
+                            </Tooltip>
+                        </div>
                         <Typography variant="body1">Fade in-n-out Button</Typography>
                     </div>
                 </div >
