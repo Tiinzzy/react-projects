@@ -30,14 +30,15 @@ class Home extends React.Component {
             themeName: 'light',
             audioTheme: 'light-audio',
             leftButtonName: 'Play',
-            rightButtonName: 'Play'
+            rightButtonName: 'Play',
+            beatBoxTHeme: 'light-box'
         }
         this.callBack = this.callBack.bind(this);
     }
 
     componentDidMount() {
         styleEventEmitter.on('settingStyle', (data) => {
-            this.setState({ themeName: data.className, audioTheme: data.className + '-audio' });
+            this.setState({ beatBoxTHeme: data.className + '-box', themeName: data.className, audioTheme: data.className + '-audio' });
         })
     }
 
@@ -74,7 +75,7 @@ class Home extends React.Component {
         }
     }
 
-    playBackhAudio5(){
+    playBackhAudio5() {
         let steps = 0.05;
         if (this.state.buttonName === "Play") {
             eventEmitter.emit('leftPlayerBack', { goto: 1, steps, message: 'Play', callBack: this.callBack });
@@ -85,7 +86,7 @@ class Home extends React.Component {
         }
     }
 
-    playBackhAudio1(){
+    playBackhAudio1() {
         let steps = 0.1;
         if (this.state.buttonName === "Play") {
             eventEmitter.emit('leftPlayerBack', { goto: 1, steps, message: 'Play', callBack: this.callBack });
@@ -96,7 +97,7 @@ class Home extends React.Component {
         }
     }
 
-    playBackAudio3(){
+    playBackAudio3() {
         let steps = 0.3;
         if (this.state.buttonName === "Play") {
             eventEmitter.emit('leftPlayerBack', { goto: 1, steps, message: 'Play', callBack: this.callBack });
@@ -157,8 +158,8 @@ class Home extends React.Component {
                             </div>
                         </Tooltip>
                     </div>
-                    <div className={this.state.themeName}
-                        style={{ width: '100%', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'left', paddingTop: 40, border: 'solid 1px red', marginTop: 20 }}>
+                    <div className={this.state.themeName && this.state.beatBoxTHeme}
+                        style={{ minWidth: 800, width: '100%', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 20 }}>
                         <div>
                             <Tooltip title="Speed 0.05" placement="top">
                                 <IconButton aria-label="delete" onClick={() => this.playBothAudio5()} color="primary" >
