@@ -43,3 +43,15 @@
     border-radius: 25px;
     background-color: #ddddde;
 }
+
+.light-box{
+    border: solid 3px #1769aa;
+    border-radius: 4px;
+    background-color: #ecf7fe;
+}
+
+.dark-box{
+    border: solid 3px #383737;
+    border-radius: 4px;
+    background-color: #ddddde;
+}

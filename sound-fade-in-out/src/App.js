@@ -51,7 +51,7 @@ function App() {
     <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
       <Header />
       <div className={theme} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ width: '75%' }}>
+        <div style={{ width: '80%' }}>
           <Home />
         </div>
       </div>

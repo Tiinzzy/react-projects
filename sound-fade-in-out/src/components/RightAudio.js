@@ -32,7 +32,7 @@ class RightAudio extends React.Component {
     componentDidMount() {
         eventEmitter.on('rightPlayer', (data) => {
             if (data.message === 'Play' && data.goto === 1 && this.state.audioSound !== null) {
-                this.setState({ volumeValue: 0, buttonName: data.message }, () => {
+                this.setState({ volumeValue: 0, buttonName: 'Pause' }, () => {
                     a.volume = this.state.volumeValue;
                     this.state.audioSound.play();
                     data.callBack('Pause');
@@ -48,13 +48,55 @@ class RightAudio extends React.Component {
                     });
                 }, 1000);
             } else if (data.message === 'Pause') {
-                this.setState({ buttonName: "Pause" }, () => {
+                this.setState({ buttonName: "Play" }, () => {
                     this.state.audioSound.pause();
                     this.setState({ buttonName: 'Play' });
                     data.callBack('Play');
                 });
             }
         });
+
+        eventEmitter.on('rightPlayerBack', (data) => {
+            if (data.message === 'Play' && data.goto === 0 && this.state.audioSound !== null) {
+                this.setState({ volumeValue: 1, buttonName: 'Pause' }, () => {
+                    a.volume = this.state.volumeValue;
+                    this.state.audioSound.play();
+                    data.callBack('Pause');
+                });
+                let timerHandle = setInterval(() => {
+                    let volumeValue = this.state.volumeValue - data.steps;
+                    volumeValue = volumeValue <= 0 ? 0 : volumeValue;
+                    this.setState({ volumeValue }, function () {
+                        a.volume = this.state.volumeValue;
+                        if (this.state.volumeValue >= 1) {
+                            clearInterval(timerHandle);
+                        }
+                    });
+                }, 1000);
+            } else if (data.message === 'Pause') {
+                this.setState({ buttonName: "Play" }, () => {
+                    this.state.audioSound.pause();
+                    this.setState({ buttonName: 'Play' });
+                    data.callBack('Play');
+                });
+            }
+        });
+
+        eventEmitter.on('rightAudioPlayer', (data) => {
+            if (data.message === 'Play' && this.state.audioSound !== null) {
+                this.setState({ volumeValue: 1, buttonName: 'Pause' }, () => {
+                    a.volume = this.state.volumeValue;
+                    this.state.audioSound.play();
+                    data.callBack('Pause Right');
+                })
+            } else if (data.message === 'Pause') {
+                this.setState({ buttonName: "Play" }, () => {
+                    this.state.audioSound.pause();
+                    this.setState({ buttonName: 'Play' });
+                    data.callBack('Play Right');
+                });
+            }
+        })
 
         styleEventEmitter.on('settingStyle', (data) => {
             this.setState({ audioPlayerTheme: data.className + '-audio-player' });
