@@ -8,6 +8,9 @@ import PauseCircleOutlinedIcon from '@mui/icons-material/PauseCircleOutlined';
 import Forward5Icon from '@mui/icons-material/Forward5';
 import Forward10Icon from '@mui/icons-material/Forward10';
 import Forward30Icon from '@mui/icons-material/Forward30';
+import Replay5Icon from '@mui/icons-material/Replay5';
+import Replay10Icon from '@mui/icons-material/Replay10';
+import Replay30Icon from '@mui/icons-material/Replay30';
 import Typography from "@mui/material/Typography";
 import Tooltip from '@mui/material/Tooltip';
 
@@ -49,7 +52,7 @@ class Home extends React.Component {
         }
     }
 
-    playBothAudio1(){
+    playBothAudio1() {
         let steps = 0.1;
         if (this.state.buttonName === "Play") {
             eventEmitter.emit('leftPlayer', { goto: 0, steps, message: 'Play', callBack: this.callBack });
@@ -60,8 +63,8 @@ class Home extends React.Component {
         }
     }
 
-    playBothAudio3(){
-    let steps = 0.3;
+    playBothAudio3() {
+        let steps = 0.3;
         if (this.state.buttonName === "Play") {
             eventEmitter.emit('leftPlayer', { goto: 0, steps, message: 'Play', callBack: this.callBack });
             eventEmitter.emit('rightPlayer', { goto: 1, steps, message: 'Play', callBack: this.callBack });
@@ -69,6 +72,18 @@ class Home extends React.Component {
             eventEmitter.emit('leftPlayer', { goto: 0, steps, message: 'Pause', callBack: this.callBack });
             eventEmitter.emit('rightPlayer', { goto: 1, steps, message: 'Pause', callBack: this.callBack });
         }
+    }
+
+    playBackhAudio5(){
+
+    }
+
+    playBackhAudio1(){
+
+    }
+
+    playBackAudio3(){
+        
     }
 
     playLeftAudio() {
@@ -158,6 +173,28 @@ class Home extends React.Component {
                                 </IconButton>
                             </Tooltip>
                         </div>
+                        <div>
+                            <Tooltip title="Speed 0.05" placement="top">
+                                <IconButton aria-label="delete" onClick={() => this.playBackhAudio5()} color="primary" >
+                                    {this.state.buttonName === "Play" && <Replay5Icon fontSize="large" />}
+                                </IconButton>
+                            </Tooltip>
+                        </div>
+                        <div>
+                            <Tooltip title="Speed 0.1" placement="top">
+                                <IconButton aria-label="delete" onClick={() => this.playBackhAudio1()} color="primary" >
+                                    {this.state.buttonName === "Play" && <Replay10Icon fontSize="large" />}
+                                </IconButton>
+                            </Tooltip>
+                        </div>
+                        <div>
+                            <Tooltip title="Speed 0.3" placement="top">
+                                <IconButton aria-label="delete" onClick={() => this.playBackAudio3()} color="primary" >
+                                    {this.state.buttonName === "Play" && <Replay30Icon fontSize="large" />}
+                                </IconButton>
+                            </Tooltip>
+                        </div>
+
                     </div>
                 </div >
             </>
