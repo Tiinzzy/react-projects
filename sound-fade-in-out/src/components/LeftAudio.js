@@ -109,6 +109,7 @@ class LeftAudio extends React.Component {
     componentWillUnmount() {
         eventEmitter.off('customEvent');
         styleEventEmitter.off('settingStyle');
+        eventEmitter.on('leftAudioPlayer');
     }
 
     render() {
