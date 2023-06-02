@@ -75,7 +75,14 @@ class Home extends React.Component {
     }
 
     playBackhAudio5(){
-
+        let steps = 0.05;
+        if (this.state.buttonName === "Play") {
+            eventEmitter.emit('leftPlayerBack', { goto: 1, steps, message: 'Play', callBack: this.callBack });
+            eventEmitter.emit('rightPlayerBack', { goto: 0, steps, message: 'Play', callBack: this.callBack });
+        } else if (this.state.buttonName === "Pause") {
+            eventEmitter.emit('leftPlayerBack', { goto: 1, steps, message: 'Pause', callBack: this.callBack });
+            eventEmitter.emit('rightPlayerBack', { goto: 0, steps, message: 'Pause', callBack: this.callBack });
+        }
     }
 
     playBackhAudio1(){
@@ -83,7 +90,7 @@ class Home extends React.Component {
     }
 
     playBackAudio3(){
-        
+
     }
 
     playLeftAudio() {
