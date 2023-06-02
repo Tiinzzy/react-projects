@@ -5,6 +5,9 @@ import RightAudio from "./RightAudio";
 import IconButton from '@mui/material/IconButton';
 import PlayCircleFilledWhiteOutlinedIcon from '@mui/icons-material/PlayCircleFilledWhiteOutlined';
 import PauseCircleOutlinedIcon from '@mui/icons-material/PauseCircleOutlined';
+import Forward5Icon from '@mui/icons-material/Forward5';
+import Forward10Icon from '@mui/icons-material/Forward10';
+import Forward30Icon from '@mui/icons-material/Forward30';
 import Typography from "@mui/material/Typography";
 import Tooltip from '@mui/material/Tooltip';
 
@@ -35,8 +38,30 @@ class Home extends React.Component {
         })
     }
 
-    playBothAudio() {
-        let steps = 0.025;
+    playBothAudio5() {
+        let steps = 0.05;
+        if (this.state.buttonName === "Play") {
+            eventEmitter.emit('leftPlayer', { goto: 0, steps, message: 'Play', callBack: this.callBack });
+            eventEmitter.emit('rightPlayer', { goto: 1, steps, message: 'Play', callBack: this.callBack });
+        } else if (this.state.buttonName === "Pause") {
+            eventEmitter.emit('leftPlayer', { goto: 0, steps, message: 'Pause', callBack: this.callBack });
+            eventEmitter.emit('rightPlayer', { goto: 1, steps, message: 'Pause', callBack: this.callBack });
+        }
+    }
+
+    playBothAudio1(){
+        let steps = 0.1;
+        if (this.state.buttonName === "Play") {
+            eventEmitter.emit('leftPlayer', { goto: 0, steps, message: 'Play', callBack: this.callBack });
+            eventEmitter.emit('rightPlayer', { goto: 1, steps, message: 'Play', callBack: this.callBack });
+        } else if (this.state.buttonName === "Pause") {
+            eventEmitter.emit('leftPlayer', { goto: 0, steps, message: 'Pause', callBack: this.callBack });
+            eventEmitter.emit('rightPlayer', { goto: 1, steps, message: 'Pause', callBack: this.callBack });
+        }
+    }
+
+    playBothAudio3(){
+    let steps = 0.3;
         if (this.state.buttonName === "Play") {
             eventEmitter.emit('leftPlayer', { goto: 0, steps, message: 'Play', callBack: this.callBack });
             eventEmitter.emit('rightPlayer', { goto: 1, steps, message: 'Play', callBack: this.callBack });
@@ -64,9 +89,7 @@ class Home extends React.Component {
 
     callBack(data) {
         if (data && data === 'Pause') {
-            this.setState({ buttonName: 'Pause' });
-        } else if (data && data === 'Play') {
-            this.setState({ buttonName: 'Play' });
+            this.setState({ buttonName: 'Play', leftButtonName: 'Pause', rightButtonName: 'Pause' });
         } else if (data === 'Pause Left') {
             this.setState({ leftButtonName: 'Pause' });
         } else if (data === 'Play Left') {
@@ -102,8 +125,22 @@ class Home extends React.Component {
                         style={{ width: '100%', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'left', paddingTop: 40, border: 'solid 1px red', marginTop: 20 }}>
                         <div>
                             <Tooltip title="Fade In-n-Out" placement="top">
-                                <IconButton aria-label="delete" onClick={() => this.playBothAudio()} color="primary" >
-                                    {this.state.buttonName === "Play" ? <PlayCircleFilledWhiteOutlinedIcon fontSize="large" /> : <PauseCircleOutlinedIcon fontSize="large" />}
+                                <IconButton aria-label="delete" onClick={() => this.playBothAudio5()} color="primary" >
+                                    {this.state.buttonName === "Play" && <Forward5Icon fontSize="large" />}
+                                </IconButton>
+                            </Tooltip>
+                        </div>
+                        <div>
+                            <Tooltip title="Fade In-n-Out" placement="top">
+                                <IconButton aria-label="delete" onClick={() => this.playBothAudio1()} color="primary" >
+                                    {this.state.buttonName === "Play" && <Forward10Icon fontSize="large" />}
+                                </IconButton>
+                            </Tooltip>
+                        </div>
+                        <div>
+                            <Tooltip title="Fade In-n-Out" placement="top">
+                                <IconButton aria-label="delete" onClick={() => this.playBothAudio3()} color="primary" >
+                                    {this.state.buttonName === "Play" && <Forward30Icon fontSize="large" />}
                                 </IconButton>
                             </Tooltip>
                         </div>
