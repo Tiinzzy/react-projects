@@ -56,6 +56,23 @@ class LeftAudio extends React.Component {
             }
         });
 
+        eventEmitter.on('leftAudioPlayer', (data) => {
+            console.log(data)
+            if (data.message === 'Play' && this.state.audioSound !== null) {
+                this.setState({ volumeValue: 1, buttonName: data.message }, () => {
+                    a.volume = this.state.volumeValue;
+                    this.state.audioSound.play();
+                    data.callBack('Pause Left');
+                });
+            } else if (data.message === 'Pause') {
+                this.setState({ buttonName: "Pause" }, () => {
+                    this.state.audioSound.pause();
+                    this.setState({ buttonName: 'Play' });
+                    data.callBack('Play Left');
+                });
+            }
+        });
+
         styleEventEmitter.on('settingStyle', (data) => {
             this.setState({ audioPlayerTheme: data.className + '-audio-player' });
         });
