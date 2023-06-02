@@ -23,7 +23,8 @@ class Home extends React.Component {
             buttonName: 'Play',
             themeName: 'light',
             audioTheme: 'light-audio',
-            leftButtonName: 'Play'
+            leftButtonName: 'Play',
+            rightButtonName: 'Play'
         }
         this.callBack = this.callBack.bind(this);
     }
@@ -54,6 +55,14 @@ class Home extends React.Component {
         }
     }
 
+    playRightAudio() {
+        if (this.state.rightButtonName === "Play") {
+            eventEmitter.emit('rightAudioPlayer', { message: 'Play', callBack: this.callBack });
+        } else if (this.state.rightButtonName === "Pause") {
+            eventEmitter.emit('rightAudioPlayer', { message: 'Pause', callBack: this.callBack });
+        }
+    }
+
     callBack(data) {
         console.log(data)
         if (data && data === 'Pause') {
@@ -64,6 +73,10 @@ class Home extends React.Component {
             this.setState({ leftButtonName: 'Pause' });
         } else if (data === 'Play Left') {
             this.setState({ leftButtonName: 'Play' });
+        } else if (data === 'Play Right') {
+            this.setState({ rightButtonName: 'Play' });
+        } else if (data === 'Pause Right') {
+            this.setState({ rightButtonName: 'Pause' });
         }
     }
 
@@ -103,7 +116,13 @@ class Home extends React.Component {
                                 </IconButton>
                             </Tooltip>
                         </div>
-                        <Typography variant="body1">Fade in-n-out Button</Typography>
+                        <div>
+                            <Tooltip title="Play Right Audio" placement="top">
+                                <IconButton aria-label="delete" onClick={() => this.playRightAudio()} color="primary" >
+                                    {this.state.rightButtonName === "Play" ? <PlayCircleFilledWhiteOutlinedIcon fontSize="large" /> : <PauseCircleOutlinedIcon fontSize="large" />}
+                                </IconButton>
+                            </Tooltip>
+                        </div>
                     </div>
                 </div >
             </>
