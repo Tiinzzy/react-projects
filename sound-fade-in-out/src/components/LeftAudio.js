@@ -57,7 +57,6 @@ class LeftAudio extends React.Component {
         });
 
         eventEmitter.on('leftAudioPlayer', (data) => {
-            console.log(data)
             if (data.message === 'Play' && this.state.audioSound !== null) {
                 this.setState({ volumeValue: 1, buttonName: data.message }, () => {
                     a.volume = this.state.volumeValue;
