@@ -47,7 +47,6 @@ class Home extends React.Component {
     }
 
     playLeftAudio() {
-        console.log(this.state.leftButtonName)
         if (this.state.leftButtonName === "Play") {
             eventEmitter.emit('leftAudioPlayer', { message: 'Play', callBack: this.callBack });
         } else if (this.state.leftButtonName === "Pause") {
@@ -64,7 +63,6 @@ class Home extends React.Component {
     }
 
     callBack(data) {
-        console.log(data)
         if (data && data === 'Pause') {
             this.setState({ buttonName: 'Pause' });
         } else if (data && data === 'Play') {
