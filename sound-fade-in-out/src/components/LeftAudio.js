@@ -32,7 +32,7 @@ class LeftAudio extends React.Component {
     componentDidMount() {
         eventEmitter.on('leftPlayer', (data) => {
             if (data.message === 'Play' && data.goto === 0 && this.state.audioSound !== null) {
-                this.setState({ volumeValue: 1, buttonName: data.message }, () => {
+                this.setState({ volumeValue: 1, buttonName: 'Pause' }, () => {
                     a.volume = this.state.volumeValue;
                     this.state.audioSound.play();
                     data.callBack('Pause');
@@ -48,7 +48,7 @@ class LeftAudio extends React.Component {
                     });
                 }, 1000);
             } else if (data.message === 'Pause') {
-                this.setState({ buttonName: "Pause" }, () => {
+                this.setState({ buttonName: "Play" }, () => {
                     this.state.audioSound.pause();
                     this.setState({ buttonName: 'Play' });
                     data.callBack('Play');
