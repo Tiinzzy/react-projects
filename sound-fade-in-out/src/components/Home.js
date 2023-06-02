@@ -124,21 +124,21 @@ class Home extends React.Component {
                     <div className={this.state.themeName}
                         style={{ width: '100%', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'left', paddingTop: 40, border: 'solid 1px red', marginTop: 20 }}>
                         <div>
-                            <Tooltip title="Fade In-n-Out" placement="top">
+                            <Tooltip title="Speed 0.05" placement="top">
                                 <IconButton aria-label="delete" onClick={() => this.playBothAudio5()} color="primary" >
                                     {this.state.buttonName === "Play" && <Forward5Icon fontSize="large" />}
                                 </IconButton>
                             </Tooltip>
                         </div>
                         <div>
-                            <Tooltip title="Fade In-n-Out" placement="top">
+                            <Tooltip title="Speed 0.1" placement="top">
                                 <IconButton aria-label="delete" onClick={() => this.playBothAudio1()} color="primary" >
                                     {this.state.buttonName === "Play" && <Forward10Icon fontSize="large" />}
                                 </IconButton>
                             </Tooltip>
                         </div>
                         <div>
-                            <Tooltip title="Fade In-n-Out" placement="top">
+                            <Tooltip title="Speed 0.3" placement="top">
                                 <IconButton aria-label="delete" onClick={() => this.playBothAudio3()} color="primary" >
                                     {this.state.buttonName === "Play" && <Forward30Icon fontSize="large" />}
                                 </IconButton>
