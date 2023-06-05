@@ -181,19 +181,21 @@ class Home extends React.Component {
                                 </IconButton>
                             </Tooltip>
                         </div>
-                        <div>
+                        <div style={{ marginRight: 10 }}>
                             <Tooltip title="Play Left Audio" placement="top">
                                 <IconButton aria-label="delete" onClick={() => this.playLeftAudio()} color="primary" >
                                     {this.state.leftButtonName === "Play" ? <PlayCircleFilledWhiteOutlinedIcon fontSize="large" /> : <PauseCircleOutlinedIcon fontSize="large" />}
                                 </IconButton>
                             </Tooltip>
+                            <Typography variant="body1" fontSize="9px" style={{color: this.state.themeName === 'light' ? 'black' : '#4a4a4a' }}>Left Audio</Typography>
                         </div>
-                        <div>
+                        <div style={{ marginLeft: 10 }}>
                             <Tooltip title="Play Right Audio" placement="top">
                                 <IconButton aria-label="delete" onClick={() => this.playRightAudio()} color="primary" >
                                     {this.state.rightButtonName === "Play" ? <PlayCircleFilledWhiteOutlinedIcon fontSize="large" /> : <PauseCircleOutlinedIcon fontSize="large" />}
                                 </IconButton>
                             </Tooltip>
+                            <Typography variant="body1" fontSize="9px" style={{color: this.state.themeName === 'light' ? 'black' : '#4a4a4a' }}>Right Audio</Typography>
                         </div>
                         <div>
                             <Tooltip title="Speed 0.05" placement="top">
