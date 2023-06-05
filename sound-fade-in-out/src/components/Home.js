@@ -147,16 +147,12 @@ class Home extends React.Component {
             <>
                 <div className={this.state.themeName} style={{ width: '100%', marginTop: 50, height: 678 }}>
                     <div style={{ minWidth: 800, width: '100%', display: 'flex', flexDirection: 'row', height: '400px' }}>
-                        <Tooltip title="Fade Out" placement="top-start">
-                            <div className={this.state.audioTheme} style={{ marginRight: 50 }}>
-                                <LeftAudio />
-                            </div>
-                        </Tooltip>
-                        <Tooltip title="Fade In" placement="top-start">
-                            <div className={this.state.audioTheme} style={{ marginLeft: 50 }}>
-                                <RightAudio />
-                            </div>
-                        </Tooltip>
+                        <div className={this.state.audioTheme} style={{ marginRight: 50 }}>
+                            <LeftAudio />
+                        </div>
+                        <div className={this.state.audioTheme} style={{ marginLeft: 50 }}>
+                            <RightAudio />
+                        </div>
                     </div>
                     <div className={this.state.themeName && this.state.beatBoxTHeme}
                         style={{ minWidth: 800, width: '100%', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 20 }}>
@@ -187,7 +183,7 @@ class Home extends React.Component {
                                     {this.state.leftButtonName === "Play" ? <PlayCircleFilledWhiteOutlinedIcon fontSize="large" /> : <PauseCircleOutlinedIcon fontSize="large" />}
                                 </IconButton>
                             </Tooltip>
-                            <Typography variant="body1" fontSize="9px" style={{color: this.state.themeName === 'light' ? 'black' : '#4a4a4a' }}>Left Audio</Typography>
+                            <Typography variant="body1" fontSize="9px" style={{ color: this.state.themeName === 'light' ? 'black' : '#4a4a4a' }}>Left Audio</Typography>
                         </div>
                         <div style={{ marginLeft: 10 }}>
                             <Tooltip title="Play Right Audio" placement="top">
@@ -195,7 +191,7 @@ class Home extends React.Component {
                                     {this.state.rightButtonName === "Play" ? <PlayCircleFilledWhiteOutlinedIcon fontSize="large" /> : <PauseCircleOutlinedIcon fontSize="large" />}
                                 </IconButton>
                             </Tooltip>
-                            <Typography variant="body1" fontSize="9px" style={{color: this.state.themeName === 'light' ? 'black' : '#4a4a4a' }}>Right Audio</Typography>
+                            <Typography variant="body1" fontSize="9px" style={{ color: this.state.themeName === 'light' ? 'black' : '#4a4a4a' }}>Right Audio</Typography>
                         </div>
                         <div>
                             <Tooltip title="Speed 0.05" placement="top">
