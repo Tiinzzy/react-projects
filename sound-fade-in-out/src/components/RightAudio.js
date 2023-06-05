@@ -68,7 +68,7 @@ class RightAudio extends React.Component {
                     volumeValue = volumeValue <= 0 ? 0 : volumeValue;
                     this.setState({ volumeValue }, function () {
                         a.volume = this.state.volumeValue;
-                        if (this.state.volumeValue >= 1) {
+                        if (this.state.volumeValue <= 0) {
                             clearInterval(timerHandle);
                         }
                     });
