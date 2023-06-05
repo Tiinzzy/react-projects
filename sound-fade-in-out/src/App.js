@@ -4,6 +4,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import Home from "./components/Home";
 import Header from "./components/Header";
+import ScrollComponent from "./components/ScrollComponent";
+import VanilaInfiniteScroller from './components/VanilaInfiniteScroller'
 
 import { styleEventEmitter } from './components/Header';
 
@@ -56,7 +58,8 @@ function App() {
         </div>
       </div>
     </ThemeProvider>
-
+    // <ScrollComponent />
+    // <VanilaInfiniteScroller />
   );
 }
 
