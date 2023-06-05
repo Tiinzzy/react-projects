@@ -8,9 +8,6 @@ import PauseCircleOutlinedIcon from '@mui/icons-material/PauseCircleOutlined';
 import Forward5Icon from '@mui/icons-material/Forward5';
 import Forward10Icon from '@mui/icons-material/Forward10';
 import Forward30Icon from '@mui/icons-material/Forward30';
-import Replay5Icon from '@mui/icons-material/Replay5';
-import Replay10Icon from '@mui/icons-material/Replay10';
-import Replay30Icon from '@mui/icons-material/Replay30';
 import Typography from "@mui/material/Typography";
 import Tooltip from '@mui/material/Tooltip';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -48,69 +45,35 @@ class Home extends React.Component {
     }
 
     playBothAudio5() {
-        console.log(this.state.checkedBoxStatus)
         let steps = 0.05;
-        if (this.state.buttonName === "Play") {
+        if (this.state.buttonName === "Play" && this.state.checkedBoxStatus === 'left') {
             eventEmitter.emit('leftPlayer', { goto: 0, steps, message: 'Play', callBack: this.callBack });
             eventEmitter.emit('rightPlayer', { goto: 1, steps, message: 'Play', callBack: this.callBack });
-        } else if (this.state.buttonName === "Pause") {
-            eventEmitter.emit('leftPlayer', { goto: 0, steps, message: 'Pause', callBack: this.callBack });
-            eventEmitter.emit('rightPlayer', { goto: 1, steps, message: 'Pause', callBack: this.callBack });
+        } else if (this.state.buttonName === "Play" && this.state.checkedBoxStatus === 'right') {
+            eventEmitter.emit('leftPlayerBack', { goto: 1, steps, message: 'Play', callBack: this.callBack });
+            eventEmitter.emit('rightPlayerBack', { goto: 0, steps, message: 'Play', callBack: this.callBack });
         }
     }
 
     playBothAudio1() {
         let steps = 0.1;
-        if (this.state.buttonName === "Play") {
+        if (this.state.buttonName === "Play" && this.state.checkedBoxStatus === 'left') {
             eventEmitter.emit('leftPlayer', { goto: 0, steps, message: 'Play', callBack: this.callBack });
             eventEmitter.emit('rightPlayer', { goto: 1, steps, message: 'Play', callBack: this.callBack });
-        } else if (this.state.buttonName === "Pause") {
-            eventEmitter.emit('leftPlayer', { goto: 0, steps, message: 'Pause', callBack: this.callBack });
-            eventEmitter.emit('rightPlayer', { goto: 1, steps, message: 'Pause', callBack: this.callBack });
+        } else if (this.state.buttonName === "Play" && this.state.checkedBoxStatus === 'right') {
+            eventEmitter.emit('leftPlayerBack', { goto: 1, steps, message: 'Play', callBack: this.callBack });
+            eventEmitter.emit('rightPlayerBack', { goto: 0, steps, message: 'Play', callBack: this.callBack });
         }
     }
 
     playBothAudio3() {
         let steps = 0.3;
-        if (this.state.buttonName === "Play") {
+        if (this.state.buttonName === "Play" && this.state.checkedBoxStatus === 'left') {
             eventEmitter.emit('leftPlayer', { goto: 0, steps, message: 'Play', callBack: this.callBack });
             eventEmitter.emit('rightPlayer', { goto: 1, steps, message: 'Play', callBack: this.callBack });
-        } else if (this.state.buttonName === "Pause") {
-            eventEmitter.emit('leftPlayer', { goto: 0, steps, message: 'Pause', callBack: this.callBack });
-            eventEmitter.emit('rightPlayer', { goto: 1, steps, message: 'Pause', callBack: this.callBack });
-        }
-    }
-
-    playBackhAudio5() {
-        let steps = 0.05;
-        if (this.state.buttonName === "Play") {
+        } else if (this.state.buttonName === "Play" && this.state.checkedBoxStatus === 'right') {
             eventEmitter.emit('leftPlayerBack', { goto: 1, steps, message: 'Play', callBack: this.callBack });
             eventEmitter.emit('rightPlayerBack', { goto: 0, steps, message: 'Play', callBack: this.callBack });
-        } else if (this.state.buttonName === "Pause") {
-            eventEmitter.emit('leftPlayerBack', { goto: 1, steps, message: 'Pause', callBack: this.callBack });
-            eventEmitter.emit('rightPlayerBack', { goto: 0, steps, message: 'Pause', callBack: this.callBack });
-        }
-    }
-
-    playBackhAudio1() {
-        let steps = 0.1;
-        if (this.state.buttonName === "Play") {
-            eventEmitter.emit('leftPlayerBack', { goto: 1, steps, message: 'Play', callBack: this.callBack });
-            eventEmitter.emit('rightPlayerBack', { goto: 0, steps, message: 'Play', callBack: this.callBack });
-        } else if (this.state.buttonName === "Pause") {
-            eventEmitter.emit('leftPlayerBack', { goto: 1, steps, message: 'Pause', callBack: this.callBack });
-            eventEmitter.emit('rightPlayerBack', { goto: 0, steps, message: 'Pause', callBack: this.callBack });
-        }
-    }
-
-    playBackAudio3() {
-        let steps = 0.3;
-        if (this.state.buttonName === "Play") {
-            eventEmitter.emit('leftPlayerBack', { goto: 1, steps, message: 'Play', callBack: this.callBack });
-            eventEmitter.emit('rightPlayerBack', { goto: 0, steps, message: 'Play', callBack: this.callBack });
-        } else if (this.state.buttonName === "Pause") {
-            eventEmitter.emit('leftPlayerBack', { goto: 1, steps, message: 'Pause', callBack: this.callBack });
-            eventEmitter.emit('rightPlayerBack', { goto: 0, steps, message: 'Pause', callBack: this.callBack });
         }
     }
 
@@ -172,9 +135,9 @@ class Home extends React.Component {
                     </div>
                     <div className={this.state.themeName && this.state.beatBoxTHeme}
                         style={{ minWidth: 800, width: '100%', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 20 }}>
-                        <FormControlLabel control={<Checkbox checked={this.state.checkedLeft} onChange={(e) => this.checkedBox(e, 'left')} disabled={this.state.checkedRight === true}/>}
+                        <FormControlLabel control={<Checkbox checked={this.state.checkedLeft} onChange={(e) => this.checkedBox(e, 'left')} disabled={this.state.checkedRight === true} />}
                             label="Left to Right" style={{ color: this.state.themeName === 'light' ? 'black' : '#4a4a4a' }} />
-                        <FormControlLabel control={<Checkbox checked={this.state.checkedRight} onChange={(e) => this.checkedBox(e, 'right')}  disabled={this.state.checkedLeft === true}/>}
+                        <FormControlLabel control={<Checkbox checked={this.state.checkedRight} onChange={(e) => this.checkedBox(e, 'right')} disabled={this.state.checkedLeft === true} />}
                             style={{ color: this.state.themeName === 'light' ? 'black' : '#4a4a4a' }} label="Right to Left" />
                         <div>
                             <Tooltip title="Speed 0.05" placement="top">
@@ -213,28 +176,6 @@ class Home extends React.Component {
                             </Tooltip>
                             <Typography variant="body1" fontSize="9px" style={{ color: this.state.themeName === 'light' ? 'black' : '#4a4a4a' }}>Right Audio</Typography>
                         </div>
-                        {/* <div>
-                            <Tooltip title="Speed 0.05" placement="top">
-                                <IconButton aria-label="delete" onClick={() => this.playBackhAudio5()} color="primary" >
-                                    {this.state.buttonName === "Play" && <Replay5Icon fontSize="large" />}
-                                </IconButton>
-                            </Tooltip>
-                        </div>
-                        <div>
-                            <Tooltip title="Speed 0.1" placement="top">
-                                <IconButton aria-label="delete" onClick={() => this.playBackhAudio1()} color="primary" >
-                                    {this.state.buttonName === "Play" && <Replay10Icon fontSize="large" />}
-                                </IconButton>
-                            </Tooltip>
-                        </div>
-                        <div>
-                            <Tooltip title="Speed 0.3" placement="top">
-                                <IconButton aria-label="delete" onClick={() => this.playBackAudio3()} color="primary" >
-                                    {this.state.buttonName === "Play" && <Replay30Icon fontSize="large" />}
-                                </IconButton>
-                            </Tooltip>
-                        </div> */}
-
                     </div>
                 </div >
             </>
