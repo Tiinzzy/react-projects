@@ -141,21 +141,21 @@ class Home extends React.Component {
                             style={{ color: this.state.themeName === 'light' ? 'black' : '#4a4a4a' }} label="Right to Left" />
                         <div>
                             <Tooltip title="Speed 0.05" placement="top">
-                                <IconButton aria-label="delete" onClick={() => this.playBothAudio5()} color="primary" >
+                                <IconButton aria-label="delete" onClick={() => this.playBothAudio5(0.05)} color="primary" >
                                     {this.state.buttonName === "Play" && <Forward5Icon fontSize="large" />}
                                 </IconButton>
                             </Tooltip>
                         </div>
                         <div>
                             <Tooltip title="Speed 0.1" placement="top">
-                                <IconButton aria-label="delete" onClick={() => this.playBothAudio1()} color="primary" >
+                                <IconButton aria-label="delete" onClick={() => this.playBothAudio1(0.1)} color="primary" >
                                     {this.state.buttonName === "Play" && <Forward10Icon fontSize="large" />}
                                 </IconButton>
                             </Tooltip>
                         </div>
                         <div>
                             <Tooltip title="Speed 0.3" placement="top">
-                                <IconButton aria-label="delete" onClick={() => this.playBothAudio3()} color="primary" >
+                                <IconButton aria-label="delete" onClick={() => this.playBothAudio3(0.3)} color="primary" >
                                     {this.state.buttonName === "Play" && <Forward30Icon fontSize="large" />}
                                 </IconButton>
                             </Tooltip>
