@@ -124,7 +124,7 @@ class Home extends React.Component {
     render() {
         return (
             <>
-                <div className={this.state.themeName} style={{ width: '100%', marginTop: 50, height: 678 }}>
+                <div className={this.state.themeName} style={{ width: '100%', marginTop: 50, marginBottom: 40 }}>
                     <div style={{ minWidth: 800, width: '100%', display: 'flex', flexDirection: 'row', height: '400px' }}>
                         <div className={this.state.audioTheme} style={{ marginRight: 50 }}>
                             <LeftAudio />
