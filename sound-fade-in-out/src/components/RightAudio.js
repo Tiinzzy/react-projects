@@ -68,7 +68,7 @@ class RightAudio extends React.Component {
                     volumeValue = volumeValue <= 0 ? 0 : volumeValue;
                     this.setState({ volumeValue }, function () {
                         a.volume = this.state.volumeValue;
-                        if (this.state.volumeValue >= 1) {
+                        if (this.state.volumeValue <= 0) {
                             clearInterval(timerHandle);
                         }
                     });
@@ -85,7 +85,7 @@ class RightAudio extends React.Component {
         eventEmitter.on('rightAudioPlayer', (data) => {
             if (data.message === 'Play' && this.state.audioSound !== null) {
                 this.setState({ volumeValue: 1, buttonName: 'Pause' }, () => {
-                    a.volume = this.state.volumeValue;
+                    a.volume = 1;
                     this.state.audioSound.play();
                     data.callBack('Pause Right');
                 })

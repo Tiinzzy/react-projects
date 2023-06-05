@@ -68,7 +68,7 @@ class LeftAudio extends React.Component {
                     volumeValue = volumeValue >= 1 ? 1 : volumeValue;
                     this.setState({ volumeValue }, function () {
                         a.volume = this.state.volumeValue;
-                        if (this.state.volumeValue <= 0) {
+                        if (this.state.volumeValue >= 1) {
                             clearInterval(timerHandle);
                         }
                     });
@@ -85,7 +85,7 @@ class LeftAudio extends React.Component {
         eventEmitter.on('leftAudioPlayer', (data) => {
             if (data.message === 'Play' && this.state.audioSound !== null) {
                 this.setState({ volumeValue: 1, buttonName: 'Pause' }, () => {
-                    a.volume = this.state.volumeValue;
+                    a.volume = 1;
                     this.state.audioSound.play();
                     data.callBack('Pause Left');
                 });

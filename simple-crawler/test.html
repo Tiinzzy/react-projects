@@ -1,0 +1,16 @@
+<div id="A" style="border: solid 1px red; padding: 20px">
+</div>
+<div id="B" style="border: solid 1px red; padding: 20px">
+</div>
+<div id="C" style="border: solid 1px red; padding: 20px">Click Here</div>
+
+
+<script>
+    localStorage.setItem("animal", "sloth");
+    document.querySelectorAll('div').forEach((e) => {
+        e.onclick = (e) => {
+            console.log(e.currentTarget.id);
+            console.log(localStorage.getItem("animal"));
+        };
+    });
+</script>
