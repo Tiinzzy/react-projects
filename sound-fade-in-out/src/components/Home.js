@@ -13,6 +13,8 @@ import Replay10Icon from '@mui/icons-material/Replay10';
 import Replay30Icon from '@mui/icons-material/Replay30';
 import Typography from "@mui/material/Typography";
 import Tooltip from '@mui/material/Tooltip';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 
 import EventEmitter from 'eventemitter3';
 
@@ -31,7 +33,10 @@ class Home extends React.Component {
             audioTheme: 'light-audio',
             leftButtonName: 'Play',
             rightButtonName: 'Play',
-            beatBoxTHeme: 'light-box'
+            beatBoxTHeme: 'light-box',
+            checkedBoxStatus: '',
+            checkedLeft: false,
+            checkedRight: false
         }
         this.callBack = this.callBack.bind(this);
     }
@@ -43,6 +48,7 @@ class Home extends React.Component {
     }
 
     playBothAudio5() {
+        console.log(this.state.checkedBoxStatus)
         let steps = 0.05;
         if (this.state.buttonName === "Play") {
             eventEmitter.emit('leftPlayer', { goto: 0, steps, message: 'Play', callBack: this.callBack });
@@ -124,6 +130,16 @@ class Home extends React.Component {
         }
     }
 
+    checkedBox(e, i) {
+        if (i === 'left') {
+            this.setState({ checkedLeft: e.target.checked, checkedBoxStatus: i });
+        } else if (i === 'right') {
+            this.setState({ checkedRight: e.target.checked, checkedBoxStatus: i });
+        } else {
+            this.setState({ checkedRight: false, checkedBoxStatus: '', checkedLeft: false });
+        }
+    }
+
     callBack(data) {
         if (data && data === 'Pause') {
             this.setState({ buttonName: 'Play', leftButtonName: 'Pause', rightButtonName: 'Pause' });
@@ -156,6 +172,10 @@ class Home extends React.Component {
                     </div>
                     <div className={this.state.themeName && this.state.beatBoxTHeme}
                         style={{ minWidth: 800, width: '100%', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 20 }}>
+                        <FormControlLabel control={<Checkbox checked={this.state.checkedLeft} onChange={(e) => this.checkedBox(e, 'left')} disabled={this.state.checkedRight === true}/>}
+                            label="Left to Right" style={{ color: this.state.themeName === 'light' ? 'black' : '#4a4a4a' }} />
+                        <FormControlLabel control={<Checkbox checked={this.state.checkedRight} onChange={(e) => this.checkedBox(e, 'right')}  disabled={this.state.checkedLeft === true}/>}
+                            style={{ color: this.state.themeName === 'light' ? 'black' : '#4a4a4a' }} label="Right to Left" />
                         <div>
                             <Tooltip title="Speed 0.05" placement="top">
                                 <IconButton aria-label="delete" onClick={() => this.playBothAudio5()} color="primary" >
@@ -193,7 +213,7 @@ class Home extends React.Component {
                             </Tooltip>
                             <Typography variant="body1" fontSize="9px" style={{ color: this.state.themeName === 'light' ? 'black' : '#4a4a4a' }}>Right Audio</Typography>
                         </div>
-                        <div>
+                        {/* <div>
                             <Tooltip title="Speed 0.05" placement="top">
                                 <IconButton aria-label="delete" onClick={() => this.playBackhAudio5()} color="primary" >
                                     {this.state.buttonName === "Play" && <Replay5Icon fontSize="large" />}
@@ -213,7 +233,7 @@ class Home extends React.Component {
                                     {this.state.buttonName === "Play" && <Replay30Icon fontSize="large" />}
                                 </IconButton>
                             </Tooltip>
-                        </div>
+                        </div> */}
 
                     </div>
                 </div >
