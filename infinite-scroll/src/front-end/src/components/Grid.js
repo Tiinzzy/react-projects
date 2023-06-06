@@ -6,6 +6,9 @@ import '../App.css';
 
 const backend = BackEndConnection.INSTANCE();
 
+const ROW_PER_PAGE = 20;
+const ROW_PER_SCROLL = ROW_PER_PAGE / 2;
+
 export default class Grid extends React.Component {
 
     constructor(props) {
@@ -13,38 +16,45 @@ export default class Grid extends React.Component {
         this.state = {
             headers: null,
             fullData: [],
-            pageNum: 0
+            pageNum: 0,
+            maxRowCount: 20000,
+            busy: false
         }
     }
 
     componentDidMount() {
         let query = { page_number: this.state.pageNum };
         backend.get_all_movies(query, (data) => {
-            this.setState({ headers: Object.keys(data[0]), fullData: data, dataDisplay: data.slice(0, 10) }, () => {
+            this.setState({ headers: Object.keys(data[0]).filter(h => h !== 'row_number'), dataDisplay: data }, () => {
                 let updatedArray = [...this.state.headers];
                 updatedArray.unshift('Id');
                 this.setState({ headers: updatedArray });
             });
         })
 
-        document.getElementById('scorll-element').addEventListener('scroll', (e) => this.handelScroll(e));
+        document.getElementById('scorll-element').addEventListener('wheel', (e) => this.handelScroll(e));
     }
 
-    handelScroll(e) {
-        const { scrollHeight, scrollTop, clientHeight } = e.target;
-        console.log(0)
-        if (Math.abs(scrollHeight - clientHeight - scrollTop) < 1) {
-            console.log(1)
-            let len = this.state.fullData.length;
-            len = len < this.state.fullData.length ? len + 10 : len;
-            let updatedData = this.state.dataDisplay.slice(0, len)
-            let updatedPageNumber = this.state.pageNum++
-            this.setState({ dataDisplay: updatedData, pageNum: updatedPageNumber }, () => {
-                let query = { page_number: this.state.pageNum };
+    handelScroll(e) {        
+        let movingDown = e.deltaY > 0;
+        if (movingDown && !this.state.busy) {
+            this.setState({ busy: true }, function () {
+                let pageNum = this.state.pageNum + ROW_PER_SCROLL;
+                pageNum = pageNum < this.state.maxRowCount - ROW_PER_PAGE ? pageNum : this.state.maxRowCount - ROW_PER_PAGE;
+                let query = { page_number: pageNum };
                 backend.get_all_movies(query, (data) => {
-                    this.setState({ dataDisplay: data.slice(0, 10) });
-                })
-            })
+                    this.setState({ busy: false, pageNum, dataDisplay: data });
+                });
+            });
+        } else if (!movingDown && !this.state.busy) { // movingUp
+            this.setState({ busy: true }, function () {
+                let pageNum = this.state.pageNum - ROW_PER_SCROLL;
+                pageNum = pageNum >= 0 ? pageNum : 0;
+                let query = { page_number: pageNum };
+                backend.get_all_movies(query, (data) => {
+                    this.setState({ busy: false, pageNum, dataDisplay: data });
+                });
+            });
         }
     }
 
@@ -55,7 +65,7 @@ export default class Grid extends React.Component {
     render() {
         return (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <div id='scorll-element' style={{ overflowY: 'scroll', height: 400, border: 'solid 1px black', width: '100%' }}>
+                <div id='scorll-element' style={{ height: 500, border: 'solid 1px black', width: '100%' }}>
                     <table width="100%" style={{ fontSize: '80%', backgroundColor: 'white', maring: 5 }} cellPadding={0} cellSpacing={1}>
                         <tbody >
                             <tr>
@@ -66,7 +76,7 @@ export default class Grid extends React.Component {
                             {this.state.dataDisplay && this.state.dataDisplay.map((e, i) => (
                                 <tr key={i}>
                                     <td >
-                                        {i}
+                                        {e.row_number}
                                     </td>
                                     <td >
                                         {e.genres}
@@ -78,7 +88,7 @@ export default class Grid extends React.Component {
                                         {e.movie_id}
                                     </td>
                                     <td >
-                                        {e.overview}
+                                        {e.overview.substr(0, 20)}
                                     </td>
                                     <td >
                                         {e.title}
