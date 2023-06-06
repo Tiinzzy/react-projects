@@ -18,10 +18,13 @@ export default class Grid extends React.Component {
     }
 
     componentDidMount() {
-        console.log(3)
         let query = { page_number: this.state.pageNum };
         backend.get_all_movies(query, (data) => {
-            this.setState({ headers: Object.keys(data[0]), fullData: data, dataDisplay: data.slice(0, 10) });
+            this.setState({ headers: Object.keys(data[0]), fullData: data, dataDisplay: data.slice(0, 10) }, () => {
+                let updatedArray = [...this.state.headers];
+                updatedArray.unshift('Id');
+                this.setState({ headers: updatedArray });
+            });
         })
 
         document.getElementById('scorll-element').addEventListener('scroll', (e) => this.handelScroll(e));
@@ -62,6 +65,9 @@ export default class Grid extends React.Component {
                             </tr>
                             {this.state.dataDisplay && this.state.dataDisplay.map((e, i) => (
                                 <tr key={i}>
+                                    <td >
+                                        {i}
+                                    </td>
                                     <td >
                                         {e.genres}
                                     </td>
