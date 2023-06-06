@@ -35,7 +35,7 @@ export default class Grid extends React.Component {
         document.getElementById('scorll-element').addEventListener('wheel', (e) => this.handelScroll(e));
     }
 
-    handelScroll(e) {        
+    handelScroll(e) {
         let movingDown = e.deltaY > 0;
         if (movingDown && !this.state.busy) {
             this.setState({ busy: true }, function () {
@@ -46,7 +46,7 @@ export default class Grid extends React.Component {
                     this.setState({ busy: false, pageNum, dataDisplay: data });
                 });
             });
-        } else if (!movingDown && !this.state.busy) { // movingUp
+        } else if (!movingDown && !this.state.busy) {
             this.setState({ busy: true }, function () {
                 let pageNum = this.state.pageNum - ROW_PER_SCROLL;
                 pageNum = pageNum >= 0 ? pageNum : 0;
