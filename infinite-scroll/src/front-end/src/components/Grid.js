@@ -65,12 +65,12 @@ export default class Grid extends React.Component {
     render() {
         return (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <div id='scorll-element' style={{ height: 500, border: 'solid 1px black', width: '100%' }}>
+                <div id='scorll-element' style={{ height: 500, border: 'solid 1px #eaeaea', width: '100%', borderRadius: 4 }}>
                     <table width="100%" style={{ fontSize: '80%', backgroundColor: 'white', maring: 5 }} cellPadding={0} cellSpacing={1}>
                         <tbody >
                             <tr>
                                 {this.state.headers !== null && this.state.headers.map((e, i) => (
-                                    <th key={i}>{e}</th>
+                                    <th key={i}>{e.charAt(0).toUpperCase() + e.slice(1)}</th>
                                 ))}
                             </tr>
                             {this.state.dataDisplay && this.state.dataDisplay.map((e, i) => (
@@ -88,7 +88,7 @@ export default class Grid extends React.Component {
                                         {e.movie_id}
                                     </td>
                                     <td >
-                                        {e.overview.substr(0, 20)}
+                                        {e.overview.substr(0, 150) + '...'}
                                     </td>
                                     <td >
                                         {e.title}
