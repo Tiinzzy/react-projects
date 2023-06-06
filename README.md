@@ -2,15 +2,28 @@
 <h3> This is a reposity with mini projects that focuses on different aspects of React and Javascript.</h3>
 
 <br/>
+<h3>infinite-scroll</h3>
+<div>A project that displays more than 40,000 data fetched from MySQL in a table, allows for scroll up and down. As the scrolled hit the end of the div, loads the next batch to show and previous batch of data will be gone, unless the scroller goes up and the scroller hit the top and the previous batch is loaded and fetched again.</div>
+
+<br/>
 <h3>sound-fade-in-out</h3>
-<div>A project which allows user to upload two separate audio files and manipulate their volumes and also apply fading effect to the audi, where it fades in and out from one tune to another</div>
+<div>A project which allows user to upload two separate audio files and manipulate their volumes and also apply fading effect to the audi, where it fades in and out from one tune to another, and also includes a night and day mode for the page.</div>
+<br/>
+<img width="499" style="-webkit-user-select: none; display: block; margin: auto; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); cursor: zoom-in;" src="https://github.com/Tiinzzy/react-projects/assets/117464310/f82e7b75-8548-42c6-8e54-e32f48a89e47">
+
+<br/>
 <br/>
 
+<img width="500" style="-webkit-user-select: none; display: block; margin: auto; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); cursor: zoom-in;" src="https://github.com/Tiinzzy/react-projects/assets/117464310/4b3cd9a9-025b-42e0-a1ff-aa31684706a4">
+
+
+<br/>
 <h3>next-js</h3>
 <div>This folder consist of two project, in which the first one was just for testing NEXT.js and getting the gist of it.</div>
 <div>The second folder is a copy of kanban-board project, but made with NEXT.js instead of React and used TypesScript intead of JavaScript to handle the front-end.</div>
 <div>Since, the purpose of this project was to learn TypeScript and assigning types, the board only allows for drag and drop. Users can't add tasks or comments, and all tasks are retrieved from MongoDB.</div>
 <br/>
+
 <img width="500" style="-webkit-user-select: none; display: block; margin: auto; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); cursor: zoom-in;" src="https://github.com/Tiinzzy/react-projects/assets/117464310/fdf92a7d-b5cf-4e78-9389-7d3e467545b7">
 
 
@@ -20,6 +33,8 @@
 <div>Users can add new tasks, make comments on existing logs on the board, and drag and drop the task as they proceed with their work.</div>
 <br/>
 <img width="500" style="-webkit-user-select: none; display: block; margin: auto; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); cursor: zoom-in;" src="https://github.com/Tiinzzy/react-projects/assets/117464310/22914b73-b994-4d4a-93f7-615fb46f59f4">
+
+<br/>
 <br/>
 
 <img width="500" style="-webkit-user-select: none; display: block; margin: auto; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); cursor: zoom-in;" src="https://github.com/Tiinzzy/react-projects/assets/117464310/497fd29b-17d8-44f6-8bdb-e66df727c8a7">
