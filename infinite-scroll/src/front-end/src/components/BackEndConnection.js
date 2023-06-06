@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 class BackEndConnectionImpl {
-    async get_all_movies(callback) {
-        return axios.post('/movies/all', {}, {})
+    async get_all_movies(query, callback) {
+        return axios.post('/movies/all', query, {})
             .then(function (response) {
                 if (callback) {
                     callback(response.data);
