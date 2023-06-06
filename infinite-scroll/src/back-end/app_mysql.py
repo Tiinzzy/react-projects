@@ -13,7 +13,7 @@ def get_all_movies():
     cur.execute(sql_command)
     rows = cur.fetchall()
     result = []
-    for i in rows:
-        result.append(rows[i])
+    for row in rows:
+        result.append({'title': row[0], 'vote': row[1], 'overview': row[2], 'vote_count': row[3], 'imdb': row[4], 'genres': row[5], 'movie_id': row[6]})
     db.close_database()
     return result
