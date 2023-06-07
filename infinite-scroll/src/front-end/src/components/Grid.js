@@ -25,7 +25,6 @@ export default class Grid extends React.Component {
     componentDidMount() {
         let query = { offset_number: this.state.pageNum, display_number: ROW_PER_PAGE };
         backend.get_all_movies(query, (data) => {
-            console.log(data)
             this.setState({ headers: Object.keys(data[0]).filter(h => h !== 'row_number'), dataDisplay: data }, () => {
                 let updatedArray = [...this.state.headers];
                 updatedArray.unshift('Id');
@@ -53,7 +52,6 @@ export default class Grid extends React.Component {
                 pageNum = pageNum >= 0 ? pageNum : 0;
                 let query = { offset_number: pageNum, display_number: ROW_PER_PAGE };
                 backend.get_all_movies(query, (data) => {
-                    console.log(data)
                     this.setState({ busy: false, pageNum, dataDisplay: data });
                 });
             });
