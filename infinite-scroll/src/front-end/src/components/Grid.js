@@ -15,22 +15,23 @@ export default class Grid extends React.Component {
         super(props);
         this.state = {
             headers: null,
-            fullData: [],
+            dataDisplay: [],
             pageNum: 0,
-            maxRowCount: 20000,
             busy: false
         }
     }
 
     componentDidMount() {
-        let query = { page_number: this.state.pageNum };
+        let query = { offset_number: this.state.pageNum, display_number: ROW_PER_PAGE };
         backend.get_all_movies(query, (data) => {
             this.setState({ headers: Object.keys(data[0]).filter(h => h !== 'row_number'), dataDisplay: data }, () => {
                 let updatedArray = [...this.state.headers];
                 updatedArray.unshift('Id');
                 this.setState({ headers: updatedArray });
             });
-        })
+        });
+
+        backend.get_data_length((data) => { this.setState({ fullDataLength: data[0].data_length }) });
 
         document.getElementById('scorll-element').addEventListener('wheel', (e) => this.handelScroll(e));
     }
@@ -40,8 +41,8 @@ export default class Grid extends React.Component {
         if (movingDown && !this.state.busy) {
             this.setState({ busy: true }, function () {
                 let pageNum = this.state.pageNum + ROW_PER_SCROLL;
-                pageNum = pageNum < this.state.maxRowCount - ROW_PER_PAGE ? pageNum : this.state.maxRowCount - ROW_PER_PAGE;
-                let query = { page_number: pageNum };
+                pageNum = pageNum < this.state.fullDataLength - ROW_PER_PAGE ? pageNum : this.state.fullDataLength - ROW_PER_PAGE;
+                let query = { offset_number: pageNum, display_number: ROW_PER_PAGE };
                 backend.get_all_movies(query, (data) => {
                     this.setState({ busy: false, pageNum, dataDisplay: data });
                 });
@@ -50,7 +51,7 @@ export default class Grid extends React.Component {
             this.setState({ busy: true }, function () {
                 let pageNum = this.state.pageNum - ROW_PER_SCROLL;
                 pageNum = pageNum >= 0 ? pageNum : 0;
-                let query = { page_number: pageNum };
+                let query = { offset_number: pageNum, display_number: ROW_PER_PAGE };
                 backend.get_all_movies(query, (data) => {
                     this.setState({ busy: false, pageNum, dataDisplay: data });
                 });
