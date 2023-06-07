@@ -23,7 +23,7 @@ export default class Grid extends React.Component {
     }
 
     componentDidMount() {
-        let query = { offset_number: this.state.pageNum,  };
+        let query = { offset_number: this.state.pageNum, display_number: ROW_PER_PAGE };
         backend.get_all_movies(query, (data) => {
             console.log(data)
             this.setState({ headers: Object.keys(data[0]).filter(h => h !== 'row_number'), dataDisplay: data }, () => {
@@ -42,7 +42,7 @@ export default class Grid extends React.Component {
             this.setState({ busy: true }, function () {
                 let pageNum = this.state.pageNum + ROW_PER_SCROLL;
                 pageNum = pageNum < this.state.maxRowCount - ROW_PER_PAGE ? pageNum : this.state.maxRowCount - ROW_PER_PAGE;
-                let query = { offset_number: pageNum };
+                let query = { offset_number: pageNum, display_number: ROW_PER_PAGE };
                 backend.get_all_movies(query, (data) => {
                     this.setState({ busy: false, pageNum, dataDisplay: data });
                 });
@@ -51,7 +51,7 @@ export default class Grid extends React.Component {
             this.setState({ busy: true }, function () {
                 let pageNum = this.state.pageNum - ROW_PER_SCROLL;
                 pageNum = pageNum >= 0 ? pageNum : 0;
-                let query = { offset_number: pageNum };
+                let query = { offset_number: pageNum, display_number: ROW_PER_PAGE };
                 backend.get_all_movies(query, (data) => {
                     console.log(data)
                     this.setState({ busy: false, pageNum, dataDisplay: data });
