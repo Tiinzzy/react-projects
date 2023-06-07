@@ -9,7 +9,7 @@ import './style.css';
 
 const backend = BackEndConnection.INSTANCE();
 
-const ROW_PER_PAGE = 20;
+const ROW_PER_PAGE = 18;
 const ROW_PER_SCROLL = ROW_PER_PAGE / 2;
 
 export default class ReactTable extends React.Component {
@@ -17,7 +17,7 @@ export default class ReactTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            headers: null,
+            headers: ['row_number', 'genres', 'imdb', 'movie_id', 'overview', 'title', 'vote', 'vote_count'],
             dataDisplay: [],
             pageNum: 0,
             busy: false
@@ -27,11 +27,7 @@ export default class ReactTable extends React.Component {
     componentDidMount() {
         let query = { offset_number: this.state.pageNum, display_number: ROW_PER_PAGE };
         backend.get_all_movies(query, (data) => {
-            this.setState({ headers: Object.keys(data[0]).filter(h => h !== 'row_number'), dataDisplay: data }, () => {
-                // // let updatedArray = [...this.state.headers];
-                // // updatedArray.unshift('Id');
-                // this.setState({ headers: updatedArray });
-            });
+            this.setState({ dataDisplay: data });
         });
 
         backend.get_data_length((data) => { this.setState({ fullDataLength: data[0].data_length }) });
@@ -75,7 +71,7 @@ export default class ReactTable extends React.Component {
                     defaultClassName="DragHandle"
                     defaultClassNameDragging="DragHandleActive"
                     width={1400}
-                    height={400}
+                    height={800}
                     headerHeight={20}
                     rowHeight={50}
                     rowCount={this.state.dataDisplay.length}
