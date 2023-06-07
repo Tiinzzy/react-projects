@@ -37,55 +37,63 @@ export default class ReactTable extends React.Component {
 
     render() {
         return (
-            <div id="scorll-element" style={{ display: 'flex', flexDirection: 'row' }}>
+            <div id="scorll-element" style={{ display: 'flex', flexDirection: 'row', marginTop: 10 }}>
                 <Table
                     defaultClassName="DragHandle"
                     defaultClassNameDragging="DragHandleActive"
-                    headerHeight={100}
-                    width={1000}
-                    height={500}
-                    rowHeight={60}
+                    width={1400}
+                    height={400}
+                    headerHeight={20}
+                    rowHeight={50}
                     rowCount={this.state.dataDisplay.length}
                     rowGetter={({ index }) => this.state.dataDisplay[index]}>
                     <Column
                         label='id'
                         dataKey='id'
                         width={50}
+                        height={10}
                     />
                     <Column
                         label='genres'
                         dataKey='genres'
-                        width={50}
+                        width={150}
+                        height={10}
                     />
                     <Column
                         label='imdb'
                         dataKey='imdb'
-                        width={50}
+                        width={110}
+                        height={10}
                     />
                     <Column
                         label='movie_id'
                         dataKey='movie_id'
-                        width={50}
+                        width={110}
+                        height={10}
                     />
                     <Column
                         label='overview'
                         dataKey='overview'
-                        width={50}
+                        width={400}
+                        height={10}
                     />
                     <Column
                         label='title'
                         dataKey='title'
-                        width={50}
+                        width={150}
+                        height={10}
                     />
                     <Column
                         label='vote'
                         dataKey='vote'
-                        width={50}
+                        width={100}
+                        height={10}
                     />
                     <Column
                         label='vote_count'
                         dataKey='vote_count'
-                        width={50}
+                        width={150}
+                        height={10}
                     />
 
                 </Table>
