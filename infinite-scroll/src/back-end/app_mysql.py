@@ -2,7 +2,7 @@ from database import Database
 
 
 def get_all_movies(parameters):
-    page_num = parameters.get('page_number')
+    offset = parameters.get('offset_number')
 
     db = Database()
     con, cur = db.open_database()
@@ -10,12 +10,12 @@ def get_all_movies(parameters):
     SELECT m.title, m.vote_average, m.overview, m.vote_count, m.imdb_id, mal.genre_count, m.id FROM tests.imbd_movies m
     join tests.movies_all_genres mal on mal.id = m.id
     where m.title <> '0' and m.vote_average <> '0' and m.overview <> '0'
-    limit {page_num} ,20
+    limit {offset} ,20
     """
     cur.execute(sql_command)
     rows = cur.fetchall()
     result = []
-    row_number = page_num
+    row_number = offset
     for row in rows:
         result.append(
             {'row_number': row_number, 'title': row[0], 'vote': row[1], 'overview': row[2],
