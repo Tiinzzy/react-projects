@@ -68,8 +68,9 @@ export default class ReactTable extends React.Component {
 
     render() {
         return (
-            <div id="scorll-element" style={{ display: 'flex', flexDirection: 'row', marginTop: 10 }}>
+            <div id="scorll-element" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 20 }}>
                 <Table
+                    style={{ border: 'solid 1px #eaeaea', borderRadius: 3, padding: 10 }}
                     className="table-style"
                     defaultClassName="DragHandle"
                     defaultClassNameDragging="DragHandleActive"
@@ -81,6 +82,7 @@ export default class ReactTable extends React.Component {
                     rowGetter={({ index }) => this.state.dataDisplay[index]}>
                     {this.state.headers !== null && this.state.headers.map((e, i) => (
                         <Column
+                            style={{ borderBottom: 'solid 1px #eaeaea', paddingBottom: 5 }}
                             key={i}
                             label={e}
                             dataKey={e}
