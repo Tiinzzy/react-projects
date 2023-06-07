@@ -6,3 +6,8 @@
     align-items: center;
     padding: 5px;
 }
+
+.table-style {
+    text-align: left;
+    padding: 5px;
+}
