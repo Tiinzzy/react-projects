@@ -7,7 +7,7 @@ function App() {
 
   return (
     <>
-        <ReactTable />
+        <Home />
     </>
   );
 }
