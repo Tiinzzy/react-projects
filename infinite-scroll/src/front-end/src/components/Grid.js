@@ -15,7 +15,7 @@ export default class Grid extends React.Component {
         super(props);
         this.state = {
             headers: null,
-            fullData: [],
+            dataDisplay: [],
             pageNum: 0,
             busy: false
         }
