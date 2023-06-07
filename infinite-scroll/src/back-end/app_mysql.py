@@ -24,3 +24,16 @@ def get_all_movies(parameters):
         row_number += 1
     db.close_database()
     return result
+
+
+def get_length_of_all_data():
+    db = Database()
+    con, cur = db.open_database()
+    sql_command = """ select distinct count(*) from tests.imbd_movies"""
+    cur.execute(sql_command)
+    rows = cur.fetchall()
+    result = []
+    for row in rows:
+        result.append({'data_length': row[0]})
+        db.close_database()
+    return result
