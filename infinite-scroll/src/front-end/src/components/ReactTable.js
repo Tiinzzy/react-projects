@@ -4,6 +4,8 @@ import { Column, Table } from "react-virtualized";
 
 import BackEndConnection from './BackEndConnection';
 
+import 'react-virtualized/styles.css';
+
 const backend = BackEndConnection.INSTANCE();
 
 const ROW_PER_PAGE = 20;
@@ -39,10 +41,10 @@ export default class ReactTable extends React.Component {
                 <Table
                     defaultClassName="DragHandle"
                     defaultClassNameDragging="DragHandleActive"
-                    headerHeight={200}
+                    headerHeight={100}
                     width={1000}
                     height={500}
-                    rowHeight={150}
+                    rowHeight={60}
                     rowCount={this.state.dataDisplay.length}
                     rowGetter={({ index }) => this.state.dataDisplay[index]}>
                     <Column
