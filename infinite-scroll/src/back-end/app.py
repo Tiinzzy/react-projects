@@ -14,3 +14,9 @@ def all_movies():
     parameters = get_parameters(request)
     result = app_mysql.get_all_movies(parameters)
     return jsonify(result)
+
+
+@app.route("/movies/length", methods=["POST"])
+def data_length():
+    result = app_mysql.get_length_of_all_data()
+    return jsonify(result)
