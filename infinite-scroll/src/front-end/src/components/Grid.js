@@ -17,7 +17,6 @@ export default class Grid extends React.Component {
             headers: null,
             fullData: [],
             pageNum: 0,
-            maxRowCount: 20000,
             busy: false
         }
     }
@@ -30,7 +29,9 @@ export default class Grid extends React.Component {
                 updatedArray.unshift('Id');
                 this.setState({ headers: updatedArray });
             });
-        })
+        });
+
+        backend.get_data_length((data) => { this.setState({ fullDataLength: data[0].data_length }) });
 
         document.getElementById('scorll-element').addEventListener('wheel', (e) => this.handelScroll(e));
     }
@@ -40,7 +41,7 @@ export default class Grid extends React.Component {
         if (movingDown && !this.state.busy) {
             this.setState({ busy: true }, function () {
                 let pageNum = this.state.pageNum + ROW_PER_SCROLL;
-                pageNum = pageNum < this.state.maxRowCount - ROW_PER_PAGE ? pageNum : this.state.maxRowCount - ROW_PER_PAGE;
+                pageNum = pageNum < this.state.fullDataLength - ROW_PER_PAGE ? pageNum : this.state.fullDataLength - ROW_PER_PAGE;
                 let query = { offset_number: pageNum, display_number: ROW_PER_PAGE };
                 backend.get_all_movies(query, (data) => {
                     this.setState({ busy: false, pageNum, dataDisplay: data });
