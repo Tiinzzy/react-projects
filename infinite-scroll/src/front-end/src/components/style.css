@@ -1,0 +1,12 @@
+.scroll-box {
+    height: 660px;
+    width: 20px;
+    border: solid 1px gray;
+    margin-top: 10px;
+    padding: 10px;
+}
+
+.progress-bar {
+    height: 660px;
+    background-color: rgb(10, 177, 255);
+}
