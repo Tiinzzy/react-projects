@@ -1,4 +1,5 @@
 cache = {}
+MAX_SIZE = 10000
 
 
 def get(key):
@@ -9,4 +10,6 @@ def get(key):
 
 
 def insert(key, value):
+    if len(cache) > MAX_SIZE:
+        cache.clear()
     cache[key] = value
