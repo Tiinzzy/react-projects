@@ -1,6 +1,8 @@
 import React from "react";
 
 import LinearProgress from '@mui/material/LinearProgress';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import BackEndConnection from './BackEndConnection';
 
@@ -73,6 +75,8 @@ export default class Grid extends React.Component {
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <div id='scorll-element' style={{ height: 500, border: 'solid 1px #eaeaea', width: '100%', borderRadius: 4 }}>
                     {this.state.showProgress ? <LinearProgress color="primary" /> : <span></span>}
+                    {/* {this.state.showProgress ? <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={this.state.showProgress} >
+                        <CircularProgress color="inherit" /> </Backdrop> : <span></span>} */}
                     <table width="100%" style={{ fontSize: '80%', backgroundColor: 'white', maring: 5 }} cellPadding={0} cellSpacing={1}>
                         <tbody >
                             <tr>
