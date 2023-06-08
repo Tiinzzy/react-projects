@@ -1,13 +1,12 @@
-/* .row-stylings {
-    border-bottom: 1px solid #ebeced;
-    text-align: left;
-    margin: 2px;
-    display: flex;
-    align-items: center;
-    padding: 5px;
+.scroll-box {
+    height: 660px;
+    width: 20px;
+    border: solid 1px gray;
+    margin-top: 10px;
+    padding: 10px;
 }
 
-.table-style {
-    text-align: left;
-    padding: 5px;
-} */
+.progress-bar {
+    height: 660px;
+    background-color: rgb(10, 177, 255);
+}
