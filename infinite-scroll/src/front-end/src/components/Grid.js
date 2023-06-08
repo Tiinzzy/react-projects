@@ -72,9 +72,10 @@ export default class Grid extends React.Component {
 
     render() {
         return (
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <div id='scorll-element' style={{ height: 500, border: 'solid 1px #eaeaea', width: '100%', borderRadius: 4 }}>
-                    {this.state.showProgress ? <LinearProgress color="primary" /> : <span></span>}
+            <div style={{ display: 'flex' }}>
+                <div id='scorll-element' style={{ height: 500, border: 'solid 1px #eaeaea', width: '100%', borderRadius: 4, marginTop: 10 }}>
+                    {this.state.showProgress ? <div style={{ height: 5, border: 'solid 1px #F4F4F4', width: '100%'}}> <LinearProgress color="primary" /> </div>
+                        : <div style={{ height: 5, border: 'solid 1px #F4F4F4', width: '100%' }}></div>}
                     {/* {this.state.showProgress ? <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={this.state.showProgress} >
                         <CircularProgress color="inherit" /> </Backdrop> : <span></span>} */}
                     <table width="100%" style={{ fontSize: '80%', backgroundColor: 'white', maring: 5 }} cellPadding={0} cellSpacing={1}>
@@ -114,6 +115,7 @@ export default class Grid extends React.Component {
                         </tbody>
                     </table>
                 </div>
+                <div style={{ border: 'solid 1px red', padding: 10, backgroundColor: 'pink', height: 636,marginTop:17 }}></div>
             </div>
         );
     }
