@@ -7,6 +7,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import BackEndConnection from './BackEndConnection';
 
 import '../App.css';
+import './style.css';
 
 const backend = BackEndConnection.INSTANCE();
 
@@ -72,8 +73,8 @@ export default class Grid extends React.Component {
 
     render() {
         return (
-            <div style={{ display: 'flex' }}>
-                <div id='scorll-element' style={{ height: 500, border: 'solid 1px #eaeaea', width: '100%', borderRadius: 4, marginTop: 10 }}>
+            <div id='scorll-element' style={{ display: 'flex' }}>
+                <div style={{ height: 500, border: 'solid 1px #eaeaea', width: '100%', borderRadius: 4, marginTop: 10 }}>
                     {this.state.showProgress ? <div style={{ height: 5, border: 'solid 1px #F4F4F4', width: '100%' }}> <LinearProgress color="primary" /> </div>
                         : <div style={{ height: 5, border: 'solid 1px #F4F4F4', width: '100%' }}></div>}
                     {/* {this.state.showProgress ? <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={this.state.showProgress} >
@@ -114,6 +115,9 @@ export default class Grid extends React.Component {
                                 </tr>))}
                         </tbody>
                     </table>
+                </div>
+                <div className="scroll-box">
+                    <div className="progress-bar"></div>
                 </div>
             </div>
         );
