@@ -1,5 +1,7 @@
 import React from "react";
 
+import LinearProgress from '@mui/material/LinearProgress';
+
 import BackEndConnection from './BackEndConnection';
 
 import '../App.css';
@@ -17,7 +19,8 @@ export default class Grid extends React.Component {
             headers: null,
             dataDisplay: [],
             pageNum: 0,
-            busy: false
+            busy: false,
+            showProgress: false
         }
     }
 
@@ -37,26 +40,28 @@ export default class Grid extends React.Component {
     }
 
     handelScroll(e) {
-        let movingDown = e.deltaY > 0;
-        if (movingDown && !this.state.busy) {
-            this.setState({ busy: true }, function () {
-                let pageNum = this.state.pageNum + ROW_PER_SCROLL;
-                pageNum = pageNum < this.state.fullDataLength - ROW_PER_PAGE ? pageNum : this.state.fullDataLength - ROW_PER_PAGE;
-                let query = { offset_number: pageNum, display_number: ROW_PER_PAGE };
-                backend.get_all_movies(query, (data) => {
-                    this.setState({ busy: false, pageNum, dataDisplay: data });
+        this.setState({ showProgress: true }, function () {
+            let movingDown = e.deltaY > 0;
+            if (movingDown && !this.state.busy) {
+                this.setState({ busy: true }, function () {
+                    let pageNum = this.state.pageNum + ROW_PER_SCROLL;
+                    pageNum = pageNum < this.state.fullDataLength - ROW_PER_PAGE ? pageNum : this.state.fullDataLength - ROW_PER_PAGE;
+                    let query = { offset_number: pageNum, display_number: ROW_PER_PAGE };
+                    backend.get_all_movies(query, (data) => {
+                        this.setState({ busy: false, pageNum, dataDisplay: data, showProgress: false });
+                    });
                 });
-            });
-        } else if (!movingDown && !this.state.busy) {
-            this.setState({ busy: true }, function () {
-                let pageNum = this.state.pageNum - ROW_PER_SCROLL;
-                pageNum = pageNum >= 0 ? pageNum : 0;
-                let query = { offset_number: pageNum, display_number: ROW_PER_PAGE };
-                backend.get_all_movies(query, (data) => {
-                    this.setState({ busy: false, pageNum, dataDisplay: data });
+            } else if (!movingDown && !this.state.busy) {
+                this.setState({ busy: true }, function () {
+                    let pageNum = this.state.pageNum - ROW_PER_SCROLL;
+                    pageNum = pageNum >= 0 ? pageNum : 0;
+                    let query = { offset_number: pageNum, display_number: ROW_PER_PAGE };
+                    backend.get_all_movies(query, (data) => {
+                        this.setState({ busy: false, pageNum, dataDisplay: data, showProgress: false });
+                    });
                 });
-            });
-        }
+            }
+        });
     }
 
     componentWillUnmount() {
@@ -67,6 +72,7 @@ export default class Grid extends React.Component {
         return (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <div id='scorll-element' style={{ height: 500, border: 'solid 1px #eaeaea', width: '100%', borderRadius: 4 }}>
+                    {this.state.showProgress ? <LinearProgress color="primary" /> : <span></span>}
                     <table width="100%" style={{ fontSize: '80%', backgroundColor: 'white', maring: 5 }} cellPadding={0} cellSpacing={1}>
                         <tbody >
                             <tr>
