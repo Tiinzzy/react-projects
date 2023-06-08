@@ -14,6 +14,15 @@ const backend = BackEndConnection.INSTANCE();
 const ROW_PER_PAGE = 20;
 const ROW_PER_SCROLL = ROW_PER_PAGE / 2;
 
+function ScrollBar({ height, totalPages, currentPage }) {
+    const marginTop = height / totalPages * currentPage;
+    return (
+        <div style={{ height, width: 20, background: '#eaeaea' }}>
+            <div style={{ marginTop, height: 3, background: 'red' }}></div>
+        </div>
+    )
+}
+
 export default class Grid extends React.Component {
 
     constructor(props) {
@@ -77,8 +86,6 @@ export default class Grid extends React.Component {
                 <div style={{ height: 500, border: 'solid 1px #eaeaea', width: '100%', borderRadius: 4, marginTop: 10 }}>
                     {this.state.showProgress ? <div style={{ height: 5, border: 'solid 1px #F4F4F4', width: '100%' }}> <LinearProgress color="primary" /> </div>
                         : <div style={{ height: 5, border: 'solid 1px #F4F4F4', width: '100%' }}></div>}
-                    {/* {this.state.showProgress ? <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={this.state.showProgress} >
-                        <CircularProgress color="inherit" /> </Backdrop> : <span></span>} */}
                     <table width="100%" style={{ fontSize: '80%', backgroundColor: 'white', maring: 5 }} cellPadding={0} cellSpacing={1}>
                         <tbody >
                             <tr>
@@ -116,9 +123,8 @@ export default class Grid extends React.Component {
                         </tbody>
                     </table>
                 </div>
-                <div className="scroll-box">
-                    <div className="progress-bar"></div>
-                </div>
+                {this.state.fullDataLength &&
+                    <ScrollBar height={1000} currentPage={this.state.pageNum} totalPages={this.state.fullDataLength / ROW_PER_PAGE} />}
             </div>
         );
     }
