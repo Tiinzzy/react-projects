@@ -2,7 +2,6 @@ import React from 'react';
 import { Grid } from 'react-virtualized';
 
 import 'react-virtualized/styles.css';
-import './style.css'
 
 const ArrayGrid = ({ arrayOfArrays }) => {
     const cellRenderer = ({ columnIndex, key, rowIndex, style }) => {

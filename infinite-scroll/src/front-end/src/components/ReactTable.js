@@ -8,7 +8,6 @@ import { Column, Table } from "react-virtualized";
 import BackEndConnection from './BackEndConnection';
 
 import 'react-virtualized/styles.css';
-import './style.css';
 
 const backend = BackEndConnection.INSTANCE();
 
