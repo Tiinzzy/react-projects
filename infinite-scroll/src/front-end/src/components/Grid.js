@@ -1,13 +1,27 @@
 import React from "react";
 
+import LinearProgress from '@mui/material/LinearProgress';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+
 import BackEndConnection from './BackEndConnection';
 
 import '../App.css';
+import './style.css';
 
 const backend = BackEndConnection.INSTANCE();
 
 const ROW_PER_PAGE = 20;
 const ROW_PER_SCROLL = ROW_PER_PAGE / 2;
+
+function ScrollBar({ height, totalPages, currentPage }) {
+    const marginTop = height / totalPages * currentPage;
+    return (
+        <div style={{ height, width: 20, background: '#eaeaea' }}>
+            <div style={{ marginTop, height: 3, background: 'red' }}></div>
+        </div>
+    )
+}
 
 export default class Grid extends React.Component {
 
@@ -17,7 +31,8 @@ export default class Grid extends React.Component {
             headers: null,
             dataDisplay: [],
             pageNum: 0,
-            busy: false
+            busy: false,
+            showProgress: false
         }
     }
 
@@ -37,26 +52,28 @@ export default class Grid extends React.Component {
     }
 
     handelScroll(e) {
-        let movingDown = e.deltaY > 0;
-        if (movingDown && !this.state.busy) {
-            this.setState({ busy: true }, function () {
-                let pageNum = this.state.pageNum + ROW_PER_SCROLL;
-                pageNum = pageNum < this.state.fullDataLength - ROW_PER_PAGE ? pageNum : this.state.fullDataLength - ROW_PER_PAGE;
-                let query = { offset_number: pageNum, display_number: ROW_PER_PAGE };
-                backend.get_all_movies(query, (data) => {
-                    this.setState({ busy: false, pageNum, dataDisplay: data });
+        this.setState({ showProgress: true }, function () {
+            let movingDown = e.deltaY > 0;
+            if (movingDown && !this.state.busy) {
+                this.setState({ busy: true }, function () {
+                    let pageNum = this.state.pageNum + ROW_PER_SCROLL;
+                    pageNum = pageNum < this.state.fullDataLength - ROW_PER_PAGE ? pageNum : this.state.fullDataLength - ROW_PER_PAGE;
+                    let query = { offset_number: pageNum, display_number: ROW_PER_PAGE };
+                    backend.get_all_movies(query, (data) => {
+                        this.setState({ busy: false, pageNum, dataDisplay: data, showProgress: false });
+                    });
                 });
-            });
-        } else if (!movingDown && !this.state.busy) {
-            this.setState({ busy: true }, function () {
-                let pageNum = this.state.pageNum - ROW_PER_SCROLL;
-                pageNum = pageNum >= 0 ? pageNum : 0;
-                let query = { offset_number: pageNum, display_number: ROW_PER_PAGE };
-                backend.get_all_movies(query, (data) => {
-                    this.setState({ busy: false, pageNum, dataDisplay: data });
+            } else if (!movingDown && !this.state.busy) {
+                this.setState({ busy: true }, function () {
+                    let pageNum = this.state.pageNum - ROW_PER_SCROLL;
+                    pageNum = pageNum >= 0 ? pageNum : 0;
+                    let query = { offset_number: pageNum, display_number: ROW_PER_PAGE };
+                    backend.get_all_movies(query, (data) => {
+                        this.setState({ busy: false, pageNum, dataDisplay: data, showProgress: false });
+                    });
                 });
-            });
-        }
+            }
+        });
     }
 
     componentWillUnmount() {
@@ -65,8 +82,10 @@ export default class Grid extends React.Component {
 
     render() {
         return (
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <div id='scorll-element' style={{ height: 500, border: 'solid 1px #eaeaea', width: '100%', borderRadius: 4 }}>
+            <div id='scorll-element' style={{ display: 'flex' }}>
+                <div style={{ height: 500, border: 'solid 1px #eaeaea', width: '100%', borderRadius: 4, marginTop: 10 }}>
+                    {this.state.showProgress ? <div style={{ height: 5, border: 'solid 1px #F4F4F4', width: '100%' }}> <LinearProgress color="primary" /> </div>
+                        : <div style={{ height: 5, border: 'solid 1px #F4F4F4', width: '100%' }}></div>}
                     <table width="100%" style={{ fontSize: '80%', backgroundColor: 'white', maring: 5 }} cellPadding={0} cellSpacing={1}>
                         <tbody >
                             <tr>
@@ -104,6 +123,8 @@ export default class Grid extends React.Component {
                         </tbody>
                     </table>
                 </div>
+                {this.state.fullDataLength &&
+                    <ScrollBar height={1000} currentPage={this.state.pageNum} totalPages={this.state.fullDataLength / ROW_PER_PAGE} />}
             </div>
         );
     }
