@@ -6,12 +6,10 @@ function getWindowSize() {
     return { h: window.innerHeight, w: window.innerWidth }
 }
 
-export default function ScrollBar({ height, totalPages, currentPage }) {
-    const [isDragging, setIsDragging] = useState(false);
-    const [dragOffsetY, setDragOffsetY] = useState(0);
+export default function ScrollBar({ height, totalPages, currentPage, callParent }) {
     const [windowSize, setWindowSize] = useState(getWindowSize());
 
-    var marginTop = windowSize.h / totalPages * currentPage;
+    var marginTop = height / totalPages * currentPage;
 
     useEffect(() => {
         function resizeHandler() {
@@ -21,42 +19,19 @@ export default function ScrollBar({ height, totalPages, currentPage }) {
         return () => window.removeEventListener('resize', resizeHandler);
     })
 
-
-    const handleMouseDown = (e) => {
-        setIsDragging(true);
-        setDragOffsetY(e.clientY - e.target.getBoundingClientRect().top);
-    };
-
-    const handleMouseMove = (e) => {
-        if (isDragging) {
-            e.preventDefault();
-            const scrollContainer = e.target.parentElement;
-            const scrollContent = scrollContainer.firstChild;
-            const scrollBar = e.target;
-            const newY = e.clientY - scrollContainer.getBoundingClientRect().top - dragOffsetY;
-
-            const maxScroll = scrollContainer.clientHeight - scrollBar.clientHeight;
-            const clampedY = Math.max(0, Math.min(maxScroll, newY));
-
-            const scrollPosition = clampedY / maxScroll;
-            const newScrollTop = scrollPosition * (scrollContent.clientHeight - scrollContainer.clientHeight);
-
-            scrollContent.style.marginTop = -newScrollTop + 'px';
-            marginTop = -newScrollTop;
-        }
-    };
-
-    const handleMouseUp = () => {
-        setIsDragging(false);
-    };
+    const jumpToPage = (pageNo) => {
+        pageNo = (pageNo > totalPages ? totalPages : pageNo);
+        pageNo = (pageNo < 0 ? 0 : pageNo);
+        console.log(pageNo, totalPages);
+        callParent(pageNo);
+    }
 
     return (
-        <div className="scroll-container" style={{ height: windowSize.h === 980 ? windowSize.h * 0.6 : windowSize.h }}>
-            <div className="scroll-bar" style={{ marginTop }}
-                onMouseDownCapture={handleMouseDown}
-                onMouseMoveCapture={handleMouseMove}
-                onMouseOutCapture={handleMouseUp}></div>
-        </div>
+        <div className="scroll-container" style={{ height: height + 10 }}
+            onClick={(e) => {
+                jumpToPage(Math.floor(totalPages * (e.clientY - 10) / height), e.clientY);
+            }}>
+            <div className="scroll-bar" style={{ marginTop }}>{currentPage}</div>
+        </div >
     )
-
 };
