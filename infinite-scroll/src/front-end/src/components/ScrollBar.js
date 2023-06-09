@@ -31,8 +31,6 @@ export default function ScrollBar({ height, totalPages, currentPage }) {
             const newScrollTop = scrollPosition * (scrollContent.clientHeight - scrollContainer.clientHeight);
 
             scrollContent.style.marginTop = -newScrollTop + 'px';
-            scrollBar.style.top = clampedY + 'px';
-            handleMouseUp();
         }
     };
 
@@ -43,7 +41,8 @@ export default function ScrollBar({ height, totalPages, currentPage }) {
 
     return (
         <div className="scroll-container">
-            <div style={{ marginTop }} className="scroll-bar" onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}></div>
+            <div style={{ marginTop }} className="scroll-bar" 
+            onMouseDownCapture={handleMouseDown} onMouseMoveCapture={handleMouseMove} onMouseOutCapture={handleMouseUp}></div>
         </div>
     )
 
