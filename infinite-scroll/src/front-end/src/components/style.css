@@ -1,12 +1,19 @@
-.scroll-box {
-    height: 660px;
-    width: 20px;
-    border: solid 1px gray;
-    margin-top: 10px;
-    padding: 10px;
+.scroll-container {
+    border: solid 1px rgb(101, 101, 101);
+    width: 30px;
+    height: 500px;
+    overflow: hidden;
+    position: relative;
 }
 
-.progress-bar {
-    height: 660px;
-    background-color: rgb(10, 177, 255);
+.scroll-bar {
+    width: 10px;
+    height: 10px;
+    /* Initial height of the scroll bar */
+    background-color: #b8b7b7;
+    position: absolute;
+    padding-right: 20px;
+    right: 0;
+    top: 0;
+    cursor: pointer;
 }
