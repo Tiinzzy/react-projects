@@ -1,23 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 
 import './style.css';
+
+function getWindowSize() {
+    return { h: window.innerHeight, w: window.innerWidth }
+}
 
 export default function ScrollBar({ height, totalPages, currentPage }) {
     const [isDragging, setIsDragging] = useState(false);
     const [dragOffsetY, setDragOffsetY] = useState(0);
+    const [windowSize, setWindowSize] = useState(getWindowSize());
 
-    const marginTop = height / totalPages * currentPage;
+    var marginTop = windowSize.h / totalPages * currentPage;
+
+    useEffect(() => {
+        function resizeHandler() {
+            setWindowSize(getWindowSize())
+        }
+        window.addEventListener('resize', resizeHandler);
+        return () => window.removeEventListener('resize', resizeHandler);
+    })
+
 
     const handleMouseDown = (e) => {
-        console.log(1)
         setIsDragging(true);
         setDragOffsetY(e.clientY - e.target.getBoundingClientRect().top);
     };
 
     const handleMouseMove = (e) => {
-        console.log(2)
         if (isDragging) {
-            console.log(3)
             e.preventDefault();
             const scrollContainer = e.target.parentElement;
             const scrollContent = scrollContainer.firstChild;
@@ -31,18 +42,20 @@ export default function ScrollBar({ height, totalPages, currentPage }) {
             const newScrollTop = scrollPosition * (scrollContent.clientHeight - scrollContainer.clientHeight);
 
             scrollContent.style.marginTop = -newScrollTop + 'px';
+            marginTop = -newScrollTop;
         }
     };
 
     const handleMouseUp = () => {
-        console.log(4)
         setIsDragging(false);
     };
 
     return (
-        <div className="scroll-container">
-            <div style={{ marginTop }} className="scroll-bar" 
-            onMouseDownCapture={handleMouseDown} onMouseMoveCapture={handleMouseMove} onMouseOutCapture={handleMouseUp}></div>
+        <div className="scroll-container" style={{ height: windowSize.h === 980 ? windowSize.h * 0.6 : windowSize.h }}>
+            <div className="scroll-bar" style={{ marginTop }}
+                onMouseDownCapture={handleMouseDown}
+                onMouseMoveCapture={handleMouseMove}
+                onMouseOutCapture={handleMouseUp}></div>
         </div>
     )
 
