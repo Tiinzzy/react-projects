@@ -1,7 +1,9 @@
 .scroll-container {
-    border: solid 1px rgb(101, 101, 101);
-    width: 40px;
-    height: 500px;
+    margin-top: 10px;
+    border: solid 1px rgb(161, 161, 161);
+    border-radius: 3px;
+    min-width: 40px;
+    min-height: 696px;
     overflow: hidden;
     position: relative;
 }
@@ -10,7 +12,7 @@
     width: 15px;
     height: 15px;
     /* Initial height of the scroll bar */
-    background-color: #b8b7b7;
+    background-color: #adadad;
     position: absolute;
     padding-right: 25px;
     right: 0;
