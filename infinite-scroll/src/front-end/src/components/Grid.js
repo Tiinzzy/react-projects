@@ -1,10 +1,9 @@
 import React from "react";
 
 import LinearProgress from '@mui/material/LinearProgress';
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
 
 import BackEndConnection from './BackEndConnection';
+import ScrollBar from "./ScrollBar";
 
 import '../App.css';
 import './style.css';
@@ -13,15 +12,6 @@ const backend = BackEndConnection.INSTANCE();
 
 const ROW_PER_PAGE = 20;
 const ROW_PER_SCROLL = ROW_PER_PAGE / 2;
-
-function ScrollBar({ height, totalPages, currentPage }) {
-    const marginTop = height / totalPages * currentPage;
-    return (
-        <div style={{ height, width: 20, background: '#eaeaea' }}>
-            <div style={{ marginTop, height: 3, background: 'red' }}></div>
-        </div>
-    )
-}
 
 export default class Grid extends React.Component {
 
