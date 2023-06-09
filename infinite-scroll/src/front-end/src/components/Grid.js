@@ -10,8 +10,11 @@ import './style.css';
 
 const backend = BackEndConnection.INSTANCE();
 
-const ROW_PER_PAGE = 20;
-const ROW_PER_SCROLL = ROW_PER_PAGE / 2;
+const ROW_PER_PAGE = 15;
+
+function getWindowSize() {
+    return { h: window.innerHeight, w: window.innerWidth }
+}
 
 export default class Grid extends React.Component {
 
@@ -22,12 +25,16 @@ export default class Grid extends React.Component {
             dataDisplay: [],
             pageNum: 0,
             busy: false,
-            showProgress: false
+            showProgress: false,
+            windowSize: getWindowSize(),
+            totalPageCount: -1
         }
+        this.handleResize = this.handleResize.bind(this);
+        this.jumpToPage = this.jumpToPage.bind(this);
     }
 
     componentDidMount() {
-        let query = { offset_number: this.state.pageNum, display_number: ROW_PER_PAGE };
+        let query = { offset_number: this.state.pageNum * ROW_PER_PAGE, display_number: ROW_PER_PAGE };
         backend.get_all_movies(query, (data) => {
             this.setState({ headers: Object.keys(data[0]).filter(h => h !== 'row_number'), dataDisplay: data }, () => {
                 let updatedArray = [...this.state.headers];
@@ -36,9 +43,15 @@ export default class Grid extends React.Component {
             });
         });
 
-        backend.get_data_length((data) => { this.setState({ fullDataLength: data[0].data_length }) });
-
+        backend.get_data_length((data) => {
+            this.setState({ totalPageCount: Math.floor(data.data_length / ROW_PER_PAGE) });
+        });
         document.getElementById('scorll-element').addEventListener('wheel', (e) => this.handelScroll(e));
+        // window.addEventListener('resize', this.handleResize);
+    }
+
+    handleResize() {
+        this.setState({ windowSize: getWindowSize() })
     }
 
     handelScroll(e) {
@@ -46,18 +59,18 @@ export default class Grid extends React.Component {
             let movingDown = e.deltaY > 0;
             if (movingDown && !this.state.busy) {
                 this.setState({ busy: true }, function () {
-                    let pageNum = this.state.pageNum + ROW_PER_SCROLL;
-                    pageNum = pageNum < this.state.fullDataLength - ROW_PER_PAGE ? pageNum : this.state.fullDataLength - ROW_PER_PAGE;
-                    let query = { offset_number: pageNum, display_number: ROW_PER_PAGE };
+                    let pageNum = this.state.pageNum + 1;
+                    pageNum = pageNum < this.state.totalPageCount ? pageNum : this.state.totalPageCount;
+                    let query = { offset_number: pageNum * ROW_PER_PAGE, display_number: ROW_PER_PAGE };
                     backend.get_all_movies(query, (data) => {
                         this.setState({ busy: false, pageNum, dataDisplay: data, showProgress: false });
                     });
                 });
             } else if (!movingDown && !this.state.busy) {
                 this.setState({ busy: true }, function () {
-                    let pageNum = this.state.pageNum - ROW_PER_SCROLL;
-                    pageNum = pageNum >= 0 ? pageNum : 0;
-                    let query = { offset_number: pageNum, display_number: ROW_PER_PAGE };
+                    let pageNum = this.state.pageNum - 1;
+                    pageNum = pageNum > 0 ? pageNum : 0;
+                    let query = { offset_number: pageNum * ROW_PER_PAGE, display_number: ROW_PER_PAGE };
                     backend.get_all_movies(query, (data) => {
                         this.setState({ busy: false, pageNum, dataDisplay: data, showProgress: false });
                     });
@@ -68,6 +81,19 @@ export default class Grid extends React.Component {
 
     componentWillUnmount() {
         window.removeEventListener("scroll", this.handelScroll);
+        // window.addEventListener('resize', this.handleResize);
+    }
+
+    jumpToPage(newPage) {
+        let query = { offset_number: newPage * ROW_PER_PAGE, display_number: ROW_PER_PAGE };
+        let totalPageCount = this.state.totalPageCount;
+        this.setState({ showProgress: true }, () => {
+            backend.get_all_movies(query, (data) => {
+                this.setState({ totalPageCount: -1 }, function () {
+                    this.setState({ showProgress: false, totalPageCount, dataDisplay: data, pageNum: newPage });
+                });
+            });
+        });
     }
 
     render() {
@@ -113,8 +139,8 @@ export default class Grid extends React.Component {
                         </tbody>
                     </table>
                 </div>
-                {this.state.fullDataLength &&
-                    <ScrollBar height={1000} currentPage={this.state.pageNum} totalPages={this.state.fullDataLength / ROW_PER_PAGE} />}
+                {this.state.totalPageCount >= 0 &&
+                    <ScrollBar height={600} currentPage={this.state.pageNum} totalPages={this.state.totalPageCount} callParent={this.jumpToPage} />}
             </div>
         );
     }
