@@ -57,3 +57,7 @@ th {
   text-align: left;
   border-bottom: #b2b2b2 solid 1px;
 }
+
+table tr:hover {
+  background-color: #a8d7ef;
+}
