@@ -8,11 +8,12 @@ def get_all_movies(parameters):
     db = Database()
     con, cur = db.open_database()
     sql_command = f"""
-    SELECT m.title, m.vote_average, m.overview, m.vote_count, m.imdb_id, mal.genre_count, m.id FROM tests.imbd_movies m
+    select m.title, m.vote_average, m.overview, m.vote_count, m.imdb_id, mal.genre_count, m.id from tests.imbd_movies m
     join tests.movies_all_genres mal on mal.id = m.id
     where m.title <> '0' and m.vote_average <> '0' and m.overview <> '0'
     limit {offset} ,{display_number}
     """
+    print(sql_command)
     cur.execute(sql_command)
     rows = cur.fetchall()
     result = []
@@ -29,11 +30,15 @@ def get_all_movies(parameters):
 def get_length_of_all_data():
     db = Database()
     con, cur = db.open_database()
-    sql_command = """ select distinct count(*) from tests.imbd_movies"""
+    sql_command = """
+        select count(*) from tests.imbd_movies m
+        join tests.movies_all_genres mal on mal.id = m.id
+        where m.title <> '0' and m.vote_average <> '0' and m.overview <> '0' 
+    """
     cur.execute(sql_command)
     rows = cur.fetchall()
-    result = []
+    result = {}
     for row in rows:
-        result.append({'data_length': row[0]})
+        result = {'data_length': row[0]}
         db.close_database()
     return result
