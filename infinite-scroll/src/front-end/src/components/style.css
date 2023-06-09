@@ -1,18 +1,18 @@
 .scroll-container {
     border: solid 1px rgb(101, 101, 101);
-    width: 30px;
+    width: 40px;
     height: 500px;
     overflow: hidden;
     position: relative;
 }
 
 .scroll-bar {
-    width: 10px;
-    height: 10px;
+    width: 15px;
+    height: 15px;
     /* Initial height of the scroll bar */
     background-color: #b8b7b7;
     position: absolute;
-    padding-right: 20px;
+    padding-right: 25px;
     right: 0;
     top: 0;
     cursor: pointer;
