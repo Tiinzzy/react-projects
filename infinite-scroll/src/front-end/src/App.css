@@ -39,17 +39,17 @@
 }
 
 
-table,
-th,
-td {
+#scorll-element table,
+#scorll-element th,
+#scorll-element td {
   border-bottom: 1px solid rgb(228, 228, 228);
 }
 
-td {
+#scorll-element td {
   padding: 8px 5px 8px 5px;
 }
 
-th {
+#scorll-element th {
   padding: 5px;
   position: sticky;
   top: 0;
@@ -58,6 +58,11 @@ th {
   border-bottom: #b2b2b2 solid 1px;
 }
 
-table tr:hover {
+#scorll-element table tr:hover {
   background-color: #a8d7ef;
+}
+
+#scorll-element table {
+  font-size: 80%;
+  background-color: white;
 }
