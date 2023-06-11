@@ -1,37 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+
+import Tooltip from '@mui/material/Tooltip';
 
 import './style.css';
 
-function getWindowSize() {
-    return { h: window.innerHeight, w: window.innerWidth }
-}
-
 export default function ScrollBar({ height, totalPages, currentPage, callParent }) {
-    const [windowSize, setWindowSize] = useState(getWindowSize());
-
     var marginTop = height / totalPages * currentPage;
 
-    useEffect(() => {
-        function resizeHandler() {
-            setWindowSize(getWindowSize())
-        }
-        window.addEventListener('resize', resizeHandler);
-        return () => window.removeEventListener('resize', resizeHandler);
-    })
-
-    const jumpToPage = (pageNo) => {
+    const jumpToPage = (e) => {
+        let pageNo = Math.floor(totalPages * (e.clientY - 10) / height);
         pageNo = (pageNo > totalPages ? totalPages : pageNo);
         pageNo = (pageNo < 0 ? 0 : pageNo);
-        console.log(pageNo, totalPages);
         callParent(pageNo);
     }
 
     return (
-        <div className="scroll-container" style={{ height: height + 10 }}
-            onClick={(e) => {
-                jumpToPage(Math.floor(totalPages * (e.clientY - 10) / height), e.clientY);
-            }}>
-            <div className="scroll-bar" style={{ marginTop }}>{currentPage}</div>
+        <div id='page-scroll' className="scroll-container" style={{ height: height + 10 }}
+            // onMouseMove={(e) => console.log('PAGE:' + Math.floor(totalPages * (e.clientY - 10) / height))}
+            onClick={(e) => jumpToPage(e)}>
+            <Tooltip title={'Page #' + currentPage}>
+                <div id='page-scroll' className="scroll-bar" style={{ marginTop }}>{currentPage}</div>
+            </Tooltip >
         </div >
     )
 };

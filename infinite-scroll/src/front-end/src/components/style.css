@@ -1,11 +1,12 @@
 .scroll-container {
     margin-top: 10px;
-    border: solid 1px rgb(161, 161, 161);
-    border-radius: 3px;
+    border: solid 1px #adadad;
+    border-radius: 0px;
     min-width: 40px;
     overflow: hidden;
     position: relative;
-    cursor: pointer;    
+    cursor: pointer;
+    border-left: none;
 }
 
 .scroll-bar {
@@ -18,6 +19,15 @@
     top: 0;
     font-size: 8px;
     color: white;
-    text-align: center;    
+    text-align: center;
 }
 
+
+.tabel-container {
+    border: solid 1px #adadad;
+    width: 100%;
+    border-radius: 0px;
+    margin-top: 10px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
