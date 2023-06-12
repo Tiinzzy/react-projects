@@ -1,5 +1,4 @@
 .scroll-container {
-    margin-top: 10px;
     border: solid 1px #adadad;
     border-radius: 0px;
     min-width: 40px;
@@ -7,6 +6,7 @@
     position: relative;
     cursor: pointer;
     border-left: none;
+    margin: 0;
 }
 
 .scroll-bar {
@@ -30,4 +30,14 @@
     margin-top: 10px;
     overflow-x: hidden;
     overflow-y: scroll;
+}
+
+.btn-styling {
+    border: solid 1px rgb(24, 153, 228);
+    text-align: center;
+    background-color: rgb(24, 153, 228);
+    color: white;
+    font-weight: bold;
+    border-radius: 2px;
+    cursor: pointer;
 }
