@@ -2,6 +2,10 @@ import React from "react";
 
 import LinearProgress from '@mui/material/LinearProgress';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleUp } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
+
 import BackEndConnection from './BackEndConnection';
 import ScrollBar from "./ScrollBar";
 
@@ -157,10 +161,14 @@ export default class Grid extends React.Component {
                         </table>
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <div className="btn-styling" onClick={() => this.handleGoingUpDown('up')}> top</div>
+                        <div className="btn-styling" onClick={() => this.handleGoingUpDown('up')}>
+                            <FontAwesomeIcon icon={faAngleUp} style={{ fontSize: 12, fontWeight: 'bold' }} />
+                        </div>
                         {this.state.totalPageCount >= 0 &&
                             <ScrollBar height={this.state.windowSize.h - 10} currentPage={this.state.pageNum} totalPages={this.state.totalPageCount} callParent={this.jumpToPage} />}
-                        <div className="btn-styling" onClick={() => this.handleGoingUpDown('down')}> bottom</div>
+                        <div className="btn-styling" onClick={() => this.handleGoingUpDown('down')}> 
+                        <FontAwesomeIcon icon={faAngleDown} style={{ fontSize: 12, fontWeight: 'bold' }} />
+                        </div>
                     </div>
                 </div>
             </>
