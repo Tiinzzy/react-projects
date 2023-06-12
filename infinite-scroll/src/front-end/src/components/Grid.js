@@ -13,7 +13,7 @@ const backend = BackEndConnection.INSTANCE();
 const DEFAULT_ROW_PER_PAGE = 100;
 
 function getWindowSize() {
-    return { h: window.innerHeight - 50, w: window.innerWidth }
+    return { h: window.innerHeight - 80, w: window.innerWidth }
 }
 
 function TableRow({ i, e }) {
