@@ -125,7 +125,14 @@ export default class Grid extends React.Component {
     }
 
     handleGoingBottom() {
-        console.log('bottom')
+        this.setState({ showProgress: true }, () => {
+            this.setState({ busy: true }, () => {
+                let query = { offset_number: this.state.totalPageCount * this.state.rowPerPage, display_number: this.state.rowPerPage };
+                backend.get_all_movies(query, (data) => {
+                    this.setState({ busy: false, dataDisplay: data, showProgress: false, pageNum: this.state.totalPageCount });
+                });
+            });
+        })
     }
 
     render() {
