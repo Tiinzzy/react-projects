@@ -113,26 +113,26 @@ export default class Grid extends React.Component {
         window.removeEventListener('resize', this.handleResize);
     }
 
-    handleGoingTop() {
-        this.setState({ showProgress: true }, () => {
-            this.setState({ busy: true }, () => {
-                let query = { offset_number: 0 * this.state.rowPerPage, display_number: this.state.rowPerPage };
-                backend.get_all_movies(query, (data) => {
-                    this.setState({ busy: false, dataDisplay: data, showProgress: false, pageNum: 0 });
+    handleGoingUpDown(e) {
+        if (e === 'up') {
+            this.setState({ showProgress: true }, () => {
+                this.setState({ busy: true }, () => {
+                    let query = { offset_number: 0 * this.state.rowPerPage, display_number: this.state.rowPerPage };
+                    backend.get_all_movies(query, (data) => {
+                        this.setState({ busy: false, dataDisplay: data, showProgress: false, pageNum: 0 });
+                    });
                 });
-            });
-        })
-    }
-
-    handleGoingBottom() {
-        this.setState({ showProgress: true }, () => {
-            this.setState({ busy: true }, () => {
-                let query = { offset_number: this.state.totalPageCount * this.state.rowPerPage, display_number: this.state.rowPerPage };
-                backend.get_all_movies(query, (data) => {
-                    this.setState({ busy: false, dataDisplay: data, showProgress: false, pageNum: this.state.totalPageCount });
+            })
+        } else if (e === 'down') {
+            this.setState({ showProgress: true }, () => {
+                this.setState({ busy: true }, () => {
+                    let query = { offset_number: this.state.totalPageCount * this.state.rowPerPage, display_number: this.state.rowPerPage };
+                    backend.get_all_movies(query, (data) => {
+                        this.setState({ busy: false, dataDisplay: data, showProgress: false, pageNum: this.state.totalPageCount });
+                    });
                 });
-            });
-        })
+            })
+        }
     }
 
     render() {
@@ -157,10 +157,10 @@ export default class Grid extends React.Component {
                         </table>
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <div className="btn-styling" onClick={() => this.handleGoingTop()}> top</div>
+                        <div className="btn-styling" onClick={() => this.handleGoingUpDown('up')}> top</div>
                         {this.state.totalPageCount >= 0 &&
                             <ScrollBar height={this.state.windowSize.h - 10} currentPage={this.state.pageNum} totalPages={this.state.totalPageCount} callParent={this.jumpToPage} />}
-                        <div className="btn-styling" onClick={() => this.handleGoingBottom()}> bottom</div>
+                        <div className="btn-styling" onClick={() => this.handleGoingUpDown('down')}> bottom</div>
                     </div>
                 </div>
             </>
