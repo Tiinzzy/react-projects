@@ -11,9 +11,7 @@ function App() {
   const [pageNumber, setPageNumber] = useState(0);
 
   function callBack(e) {
-    if (e) {
       setPageNumber(e);
-    }
   }
 
   return (
