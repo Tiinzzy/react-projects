@@ -8,6 +8,7 @@ import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 
 import BackEndConnection from './BackEndConnection';
 import ScrollBar from "./ScrollBar";
+import DisplayTable from "./DisplayTable";
 
 import '../App.css';
 import './style.css';
@@ -19,22 +20,6 @@ const DEFAULT_ROW_PER_PAGE = 100;
 function getWindowSize() {
     return { h: window.innerHeight - 80, w: window.innerWidth }
 }
-
-function TableRow({ i, e }) {
-    return (
-        <tr key={i}>
-            <td >{e.row_number}</td>
-            <td >{e.genres}</td>
-            <td >{e.imdb}</td>
-            <td >{e.movie_id}</td>
-            <td >{e.overview.substr(0, 150) + '...'}</td>
-            <td >{e.title}</td>
-            <td >{e.vote}</td>
-            <td >{e.vote_count}</td>
-        </tr>
-    )
-}
-
 
 export default class Grid extends React.Component {
 
@@ -158,18 +143,8 @@ export default class Grid extends React.Component {
                 <div id='scorll-element' style={{ display: 'flex' }}>
 
                     <div className='tabel-container' style={{ height: this.state.windowSize.h }}>
-                        <table width="100%" cellPadding={0} cellSpacing={1}>
-                            <tbody >
-                                <tr>
-                                    {this.state.headers !== null && this.state.headers.map((e, i) => (
-                                        <th key={i}>{e.charAt(0).toUpperCase() + e.slice(1)}</th>
-                                    ))}
-                                </tr>
-                                {this.state.dataDisplay && this.state.dataDisplay.map((e, i) => (
-                                    <TableRow e={e} i={i} />
-                                ))}
-                            </tbody>
-                        </table>
+                        {this.state.headers && this.state.dataDisplay &&
+                            <DisplayTable headers={this.state.headers} dataDisplay={this.state.dataDisplay} />}
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                         <div className="btn-styling" onClick={() => this.handleGoingUpDown('up')}>
