@@ -1,5 +1,4 @@
 .scroll-container {
-    margin-top: 10px;
     border: solid 1px #adadad;
     border-radius: 0px;
     min-width: 40px;
@@ -7,6 +6,7 @@
     position: relative;
     cursor: pointer;
     border-left: none;
+    margin: 0;
 }
 
 .scroll-bar {
@@ -27,7 +27,29 @@
     border: solid 1px #adadad;
     width: 100%;
     border-radius: 0px;
-    margin-top: 10px;
     overflow-x: hidden;
     overflow-y: scroll;
+}
+
+.btn-styling {
+    border: solid 1px rgb(24, 153, 228);
+    text-align: center;
+    background-color: rgb(24, 153, 228);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    height: 20px;
+}
+
+.tool-tip {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 150px;
+    display: none;
+    z-index: 30000;
+    background-color: white;
+    border: solid 2px #eaeaea;
+    padding: 10px;
+    font-size: 85%;
 }
