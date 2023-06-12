@@ -48,7 +48,8 @@ export default class Grid extends React.Component {
             showProgress: false,
             windowSize: getWindowSize(),
             totalPageCount: -1,
-            rowPerPage: DEFAULT_ROW_PER_PAGE
+            rowPerPage: DEFAULT_ROW_PER_PAGE,
+            callBack: props.callBack
         }
         this.handleResize = this.handleResize.bind(this);
         this.jumpToPage = this.jumpToPage.bind(this);
@@ -74,7 +75,9 @@ export default class Grid extends React.Component {
                 let headers = Object.keys(data[0]).filter(h => h !== 'row_number');
                 headers.unshift('Id');
                 this.setState({ totalPageCount: -1 }, function () {
-                    this.setState({ showProgress: false, totalPageCount, dataDisplay: data, pageNum: newPage, headers });
+                    this.setState({ showProgress: false, totalPageCount, dataDisplay: data, pageNum: newPage, headers }, () => {
+                        this.state.callBack(this.state.pageNum);
+                    });
                 });
             });
         });
@@ -95,7 +98,9 @@ export default class Grid extends React.Component {
                         pageNum = pageNum < this.state.totalPageCount ? pageNum : this.state.totalPageCount;
                         let query = { offset_number: pageNum * this.state.rowPerPage, display_number: this.state.rowPerPage };
                         backend.get_all_movies(query, (data) => {
-                            this.setState({ busy: false, pageNum, dataDisplay: data, showProgress: false });
+                            this.setState({ busy: false, pageNum, dataDisplay: data, showProgress: false }, () => {
+                                this.state.callBack(this.state.pageNum);
+                            });
                         });
                     });
                 } else if (!movingDown && !this.state.busy) {
@@ -104,7 +109,9 @@ export default class Grid extends React.Component {
                         pageNum = pageNum > 0 ? pageNum : 0;
                         let query = { offset_number: pageNum * this.state.rowPerPage, display_number: this.state.rowPerPage };
                         backend.get_all_movies(query, (data) => {
-                            this.setState({ busy: false, pageNum, dataDisplay: data, showProgress: false });
+                            this.setState({ busy: false, pageNum, dataDisplay: data, showProgress: false }, () => {
+                                this.state.callBack(this.state.pageNum);
+                            });
                         });
                     });
                 }
@@ -123,7 +130,9 @@ export default class Grid extends React.Component {
                 this.setState({ busy: true }, () => {
                     let query = { offset_number: 0 * this.state.rowPerPage, display_number: this.state.rowPerPage };
                     backend.get_all_movies(query, (data) => {
-                        this.setState({ busy: false, dataDisplay: data, showProgress: false, pageNum: 0 });
+                        this.setState({ busy: false, dataDisplay: data, showProgress: false, pageNum: 0 }, () => {
+                            this.state.callBack(this.state.pageNum);
+                        });
                     });
                 });
             })
@@ -132,7 +141,9 @@ export default class Grid extends React.Component {
                 this.setState({ busy: true }, () => {
                     let query = { offset_number: this.state.totalPageCount * this.state.rowPerPage, display_number: this.state.rowPerPage };
                     backend.get_all_movies(query, (data) => {
-                        this.setState({ busy: false, dataDisplay: data, showProgress: false, pageNum: this.state.totalPageCount });
+                        this.setState({ busy: false, dataDisplay: data, showProgress: false, pageNum: this.state.totalPageCount }, () => {
+                            this.state.callBack(this.state.pageNum);
+                        });
                     });
                 });
             })
@@ -166,8 +177,8 @@ export default class Grid extends React.Component {
                         </div>
                         {this.state.totalPageCount >= 0 &&
                             <ScrollBar height={this.state.windowSize.h - 10} currentPage={this.state.pageNum} totalPages={this.state.totalPageCount} callParent={this.jumpToPage} />}
-                        <div className="btn-styling" onClick={() => this.handleGoingUpDown('down')}> 
-                        <FontAwesomeIcon icon={faAngleDown} style={{ fontSize: 12, fontWeight: 'bold' }} />
+                        <div className="btn-styling" onClick={() => this.handleGoingUpDown('down')}>
+                            <FontAwesomeIcon icon={faAngleDown} style={{ fontSize: 12, fontWeight: 'bold' }} />
                         </div>
                     </div>
                 </div>
