@@ -1,7 +1,6 @@
 import React from "react";
 
 import LinearProgress from '@mui/material/LinearProgress';
-import Button from "@mui/material/Button";
 
 import BackEndConnection from './BackEndConnection';
 import ScrollBar from "./ScrollBar";
