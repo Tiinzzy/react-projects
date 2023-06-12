@@ -2,8 +2,13 @@ import React from "react";
 
 import LinearProgress from '@mui/material/LinearProgress';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleUp } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
+
 import BackEndConnection from './BackEndConnection';
 import ScrollBar from "./ScrollBar";
+import DisplayTable from "./DisplayTable";
 
 import '../App.css';
 import './style.css';
@@ -11,26 +16,11 @@ import './style.css';
 const backend = BackEndConnection.INSTANCE();
 
 const DEFAULT_ROW_PER_PAGE = 100;
+const BUTTONS_HEIGHT = 2 * 22;
 
 function getWindowSize() {
-    return { h: window.innerHeight - 50, w: window.innerWidth }
+    return { h: window.innerHeight - 80, w: window.innerWidth }
 }
-
-function TableRow({ i, e }) {
-    return (
-        <tr key={i}>
-            <td >{e.row_number}</td>
-            <td >{e.genres}</td>
-            <td >{e.imdb}</td>
-            <td >{e.movie_id}</td>
-            <td >{e.overview.substr(0, 150) + '...'}</td>
-            <td >{e.title}</td>
-            <td >{e.vote}</td>
-            <td >{e.vote_count}</td>
-        </tr>
-    )
-}
-
 
 export default class Grid extends React.Component {
 
@@ -44,7 +34,8 @@ export default class Grid extends React.Component {
             showProgress: false,
             windowSize: getWindowSize(),
             totalPageCount: -1,
-            rowPerPage: DEFAULT_ROW_PER_PAGE
+            rowPerPage: DEFAULT_ROW_PER_PAGE,
+            callBack: props.callBack
         }
         this.handleResize = this.handleResize.bind(this);
         this.jumpToPage = this.jumpToPage.bind(this);
@@ -70,7 +61,9 @@ export default class Grid extends React.Component {
                 let headers = Object.keys(data[0]).filter(h => h !== 'row_number');
                 headers.unshift('Id');
                 this.setState({ totalPageCount: -1 }, function () {
-                    this.setState({ showProgress: false, totalPageCount, dataDisplay: data, pageNum: newPage, headers });
+                    this.setState({ showProgress: false, totalPageCount, dataDisplay: data, pageNum: newPage, headers }, () => {
+                        this.state.callBack(this.state.pageNum);
+                    });
                 });
             });
         });
@@ -79,6 +72,8 @@ export default class Grid extends React.Component {
     handleResize() {
         let windowSize = getWindowSize();
         this.setState({ windowSize });
+
+        console.log(this.state.windowSize.h - 55);
     }
 
     handelScroll(e) {
@@ -91,7 +86,9 @@ export default class Grid extends React.Component {
                         pageNum = pageNum < this.state.totalPageCount ? pageNum : this.state.totalPageCount;
                         let query = { offset_number: pageNum * this.state.rowPerPage, display_number: this.state.rowPerPage };
                         backend.get_all_movies(query, (data) => {
-                            this.setState({ busy: false, pageNum, dataDisplay: data, showProgress: false });
+                            this.setState({ busy: false, pageNum, dataDisplay: data, showProgress: false }, () => {
+                                this.state.callBack(this.state.pageNum);
+                            });
                         });
                     });
                 } else if (!movingDown && !this.state.busy) {
@@ -100,7 +97,9 @@ export default class Grid extends React.Component {
                         pageNum = pageNum > 0 ? pageNum : 0;
                         let query = { offset_number: pageNum * this.state.rowPerPage, display_number: this.state.rowPerPage };
                         backend.get_all_movies(query, (data) => {
-                            this.setState({ busy: false, pageNum, dataDisplay: data, showProgress: false });
+                            this.setState({ busy: false, pageNum, dataDisplay: data, showProgress: false }, () => {
+                                this.state.callBack(this.state.pageNum);
+                            });
                         });
                     });
                 }
@@ -113,6 +112,32 @@ export default class Grid extends React.Component {
         window.removeEventListener('resize', this.handleResize);
     }
 
+    handleGoingUpDown(e) {
+        if (e === 'up') {
+            this.setState({ showProgress: true }, () => {
+                this.setState({ busy: true }, () => {
+                    let query = { offset_number: 0 * this.state.rowPerPage, display_number: this.state.rowPerPage };
+                    backend.get_all_movies(query, (data) => {
+                        this.setState({ busy: false, dataDisplay: data, showProgress: false, pageNum: 0 }, () => {
+                            this.state.callBack(this.state.pageNum);
+                        });
+                    });
+                });
+            })
+        } else if (e === 'down') {
+            this.setState({ showProgress: true }, () => {
+                this.setState({ busy: true }, () => {
+                    let query = { offset_number: this.state.totalPageCount * this.state.rowPerPage, display_number: this.state.rowPerPage };
+                    backend.get_all_movies(query, (data) => {
+                        this.setState({ busy: false, dataDisplay: data, showProgress: false, pageNum: this.state.totalPageCount }, () => {
+                            this.state.callBack(this.state.pageNum);
+                        });
+                    });
+                });
+            })
+        }
+    }
+
     render() {
         return (
             <>
@@ -121,22 +146,20 @@ export default class Grid extends React.Component {
                 <div id='scorll-element' style={{ display: 'flex' }}>
 
                     <div className='tabel-container' style={{ height: this.state.windowSize.h }}>
-                        <table width="100%" cellPadding={0} cellSpacing={1}>
-                            <tbody >
-                                <tr>
-                                    {this.state.headers !== null && this.state.headers.map((e, i) => (
-                                        <th key={i}>{e.charAt(0).toUpperCase() + e.slice(1)}</th>
-                                    ))}
-                                </tr>
-                                {this.state.dataDisplay && this.state.dataDisplay.map((e, i) => (
-                                    <TableRow e={e} i={i} />
-                                ))}
-                            </tbody>
-                        </table>
+                        {this.state.headers && this.state.dataDisplay &&
+                            <DisplayTable headers={this.state.headers} dataDisplay={this.state.dataDisplay} />}
                     </div>
 
-                    {this.state.totalPageCount >= 0 &&
-                        <ScrollBar height={this.state.windowSize.h - 10} currentPage={this.state.pageNum} totalPages={this.state.totalPageCount} callParent={this.jumpToPage} />}
+                    <div id="scroll+buttons+container" style={{ display: 'flex', flexDirection: 'column' }}>
+                        <div className="btn-styling" onClick={() => this.handleGoingUpDown('up')}>
+                            <FontAwesomeIcon icon={faAngleUp} style={{ fontSize: 12, fontWeight: 'bold' }} />
+                        </div>
+                        {this.state.totalPageCount >= 0 &&
+                            <ScrollBar buttonHeight={BUTTONS_HEIGHT} height={this.state.windowSize.h - BUTTONS_HEIGHT} currentPage={this.state.pageNum} totalPages={this.state.totalPageCount} callParent={this.jumpToPage} />}
+                        <div className="btn-styling" onClick={() => this.handleGoingUpDown('down')}>
+                            <FontAwesomeIcon icon={faAngleDown} style={{ fontSize: 12, fontWeight: 'bold' }} />
+                        </div>
+                    </div>
                 </div>
             </>
         );
