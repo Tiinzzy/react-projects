@@ -6,7 +6,7 @@ import './style.css';
 
 export default function ScrollBar({ height, totalPages, currentPage, callParent }) {
     var marginTop = height / totalPages * currentPage;
-
+    
     const jumpToPage = (e) => {
         let pageNo = Math.floor(totalPages * (e.clientY - 10) / height);
         pageNo = (pageNo > totalPages ? totalPages : pageNo);
