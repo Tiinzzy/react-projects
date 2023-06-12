@@ -1,6 +1,7 @@
 import React from "react";
 
 import LinearProgress from '@mui/material/LinearProgress';
+import Button from "@mui/material/Button";
 
 import BackEndConnection from './BackEndConnection';
 import ScrollBar from "./ScrollBar";
@@ -134,9 +135,12 @@ export default class Grid extends React.Component {
                             </tbody>
                         </table>
                     </div>
-
-                    {this.state.totalPageCount >= 0 &&
-                        <ScrollBar height={this.state.windowSize.h - 10} currentPage={this.state.pageNum} totalPages={this.state.totalPageCount} callParent={this.jumpToPage} />}
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <div className="btn-styling"> top</div>
+                        {this.state.totalPageCount >= 0 &&
+                            <ScrollBar height={this.state.windowSize.h - 10} currentPage={this.state.pageNum} totalPages={this.state.totalPageCount} callParent={this.jumpToPage} />}
+                        <div className="btn-styling"> bottom</div>
+                    </div>
                 </div>
             </>
         );
