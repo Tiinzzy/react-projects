@@ -16,6 +16,7 @@ import './style.css';
 const backend = BackEndConnection.INSTANCE();
 
 const DEFAULT_ROW_PER_PAGE = 100;
+const BUTTONS_HEIGHT = 2 * 22;
 
 function getWindowSize() {
     return { h: window.innerHeight - 80, w: window.innerWidth }
@@ -71,6 +72,8 @@ export default class Grid extends React.Component {
     handleResize() {
         let windowSize = getWindowSize();
         this.setState({ windowSize });
+
+        console.log(this.state.windowSize.h - 55);
     }
 
     handelScroll(e) {
@@ -146,12 +149,13 @@ export default class Grid extends React.Component {
                         {this.state.headers && this.state.dataDisplay &&
                             <DisplayTable headers={this.state.headers} dataDisplay={this.state.dataDisplay} />}
                     </div>
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+
+                    <div id="scroll+buttons+container" style={{ display: 'flex', flexDirection: 'column' }}>
                         <div className="btn-styling" onClick={() => this.handleGoingUpDown('up')}>
                             <FontAwesomeIcon icon={faAngleUp} style={{ fontSize: 12, fontWeight: 'bold' }} />
                         </div>
                         {this.state.totalPageCount >= 0 &&
-                            <ScrollBar height={this.state.windowSize.h - 10} currentPage={this.state.pageNum} totalPages={this.state.totalPageCount} callParent={this.jumpToPage} />}
+                            <ScrollBar buttonHeight={BUTTONS_HEIGHT} height={this.state.windowSize.h - BUTTONS_HEIGHT} currentPage={this.state.pageNum} totalPages={this.state.totalPageCount} callParent={this.jumpToPage} />}
                         <div className="btn-styling" onClick={() => this.handleGoingUpDown('down')}>
                             <FontAwesomeIcon icon={faAngleDown} style={{ fontSize: 12, fontWeight: 'bold' }} />
                         </div>
