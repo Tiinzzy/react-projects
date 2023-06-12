@@ -6,6 +6,7 @@ import './style.css';
 
 export default function ScrollBar({ height, totalPages, currentPage, callParent }) {
     const [pageHover, setPageHover] = useState(0);
+    const [tooltipPosition, setTooltipPosition] = React.useState({ x: 0, y: 0 });
 
     var marginTop = height / totalPages * currentPage;
 
@@ -16,36 +17,26 @@ export default function ScrollBar({ height, totalPages, currentPage, callParent 
         callParent(pageNo);
     }
 
-    const positionRef = React.useRef({
-        x: 0,
-        y: 0,
-    });
-    const popperRef = React.useRef(null);
-    const areaRef = React.useRef(null);
 
     const handlePageSuggestions = (e) => {
-        setPageHover(Math.floor(totalPages * (e.clientY - 10) / height))
-        positionRef.current = { x: e.clientX, y: e.clientY };
-
-        if (popperRef.current != null) {
-            popperRef.current.update();
-        }
+        setPageHover(Math.floor(totalPages * (e.clientY - 10) / height));
+        setTooltipPosition({ x: e.clientX, y: e.clientY });
     };
 
     return (
-        <Tooltip title={'Jump to Page #' + pageHover} arrow
-            PopperProps={{
-                popperRef,
-                anchorEl: { getBoundingClientRect: () => { return new DOMRect(positionRef.current.x, areaRef.current.getBoundingClientRect().y, 0, 0,); }, },
-            }}>
+        <Tooltip arrow placement="left-start"
+            open={tooltipPosition.x !== 0 && tooltipPosition.y !== 0}
+            PopperProps={{ style: { transform: `translate(${tooltipPosition.x}px, ${tooltipPosition.y}px)`, }, }}
+            title={'Jump to Page #' + pageHover}>
+
             <div id='page-scroll' className="scroll-container" style={{ height: height + 10 }}
                 onMouseMove={handlePageSuggestions}
-                onClick={(e) => jumpToPage(e)}
-                ref={areaRef}>
+                onMouseLeave={() => { setTooltipPosition(0) }}
+                onClick={(e) => jumpToPage(e)}>
                 <Tooltip title={'Page #' + currentPage}>
                     <div id='page-scroll' className="scroll-bar" style={{ marginTop }}>{currentPage}</div>
                 </Tooltip >
             </div >
-        </Tooltip >
+        </ Tooltip >
     )
 };
