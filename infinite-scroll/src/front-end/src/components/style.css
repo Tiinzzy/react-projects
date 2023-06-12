@@ -40,4 +40,5 @@
     font-weight: bold;
     border-radius: 2px;
     cursor: pointer;
+    max-height: 5% !important;
 }
