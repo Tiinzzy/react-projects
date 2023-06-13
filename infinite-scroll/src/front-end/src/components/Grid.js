@@ -139,6 +139,28 @@ export default class Grid extends React.Component {
                     });
                 });
             })
+        } else if (e === 'dblUp') {
+            this.setState({ showProgress: true }, () => {
+                this.setState({ busy: true }, () => {
+                    let query = { offset_number: 0 * this.state.rowPerPage, display_number: this.state.rowPerPage };
+                    backend.get_all_movies(query, (data) => {
+                        this.setState({ busy: false, dataDisplay: data, showProgress: false, pageNum: 0 }, () => {
+                            this.state.callBack(this.state.pageNum);
+                        });
+                    });
+                });
+            })
+        } else if (e === 'dblDown') {
+            this.setState({ showProgress: true }, () => {
+                this.setState({ busy: true }, () => {
+                    let query = { offset_number: this.state.totalPageCount * this.state.rowPerPage, display_number: this.state.rowPerPage };
+                    backend.get_all_movies(query, (data) => {
+                        this.setState({ busy: false, dataDisplay: data, showProgress: false, pageNum: this.state.totalPageCount }, () => {
+                            this.state.callBack(this.state.pageNum);
+                        });
+                    });
+                });
+            })
         }
     }
 
@@ -155,12 +177,12 @@ export default class Grid extends React.Component {
                     </div>
 
                     <div id="scroll+buttons+container" style={{ display: 'flex', flexDirection: 'column' }}>
-                        <div id="top-scroll" className="btn-styling" onClick={() => this.handleGoingUpDown('up')}>
+                        <div id="top-scroll" className="btn-styling" onClick={() => this.handleGoingUpDown('up')} onDoubleClick={() => this.handleGoingUpDown('dblUp')}>
                             <FontAwesomeIcon icon={faAngleUp} style={{ fontSize: 12, fontWeight: 'bold' }} />
                         </div>
                         {this.state.totalPageCount >= 0 &&
                             <ScrollBar buttonHeight={BUTTONS_HEIGHT} height={this.state.windowSize.h - BUTTONS_HEIGHT} currentPage={this.state.pageNum} totalPages={this.state.totalPageCount} callParent={this.jumpToPage} />}
-                        <div id="buttom-scroll" className="btn-styling" onClick={() => this.handleGoingUpDown('down')}>
+                        <div id="buttom-scroll" className="btn-styling" onClick={() => this.handleGoingUpDown('down')} onDoubleClick={() => this.handleGoingUpDown('dblDown')}>
                             <FontAwesomeIcon icon={faAngleDown} style={{ fontSize: 12, fontWeight: 'bold' }} />
                         </div>
                     </div>
