@@ -72,8 +72,6 @@ export default class Grid extends React.Component {
     handleResize() {
         let windowSize = getWindowSize();
         this.setState({ windowSize });
-
-        console.log(this.state.windowSize.h - 55);
     }
 
     handelScroll(e) {
@@ -116,6 +114,32 @@ export default class Grid extends React.Component {
         if (e === 'up') {
             this.setState({ showProgress: true }, () => {
                 this.setState({ busy: true }, () => {
+                    let pageNum = this.state.pageNum - 1;
+                    pageNum = pageNum > 0 ? pageNum : 0;
+                    let query = { offset_number: pageNum * this.state.rowPerPage, display_number: this.state.rowPerPage };
+                    backend.get_all_movies(query, (data) => {
+                        this.setState({ busy: false, dataDisplay: data, showProgress: false, pageNum }, () => {
+                            this.state.callBack(this.state.pageNum);
+                        });
+                    });
+                });
+            })
+        } else if (e === 'down') {
+            this.setState({ showProgress: true }, () => {
+                this.setState({ busy: true }, () => {
+                    let pageNum = this.state.pageNum + 1;
+                    pageNum = pageNum < this.state.totalPageCount ? pageNum : this.state.totalPageCount;
+                    let query = { offset_number: pageNum * this.state.rowPerPage, display_number: this.state.rowPerPage };
+                    backend.get_all_movies(query, (data) => {
+                        this.setState({ busy: false, dataDisplay: data, showProgress: false, pageNum }, () => {
+                            this.state.callBack(this.state.pageNum);
+                        });
+                    });
+                });
+            })
+        } else if (e === 'dblUp') {
+            this.setState({ showProgress: true }, () => {
+                this.setState({ busy: true }, () => {
                     let query = { offset_number: 0 * this.state.rowPerPage, display_number: this.state.rowPerPage };
                     backend.get_all_movies(query, (data) => {
                         this.setState({ busy: false, dataDisplay: data, showProgress: false, pageNum: 0 }, () => {
@@ -124,7 +148,7 @@ export default class Grid extends React.Component {
                     });
                 });
             })
-        } else if (e === 'down') {
+        } else if (e === 'dblDown') {
             this.setState({ showProgress: true }, () => {
                 this.setState({ busy: true }, () => {
                     let query = { offset_number: this.state.totalPageCount * this.state.rowPerPage, display_number: this.state.rowPerPage };
@@ -147,16 +171,16 @@ export default class Grid extends React.Component {
 
                     <div className='tabel-container' style={{ height: this.state.windowSize.h }}>
                         {this.state.headers && this.state.dataDisplay &&
-                            <DisplayTable headers={this.state.headers} dataDisplay={this.state.dataDisplay} />}
+                            <DisplayTable headers={this.state.headers} dataDisplay={this.state.dataDisplay} pageNum={this.state.pageNum}/>}
                     </div>
 
                     <div id="scroll+buttons+container" style={{ display: 'flex', flexDirection: 'column' }}>
-                        <div className="btn-styling" onClick={() => this.handleGoingUpDown('up')}>
+                        <div id="top-scroll" className="btn-styling" onClick={() => this.handleGoingUpDown('up')} onDoubleClick={() => this.handleGoingUpDown('dblUp')}>
                             <FontAwesomeIcon icon={faAngleUp} style={{ fontSize: 12, fontWeight: 'bold' }} />
                         </div>
                         {this.state.totalPageCount >= 0 &&
                             <ScrollBar buttonHeight={BUTTONS_HEIGHT} height={this.state.windowSize.h - BUTTONS_HEIGHT} currentPage={this.state.pageNum} totalPages={this.state.totalPageCount} callParent={this.jumpToPage} />}
-                        <div className="btn-styling" onClick={() => this.handleGoingUpDown('down')}>
+                        <div id="buttom-scroll" className="btn-styling" onClick={() => this.handleGoingUpDown('down')} onDoubleClick={() => this.handleGoingUpDown('dblDown')}>
                             <FontAwesomeIcon icon={faAngleDown} style={{ fontSize: 12, fontWeight: 'bold' }} />
                         </div>
                     </div>

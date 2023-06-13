@@ -11,14 +11,14 @@ function App() {
   const [pageNumber, setPageNumber] = useState(0);
 
   function callBack(e) {
-      setPageNumber(e);
+    setPageNumber(e);
   }
 
   return (
     <>
-      <div style={{ border: 'solid 0px red', padding: '5px 2px 0px 10px' }}>
+      {/* <div style={{ border: 'solid 0px red', padding: '5px 2px 0px 10px' }}>
         <Typography>Current Page: <span> {pageNumber} </span></Typography>
-      </div>
+      </div> */}
       <Grid callBack={callBack} />
     </>
   );
