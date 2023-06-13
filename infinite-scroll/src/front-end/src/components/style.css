@@ -48,10 +48,12 @@
     width: 150px;
     display: none;
     z-index: 30000;
-    background-color: white;
-    border: solid 2px #eaeaea;
+    background-color: #9ce0f9;
+    border-radius: 1px;
+    border: none;
     padding: 10px;
     font-size: 85%;
+    clip-path: polygon(0% 0%, 90% 0%, 100% 50%, 90% 100%, 0% 100%);
 }
 
 #top-scroll {
