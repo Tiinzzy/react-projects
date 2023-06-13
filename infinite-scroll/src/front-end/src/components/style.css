@@ -71,8 +71,9 @@
     width: 500px;
     display: none;
     z-index: 30000;
-    background-color: #f7e7a3;
+    background-color: #cff5ff;
     border: none;
     padding: 10px;
     font-size: 85%;
+    border-radius: 1px;
 }
