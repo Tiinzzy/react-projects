@@ -12,6 +12,21 @@ export default class DisplayTable extends React.Component {
         }
     }
 
+    displayMovieToolTip(e, msg) {
+        if (msg === 'draw') {
+            let tooTipDiv = document.getElementById("movie-tool-tip");
+            tooTipDiv.style.top = (e.clientY - 50) + 'px';
+            tooTipDiv.style.left = (e.clientX) + 'px';
+            tooTipDiv.textContent = 'this will be the full text';
+            tooTipDiv.style.display = "block";
+        } else if (msg === 'hide') {
+            let tooTipDiv = document.getElementById("movie-tool-tip");
+            tooTipDiv.style.display = "none";
+            tooTipDiv.style.top = 0;
+            tooTipDiv.style.left = 0;
+        }
+    }
+
     render() {
         return (
             <>
@@ -28,7 +43,10 @@ export default class DisplayTable extends React.Component {
                                 <td >{e.genres}</td>
                                 <td >{e.imdb}</td>
                                 <td >{e.movie_id}</td>
-                                <td >{e.overview.substr(0, 150) + '...'}</td>
+                                <td onMouseLeave={(e) => this.displayMovieToolTip(e, 'hide')} onMouseMove={(e) => this.displayMovieToolTip(e, 'draw')}>
+                                    {e.overview.substr(0, 150) + '...'}
+                                    <div id="movie-tool-tip" className='movie-tool-tip'></div>
+                                </td>
                                 <td >{e.title}</td>
                                 <td >{e.vote}</td>
                                 <td >{e.vote_count}</td>
