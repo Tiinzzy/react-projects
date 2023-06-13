@@ -171,7 +171,7 @@ export default class Grid extends React.Component {
 
                     <div className='tabel-container' style={{ height: this.state.windowSize.h }}>
                         {this.state.headers && this.state.dataDisplay &&
-                            <DisplayTable headers={this.state.headers} dataDisplay={this.state.dataDisplay} />}
+                            <DisplayTable headers={this.state.headers} dataDisplay={this.state.dataDisplay} pageNum={this.state.pageNum}/>}
                     </div>
 
                     <div id="scroll+buttons+container" style={{ display: 'flex', flexDirection: 'column' }}>
