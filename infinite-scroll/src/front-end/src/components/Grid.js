@@ -72,8 +72,6 @@ export default class Grid extends React.Component {
     handleResize() {
         let windowSize = getWindowSize();
         this.setState({ windowSize });
-
-        console.log(this.state.windowSize.h - 55);
     }
 
     handelScroll(e) {
