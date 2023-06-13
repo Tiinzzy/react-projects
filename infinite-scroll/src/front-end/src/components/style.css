@@ -26,7 +26,7 @@
 .tabel-container {
     border: solid 1px #adadad;
     width: 100%;
-    border-radius: 0px;
+    border-radius: 2px;
     overflow-x: hidden;
     overflow-y: scroll;
 }
@@ -48,8 +48,33 @@
     width: 150px;
     display: none;
     z-index: 30000;
-    background-color: white;
-    border: solid 2px #eaeaea;
+    background-color: #9ce0f9;
+    border-radius: 1px;
+    border: none;
     padding: 10px;
     font-size: 85%;
+    clip-path: polygon(0% 0%, 90% 0%, 100% 50%, 90% 100%, 0% 100%);
+}
+
+#top-scroll {
+    border-top: 2px;
+}
+
+#buttom-scroll {
+    border-bottom: 2px;
+}
+
+.movie-tool-tip {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 500px;
+    display: none;
+    z-index: 30000;
+    background-color: #cff5ff;
+    border: none;
+    padding: 10px;
+    font-size: 85%;
+    border-radius: 1px;
+    cursor: pointer;
 }

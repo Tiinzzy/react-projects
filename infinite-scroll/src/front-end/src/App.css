@@ -49,10 +49,14 @@
   padding: 8px 5px 8px 5px;
 }
 
+#scorll-element thead {
+  top: 0;
+  position: sticky;
+  background-color: rgb(225, 225, 225);
+}
+
 #scorll-element th {
   padding: 5px;
-  position: sticky;
-  top: 0;
   background-color: rgb(225, 225, 225);
   text-align: left;
   border-bottom: #b2b2b2 solid 1px;
