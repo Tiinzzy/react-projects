@@ -7,7 +7,6 @@ const TOOL_TIP_Y_OFFSET = 15;
 const TOOL_TIP_X_OFFSET = 215;
 
 export default function ScrollBar({ buttonHeight, height, totalPages, currentPage, callParent }) {
-    const tooTipDiv = document.getElementById("tool-tip");
 
     const jumpToPage = (e) => {
         let pageNo = Math.floor(totalPages * (e.clientY - buttonHeight - SCROLL_BAR_INDICATOR_HEIGHT) / (height - SCROLL_BAR_INDICATOR_HEIGHT));
@@ -18,6 +17,7 @@ export default function ScrollBar({ buttonHeight, height, totalPages, currentPag
 
     const displayToolTip = (e, msg) => {
         if (msg === 'draw') {
+            let tooTipDiv = document.getElementById("tool-tip");
             let pageNo = Math.floor(totalPages * (e.clientY - buttonHeight - SCROLL_BAR_INDICATOR_HEIGHT) / (height - SCROLL_BAR_INDICATOR_HEIGHT));
             pageNo = (pageNo > totalPages ? totalPages : pageNo);
             pageNo = (pageNo < 0 ? 0 : pageNo);
@@ -26,6 +26,7 @@ export default function ScrollBar({ buttonHeight, height, totalPages, currentPag
             tooTipDiv.textContent = 'Jump to page # ' + pageNo;
             tooTipDiv.style.display = "block";
         } else if (msg === 'hide') {
+            let tooTipDiv = document.getElementById("tool-tip");
             tooTipDiv.style.display = "none";
             tooTipDiv.style.top = 0;
             tooTipDiv.style.left = 0;
