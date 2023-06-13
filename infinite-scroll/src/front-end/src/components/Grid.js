@@ -151,12 +151,12 @@ export default class Grid extends React.Component {
                     </div>
 
                     <div id="scroll+buttons+container" style={{ display: 'flex', flexDirection: 'column' }}>
-                        <div className="btn-styling" onClick={() => this.handleGoingUpDown('up')}>
+                        <div id="top-scroll" className="btn-styling" onClick={() => this.handleGoingUpDown('up')}>
                             <FontAwesomeIcon icon={faAngleUp} style={{ fontSize: 12, fontWeight: 'bold' }} />
                         </div>
                         {this.state.totalPageCount >= 0 &&
                             <ScrollBar buttonHeight={BUTTONS_HEIGHT} height={this.state.windowSize.h - BUTTONS_HEIGHT} currentPage={this.state.pageNum} totalPages={this.state.totalPageCount} callParent={this.jumpToPage} />}
-                        <div className="btn-styling" onClick={() => this.handleGoingUpDown('down')}>
+                        <div id="buttom-scroll" className="btn-styling" onClick={() => this.handleGoingUpDown('down')}>
                             <FontAwesomeIcon icon={faAngleDown} style={{ fontSize: 12, fontWeight: 'bold' }} />
                         </div>
                     </div>
