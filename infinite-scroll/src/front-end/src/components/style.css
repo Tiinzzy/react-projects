@@ -26,7 +26,7 @@
 .tabel-container {
     border: solid 1px #adadad;
     width: 100%;
-    border-radius: 0px;
+    border-radius: 2px;
     overflow-x: hidden;
     overflow-y: scroll;
 }
@@ -52,4 +52,12 @@
     border: solid 2px #eaeaea;
     padding: 10px;
     font-size: 85%;
+}
+
+#top-scroll {
+    border-top: 2px;
+}
+
+#buttom-scroll {
+    border-bottom: 2px;
 }
