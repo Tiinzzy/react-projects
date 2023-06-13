@@ -116,9 +116,11 @@ export default class Grid extends React.Component {
         if (e === 'up') {
             this.setState({ showProgress: true }, () => {
                 this.setState({ busy: true }, () => {
-                    let query = { offset_number: 0 * this.state.rowPerPage, display_number: this.state.rowPerPage };
+                    let pageNum = this.state.pageNum - 1;
+                    pageNum = pageNum > 0 ? pageNum : 0;
+                    let query = { offset_number: pageNum * this.state.rowPerPage, display_number: this.state.rowPerPage };
                     backend.get_all_movies(query, (data) => {
-                        this.setState({ busy: false, dataDisplay: data, showProgress: false, pageNum: 0 }, () => {
+                        this.setState({ busy: false, dataDisplay: data, showProgress: false, pageNum }, () => {
                             this.state.callBack(this.state.pageNum);
                         });
                     });
@@ -127,9 +129,11 @@ export default class Grid extends React.Component {
         } else if (e === 'down') {
             this.setState({ showProgress: true }, () => {
                 this.setState({ busy: true }, () => {
-                    let query = { offset_number: this.state.totalPageCount * this.state.rowPerPage, display_number: this.state.rowPerPage };
+                    let pageNum = this.state.pageNum + 1;
+                    pageNum = pageNum < this.state.totalPageCount ? pageNum : this.state.totalPageCount;
+                    let query = { offset_number: pageNum * this.state.rowPerPage, display_number: this.state.rowPerPage };
                     backend.get_all_movies(query, (data) => {
-                        this.setState({ busy: false, dataDisplay: data, showProgress: false, pageNum: this.state.totalPageCount }, () => {
+                        this.setState({ busy: false, dataDisplay: data, showProgress: false, pageNum }, () => {
                             this.state.callBack(this.state.pageNum);
                         });
                     });
