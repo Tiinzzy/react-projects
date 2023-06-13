@@ -63,3 +63,16 @@
 #buttom-scroll {
     border-bottom: 2px;
 }
+
+.movie-tool-tip {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 500px;
+    display: none;
+    z-index: 30000;
+    background-color: #f7e7a3;
+    border: none;
+    padding: 10px;
+    font-size: 85%;
+}
