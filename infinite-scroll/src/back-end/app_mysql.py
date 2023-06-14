@@ -13,7 +13,6 @@ def get_all_movies(parameters):
     where m.title <> '0' and m.vote_average <> '0' and m.overview <> '0'
     limit {offset} ,{display_number}
     """
-    print(sql_command)
     cur.execute(sql_command)
     rows = cur.fetchall()
     result = []
