@@ -16,17 +16,20 @@ export default class DisplayTable extends React.Component {
     }
 
     displayMovieToolTip(e, msg, data) {
-        let tooTipDiv = document.getElementById("movie-tool-tip");
+        console.log(e.clientY, '<< client y', e.screenY, '<< screen y', window.innerHeight, '<< innerHeight')
+        let toolTipDiv = document.getElementById("movie-tool-tip");
         if (msg === 'draw') {
-            tooTipDiv.innerText = data.overview;
-            tooTipDiv.style.top = (e.clientY < window.innerHeight / 2) ? (e.clientY + SECOND_HALF_Y_OFFSET) + 'px' : (e.clientY - tooTipDiv.offsetHeight - SECOND_HALF_Y_OFFSET) + 'px';
-            tooTipDiv.style.left = (e.clientX - tooTipDiv.offsetWidth / 2) + 'px';
-            tooTipDiv.style.display = "block";
+            toolTipDiv.innerText = data.overview;
+            let value =(e.clientY < window.innerHeight / 2) ? (e.clientY + SECOND_HALF_Y_OFFSET) + 'px' : (e.clientY - toolTipDiv.offsetHeight - SECOND_HALF_Y_OFFSET) + 'px';
+            console.log(value, '<<<<<<<<<<')
+            toolTipDiv.style.top = value;
+            toolTipDiv.style.left = (e.clientX - toolTipDiv.offsetWidth / 2) + 'px';
+            toolTipDiv.style.display = "block";
         } else if (msg === 'hide') {
-            tooTipDiv.style.display = "none";
-            tooTipDiv.innerText = '';
-            tooTipDiv.style.top = 0;
-            tooTipDiv.style.left = 0;
+            toolTipDiv.style.display = "none";
+            toolTipDiv.innerText = '';
+            toolTipDiv.style.top = 0;
+            toolTipDiv.style.left = 0;
         }
     }
 
@@ -51,7 +54,8 @@ export default class DisplayTable extends React.Component {
                                 <td >{e.genres}</td>
                                 <td >{e.imdb}</td>
                                 <td >{e.movie_id}</td>
-                                <td onClick={(j) => this.displayMovieToolTip(j, 'draw', e)}
+                                <td onMouseMove={(j) => this.displayMovieToolTip(j, 'draw', e)} onMouseLeave={(j) => this.displayMovieToolTip(j, 'hide', e)}
+                                    onClick={(j) => this.displayMovieToolTip(j, 'draw', e)}
                                     style={{ cursor: 'pointer' }}>
                                     {e.overview.substr(0, 150) + '...'}
                                 </td>
