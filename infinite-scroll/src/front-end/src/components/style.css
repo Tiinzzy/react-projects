@@ -68,13 +68,16 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 400px;
+    width: 500px;
     display: none;
     z-index: 30000;
     background-color: #cff5ff;
     border: none;
     padding: 10px;
     font-size: 85%;
-    border-radius: 1px;
-    cursor: pointer;
+    border-radius: 2px;
+}
+
+#movie-tool-tip-content {
+    margin-top: 5px;
 }
