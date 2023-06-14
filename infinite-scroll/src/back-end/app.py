@@ -16,12 +16,10 @@ def all_movies():
     cache_key = parameters['offset_number']
     result = cache.get(cache_key)
     if result is None:
-        print('from backend')
         result = app_mysql.get_all_movies(parameters)
         cache.insert(cache_key, result)
         return result
     else:
-        print('from cache')
         return result
 
 
