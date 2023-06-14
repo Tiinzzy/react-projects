@@ -1,6 +1,10 @@
 import React from "react";
 
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import Box from '@mui/material/Box';
+
 import './style.css';
+import { Typography } from "@mui/material";
 
 const SECOND_HALF_Y_OFFSET = 15;
 
@@ -17,14 +21,15 @@ export default class DisplayTable extends React.Component {
 
     displayMovieToolTip(e, msg, data) {
         let tooTipDiv = document.getElementById("movie-tool-tip");
+        let tooTipContent = document.getElementById("movie-tool-tip-content");
         if (msg === 'draw') {
-            tooTipDiv.innerText = data.overview;
+            tooTipContent.innerHTML = data.overview;
             tooTipDiv.style.top = (e.clientY < window.innerHeight / 2) ? (e.clientY + SECOND_HALF_Y_OFFSET) + 'px' : (e.clientY - tooTipDiv.offsetHeight - SECOND_HALF_Y_OFFSET) + 'px';
             tooTipDiv.style.left = (e.clientX - tooTipDiv.offsetWidth / 2) + 'px';
             tooTipDiv.style.display = "block";
         } else if (msg === 'hide') {
             tooTipDiv.style.display = "none";
-            tooTipDiv.innerText = '';
+            tooTipContent.innerHTML = '';
             tooTipDiv.style.top = 0;
             tooTipDiv.style.left = 0;
         }
@@ -62,7 +67,14 @@ export default class DisplayTable extends React.Component {
                         ))}
                     </tbody>
                 </table>
-                <div id="movie-tool-tip" className='movie-tool-tip' onClick={(e) => this.displayMovieToolTip(e, 'hide')}></div>
+                <Box id="movie-tool-tip" className='movie-tool-tip' >
+                    <Box display="flex" style={{ paddingBottom: 5, borderBottom: 'solid 1px #858585' }}>
+                        <Typography variant="body1" fontSize={12} fontWeight="bold"> Full Overview</Typography>
+                        <Box display="flex" flexGrow={1} />
+                        <CloseOutlinedIcon onClick={(e) => this.displayMovieToolTip(e, 'hide')} fontSize="small" style={{ cursor: 'pointer' }} />
+                    </Box>                    
+                    <Box id="movie-tool-tip-content"></Box>
+                </Box>
             </>
         );
     }
