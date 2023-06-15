@@ -1,6 +1,7 @@
 import React from "react";
 
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import IconButton from '@mui/material/IconButton';
 import Draggable from 'react-draggable';
 import Box from '@mui/material/Box';
 
@@ -81,11 +82,13 @@ export default class DisplayTable extends React.Component {
                     onStop={() => this.handleDragStop()}
                     onMouseDown={() => this.handleDrag()}
                     onMouseUp={() => this.handleDragStop()}>
-                    <Box id="movie-tool-tip" className='movie-tool-tip' style={{ cursor: this.state.isDragging ? 'all-scroll' : '' }}>
-                        <Box display="flex" style={{ paddingBottom: 5, borderBottom: 'solid 1px #858585' }}>
+                    <Box id="movie-tool-tip" className='movie-tool-tip' style={{ cursor: this.state.isDragging ? 'all-scroll' : 'auto' }}>
+                        <Box style={{ paddingBottom: 5, borderBottom: 'solid 1px #858585', display: 'flex', alignItems: 'center' }}>
                             <Typography variant="body1" fontSize={12} fontWeight="bold"> Full Overview</Typography>
                             <Box display="flex" flexGrow={1} />
-                            <CloseOutlinedIcon onClick={(e) => this.displayMovieToolTip(e, 'hide')} fontSize="small" style={{ cursor: 'pointer' }} />
+                            <IconButton onClick={(e) => this.displayMovieToolTip(e, 'hide')} style={{ cursor: 'pointer' }}>
+                                <CloseOutlinedIcon fontSize="small" />
+                            </IconButton>
                         </Box>
                         <Box id="movie-tool-tip-content"></Box>
                     </Box>
