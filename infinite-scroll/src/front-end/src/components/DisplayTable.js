@@ -1,16 +1,16 @@
-import React from "react";
+import React, { Component } from "react";
 
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import IconButton from '@mui/material/IconButton';
 import Draggable from 'react-draggable';
+import  Typography  from "@mui/material/Typography";
 import Box from '@mui/material/Box';
 
 import './style.css';
-import { Typography } from "@mui/material";
 
 const SECOND_HALF_Y_OFFSET = 15;
 
-export default class DisplayTable extends React.Component {
+export default class DisplayTable extends Component {
 
     constructor(props) {
         super(props);
@@ -80,12 +80,12 @@ export default class DisplayTable extends React.Component {
                         ))}
                     </tbody>
                 </table>
-                <Draggable ref={this.draggableRef}
+                <Draggable nodeRef={this.draggableRef}
                     onStart={() => this.handleDrag()}
                     onStop={() => this.handleDragStop()}
                     onMouseDown={() => this.handleDrag()}
                     onMouseUp={() => this.handleDragStop()}>
-                    <Box id="movie-tool-tip" className='movie-tool-tip' style={{ cursor: this.state.isDragging ? 'all-scroll' : 'auto' }}>
+                    <Box ref={this.draggableRef} id="movie-tool-tip" className='movie-tool-tip' style={{ cursor: this.state.isDragging ? 'all-scroll' : 'auto' }}>
                         <Box style={{ paddingBottom: 5, borderBottom: 'solid 1px #858585', display: 'flex', alignItems: 'center' }}>
                             <Typography variant="body1" fontSize={12} fontWeight="bold"> Full Overview</Typography>
                             <Box display="flex" flexGrow={1} />
