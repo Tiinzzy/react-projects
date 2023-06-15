@@ -16,9 +16,6 @@ function App() {
 
   return (
     <>
-      {/* <div style={{ border: 'solid 0px red', padding: '5px 2px 0px 10px' }}>
-        <Typography>Current Page: <span> {pageNumber} </span></Typography>
-      </div> */}
       <Grid callBack={callBack} />
     </>
   );
