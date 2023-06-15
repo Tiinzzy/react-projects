@@ -18,13 +18,15 @@ export default class DisplayTable extends React.Component {
             headers: props.headers,
             dataDisplay: props.dataDisplay,
             pageNum: props.pageNum,
-            isDragging: false
+            isDragging: false,
         }
+        this.draggableRef = React.createRef();
     }
 
     displayMovieToolTip(e, msg, data) {
         let tooTipDiv = document.getElementById("movie-tool-tip");
         let tooTipContent = document.getElementById("movie-tool-tip-content");
+
         if (msg === 'draw') {
             tooTipContent.innerHTML = data.overview;
             tooTipDiv.style.top = (e.clientY < window.innerHeight / 2) ? (e.clientY + SECOND_HALF_Y_OFFSET) + 'px' : (e.clientY - tooTipDiv.offsetHeight - SECOND_HALF_Y_OFFSET) + 'px';
@@ -78,7 +80,8 @@ export default class DisplayTable extends React.Component {
                         ))}
                     </tbody>
                 </table>
-                <Draggable onStart={() => this.handleDrag()}
+                <Draggable ref={this.draggableRef}
+                    onStart={() => this.handleDrag()}
                     onStop={() => this.handleDragStop()}
                     onMouseDown={() => this.handleDrag()}
                     onMouseUp={() => this.handleDragStop()}>
