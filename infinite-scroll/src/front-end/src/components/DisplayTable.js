@@ -81,7 +81,7 @@ export default class DisplayTable extends React.Component {
                     onStop={() => this.handleDragStop()}
                     onMouseDown={() => this.handleDrag()}
                     onMouseUp={() => this.handleDragStop()}>
-                    <Box id="movie-tool-tip" className='movie-tool-tip' style={{ cursor: this.state.isDragging ? 'pointer' : '' }}>
+                    <Box id="movie-tool-tip" className='movie-tool-tip' style={{ cursor: this.state.isDragging ? 'all-scroll' : '' }}>
                         <Box display="flex" style={{ paddingBottom: 5, borderBottom: 'solid 1px #858585' }}>
                             <Typography variant="body1" fontSize={12} fontWeight="bold"> Full Overview</Typography>
                             <Box display="flex" flexGrow={1} />
