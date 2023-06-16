@@ -8,7 +8,7 @@ import Box from '@mui/material/Box';
 
 import './style.css';
 
-const SECOND_HALF_Y_OFFSET = 15;
+const SECOND_HALF_Y_OFFSET = 20;
 
 export default class DisplayTable extends Component {
 
@@ -31,8 +31,15 @@ export default class DisplayTable extends Component {
 
         if (msg === 'draw') {
             tooTipContent.innerHTML = data.overview;
-            tooTipDiv.style.top = (e.clientY < window.innerHeight / 2) ? (e.clientY + SECOND_HALF_Y_OFFSET) + 'px' : (e.clientY - tooTipDiv.offsetHeight - SECOND_HALF_Y_OFFSET) + 'px';
-            tooTipDiv.style.left = (e.clientX - tooTipDiv.offsetWidth / 2) + 'px';
+
+            const x = e.clientX + window.pageXOffset;
+            const y = e.clientY + window.pageYOffset;
+            console.log(window.pageXOffset)
+            console.log(window.pageYOffset)
+
+            tooTipDiv.style.top = (y < window.innerHeight / 2) ? (y + SECOND_HALF_Y_OFFSET) + 'px' : (y - tooTipDiv.offsetHeight - SECOND_HALF_Y_OFFSET) + 'px';
+            tooTipDiv.style.left = (x - tooTipDiv.offsetWidth / 2) + 'px';
+
             tooTipDiv.style.display = "block";
 
             this.setState({ hoveringOnRow: true, givenIndex: index });
