@@ -41,7 +41,7 @@ export default class DisplayTable extends Component {
             tooTipContent.innerHTML = '';
             tooTipDiv.style.top = 0;
             tooTipDiv.style.left = 0;
-            
+
             this.setState({ hoveringOnRow: false });
         }
     }
@@ -71,17 +71,17 @@ export default class DisplayTable extends Component {
                     <tbody >
                         {this.props.dataDisplay && this.props.dataDisplay.map((e, i) => (
                             <tr key={i} style={{ backgroundColor: (this.state.givenIndex === i && this.state.hoveringOnRow) ? '#a8d7ef' : 'white' }}>
-                                <td >{e.row_number}</td>
+                                <td id="numbered-row">{e.row_number}</td>
                                 <td >{e.genres}</td>
-                                <td >{e.imdb}</td>
-                                <td >{e.movie_id}</td>
+                                <td id="numbered-row">{e.imdb}</td>
+                                <td id="numbered-row">{e.movie_id}</td>
                                 <td onClick={(j) => this.displayMovieToolTip(j, 'draw', e, i)}
                                     style={{ cursor: 'pointer' }}>
                                     {e.overview.substr(0, 150) + '...'}
                                 </td>
                                 <td >{e.title}</td>
-                                <td >{e.vote}</td>
-                                <td >{e.vote_count}</td>
+                                <td id="numbered-row">{e.vote}</td>
+                                <td id="numbered-row">{e.vote_count}</td>
                             </tr>
                         ))}
                     </tbody>
