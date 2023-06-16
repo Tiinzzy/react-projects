@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import IconButton from '@mui/material/IconButton';
 import Draggable from 'react-draggable';
-import  Typography  from "@mui/material/Typography";
+import Typography from "@mui/material/Typography";
 import Box from '@mui/material/Box';
 
 import './style.css';
@@ -19,11 +19,13 @@ export default class DisplayTable extends Component {
             dataDisplay: props.dataDisplay,
             pageNum: props.pageNum,
             isDragging: false,
+            hoveringOnRow: false,
+            givenIndex: 0
         }
         this.draggableRef = React.createRef();
     }
 
-    displayMovieToolTip(e, msg, data) {
+    displayMovieToolTip(e, msg, data, index) {
         let tooTipDiv = document.getElementById("movie-tool-tip");
         let tooTipContent = document.getElementById("movie-tool-tip-content");
 
@@ -32,11 +34,15 @@ export default class DisplayTable extends Component {
             tooTipDiv.style.top = (e.clientY < window.innerHeight / 2) ? (e.clientY + SECOND_HALF_Y_OFFSET) + 'px' : (e.clientY - tooTipDiv.offsetHeight - SECOND_HALF_Y_OFFSET) + 'px';
             tooTipDiv.style.left = (e.clientX - tooTipDiv.offsetWidth / 2) + 'px';
             tooTipDiv.style.display = "block";
+
+            this.setState({ hoveringOnRow: true, givenIndex: index });
         } else if (msg === 'hide') {
             tooTipDiv.style.display = "none";
             tooTipContent.innerHTML = '';
             tooTipDiv.style.top = 0;
             tooTipDiv.style.left = 0;
+            
+            this.setState({ hoveringOnRow: false });
         }
     }
 
@@ -64,12 +70,12 @@ export default class DisplayTable extends Component {
                     </thead>
                     <tbody >
                         {this.props.dataDisplay && this.props.dataDisplay.map((e, i) => (
-                            <tr key={i}>
+                            <tr key={i} style={{ backgroundColor: (this.state.givenIndex === i && this.state.hoveringOnRow) ? '#a8d7ef' : 'white' }}>
                                 <td >{e.row_number}</td>
                                 <td >{e.genres}</td>
                                 <td >{e.imdb}</td>
                                 <td >{e.movie_id}</td>
-                                <td onClick={(j) => this.displayMovieToolTip(j, 'draw', e)}
+                                <td onClick={(j) => this.displayMovieToolTip(j, 'draw', e, i)}
                                     style={{ cursor: 'pointer' }}>
                                     {e.overview.substr(0, 150) + '...'}
                                 </td>
