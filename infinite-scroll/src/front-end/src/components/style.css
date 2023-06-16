@@ -81,3 +81,7 @@
 #movie-tool-tip-content {
     margin-top: 5px;
 }
+
+#numbered-row{
+    text-align: right !important;
+}
