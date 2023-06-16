@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import Typography from '@mui/material/Typography';
-
 import Grid from './components/Grid';
 import ReactTable from './components/ReactTable';
 import Home from './components/Home';
@@ -13,7 +11,6 @@ function App() {
   function callBack(e) {
     setPageNumber(e);
   }
-
   return (
     <>
       <Grid callBack={callBack} />
