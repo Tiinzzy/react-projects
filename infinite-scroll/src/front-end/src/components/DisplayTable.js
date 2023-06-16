@@ -32,10 +32,8 @@ export default class DisplayTable extends Component {
         if (msg === 'draw') {
             tooTipContent.innerHTML = data.overview;
 
-            const x = e.clientX + window.pageXOffset;
-            const y = e.clientY + window.pageYOffset;
-            console.log(window.pageXOffset)
-            console.log(window.pageYOffset)
+            const x = e.clientX;
+            const y = e.clientY;
 
             tooTipDiv.style.top = (y < window.innerHeight / 2) ? (y + SECOND_HALF_Y_OFFSET) + 'px' : (y - tooTipDiv.offsetHeight - SECOND_HALF_Y_OFFSET) + 'px';
             tooTipDiv.style.left = (x - tooTipDiv.offsetWidth / 2) + 'px';
