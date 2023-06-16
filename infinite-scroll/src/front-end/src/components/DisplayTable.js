@@ -1,14 +1,12 @@
 import React, { Component } from "react";
 
+import Box from '@mui/material/Box';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import IconButton from '@mui/material/IconButton';
-import Draggable from 'react-draggable';
 import Typography from "@mui/material/Typography";
-import Box from '@mui/material/Box';
+import Popover from '@mui/material/Popover';
 
 import './style.css';
-
-const SECOND_HALF_Y_OFFSET = 20;
 
 export default class DisplayTable extends Component {
 
@@ -18,46 +16,11 @@ export default class DisplayTable extends Component {
             headers: props.headers,
             dataDisplay: props.dataDisplay,
             pageNum: props.pageNum,
-            isDragging: false,
             hoveringOnRow: false,
             givenIndex: 0,
-            isPopoverOpen: false
+            anchorElement: null
         }
-        this.draggableRef = React.createRef();
-    }
-
-    displayMovieToolTip(e, msg, data, index) {
-        let toolTipDiv = document.getElementById("movie-tool-tip");
-        let toolTipContent = document.getElementById("movie-tool-tip-content");
-
-        if (msg === 'draw' && this.state.isPopoverOpen === false) {
-            toolTipContent.innerHTML = data.overview;
-
-            const x = e.clientX + window.pageXOffset;
-            const y = e.clientY + window.pageYOffset;
-
-            const divWidth = toolTipDiv.offsetWidth;
-            const divHeight = toolTipDiv.offsetHeight;
-
-            const maxX = window.innerWidth - divWidth;
-            const maxY = window.innerHeight - divHeight;
-
-            const adjustedX = Math.min(Math.max(x - divWidth / 2, 0), maxX);
-            const adjustedY = Math.min(Math.max(y + SECOND_HALF_Y_OFFSET, 0), maxY);
-
-            toolTipDiv.style.top = adjustedY + 'px';
-            toolTipDiv.style.left = adjustedX + 'px';
-            toolTipDiv.style.display = "block";
-
-            this.setState({ hoveringOnRow: true, givenIndex: index, isPopoverOpen: true });
-        } else if (msg === 'hide') {
-            toolTipDiv.style.display = "none";
-            toolTipContent.innerHTML = '';
-            toolTipDiv.style.top = 0;
-            toolTipDiv.style.left = 0;
-
-            this.setState({ hoveringOnRow: false, isPopoverOpen: false });
-        }
+        this.colsePopover = this.colsePopover.bind(this);
     }
 
     handleDrag() {
@@ -67,6 +30,14 @@ export default class DisplayTable extends Component {
     handleDragStop() {
         this.setState({ isDragging: false });
     };
+
+    openPopover(e, data, index) {
+        this.setState({ anchorElement: e.target, overview: data.overview, givenIndex: index, hoveringOnRow: true })
+    }
+
+    colsePopover() {
+        this.setState({ anchorElement: null, hoveringOnRow: false })
+    }
 
     render() {
         return (
@@ -89,9 +60,9 @@ export default class DisplayTable extends Component {
                                 <td >{e.genres}</td>
                                 <td id="numbered-row">{e.imdb}</td>
                                 <td id="numbered-row">{e.movie_id}</td>
-                                <td onClick={(j) => this.displayMovieToolTip(j, 'draw', e, i)}
+                                <td onClick={(event) => this.openPopover(event, e, i)}
                                     style={{ cursor: 'pointer' }}>
-                                    {e.overview.substr(0, 150) + '...'}
+                                    {e.overview.substr(0, 150) + ' ...'}
                                 </td>
                                 <td >{e.title}</td>
                                 <td id="numbered-row">{e.vote}</td>
@@ -100,22 +71,30 @@ export default class DisplayTable extends Component {
                         ))}
                     </tbody>
                 </table>
-                <Draggable nodeRef={this.draggableRef}
-                    onStart={() => this.handleDrag()}
-                    onStop={() => this.handleDragStop()}
-                    onMouseDown={() => this.handleDrag()}
-                    onMouseUp={() => this.handleDragStop()}>
-                    <Box id="movie-tool-tip" className='movie-tool-tip' style={{ cursor: this.state.isDragging ? 'all-scroll' : 'auto' }}>
-                        <Box ref={this.draggableRef} style={{ paddingBottom: 5, borderBottom: 'solid 1px #858585', display: 'flex', alignItems: 'center' }}>
+                <Popover
+                    style={{ width: '55%' }}
+                    open={Boolean(this.state.anchorElement)}
+                    anchorEl={this.state.anchorElement}
+                    onClose={this.colsePopover}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                    }}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                    }}>
+                    <Box p={2} >
+                        <Box style={{ borderBottom: 'solid 1px #858585', display: 'flex', alignItems: 'center' }}>
                             <Typography variant="body1" fontSize={12} fontWeight="bold"> Full Overview</Typography>
                             <Box display="flex" flexGrow={1} />
-                            <IconButton onClick={(e) => this.displayMovieToolTip(e, 'hide')} style={{ cursor: 'pointer' }}>
+                            <IconButton onClick={this.colsePopover} style={{ cursor: 'pointer' }}>
                                 <CloseOutlinedIcon fontSize="small" />
                             </IconButton>
                         </Box>
-                        <Box id="movie-tool-tip-content"></Box>
+                        <Typography variant="body1" fontSize={12} fontWeight="500" pt={2}> {this.state.overview}</Typography>
                     </Box>
-                </Draggable>
+                </Popover>
             </>
         );
     }
