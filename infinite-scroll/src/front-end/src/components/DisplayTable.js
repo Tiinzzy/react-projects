@@ -20,34 +20,43 @@ export default class DisplayTable extends Component {
             pageNum: props.pageNum,
             isDragging: false,
             hoveringOnRow: false,
-            givenIndex: 0
+            givenIndex: 0,
+            isPopoverOpen: false
         }
         this.draggableRef = React.createRef();
     }
 
     displayMovieToolTip(e, msg, data, index) {
-        let tooTipDiv = document.getElementById("movie-tool-tip");
-        let tooTipContent = document.getElementById("movie-tool-tip-content");
+        let toolTipDiv = document.getElementById("movie-tool-tip");
+        let toolTipContent = document.getElementById("movie-tool-tip-content");
 
-        if (msg === 'draw') {
-            tooTipContent.innerHTML = data.overview;
+        if (msg === 'draw' && this.state.isPopoverOpen === false) {
+            toolTipContent.innerHTML = data.overview;
 
-            const x = e.clientX;
-            const y = e.clientY;
+            const x = e.clientX + window.pageXOffset;
+            const y = e.clientY + window.pageYOffset;
 
-            tooTipDiv.style.top = (y < window.innerHeight / 2) ? (y + SECOND_HALF_Y_OFFSET) + 'px' : (y - tooTipDiv.offsetHeight - SECOND_HALF_Y_OFFSET) + 'px';
-            tooTipDiv.style.left = (x - tooTipDiv.offsetWidth / 2) + 'px';
+            const divWidth = toolTipDiv.offsetWidth;
+            const divHeight = toolTipDiv.offsetHeight;
 
-            tooTipDiv.style.display = "block";
+            const maxX = window.innerWidth - divWidth;
+            const maxY = window.innerHeight - divHeight;
 
-            this.setState({ hoveringOnRow: true, givenIndex: index });
+            const adjustedX = Math.min(Math.max(x - divWidth / 2, 0), maxX);
+            const adjustedY = Math.min(Math.max(y + SECOND_HALF_Y_OFFSET, 0), maxY);
+
+            toolTipDiv.style.top = adjustedY + 'px';
+            toolTipDiv.style.left = adjustedX + 'px';
+            toolTipDiv.style.display = "block";
+
+            this.setState({ hoveringOnRow: true, givenIndex: index, isPopoverOpen: true });
         } else if (msg === 'hide') {
-            tooTipDiv.style.display = "none";
-            tooTipContent.innerHTML = '';
-            tooTipDiv.style.top = 0;
-            tooTipDiv.style.left = 0;
+            toolTipDiv.style.display = "none";
+            toolTipContent.innerHTML = '';
+            toolTipDiv.style.top = 0;
+            toolTipDiv.style.left = 0;
 
-            this.setState({ hoveringOnRow: false });
+            this.setState({ hoveringOnRow: false, isPopoverOpen: false });
         }
     }
 
