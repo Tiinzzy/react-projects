@@ -3,7 +3,14 @@
 
 <br/>
 <h3>infinite-scroll</h3>
-<div>A project that displays more than 40,000 data fetched from MySQL in a table, allows for scroll up and down. As the scrolled hit the end of the div, loads the next batch to show and previous batch of data will be gone, unless the scroller goes up and the scroller hit the top and the previous batch is loaded and fetched again.</div>
+<div>A project that displays more than 40,000 data fetched from MySQL in html table, allowing for scroll up and down. As the scrolled hit the end of the div, it will load the next batch to show and previous batch of data will be gone, unless the scroller goes up and the scroller hit the top and the previous batch is loaded and fetched again. clicking over each rows overview, will open popover with full overview.</div>
+<br/>
+<img width="499" style="-webkit-user-select: none; display: block; margin: auto; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); cursor: zoom-in;" src="https://github.com/Tiinzzy/react-projects/assets/117464310/0eb67a9c-77ce-441f-9323-28bcba56a729">
+
+<br/>
+<br/>
+<img width="499" style="-webkit-user-select: none; display: block; margin: auto; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); cursor: zoom-in;" src="https://github.com/Tiinzzy/react-projects/assets/117464310/e8206b9c-9efd-45c5-966c-f78b7f9c9ae3">
+
 
 <br/>
 <h3>sound-fade-in-out</h3>
