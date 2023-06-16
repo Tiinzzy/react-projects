@@ -60,7 +60,7 @@ export default class DisplayTable extends Component {
                 <table width="100%" cellPadding={0} cellSpacing={1}>
                     <thead style={{ backgroundColor: 'rgb(225, 225, 225)' }}>
                         <tr>
-                            <th colSpan={8} style={{ textAlign: 'center' }}>{'Current Page #: ' + this.props.pageNum}</th>
+                            <th colSpan={8} style={{ textAlign: 'center', fontSize: 12, fontWeight: '500' }}>{this.state.dataDisplay.length + ' Rows per page & current Page # ' + this.props.pageNum}</th>
                         </tr>
                         <tr>
                             {this.props.headers !== null && this.props.headers.map((e, i) => (
@@ -91,8 +91,8 @@ export default class DisplayTable extends Component {
                     onStop={() => this.handleDragStop()}
                     onMouseDown={() => this.handleDrag()}
                     onMouseUp={() => this.handleDragStop()}>
-                    <Box ref={this.draggableRef} id="movie-tool-tip" className='movie-tool-tip' style={{ cursor: this.state.isDragging ? 'all-scroll' : 'auto' }}>
-                        <Box style={{ paddingBottom: 5, borderBottom: 'solid 1px #858585', display: 'flex', alignItems: 'center' }}>
+                    <Box id="movie-tool-tip" className='movie-tool-tip' style={{ cursor: this.state.isDragging ? 'all-scroll' : 'auto' }}>
+                        <Box ref={this.draggableRef} style={{ paddingBottom: 5, borderBottom: 'solid 1px #858585', display: 'flex', alignItems: 'center' }}>
                             <Typography variant="body1" fontSize={12} fontWeight="bold"> Full Overview</Typography>
                             <Box display="flex" flexGrow={1} />
                             <IconButton onClick={(e) => this.displayMovieToolTip(e, 'hide')} style={{ cursor: 'pointer' }}>
