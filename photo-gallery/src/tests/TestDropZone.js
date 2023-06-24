@@ -1,18 +1,8 @@
 import React, { Component } from 'react';
 
-import './test-style.css';
+import ResizableGrid from './ResizableGrid';
 
-const BOX_STYLE = function (width) {
-  return {
-    display: "inline-block",
-    height: width / 2.5,
-    width: width,
-    marginRight: 10,
-    marginBottom: 10,
-    border: "solid 1px darkred",
-    textAlign: "center",
-  };
-};
+import './test-style.css';
 
 export default class TestDropZone extends Component {
   constructor(props) {
@@ -26,8 +16,6 @@ export default class TestDropZone extends Component {
 
   componentDidMount() {
     const dropZone = document.getElementById('dropzone');
-
-    window.addEventListener("resize", this.resizeWindow());
 
     dropZone.addEventListener('dragover', (e) => {
       e.preventDefault();
@@ -59,15 +47,6 @@ export default class TestDropZone extends Component {
     });
   }
 
-  resizeWindow() {
-    let screenWidth = window.innerWidth * 0.95;
-    this.setState({ width: screenWidth - 100 });
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener("resize", this.resizeWindow());
-  }
-
   render() {
     return (
       <>
@@ -76,6 +55,7 @@ export default class TestDropZone extends Component {
           <span>Drag and drop an image here.</span>
         </div>
         <hr />
+        <ResizableGrid />
         <div id="preview" className="preview-container"
           // style={BOX_STYLE(this.state.width)}
         >
