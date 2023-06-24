@@ -30,15 +30,15 @@ export default class TestDropZone extends Component {
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         imageInformation['name'] = file.name;
-
+        console.log(file);
         if (file.type.startsWith('image/')) {
           const reader = new FileReader();
-
           reader.onload = (e) => {
             this.setState({
               droppedImage: e.target.result
             });
             imageInformation['path'] = e.target.result;
+            // console.log(imageInformation)
           };
           reader.readAsDataURL(file);
         }
@@ -55,11 +55,14 @@ export default class TestDropZone extends Component {
           <span>Drag and drop an image here.</span>
         </div>
         <hr />
-        {/* <ResizableGrid /> */}
-        <div id="preview" className="preview-container">
+        <ResizableGrid />
+        {/* <div id="preview" className="preview-container">
           {this.state.droppedImage && <img src={this.state.droppedImage} alt="Dropped" className="preview-image" width="500" height="500" />}
-        </div>
+        </div> */}
       </>
     );
   }
 }
+
+// https://stackoverflow.com/questions/43013858/how-to-post-a-file-from-a-form-with-axios
+// have the send the file[0] to the backend
