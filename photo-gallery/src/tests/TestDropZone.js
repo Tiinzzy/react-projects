@@ -55,10 +55,8 @@ export default class TestDropZone extends Component {
           <span>Drag and drop an image here.</span>
         </div>
         <hr />
-        <ResizableGrid />
-        <div id="preview" className="preview-container"
-          // style={BOX_STYLE(this.state.width)}
-        >
+        {/* <ResizableGrid /> */}
+        <div id="preview" className="preview-container">
           {this.state.droppedImage && <img src={this.state.droppedImage} alt="Dropped" className="preview-image" width="500" height="500" />}
         </div>
       </>
