@@ -11,6 +11,7 @@
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
     "react-scripts": "5.0.1",
+    "rsuite": "^5.35.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
