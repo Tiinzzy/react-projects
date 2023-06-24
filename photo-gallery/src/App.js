@@ -1,9 +1,12 @@
 import './App.css';
 
+import TestDropZone from './tests/TestDropZone';
+import RSuiteGrid from './tests/RSuiteGrid';
+
 function App() {
   return (
     <div >
-      This is home
+      <TestDropZone />
     </div>
   );
 }
