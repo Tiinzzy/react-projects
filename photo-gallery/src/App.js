@@ -1,9 +1,10 @@
 import './App.css';
 
+import TestDropZone from './tests/TestDropZone';
 function App() {
   return (
     <div >
-      This is home
+      <TestDropZone />
     </div>
   );
 }
