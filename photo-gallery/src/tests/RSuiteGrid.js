@@ -19,7 +19,7 @@ const NAMES = [
 
 export default function RSuiteGrid() {
     return (
-        <div style={{ margin: 'auto' }}>
+        <div>
             <Grid>
                 <Row>
                     {NAMES.map((n, i) => (
