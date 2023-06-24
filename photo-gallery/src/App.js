@@ -6,7 +6,7 @@ import RSuiteGrid from './tests/RSuiteGrid';
 function App() {
   return (
     <div >
-      <RSuiteGrid />
+      <TestDropZone />
     </div>
   );
 }
