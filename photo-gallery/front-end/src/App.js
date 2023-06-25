@@ -1,12 +1,9 @@
-import './App.css';
-
-import TestDropZone from './tests/TestDropZone';
-import RSuiteGrid from './tests/RSuiteGrid';
+import Dropzone from "./components/DropZone";
 
 function App() {
   return (
     <div >
-      <TestDropZone />
+      <Dropzone />
     </div>
   );
 }
