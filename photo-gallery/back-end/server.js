@@ -10,20 +10,21 @@ const upload = multer({ dest: 'uploads/' });
 app.listen(PORT, () => {
 
     app.post("/image/upload", upload.single('file'), (req, res) => {
-        const sourcePath = req.file.path;
-        const destinationPath = '/Users/tina/Documents/react-projects/photo-gallery/front-end/public/dropzone-save-photo/' + req.file.originalname;
-
-        fs.rename(sourcePath, destinationPath, (error) => {
-            if (error) {
-                console.error('Error moving file:', error);
-                res.status(500).send('Error moving file');
-            } else {
-                res.send('File uploaded and saved successfully');
-            }
-        });
-
         if (req.file.mimetype.startsWith('image/')) {
-            return { success: true }
+            const sourcePath = req.file.path;
+            const destinationPath = '/Users/tina/Documents/react-projects/photo-gallery/back-end/dropzone-save-photo/' + req.file.originalname;
+            fs.rename(sourcePath, destinationPath, (error) => {
+                if (error) {
+                    console.error('Error moving file:', error);
+                    res.send({ success: false })
+                } else {
+                    console.error('successfully moved file');
+                    res.send({ success: true })
+                }
+            });
+
+        } else {
+            res.send({ success: false })
         }
     })
 
