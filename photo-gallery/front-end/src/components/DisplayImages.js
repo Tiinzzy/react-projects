@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-import { eventEmitter } from './DropZone';
 import BackEndConnection from './BackEndConnection';
 
 const backend = BackEndConnection.INSTANCE();
@@ -31,25 +30,12 @@ export default class DisplayImages extends Component {
     }
 
     componentDidMount() {
-        if (this.state.count < 2) {
+        if (this.state.count < 1) {
             this.resizeWindow();
             let arrayOfImages = [];
-            eventEmitter.on('reloadImages', (data) => {
-                if (data.msg === 'reload') {
-                    backend.all_image((data) => {
-                        if (data.length > 0) {
-                            for (let i in data) {
-                                let images = IMAGE_PATH + data[i].alternative_name;
-                                arrayOfImages.push(images)
-                            }
-                            this.setState({ arrayOfImages })
-                        }
-                    })
-                };
-            })
 
             backend.all_image((data) => {
-                if (data.length > 0) {
+                if (Object.keys(data).length > 0) {
                     for (let i in data) {
                         let images = IMAGE_PATH + data[i].alternative_name;
                         arrayOfImages.push(images)
@@ -58,7 +44,7 @@ export default class DisplayImages extends Component {
                 }
             })
             window.addEventListener("resize", this.resizeWindow);
-            this.setState({ count: 15 });
+            this.setState({ count: 2 });
         }
     }
 
@@ -80,7 +66,6 @@ export default class DisplayImages extends Component {
     }
 
     componentWillUnmount() {
-        eventEmitter.off('reloadImages');
         window.removeEventListener("resize", this.resizeWindow);
     }
 
@@ -92,9 +77,7 @@ export default class DisplayImages extends Component {
             <>
                 <div style={{ margin: "auto", width: '95%', border: 'solid 0px green' }}>
                     {this.state.arrayOfImages.length > 0 && this.state.arrayOfImages.map((n, i) => (
-                        <div key={i} style={BOX_STYLE(width)}>
-                            <img src={n} style={BOX_STYLE(width)} />
-                        </div>
+                        <img key={i} src={n} style={BOX_STYLE(width)} />
                     ))}
                 </div>
             </>
