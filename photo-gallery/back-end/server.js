@@ -5,10 +5,10 @@ const fs = require('fs');
 const PORT = process.env.PORT || 8888;
 
 const app = express();
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ dest: '/Users/tina/Documents/react-projects/photo-gallery/front-end/public/images' });
 
 const filePath = '/Users/tina/Documents/react-projects/photo-gallery/back-end/image-data.json';
-let imageJsonData = [];
+let imageJsonData = {};
 
 function randomNumAssignment() {
     const RANDOM = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -21,7 +21,7 @@ function randomNumAssignment() {
 }
 
 function addImageData(newData) {
-    imageJsonData.push(newData);
+    imageJsonData[newData.file_real_name] = newData;
 }
 
 app.listen(PORT, () => {
@@ -31,7 +31,7 @@ app.listen(PORT, () => {
 
         if (req.file.mimetype.startsWith('image/')) {
             const sourcePath = req.file.path;
-            const destinationPath = '/Users/tina/Documents/react-projects/photo-gallery/back-end/dropzone-save-photo/' + newImgName.trim();
+            const destinationPath = '/Users/tina/Documents/react-projects/photo-gallery/front-end/public/images/' + newImgName.trim();
             fs.rename(sourcePath, destinationPath, (error) => {
                 if (error) {
                     console.error('error moving file:', error);
@@ -44,7 +44,7 @@ app.listen(PORT, () => {
 
             addImageData({ file_real_name: req.file.originalname, alternative_name: newImgName.trim() })
 
-            const jsonToString = JSON.stringify(imageJsonData, null, 1);
+            const jsonToString = JSON.stringify(imageJsonData, null, 2);
 
             fs.writeFile(filePath, jsonToString, 'utf8', (err) => {
                 if (err) {
