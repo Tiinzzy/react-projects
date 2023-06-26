@@ -1,10 +1,12 @@
 import Dropzone from "./components/DropZone";
+import DisplayImages from "./components/DisplayImages";
 
 function App() {
   return (
-    <div >
+    <>
       <Dropzone />
-    </div>
+      <DisplayImages />
+    </>
   );
 }
 

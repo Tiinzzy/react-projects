@@ -8,7 +8,6 @@ export default class DropZone extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            droppedImage: null,
         }
     }
 
@@ -29,7 +28,7 @@ export default class DropZone extends Component {
             const formData = new FormData();
             formData.append('file', uploaded_image);
 
-            backend.upload_image(formData, (data) => { console.log(data) })
+            backend.upload_image(formData)
 
         });
     }
