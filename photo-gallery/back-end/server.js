@@ -56,4 +56,16 @@ app.listen(PORT, () => {
         }
     })
 
+    app.post("/image/all", (req, res) => {
+        fs.readFile('/Users/tina/Documents/react-projects/photo-gallery/back-end/image-data.json', 'utf8', (err, data) => {
+            if (err) {
+                console.error(err);
+                return res.send({ success: false });
+            } else {
+                const parsedJson = JSON.parse(data);
+                res.send(parsedJson);
+            }
+        })
+    })
+
 });
