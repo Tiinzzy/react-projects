@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import { eventEmitter } from './DropZone';
 import BackEndConnection from './BackEndConnection';
 
 const backend = BackEndConnection.INSTANCE();
@@ -12,11 +13,24 @@ export default class DisplayImages extends Component {
     }
 
     componentDidMount() {
-        backend.all_image((data)=>{
+        eventEmitter.on('reloadImages', (data) => {
+            if (data.msg === 'reload') {
+                backend.all_image((data) => {
+                    console.log(data)
+                })
+            };
+        })
+
+        backend.all_image((data) => {
             console.log(data)
         })
 
     }
+
+    componentWillUnmount() {
+        eventEmitter.off('reloadImages');
+    }
+
 
     render() {
         return (
