@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 
+import EventEmitter from 'eventemitter3';
+
 import BackEndConnection from './BackEndConnection';
 
 const backend = BackEndConnection.INSTANCE();
+
+export const eventEmitter = new EventEmitter();
 
 export default class DropZone extends Component {
     constructor(props) {
@@ -29,7 +33,11 @@ export default class DropZone extends Component {
             const formData = new FormData();
             formData.append('file', uploaded_image);
 
-            backend.upload_image(formData, (data) => { console.log(data) })
+            backend.upload_image(formData, (data) => {
+                if (data.success) {
+                    eventEmitter.emit('reloadImages', { msg: 'reload' });
+                }
+            })
 
         });
     }
