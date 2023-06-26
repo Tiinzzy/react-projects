@@ -27,11 +27,11 @@ function addImageData(newData) {
 app.listen(PORT, () => {
 
     app.post("/image/upload", upload.single('file'), (req, res) => {
-        const newImgName = 'IMG-' + randomNumAssignment() + '.JPG';
+        const newImgName = randomNumAssignment() + '.JPG';
 
         if (req.file.mimetype.startsWith('image/')) {
             const sourcePath = req.file.path;
-            const destinationPath = '/Users/tina/Documents/react-projects/photo-gallery/back-end/dropzone-save-photo/' + newImgName;
+            const destinationPath = '/Users/tina/Documents/react-projects/photo-gallery/back-end/dropzone-save-photo/' + newImgName.trim();
             fs.rename(sourcePath, destinationPath, (error) => {
                 if (error) {
                     console.error('error moving file:', error);
@@ -42,7 +42,7 @@ app.listen(PORT, () => {
                 }
             });
 
-            addImageData({ file_real_name: req.file.originalname, alternative_name: newImgName })
+            addImageData({ file_real_name: req.file.originalname, alternative_name: newImgName.trim() })
 
             const jsonToString = JSON.stringify(imageJsonData, null, 1);
 
