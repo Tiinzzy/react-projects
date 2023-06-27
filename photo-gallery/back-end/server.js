@@ -1,11 +1,12 @@
 const express = require("express");
 const multer = require('multer');
 const fs = require('fs');
+var base64Img = require('base64-img');
 
 const PORT = process.env.PORT || 8888;
 
 const app = express();
-const upload = multer({ dest: '/Users/tina/Documents/react-projects/photo-gallery/front-end/public/images' });
+const upload = multer({ dest: '/Users/tina/Documents/react-projects/photo-gallery/back-end/images/' });
 
 const filePath = '/Users/tina/Documents/react-projects/photo-gallery/back-end/image-data.json';
 let imageJsonData = {};
@@ -31,13 +32,13 @@ app.listen(PORT, () => {
 
         if (req.file.mimetype.startsWith('image/')) {
             const sourcePath = req.file.path;
-            const destinationPath = '/Users/tina/Documents/react-projects/photo-gallery/front-end/public/images/' + newImgName.trim();
+            const destinationPath = '/Users/tina/Documents/react-projects/photo-gallery/back-end/images/' + newImgName.trim();
             fs.rename(sourcePath, destinationPath, (error) => {
                 if (error) {
                     console.error('error moving file:', error);
                     res.send({ success: false })
                 } else {
-                    console.error('successfully moved file');
+                    // console.error('successfully moved file');
                     res.send({ success: true })
                 }
             });
@@ -50,7 +51,7 @@ app.listen(PORT, () => {
                 if (err) {
                     console.error('something went wrong!', err);
                 } else {
-                    console.log('file updated successfully!');
+                    // console.log('file updated successfully!');
                 }
             });
         } else {
@@ -59,15 +60,20 @@ app.listen(PORT, () => {
     })
 
     app.post("/image/all", (req, res) => {
-        fs.readFile('/Users/tina/Documents/react-projects/photo-gallery/back-end/image-data.json', 'utf8', (err, data) => {
-            if (err) {
-                console.error(err);
-                return res.send({ success: false });
-            } else {
-                const parsedJson = JSON.parse(data);
-                res.send(parsedJson);
-            }
-        })
+        let filePath = '/Users/tina/Documents/react-projects/photo-gallery/back-end/image-data.json';
+        const jsonData = fs.readFileSync(filePath, 'utf-8');
+
+        const parsedJson = JSON.parse(jsonData);
+
+        for (let i in parsedJson) {
+            let regularPath = '/Users/tina/Documents/react-projects/photo-gallery/back-end/images/' + parsedJson[i].alternative_name;
+            const base64String = base64Img.base64Sync(regularPath);
+            parsedJson[i].path = base64String
+        }
+
+        const updatedJsonData = JSON.stringify(parsedJson, null, 2);
+        fs.writeFileSync(filePath, updatedJsonData);
+        res.send(parsedJson);
     })
 
 });
