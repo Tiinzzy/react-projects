@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 
+import EventEmitter from 'eventemitter3';
+
 import BackEndConnection from './BackEndConnection';
+
+export const eventEmitter = new EventEmitter();
 
 const backend = BackEndConnection.INSTANCE();
 
@@ -28,7 +32,11 @@ export default class DropZone extends Component {
             const formData = new FormData();
             formData.append('file', uploaded_image);
 
-            backend.upload_image(formData)
+            backend.upload_image(formData, (data) => {
+                if (data.success) {
+                    eventEmitter.emit('reload', { message: 'check-for-update'});
+                }
+            })
 
         });
     }
