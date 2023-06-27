@@ -46,7 +46,6 @@ export default class DisplayImages extends Component {
             });
 
             backend.all_image((data) => {
-                console.log(Object.keys(data).length, '<< len')
                 if (Object.keys(data).length > 0) {
                     for (let i in data) {
                         let images = data[i].file;
@@ -91,11 +90,8 @@ export default class DisplayImages extends Component {
 
     addToArray() {
         let copyArray = [...this.state.arrayOfImages];
-        console.log("copy array  len->", copyArray.length)
 
         backend.all_image((data) => {
-            console.log(Object.keys(data).length, '<< len');
-
             if (Object.keys(data).length > 0) {
                 for (let i in data) {
                     if (!copyArray.includes(data[i].file)) {
