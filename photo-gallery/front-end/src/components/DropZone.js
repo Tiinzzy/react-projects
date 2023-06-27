@@ -34,7 +34,7 @@ export default class DropZone extends Component {
 
             backend.upload_image(formData, (data) => {
                 if (data.success) {
-                    eventEmitter.emit('reload', { message: 'check-for-update'});
+                    eventEmitter.emit('reload', { message: 'check-for-update' });
                 }
             })
 
@@ -45,7 +45,7 @@ export default class DropZone extends Component {
         return (
             <>
                 <div id="dropzone" className="dropzone"
-                    style={{ height: 200, border: 'dotted 4px gray', borderRadius: 10, padding: 20, margin: 10, textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    style={{ height: 200, border: 'dotted 4px gray', borderRadius: 10, padding: 20, marginTop: 10, marginBottom: 10, marginLeft: 20, marginRight: 20, textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <span>Drag and drop an image here.</span>
                 </div>
             </>
