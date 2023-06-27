@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 
+import EventEmitter from 'eventemitter3';
+
 import BackEndConnection from './BackEndConnection';
+
+export const eventEmitter = new EventEmitter();
 
 const backend = BackEndConnection.INSTANCE();
 
@@ -28,7 +32,11 @@ export default class DropZone extends Component {
             const formData = new FormData();
             formData.append('file', uploaded_image);
 
-            backend.upload_image(formData)
+            backend.upload_image(formData, (data) => {
+                if (data.success) {
+                    eventEmitter.emit('reload', { message: 'check-for-update' });
+                }
+            })
 
         });
     }
@@ -37,7 +45,7 @@ export default class DropZone extends Component {
         return (
             <>
                 <div id="dropzone" className="dropzone"
-                    style={{ height: 200, border: 'dotted 4px gray', borderRadius: 10, padding: 20, margin: 10, textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    style={{ height: 200, border: 'dotted 4px gray', borderRadius: 10, padding: 20, marginTop: 10, marginBottom: 10, marginLeft: 20, marginRight: 20, textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <span>Drag and drop an image here.</span>
                 </div>
             </>
