@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 
 import BackEndConnection from './BackEndConnection';
 
-const backend = BackEndConnection.INSTANCE();
+import { eventEmitter } from './DropZone';
 
-const IMAGE_PATH = '/images/';
+const backend = BackEndConnection.INSTANCE();
 
 const BOX_STYLE = function (width) {
     return {
@@ -13,11 +13,14 @@ const BOX_STYLE = function (width) {
         width: width,
         marginRight: 10,
         marginBottom: 10,
-        border: "solid 1px darkred",
+        border: "solid 1px gray",
+        borderRadius: 2,
         textAlign: "center",
         overflow: 'hidden'
     };
 };
+
+let arrayOfImages = [];
 
 export default class DisplayImages extends Component {
     constructor(props) {
@@ -32,15 +35,22 @@ export default class DisplayImages extends Component {
     componentDidMount() {
         if (this.state.count < 1) {
             this.resizeWindow();
-            let arrayOfImages = [];
+
+            eventEmitter.on('reload', (data) => {
+                if (data.message === 'check-for-update') {
+                    this.addToArray();
+                }
+            });
 
             backend.all_image((data) => {
                 if (Object.keys(data).length > 0) {
                     for (let i in data) {
-                        let images = IMAGE_PATH + data[i].alternative_name;
-                        arrayOfImages.push(images)
+                        let images = data[i].path;
+                        arrayOfImages.push(images);
                     }
-                    this.setState({ arrayOfImages })
+                    const noDuplicates = [...new Set(arrayOfImages)];
+
+                    this.setState({ arrayOfImages: noDuplicates });
                 }
             })
             window.addEventListener("resize", this.resizeWindow);
@@ -65,8 +75,23 @@ export default class DisplayImages extends Component {
         return columnsCount * 13;
     }
 
+    addToArray() {
+        backend.all_image((data) => {
+            if (Object.keys(data).length > 0) {
+                for (let i in data) {
+                    if (!arrayOfImages.includes(data[i].path)) {
+                        arrayOfImages.push(data[i].path);
+                    }
+                }
+                const noDuplicates = [...new Set(arrayOfImages)];
+                this.setState({ arrayOfImages: noDuplicates });
+            }
+        })
+    }
+
     componentWillUnmount() {
         window.removeEventListener("resize", this.resizeWindow);
+        eventEmitter.off('reload');
     }
 
 
@@ -77,7 +102,7 @@ export default class DisplayImages extends Component {
             <>
                 <div style={{ margin: "auto", width: '95%', border: 'solid 0px green' }}>
                     {this.state.arrayOfImages.length > 0 && this.state.arrayOfImages.map((n, i) => (
-                        <img key={i} src={n} style={BOX_STYLE(width)} />
+                        <img key={i} src={n} style={BOX_STYLE(width)} alt={'image ' + i} />
                     ))}
                 </div>
             </>
