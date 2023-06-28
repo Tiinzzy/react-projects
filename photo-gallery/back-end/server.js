@@ -4,6 +4,8 @@ const fs = require('fs');
 const base64Img = require('base64-img');
 
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 const PORT = process.env.PORT || 8888;
 
 const IMAGE_DIRECTORY = '/Users/tina/Documents/react-projects/photo-gallery/back-end/images/';
@@ -22,8 +24,18 @@ function randomNumAssignment() {
 }
 
 function getCurrentImageData() {
-    let jsonData = fs.readFileSync(FILE_PATH);
-    return JSON.parse(jsonData);
+    let jsonData = fs.readFileSync('image-data.json', 'utf-8');
+    let parsed = JSON.parse(jsonData);
+    return parsed
+}
+
+function removeImageFromObject(obj, key) {
+    for (let i in obj) {
+        if (obj.hasOwnProperty(i) && i === key) {
+            delete obj[i];
+        }
+    }
+    return obj;
 }
 
 app.listen(PORT, () => {
@@ -45,13 +57,14 @@ app.listen(PORT, () => {
 
             const imageJsonData = getCurrentImageData();
             imageJsonData[req.file.originalname] = { file_real_name: req.file.originalname, alternative_name: newImgName.trim() };
-            const jsonToString = JSON.stringify(imageJsonData, null, 2);
+            const jsonToString = JSON.stringify(imageJsonData);
 
-            fs.writeFile(FILE_PATH, jsonToString, 'utf8', (err) => {
+            fs.writeFileSync(FILE_PATH, jsonToString, 'utf8', (err) => {
                 if (err) {
                     console.error('something went wrong!', err);
                 }
             });
+
         } else {
             res.send({ success: false });
         }
@@ -67,6 +80,35 @@ app.listen(PORT, () => {
         }
 
         res.send(parsedJson);
+    })
+
+    app.post("/image/delete", (req, res) => {
+        const postData = req.body;
+        const deleteImage = postData.image_name;
+
+        const imagesJson = getCurrentImageData();
+
+        for (let i in imagesJson) {
+            if (imagesJson[i] === imagesJson[deleteImage]) {
+                let imagePath = IMAGE_DIRECTORY + imagesJson[i].alternative_name;
+                fs.unlink(imagePath, (err) => {
+                    if (err) {
+                        console.error(err);
+                        return res.status(500).send('Failed to delete the image.');
+                    }
+                });
+            }
+        }
+
+        const modifiedJson = removeImageFromObject(imagesJson, deleteImage);
+        const jsonToString = JSON.stringify(modifiedJson);
+
+        fs.writeFileSync(FILE_PATH, jsonToString, 'utf8', (err) => {
+            if (err) {
+                console.error('something went wrong!', err);
+            }
+        });
+        res.send({ success: true });
     })
 
 });
