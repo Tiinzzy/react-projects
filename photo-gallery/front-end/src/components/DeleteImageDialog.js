@@ -6,22 +6,26 @@ import DialogContent from '@mui/material/DialogContent';
 import Box from '@mui/material/Box';
 import DialogTitle from '@mui/material/DialogTitle';
 
+import BackEndConnection from './BackEndConnection';
+
+const backend = BackEndConnection.INSTANCE();
+
 const findTheObject = (obj, value) => {
-    for (const key in obj) {
-      if (Object.hasOwnProperty.call(obj, key)) {
-        const innerObj = obj[key];
-        for (const prop in innerObj) {
-          if (Object.hasOwnProperty.call(innerObj, prop)) {
-            const innerValue = innerObj[prop];
-            if (innerValue === value) {
-              return innerObj; 
+    for (let i in obj) {
+        if (Object.hasOwnProperty.call(obj, i)) {
+            const innerObj = obj[i];
+            for (let j in innerObj) {
+                if (Object.hasOwnProperty.call(innerObj, j)) {
+                    const innerValue = innerObj[j];
+                    if (innerValue === value) {
+                        return innerObj;
+                    }
+                }
             }
-          }
         }
-      }
     }
-    return null; 
-  };
+    return null;
+};
 
 
 export default class DeleteImageDialog extends Component {
@@ -30,13 +34,15 @@ export default class DeleteImageDialog extends Component {
         this.state = {
             handleCloseDialog: props.handleCloseDialog,
             selectedImage: props.selectedImage,
-            allImagesInfo: props.allImagesInfo
+            allImagesInfo: props.allImagesInfo,
+            imageName: ''
         }
     }
 
     componentDidMount() {
         let deleteImage = findTheObject(this.state.allImagesInfo, this.state.selectedImage);
-        console.log(deleteImage)
+        let imageName = deleteImage.file_real_name;
+        this.setState({ imageName });
     }
 
     cancelAndClose() {
@@ -44,7 +50,12 @@ export default class DeleteImageDialog extends Component {
     }
 
     deleteAndClose() {
-        this.state.handleCloseDialog();
+        backend.delete_image(this.state.imageName, (data) => {
+            if(data.success){
+                
+            };
+        })
+        // this.state.handleCloseDialog();
     }
 
     render() {
