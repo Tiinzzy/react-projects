@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-import Backdrop from '@mui/material/Backdrop';
 import Dialog from '@mui/material/Dialog';
 
 import DeleteImageDialog from './DeleteImageDialog';
@@ -18,19 +17,11 @@ const BOX_STYLE = function (width) {
         width: width,
         marginRight: 10,
         marginBottom: 10,
-        border: "solid 1px gray",
+        border: "solid 1px #eaeaea",
         borderRadius: 2,
         textAlign: "center",
-        overflow: 'hidden'
-    };
-};
-
-const CLICKED_IMG = function (width) {
-    return {
-        display: "inline-block",
-        height: window.innerHeight - width,
-        width: window.innerHeight - width,
-        objectFit: 'fill'
+        overflow: 'hidden',
+        objectFit: 'cover'
     };
 };
 
@@ -78,7 +69,6 @@ export default class DisplayImages extends Component {
                 }
             })
             window.addEventListener("resize", this.resizeWindow);
-            window.addEventListener('resize', this.setSquareImageSize);
             this.setState({ count: 2 });
         }
     }
@@ -98,15 +88,6 @@ export default class DisplayImages extends Component {
 
     getSpace(columnsCount) {
         return columnsCount * 13;
-    }
-
-    setSquareImageSize() {
-        const image = document.getElementById('backdrop-image');
-
-        const minDimension = Math.min(window.innerHeight, window.innerWidth);
-
-        image.style.width = minDimension + 'px';
-        image.style.height = minDimension + 'px';
     }
 
     addToArray() {
@@ -141,7 +122,6 @@ export default class DisplayImages extends Component {
 
     componentWillUnmount() {
         window.removeEventListener("resize", this.resizeWindow);
-        window.removeEventListener('resize', this.setSquareImageSize);
         eventEmitter.off('reload');
         deleteEmitter.off('check_updated');
     }
@@ -155,20 +135,11 @@ export default class DisplayImages extends Component {
                 <div style={{ margin: "auto", width: '95%', border: 'solid 0px green' }}>
                     {this.state.arrayOfImages.length > 0 && this.state.arrayOfImages.map((n, i) => (
                         <img key={i} src={n} style={BOX_STYLE(width)} alt={'image ' + i}
-                            onClick={() => this.deleteImage(n)}
-                        // onMouseEnter={() => { this.setState({ openBackdrop: true, clickedImage: n }) }} 
-                        />
+                            onClick={() => this.deleteImage(n)} />
                     ))}
                 </div>
 
-                <Backdrop
-                    sx={{ color: '#424242', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                    open={this.state.openBackdrop}
-                    onClick={() => { this.setState({ openBackdrop: false }) }}>
-                    <img id="backdrop-image" src={this.state.clickedImage} alt="clicked img"
-                        style={CLICKED_IMG(width)} />
-                </Backdrop>
-                <Dialog open={this.state.openDialog} onClose={() => this.handleCloseDialog()}>
+                <Dialog open={this.state.openDialog} onClose={() => this.handleCloseDialog()} maxWidth="xl">
                     {this.state.allImagesInfo && <DeleteImageDialog handleCloseDialog={this.handleCloseDialog} selectedImage={this.state.selectedImage} allImagesInfo={this.state.allImagesInfo} />}
                 </Dialog>
             </>
