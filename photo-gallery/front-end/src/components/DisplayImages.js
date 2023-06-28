@@ -66,7 +66,7 @@ export default class DisplayImages extends Component {
                     }
                     const noDuplicates = [...new Set(arrayOfImages)];
 
-                    this.setState({ arrayOfImages: noDuplicates });
+                    this.setState({ arrayOfImages: noDuplicates, allImagesInfo: data });
                 }
             })
             window.addEventListener("resize", this.resizeWindow);
@@ -112,14 +112,14 @@ export default class DisplayImages extends Component {
                     }
                 }
                 const noDuplicates = [...new Set(copyArray)];
-                this.setState({ arrayOfImages: noDuplicates });
+                this.setState({ arrayOfImages: noDuplicates, allImagesInfo: data });
                 console.log(noDuplicates.length, 'no dup len')
             }
         })
     }
 
     deleteImage(image) {
-        this.setState({ openDialog: true,selectedImage: image });
+        this.setState({ openDialog: true, selectedImage: image });
     }
 
     handleCloseDialog() {
@@ -155,7 +155,7 @@ export default class DisplayImages extends Component {
                         style={CLICKED_IMG(width)} />
                 </Backdrop>
                 <Dialog open={this.state.openDialog} onClose={() => this.handleCloseDialog()}>
-                    <DeleteImageDialog handleCloseDialog={this.handleCloseDialog} selectedImage={this.state.selectedImage}/>
+                    {this.state.allImagesInfo && <DeleteImageDialog handleCloseDialog={this.handleCloseDialog} selectedImage={this.state.selectedImage} allImagesInfo={this.state.allImagesInfo} />}
                 </Dialog>
             </>
         );
