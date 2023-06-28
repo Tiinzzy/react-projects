@@ -88,14 +88,27 @@ app.listen(PORT, () => {
 
         const imagesJson = getCurrentImageData();
 
+        for (let i in imagesJson) {
+            if (imagesJson[i] === imagesJson[deleteImage]) {
+                let imagePath = IMAGE_DIRECTORY + imagesJson[i].alternative_name;
+                fs.unlink(imagePath, (err) => {
+                    if (err) {
+                        console.error(err);
+                        return res.status(500).send('Failed to delete the image.');
+                    }
+                });
+            }
+        }
+
         const modifiedJson = removeImageFromObject(imagesJson, deleteImage);
         const jsonToString = JSON.stringify(modifiedJson);
+
         fs.writeFileSync(FILE_PATH, jsonToString, 'utf8', (err) => {
             if (err) {
                 console.error('something went wrong!', err);
             }
         });
-        res.send({ success: true }); 
+        res.send({ success: true });
     })
 
 });
