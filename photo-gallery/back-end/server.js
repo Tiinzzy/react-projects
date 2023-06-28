@@ -22,8 +22,9 @@ function randomNumAssignment() {
 }
 
 function getCurrentImageData() {
-    let jsonData = fs.readFileSync(FILE_PATH);
-    return JSON.parse(jsonData);
+    let jsonData = fs.readFileSync('image-data.json', 'utf-8');
+    let parsed = JSON.parse(jsonData);
+    return parsed
 }
 
 app.listen(PORT, () => {
@@ -45,13 +46,14 @@ app.listen(PORT, () => {
 
             const imageJsonData = getCurrentImageData();
             imageJsonData[req.file.originalname] = { file_real_name: req.file.originalname, alternative_name: newImgName.trim() };
-            const jsonToString = JSON.stringify(imageJsonData, null, 2);
+            const jsonToString = JSON.stringify(imageJsonData);
 
-            fs.writeFile(FILE_PATH, jsonToString, 'utf8', (err) => {
+            fs.writeFileSync(FILE_PATH, jsonToString, 'utf8', (err) => {
                 if (err) {
                     console.error('something went wrong!', err);
                 }
             });
+
         } else {
             res.send({ success: false });
         }
