@@ -44,6 +44,7 @@ export default class DisplayImages extends Component {
             clickedImage: '',
             openDialog: false
         }
+        this.handleCloseDialog = this.handleCloseDialog.bind(this);
     }
 
     componentDidMount() {
@@ -117,8 +118,8 @@ export default class DisplayImages extends Component {
         })
     }
 
-    deleteImage() {
-        this.setState({ openDialog: true });
+    deleteImage(image) {
+        this.setState({ openDialog: true,selectedImage: image });
     }
 
     handleCloseDialog() {
@@ -140,9 +141,9 @@ export default class DisplayImages extends Component {
                 <div style={{ margin: "auto", width: '95%', border: 'solid 0px green' }}>
                     {this.state.arrayOfImages.length > 0 && this.state.arrayOfImages.map((n, i) => (
                         <img key={i} src={n} style={BOX_STYLE(width)} alt={'image ' + i}
-                            onClick={() => this.deleteImage()}
-                            // onMouseEnter={() => { this.setState({ openBackdrop: true, clickedImage: n }) }} 
-                            />
+                            onClick={() => this.deleteImage(n)}
+                        // onMouseEnter={() => { this.setState({ openBackdrop: true, clickedImage: n }) }} 
+                        />
                     ))}
                 </div>
 
@@ -154,7 +155,7 @@ export default class DisplayImages extends Component {
                         style={CLICKED_IMG(width)} />
                 </Backdrop>
                 <Dialog open={this.state.openDialog} onClose={() => this.handleCloseDialog()}>
-                    <DeleteImageDialog />
+                    <DeleteImageDialog handleCloseDialog={this.handleCloseDialog} selectedImage={this.state.selectedImage}/>
                 </Dialog>
             </>
         );
