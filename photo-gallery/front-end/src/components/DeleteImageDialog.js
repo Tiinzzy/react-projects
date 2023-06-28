@@ -10,7 +10,8 @@ export default class DeleteImageDialog extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            handleCloseDialog: props.handleCloseDialog
+            handleCloseDialog: props.handleCloseDialog,
+            selectedImage: props.selectedImage
         }
     }
 
@@ -18,7 +19,7 @@ export default class DeleteImageDialog extends Component {
         this.state.handleCloseDialog();
     }
 
-    deleteAndClose(){
+    deleteAndClose() {
         this.state.handleCloseDialog();
     }
 
@@ -29,9 +30,8 @@ export default class DeleteImageDialog extends Component {
                     {"Would you like to delete the following Image?"}
                 </DialogTitle>
                 <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        Let Google help apps determine location. This means sending anonymous
-                        location data to Google, even when no apps are running.
+                    <DialogContentText >
+                        <img src={this.state.selectedImage} style={{ width: 250, height: 250 }} alt="delete image" />
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
