@@ -7,6 +7,7 @@ import DeleteImageDialog from './DeleteImageDialog';
 import BackEndConnection from './BackEndConnection';
 
 import { eventEmitter } from './DropZone';
+import { deleteEmitter } from './DeleteImageDialog';
 
 const backend = BackEndConnection.INSTANCE();
 
@@ -42,7 +43,8 @@ export default class DisplayImages extends Component {
             width: 300,
             openBackdrop: false,
             clickedImage: '',
-            openDialog: false
+            openDialog: false,
+            selectedImage: ''
         }
         this.handleCloseDialog = this.handleCloseDialog.bind(this);
     }
@@ -57,6 +59,12 @@ export default class DisplayImages extends Component {
                     this.addToArray();
                 }
             });
+
+            deleteEmitter.on('check_updated', (data) => {
+                if (data.message === 'image_deleted') {
+                    this.removeFromArray();
+                }
+            })
 
             backend.all_image((data) => {
                 if (Object.keys(data).length > 0) {
@@ -113,9 +121,14 @@ export default class DisplayImages extends Component {
                 }
                 const noDuplicates = [...new Set(copyArray)];
                 this.setState({ arrayOfImages: noDuplicates, allImagesInfo: data });
-                console.log(noDuplicates.length, 'no dup len')
             }
         })
+    }
+
+    removeFromArray() {
+        let copyArray = [...this.state.arrayOfImages];
+        const updatedArray = copyArray.filter((e) => e !== this.state.selectedImage);
+        this.setState({ arrayOfImages: updatedArray });
     }
 
     deleteImage(image) {
@@ -130,6 +143,7 @@ export default class DisplayImages extends Component {
         window.removeEventListener("resize", this.resizeWindow);
         window.removeEventListener('resize', this.setSquareImageSize);
         eventEmitter.off('reload');
+        deleteEmitter.off('check_updated');
     }
 
 

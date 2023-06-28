@@ -4,6 +4,8 @@ const fs = require('fs');
 const base64Img = require('base64-img');
 
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 const PORT = process.env.PORT || 8888;
 
 const IMAGE_DIRECTORY = '/Users/tina/Documents/react-projects/photo-gallery/back-end/images/';
@@ -25,6 +27,15 @@ function getCurrentImageData() {
     let jsonData = fs.readFileSync('image-data.json', 'utf-8');
     let parsed = JSON.parse(jsonData);
     return parsed
+}
+
+function removeImageFromObject(obj, key) {
+    for (let i in obj) {
+        if (obj.hasOwnProperty(i) && i === key) {
+            delete obj[i];
+        }
+    }
+    return obj;
 }
 
 app.listen(PORT, () => {
@@ -69,6 +80,22 @@ app.listen(PORT, () => {
         }
 
         res.send(parsedJson);
+    })
+
+    app.post("/image/delete", (req, res) => {
+        const postData = req.body;
+        const deleteImage = postData.image_name;
+
+        const imagesJson = getCurrentImageData();
+
+        const modifiedJson = removeImageFromObject(imagesJson, deleteImage);
+        const jsonToString = JSON.stringify(modifiedJson);
+        fs.writeFileSync(FILE_PATH, jsonToString, 'utf8', (err) => {
+            if (err) {
+                console.error('something went wrong!', err);
+            }
+        });
+        res.send({ success: true }); 
     })
 
 });

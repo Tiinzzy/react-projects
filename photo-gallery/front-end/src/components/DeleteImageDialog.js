@@ -6,7 +6,11 @@ import DialogContent from '@mui/material/DialogContent';
 import Box from '@mui/material/Box';
 import DialogTitle from '@mui/material/DialogTitle';
 
+import EventEmitter from 'eventemitter3';
+
 import BackEndConnection from './BackEndConnection';
+
+export const deleteEmitter = new EventEmitter();
 
 const backend = BackEndConnection.INSTANCE();
 
@@ -26,7 +30,6 @@ const findTheObject = (obj, value) => {
     }
     return null;
 };
-
 
 export default class DeleteImageDialog extends Component {
     constructor(props) {
@@ -51,11 +54,11 @@ export default class DeleteImageDialog extends Component {
 
     deleteAndClose() {
         backend.delete_image(this.state.imageName, (data) => {
-            if(data.success){
-                
+            if (data.success) {
+                deleteEmitter.emit('check_updated', { message: 'image_deleted' });
+                this.state.handleCloseDialog();
             };
         })
-        // this.state.handleCloseDialog();
     }
 
     render() {
