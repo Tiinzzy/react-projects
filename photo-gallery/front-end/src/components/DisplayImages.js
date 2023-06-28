@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 
 import Backdrop from '@mui/material/Backdrop';
+import Dialog from '@mui/material/Dialog';
 
+import DeleteImageDialog from './DeleteImageDialog';
 import BackEndConnection from './BackEndConnection';
 
 import { eventEmitter } from './DropZone';
@@ -22,6 +24,15 @@ const BOX_STYLE = function (width) {
     };
 };
 
+const CLICKED_IMG = function (width) {
+    return {
+        display: "inline-block",
+        height: window.innerHeight - width,
+        width: window.innerHeight - width,
+        objectFit: 'fill'
+    };
+};
+
 export default class DisplayImages extends Component {
     constructor(props) {
         super(props);
@@ -30,7 +41,8 @@ export default class DisplayImages extends Component {
             count: 0,
             width: 300,
             openBackdrop: false,
-            clickedImage: ''
+            clickedImage: '',
+            openDialog: false
         }
     }
 
@@ -105,6 +117,14 @@ export default class DisplayImages extends Component {
         })
     }
 
+    deleteImage() {
+        this.setState({ openDialog: true });
+    }
+
+    handleCloseDialog() {
+        this.setState({ openDialog: false });
+    }
+
     componentWillUnmount() {
         window.removeEventListener("resize", this.resizeWindow);
         window.removeEventListener('resize', this.setSquareImageSize);
@@ -119,7 +139,10 @@ export default class DisplayImages extends Component {
             <>
                 <div style={{ margin: "auto", width: '95%', border: 'solid 0px green' }}>
                     {this.state.arrayOfImages.length > 0 && this.state.arrayOfImages.map((n, i) => (
-                        <img key={i} src={n} style={BOX_STYLE(width)} alt={'image ' + i} onClick={() => { this.setState({ openBackdrop: true, clickedImage: n }) }} />
+                        <img key={i} src={n} style={BOX_STYLE(width)} alt={'image ' + i}
+                            onClick={() => this.deleteImage()}
+                            // onMouseEnter={() => { this.setState({ openBackdrop: true, clickedImage: n }) }} 
+                            />
                     ))}
                 </div>
 
@@ -127,8 +150,12 @@ export default class DisplayImages extends Component {
                     sx={{ color: '#424242', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                     open={this.state.openBackdrop}
                     onClick={() => { this.setState({ openBackdrop: false }) }}>
-                    <img id="backdrop-image" src={this.state.clickedImage} width={window.innerWidth - 500} height={window.innerHeight - 100} alt="clicked img" />
+                    <img id="backdrop-image" src={this.state.clickedImage} alt="clicked img"
+                        style={CLICKED_IMG(width)} />
                 </Backdrop>
+                <Dialog open={this.state.openDialog} onClose={() => this.handleCloseDialog()}>
+                    <DeleteImageDialog />
+                </Dialog>
             </>
         );
     }
