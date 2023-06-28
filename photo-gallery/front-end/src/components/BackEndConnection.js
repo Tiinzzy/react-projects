@@ -34,6 +34,24 @@ class BackEndConnectionImpl {
                 return { result: false };
             })
     }
+
+    async delete_image(deleteImageName, callback) {
+        let query = { image_name: deleteImageName };
+        return axios.post('/image/delete', query, {})
+            .then(function (response) {
+                if (callback) {
+                    callback(response.data);
+                }
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+                if (callback) {
+                    callback({ result: false })
+                }
+                return { result: false };
+            })
+    }
 }
 
 export default class BackEndConnection {
