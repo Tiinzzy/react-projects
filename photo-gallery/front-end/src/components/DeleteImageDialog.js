@@ -65,11 +65,11 @@ export default class DeleteImageDialog extends Component {
         return (
             <>
                 <DialogTitle>
-                    {"Would you like to delete the following Image?"}
+                    {"Would you like to delete the Image?"}
                 </DialogTitle>
                 <DialogContent>
                     <Box style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                        <img src={this.state.selectedImage} style={{ width: 200, height: 200, border: 'solid 1px #eaeaea', borderRadius: 2 }} alt="delete img" />
+                        <img src={this.state.selectedImage} style={{ height: 500, objectFit: 'contain' }} alt="delete img" />
                     </Box>
                 </DialogContent>
                 <DialogActions>
