@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import DownloadForOfflineOutlinedIcon from '@mui/icons-material/DownloadForOfflineOutlined';
+
 import EventEmitter from 'eventemitter3';
 
 import BackEndConnection from './BackEndConnection';
@@ -8,10 +10,36 @@ export const eventEmitter = new EventEmitter();
 
 const backend = BackEndConnection.INSTANCE();
 
+const dropzoneStyle = {
+    width: 100,
+    height: 100,
+    border: 'dotted 2px gray',
+    borderRadius: 10,
+    padding: 20,
+    marginTop: 10,
+    marginBottom: 10,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    textAlign: 'center',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    transition: 'width 0.3s, height 0.3s',
+};
+
+const dropzoneStyleHovered = {
+    ...dropzoneStyle,
+    width: '90%',
+    height: 250,
+    border: 'dotted 4px gray',
+};
+
+
 export default class DropZone extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isHovered: false
         }
     }
 
@@ -41,12 +69,29 @@ export default class DropZone extends Component {
         });
     }
 
+    handleMouseEnter() {
+        this.setState({ isHovered: true });
+    };
+
+    handleMouseLeave() {
+        this.setState({ isHovered: false });
+    };
+
     render() {
         return (
             <>
                 <div id="dropzone" className="dropzone"
-                    style={{ height: 200, border: 'dotted 4px gray', borderRadius: 10, padding: 20, marginTop: 10, marginBottom: 10, marginLeft: 20, marginRight: 20, textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <span>Drag and drop an image here.</span>
+                    style={this.state.isHovered ? dropzoneStyleHovered : dropzoneStyle}
+                    onMouseEnter={() => this.handleMouseEnter()}
+                    onMouseLeave={() => this.handleMouseLeave()}
+                    onDragEnter={() => this.handleMouseEnter()}
+                    onDragLeave={() => this.handleMouseLeave()}>
+                    <span>{this.state.isHovered === true ?
+                        <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                            <DownloadForOfflineOutlinedIcon fontSize="large" />
+                            <div style={{ marginTop: 15 }}>Drag and drop an image here.</div>
+                        </span>
+                        : <DownloadForOfflineOutlinedIcon fontSize="large" />}</span>
                 </div>
             </>
         );
