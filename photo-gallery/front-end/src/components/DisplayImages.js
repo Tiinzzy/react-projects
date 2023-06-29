@@ -4,9 +4,12 @@ import Dialog from '@mui/material/Dialog';
 
 import DeleteImageDialog from './DeleteImageDialog';
 import BackEndConnection from './BackEndConnection';
+import { findTheObject } from './functions';
 
 import { eventEmitter } from './DropZone';
 import { deleteEmitter } from './DeleteImageDialog';
+
+import './style.css';
 
 const backend = BackEndConnection.INSTANCE();
 
@@ -21,7 +24,8 @@ const BOX_STYLE = function (width) {
         borderRadius: 2,
         textAlign: "center",
         overflow: 'hidden',
-        objectFit: 'cover'
+        objectFit: 'cover',
+        position: 'relative'
     };
 };
 
@@ -35,7 +39,8 @@ export default class DisplayImages extends Component {
             openBackdrop: false,
             clickedImage: '',
             openDialog: false,
-            selectedImage: ''
+            selectedImage: '',
+            hoveredImage: ''
         }
         this.handleCloseDialog = this.handleCloseDialog.bind(this);
     }
@@ -106,6 +111,18 @@ export default class DisplayImages extends Component {
         })
     }
 
+    deleteImageNow(image) {
+        this.setState({ selectedImage: image }, () => {
+            let deleteImage = findTheObject(this.state.allImagesInfo, this.state.selectedImage);
+            let imageName = deleteImage.file_real_name;
+            backend.delete_image(imageName, (data) => {
+                if (data.success) {
+                    this.removeFromArray();
+                };
+            })
+        });
+    }
+
     removeFromArray() {
         let copyArray = [...this.state.arrayOfImages];
         const updatedArray = copyArray.filter((e) => e !== this.state.selectedImage);
@@ -120,22 +137,39 @@ export default class DisplayImages extends Component {
         this.setState({ openDialog: false });
     }
 
+    handleMouseEnter(image) {
+        this.setState({ hoveredImage: image });
+    }
+
+    handleMouseLeave() {
+        this.setState({ hoveredImage: '' });
+    }
+
     componentWillUnmount() {
         window.removeEventListener("resize", this.resizeWindow);
         eventEmitter.off('reload');
         deleteEmitter.off('check_updated');
     }
 
-
     render() {
         const { width } = this.state;
-
         return (
             <>
-                <div style={{ margin: "auto", width: '95%', border: 'solid 0px green' }}>
+                <div style={{ margin: "auto", width: '95%' }} className="image-container">
                     {this.state.arrayOfImages.length > 0 && this.state.arrayOfImages.map((n, i) => (
-                        <img key={i} src={n} style={BOX_STYLE(width)} alt={'image ' + i}
-                            onClick={() => this.deleteImage(n)} />
+                        <div
+                            key={i}
+                            style={BOX_STYLE(width)}
+                            className={`image ${n === this.state.hoveredImage ? 'hovered' : ''}`}
+                            onClick={() => this.deleteImage(n)}
+                            onMouseEnter={() => this.handleMouseEnter(n)}
+                            onMouseLeave={() => this.handleMouseLeave()}>
+                            <img src={n} alt={'image ' + i} style={BOX_STYLE(width)} />
+                            {n === this.state.hoveredImage &&
+                                <div className='overlay' style={{ color: 'white', fontWeight: 'bold', textAlign: 'right', fontSize: '25px' }}>
+                                    <span style={{ cursor: 'pointer', marginRight: 5 }}
+                                        onClick={() => this.deleteImageNow(n)}>X</span></div>}
+                        </div>
                     ))}
                 </div>
 
@@ -146,7 +180,6 @@ export default class DisplayImages extends Component {
         );
     }
 }
-
 
 
 
