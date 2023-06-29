@@ -11,8 +11,8 @@ export const eventEmitter = new EventEmitter();
 const backend = BackEndConnection.INSTANCE();
 
 const dropzoneStyle = {
-    width: 100,
-    height: 100,
+    width: '90%',
+    height: 25,
     border: 'dotted 2px gray',
     borderRadius: 10,
     padding: 20,
@@ -24,7 +24,7 @@ const dropzoneStyle = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    transition: 'width 0.3s, height 0.3s',
+    transition: 'width 0.3s, height 0.5s',
 };
 
 const dropzoneStyleHovered = {
