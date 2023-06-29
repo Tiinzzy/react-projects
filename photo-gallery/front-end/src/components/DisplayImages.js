@@ -21,7 +21,24 @@ const BOX_STYLE = function (width) {
         display: "inline-block",
         height: width,
         width: width,
-        marginRight: 10,
+        marginRight: 5,
+        marginLeft: 5,
+        marginBottom: 10,
+        border: "solid 1px #eaeaea",
+        borderRadius: 2,
+        textAlign: "center",
+        overflow: 'hidden',
+        objectFit: 'cover',
+        position: 'relative'
+    };
+};
+
+const IMAGE_STYLE = function (width) {
+    return {
+        display: "inline-block",
+        height: width,
+        width: width,
+        marginRight: 5,
         marginBottom: 10,
         border: "solid 1px #eaeaea",
         borderRadius: 2,
@@ -95,7 +112,8 @@ export default class DisplayImages extends Component {
     };
 
     getSpace(columnsCount) {
-        return columnsCount * 13;
+        // return columnsCount * 13;
+        return 20
     }
 
     addToArray() {
@@ -158,7 +176,7 @@ export default class DisplayImages extends Component {
         const { width } = this.state;
         return (
             <>
-                <div style={{ margin: "auto", width: '95%' }} className="image-container">
+                <div style={{ margin: "auto", border: 'solid 0px red', display: 'block', alignItems: 'center', justifyContent: 'center', width:'90%' }} className="image-container">
                     {this.state.arrayOfImages.length > 0 && this.state.arrayOfImages.map((n, i) => (
                         <div
                             key={i}
@@ -167,7 +185,7 @@ export default class DisplayImages extends Component {
                             onDoubleClick={() => this.deleteImage(n)}
                             onMouseEnter={() => this.handleMouseEnter(n)}
                             onMouseLeave={() => this.handleMouseLeave()}>
-                            <img src={n} alt={'image ' + i} style={BOX_STYLE(width)} />
+                            <img src={n} alt={'image ' + i} style={IMAGE_STYLE(width)} />
                             {n === this.state.hoveredImage &&
                                 <div className='overlay' style={{ color: 'white', fontWeight: 'bold', textAlign: 'right', fontSize: '25px' }}>
                                     <Tooltip title="Delete Image" placement="left">
