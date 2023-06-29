@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 
 import Dialog from '@mui/material/Dialog';
+import IconButton from '@mui/material/IconButton';
+import DisabledByDefaultRoundedIcon from '@mui/icons-material/DisabledByDefaultRounded';
 
 import DeleteImageDialog from './DeleteImageDialog';
 import BackEndConnection from './BackEndConnection';
@@ -112,7 +114,7 @@ export default class DisplayImages extends Component {
     }
 
     deleteImageNow(image) {
-        this.setState({ selectedImage: image }, () => {
+        this.setState({ openDialog: false, selectedImage: image }, () => {
             let deleteImage = findTheObject(this.state.allImagesInfo, this.state.selectedImage);
             let imageName = deleteImage.file_real_name;
             backend.delete_image(imageName, (data) => {
@@ -161,14 +163,15 @@ export default class DisplayImages extends Component {
                             key={i}
                             style={BOX_STYLE(width)}
                             className={`image ${n === this.state.hoveredImage ? 'hovered' : ''}`}
-                            onClick={() => this.deleteImage(n)}
+                            onDoubleClick={() => this.deleteImage(n)}
                             onMouseEnter={() => this.handleMouseEnter(n)}
                             onMouseLeave={() => this.handleMouseLeave()}>
                             <img src={n} alt={'image ' + i} style={BOX_STYLE(width)} />
                             {n === this.state.hoveredImage &&
                                 <div className='overlay' style={{ color: 'white', fontWeight: 'bold', textAlign: 'right', fontSize: '25px' }}>
-                                    <span style={{ cursor: 'pointer', marginRight: 5 }}
-                                        onClick={() => this.deleteImageNow(n)}>X</span></div>}
+                                    <IconButton onClick={() => this.deleteImageNow(n)} style={{ cursor: 'pointer', color: 'white' }}>
+                                        <DisabledByDefaultRoundedIcon fontSize='large' />
+                                    </IconButton></div>}
                         </div>
                     ))}
                 </div>
