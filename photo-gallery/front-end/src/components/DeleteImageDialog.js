@@ -4,32 +4,15 @@ import Button from '@mui/material/Button';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import Box from '@mui/material/Box';
-import DialogTitle from '@mui/material/DialogTitle';
 
 import EventEmitter from 'eventemitter3';
 
 import BackEndConnection from './BackEndConnection';
+import { findTheObject } from './functions';
 
 export const deleteEmitter = new EventEmitter();
 
 const backend = BackEndConnection.INSTANCE();
-
-const findTheObject = (obj, value) => {
-    for (let i in obj) {
-        if (Object.hasOwnProperty.call(obj, i)) {
-            const innerObj = obj[i];
-            for (let j in innerObj) {
-                if (Object.hasOwnProperty.call(innerObj, j)) {
-                    const innerValue = innerObj[j];
-                    if (innerValue === value) {
-                        return innerObj;
-                    }
-                }
-            }
-        }
-    }
-    return null;
-};
 
 export default class DeleteImageDialog extends Component {
     constructor(props) {
@@ -64,17 +47,16 @@ export default class DeleteImageDialog extends Component {
     render() {
         return (
             <>
-                <DialogTitle>
-                    {"Would you like to delete the Image?"}
-                </DialogTitle>
                 <DialogContent>
                     <Box style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                         <img src={this.state.selectedImage} style={{ height: 500, objectFit: 'contain' }} alt="delete img" />
                     </Box>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => this.cancelAndClose()} variant="outlined">No</Button>
-                    <Button onClick={() => this.deleteAndClose()} variant="outlined">Yes</Button>
+                    <Box style={{ fontSize: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 15, fontWeight: '600' }}>Would you like to delete the picture?</Box>
+                    <Box display="flex" flexGrow={1} />
+                    <Button onClick={() => this.cancelAndClose()} variant="outlined" size="small">No</Button>
+                    <Button onClick={() => this.deleteAndClose()} variant="outlined" size="small">Yes</Button>
                 </DialogActions>
             </>
         );
