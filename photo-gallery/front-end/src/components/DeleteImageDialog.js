@@ -53,10 +53,7 @@ export default class DeleteImageDialog extends Component {
                     </Box>
                 </DialogContent>
                 <DialogActions>
-                    <Box style={{ fontSize: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 15, fontWeight: '600' }}>Would you like to delete the picture?</Box>
-                    <Box display="flex" flexGrow={1} />
-                    <Button onClick={() => this.cancelAndClose()} variant="outlined" size="small">No</Button>
-                    <Button onClick={() => this.deleteAndClose()} variant="outlined" size="small">Yes</Button>
+                    <Button onClick={() => this.cancelAndClose()} variant="outlined" size="small" style={{ marginRight: 15, marginBottom: 10 }}>Close</Button>
                 </DialogActions>
             </>
         );
