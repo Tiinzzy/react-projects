@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import Dialog from '@mui/material/Dialog';
 import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 import DisabledByDefaultRoundedIcon from '@mui/icons-material/DisabledByDefaultRounded';
 
 import DeleteImageDialog from './DeleteImageDialog';
@@ -169,9 +170,12 @@ export default class DisplayImages extends Component {
                             <img src={n} alt={'image ' + i} style={BOX_STYLE(width)} />
                             {n === this.state.hoveredImage &&
                                 <div className='overlay' style={{ color: 'white', fontWeight: 'bold', textAlign: 'right', fontSize: '25px' }}>
-                                    <IconButton onClick={() => this.deleteImageNow(n)} style={{ cursor: 'pointer', color: 'white' }}>
-                                        <DisabledByDefaultRoundedIcon fontSize='large' />
-                                    </IconButton></div>}
+                                    <Tooltip title="Delete Image" placement="left">
+                                        <IconButton onClick={() => this.deleteImageNow(n)} style={{ cursor: 'pointer', color: 'white' }}>
+                                            <DisabledByDefaultRoundedIcon fontSize='large' />
+                                        </IconButton>
+                                    </Tooltip>
+                                </div>}
                         </div>
                     ))}
                 </div>
