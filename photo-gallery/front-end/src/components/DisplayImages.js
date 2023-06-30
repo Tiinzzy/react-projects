@@ -16,36 +16,17 @@ import './style.css';
 
 const backend = BackEndConnection.INSTANCE();
 
-const BOX_STYLE = function (width) {
-    return {
-        display: "inline-block",
-        height: width,
-        width: width,
-        marginRight: 5,
-        marginLeft: 5,
-        marginBottom: 10,
-        border: "solid 1px #eaeaea",
-        borderRadius: 2,
-        textAlign: "center",
-        overflow: 'hidden',
-        objectFit: 'cover',
-        position: 'relative'
-    };
-};
-
 const IMAGE_STYLE = function (width) {
     return {
         display: "inline-block",
         height: width,
         width: width,
-        marginRight: 5,
-        marginBottom: 10,
         border: "solid 1px #eaeaea",
         borderRadius: 2,
         textAlign: "center",
         overflow: 'hidden',
         objectFit: 'cover',
-        position: 'relative'
+        position: 'relative',
     };
 };
 
@@ -60,7 +41,8 @@ export default class DisplayImages extends Component {
             clickedImage: '',
             openDialog: false,
             selectedImage: '',
-            hoveredImage: ''
+            hoveredImage: '',
+            widthCount: 0
         }
         this.handleCloseDialog = this.handleCloseDialog.bind(this);
     }
@@ -99,21 +81,22 @@ export default class DisplayImages extends Component {
     }
 
     resizeWindow = () => {
-        let screenWidth = window.innerWidth * 0.95;
-        if (screenWidth < 500) {
-            this.setState({ width: screenWidth - this.getSpace(2) });
+        let screenWidth = window.innerWidth - 60;
+        if (screenWidth < 300) {
+            this.setState({ width: (screenWidth - this.getSpace(1)) / 1, widthCount: 1 });
+        } else if (screenWidth < 500) {
+            this.setState({ width: (screenWidth - this.getSpace(2)) / 2, widthCount: 2 });
         } else if (screenWidth < 1000) {
-            this.setState({ width: (screenWidth - this.getSpace(4)) / 4 });
+            this.setState({ width: (screenWidth - this.getSpace(4)) / 4, widthCount: 4 });
         } else if (screenWidth < 1500) {
-            this.setState({ width: (screenWidth - this.getSpace(6)) / 6 });
+            this.setState({ width: (screenWidth - this.getSpace(6)) / 6, widthCount: 6 });
         } else {
-            this.setState({ width: (screenWidth - this.getSpace(8)) / 8 });
+            this.setState({ width: (screenWidth - this.getSpace(8)) / 8, widthCount: 8 });
         }
     };
 
     getSpace(columnsCount) {
-        // return columnsCount * 13;
-        return 20
+        return columnsCount * 2
     }
 
     addToArray() {
@@ -173,40 +156,37 @@ export default class DisplayImages extends Component {
     }
 
     render() {
-        const { width } = this.state;
+        const { width, widthCount, hoveredImage } = this.state;
         return (
-            <>
-                <div style={{ margin: "auto", border: 'solid 0px red', display: 'block', alignItems: 'center', justifyContent: 'center', width:'90%' }} className="image-container">
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ margin: "auto", border: 'solid 0px red', alignItems: 'center', justifyContent: 'center', display: 'inline-block' }} className="image-container">
                     {this.state.arrayOfImages.length > 0 && this.state.arrayOfImages.map((n, i) => (
-                        <div
-                            key={i}
-                            style={BOX_STYLE(width)}
-                            className={`image ${n === this.state.hoveredImage ? 'hovered' : ''}`}
+                        <span key={i}
                             onDoubleClick={() => this.deleteImage(n)}
                             onMouseEnter={() => this.handleMouseEnter(n)}
-                            onMouseLeave={() => this.handleMouseLeave()}>
-                            <img src={n} alt={'image ' + i} style={IMAGE_STYLE(width)} />
-                            {n === this.state.hoveredImage &&
-                                <div className='overlay' style={{ color: 'white', fontWeight: 'bold', textAlign: 'right', fontSize: '25px' }}>
+                            onMouseLeave={() => this.handleMouseLeave()}
+                            className={`image ${n === this.state.hoveredImage ? 'hovered' : ''}`}>
+                            <div style={{ display: i % widthCount === 0 ? 'block' : 'inline-block' }}>
+                            </div>
+                            <span className="image-container">
+                                <img src={n} alt={'image ' + i} style={IMAGE_STYLE(width)} />
+                                {hoveredImage === n && <div className='overlay' style={{ color: 'white', fontWeight: 'bold', textAlign: 'right', fontSize: '25px' }}>
                                     <Tooltip title="Delete Image" placement="left">
                                         <IconButton onClick={() => this.deleteImageNow(n)} style={{ cursor: 'pointer', color: 'white' }}>
                                             <DisabledByDefaultRoundedIcon fontSize='large' />
                                         </IconButton>
                                     </Tooltip>
                                 </div>}
-                        </div>
+                            </span>
+                        </span>
                     ))}
                 </div>
 
                 <Dialog open={this.state.openDialog} onClose={() => this.handleCloseDialog()} maxWidth="xl">
                     {this.state.allImagesInfo && <DeleteImageDialog handleCloseDialog={this.handleCloseDialog} selectedImage={this.state.selectedImage} allImagesInfo={this.state.allImagesInfo} />}
                 </Dialog>
-            </>
+            </div>
         );
     }
 }
-
-
-
-
 
