@@ -1,26 +1,23 @@
 const Bidirectional_LinkedList = require('./Bidirectional_LinkedList');
+const HashMap = require('./Hashmap');
 
 const linkedList = new Bidirectional_LinkedList();
+const Hashedmap = new HashMap();
+
+Hashedmap.insert('Tina', 1);
+Hashedmap.insert('Kamran', 2);
+Hashedmap.insert('TERTER', 'POOP');
+
+Hashedmap.showAll();
+console.log('------------------------')
+console.log(Hashedmap.get('TERTER'))
 
 
-linkedList.add(1)
-linkedList.add(2)
-linkedList.add(3)
-linkedList.add(4)
+console.log('------------------------')
+console.log(Hashedmap.remove('Tina'))
+console.log(Hashedmap.remove('TERTER'))
+console.log(Hashedmap.remove('TERTER'))
+console.log(Hashedmap.remove('ZERTERTER'))
 
-console.log(linkedList.get_head(), linkedList.get_tail())
 
-let show = linkedList.show_all()
-console.log(show)
-
-linkedList.remove(2)
-console.log(linkedList.show_all())
-linkedList.remove(0)
-console.log(linkedList.show_all())
-
-linkedList.add(10, 0)
-console.log(linkedList.show_all())
-linkedList.add({ a: 1, name: 'tina' }, 2)
-console.log(linkedList.show_all())
-
-console.log(linkedList.find_first((e) => { return e.a === 1 }))
+Hashedmap.showAll();
