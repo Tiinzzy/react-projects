@@ -100,15 +100,6 @@ module.exports = class BidirectionalLinkedList {
         nodePointer.next.previous = nodePointer.previous;
         nodePointer.previous.next = nodePointer.next;
         return this.remove_from_list(nodePointer);
-
-        // for (let i = 0; i < this.size; i++) {
-        //   if (i === index) {
-        //     nodePointer.previous.next = nodePointer.next;
-        //     nodePointer.next.previous = nodePointer.previous;
-        //     return this.remove_from_list(nodePointer);
-        //   }
-        //   nodePointer = nodePointer.next;
-        // }
       }
     }
   }
@@ -118,7 +109,7 @@ module.exports = class BidirectionalLinkedList {
       let node = this.tail;
       let result = '';
       while (node !== null) {
-        result = ' <-- ' + String(node.payload) + result;
+        result = ' <-- ' + JSON.stringify(node.payload) + result;
         node = node.previous;
       }
       return result;
@@ -126,7 +117,7 @@ module.exports = class BidirectionalLinkedList {
       let node = this.head;
       let result = '';
       while (node !== null) {
-        result = result + String(node.payload) + ' --> ';
+        result = result + JSON.stringify(node.payload) + ' --> ';
         node = node.next;
       }
       return result;
@@ -167,5 +158,19 @@ module.exports = class BidirectionalLinkedList {
       nodePointer = nodePointer.next;
     }
     return null;
+  }
+
+  find_first_index(search_function) {
+    let firstNotFound = true;
+    let nodePointer = this.head;
+    let index = 0;
+    while (firstNotFound && this.size > 0 && nodePointer !== null) {
+      if (search_function(nodePointer.payload)) {
+        return index;
+      }
+      nodePointer = nodePointer.next;
+      index += 1;
+    }
+    return -1;
   }
 }
