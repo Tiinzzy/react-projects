@@ -11,6 +11,7 @@ Hashedmap.insert('TERTER', 'POOP');
 Hashedmap.showAll();
 console.log('------------------------')
 console.log(Hashedmap.get('TERTER'))
+console.log(Hashedmap.get('Sara'))
 
 
 console.log('------------------------')
