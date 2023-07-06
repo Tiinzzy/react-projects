@@ -43,7 +43,7 @@ module.exports = class Hashmap {
 
     get(key) {
         let hash_key = this.#hashFunction(key);
-        if (!hash_key in this.hashedKeys) {
+        if (!Object.keys(this.hashedKeys).includes(hash_key)) {
             return null;
         } else {
             return this.hashedKeys[hash_key].find_first((e) => this.#searchCriteria(e, key))
