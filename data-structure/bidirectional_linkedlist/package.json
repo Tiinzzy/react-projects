@@ -13,5 +13,8 @@
     "express": "^4.18.2",
     "fs": "^0.0.1-security",
     "graphviz": "^0.0.9"
+  },
+  "devDependencies": {
+    "jest": "^29.6.1"
   }
 }
