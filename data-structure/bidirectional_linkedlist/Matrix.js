@@ -127,18 +127,74 @@ const pretty_path = (path) => {
   }
 };
 
+const to_cell_char = (cell_id) => {
+  if (cell_id === FREE) {
+    return " ";
+  } else if (cell_id === START) {
+    return "○";
+  } else if (cell_id === END) {
+    return "●";
+  } else if (cell_id === BLOCKED) {
+    return "▩";
+  } else {
+    return cell_id;
+  }
+};
+
+const get_path_arrow = (from_cell, to_cell) => {
+  if (from_cell[0] === to_cell[0] && from_cell[1] === to_cell[1] - 1) {
+    return '→'
+  } else if (from_cell[0] === to_cell[0] && from_cell[1] === to_cell[1] + 1) {
+    return '←'
+  } else if (from_cell[0] === to_cell[0] - 1 && from_cell[1] === to_cell[1]) {
+    return '↓'
+  } else if (from_cell[0] === to_cell[0] + 1 && from_cell[1] === to_cell[1]) {
+    return '↑'
+  }
+  return '?';
+}
+
+const pretty_print_all = (grid, start, end, iteration) => {
+  grid[start[0]][start[1]] = START;
+  grid[end[0]][end[1]] = END;
+
+  for (let i = 1; i < iteration.path.length - 1; i++) {
+    grid[iteration.path[i][0]][iteration.path[i][1]] = get_path_arrow(iteration.path[i], iteration.path[i+1]);
+  }
+
+  let row_up = "┌─";
+  for (let c = 0; c < grid[0].length; c++) {
+    row_up += c < grid[0].length - 1 ? "──┬─" : "──┐";
+  }
+  console.log(row_up);
+
+  for (let r = 0; r < grid.length; r++) {
+    let row = "│ ";
+    let row_down = r < grid.length - 1 ? "├─" : "└─";
+    for (let c = 0; c < grid[r].length; c++) {
+      row += to_cell_char(grid[r][c]) + " │ ";
+      let cross = r < grid.length - 1 ? (c < grid[r].length - 1 ? "┼" : "┤") : (c < grid[r].length - 1 ? "┴": "┘");
+      row_down += c < grid[r].length - 1 ? "──" + cross + "─" : "──" + cross;
+    }
+    console.log(row);
+    console.log(row_down);
+  }
+};
+
+
+
 // APP STARTS HERE ----------------------
 
-let grid = init_grid(6, 6, 3);
+let grid = init_grid(13, 13, 10);
 let iteration = [];
-let start = [1, 1];
-let end = [3, 3];
+let start = [0, 0];
+let end = [8, 9];
 
 for (let i = 0; i < 500; i++) {
   let { path, result } = find_a_path(clone_2DA(grid), start, end);
   let path_str = pretty_path(path);
   if (result && iteration.indexOf(path_str) < 0) {
-    iteration.push({ path: path_str, len: path.length });
+    iteration.push({ path, path_str: path_str, len: path.length });
   }
 }
 
@@ -154,6 +210,10 @@ iteration = iteration.sort((a, b) => {
 
 if (iteration.length > 0) {
   console.clear();
-  console.log(iteration.length + " differnet path found!");
-  console.log(iteration[0]);
+  pretty_print_all(grid, start, end, iteration[0]);
+
+  // console.log();
+  // console.log();
+  // console.log(iteration.length + " differnet path found!");
+  // console.log(iteration[0]);
 }
