@@ -2,7 +2,7 @@ import Matrix from './components/Matrix';
 
 function App() {
   return (
-    <div >
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 25 }}>
       <Matrix />
     </div>
   );
