@@ -1,10 +1,13 @@
 import React from "react";
 
+import EventEmitter from 'eventemitter3';
+
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 
+export const eventEmitter = new EventEmitter();
 
 export default class Matrix extends React.Component {
     constructor(props) {
@@ -31,7 +34,7 @@ export default class Matrix extends React.Component {
 
     createMatrix() {
         if (this.state.rows > 0 && this.state.columns > 0 && this.state.blocks > 0) {
-            // do something
+            eventEmitter.emit('gridData', { rows: this.state.rows, columns: this.state.columns, blocks: this.state.blocks, message: 'matrix-data' });
         } else {
             this.setState({ valueError: true });
         }
