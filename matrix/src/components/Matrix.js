@@ -16,7 +16,8 @@ export default class Matrix extends React.Component {
             rows: 0,
             columns: 0,
             blocks: 0,
-            valueError: false
+            valueError: false,
+            disableButton: false
         }
     }
 
@@ -35,6 +36,7 @@ export default class Matrix extends React.Component {
     createMatrix() {
         if (this.state.rows > 0 && this.state.columns > 0 && this.state.blocks > 0) {
             eventEmitter.emit('gridData', { rows: this.state.rows, columns: this.state.columns, blocks: this.state.blocks, message: 'matrix-data' });
+            this.setState({ disableButton: true });
         } else {
             this.setState({ valueError: true });
         }
@@ -52,7 +54,7 @@ export default class Matrix extends React.Component {
                     <TextField label="Number of Blocked Houses" variant="outlined" style={{ marginTop: 20 }}
                         onChange={(e) => this.getBlocks(e)} type="number" error={this.state.valueError} helperText={this.state.valueError && 'Value bigger than 0'} />
                     <Box style={{ display: 'flex', justifyContent: 'right', alignItems: 'right', marginTop: 20 }}>
-                        <Button variant="contained" onClick={() => this.createMatrix()}>Create</Button>
+                        <Button variant="contained" onClick={() => this.createMatrix()} disabled={this.state.disableButton}>Create</Button>
                     </Box>
                 </Box>
             </>
