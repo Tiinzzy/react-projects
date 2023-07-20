@@ -12,7 +12,7 @@ function clone_2DA(array) {
     return array.map((row) => [...row]);
 }
 
-function findShortestPath(arrayOfObjects) {
+function find_shortest_path(arrayOfObjects) {
     let minObject = null;
     let minValue = Number.POSITIVE_INFINITY;
 
@@ -115,21 +115,23 @@ export default class Grid extends React.Component {
     findShortestPath() {
         let possiblePaths = [];
         if (this.state.start !== null && this.state.end !== null) {
-            for (let i = 0; i < 500; i++) {
+            for (let i = 0; i < 1000; i++) {
                 let { path, grid, result } = this.state.matrix.find_a_path(clone_2DA(this.state.cleanGrid), this.state.start, this.state.end);
                 if (result) {
                     possiblePaths.push({ path: path.length, grid, direction: path });
                 };
             }
 
-            let shortest = findShortestPath(possiblePaths);
-            this.setState({ grid: shortest.grid, path: shortest.direction }, () => {
-                const updatedGrid = clone_2DA(this.state.grid);
-                for (let i = 1; i < this.state.path.length - 1; i++) {
-                    updatedGrid[this.state.path[i][0]][this.state.path[i][1]] = get_path_arrow(this.state.path[i], this.state.path[i + 1]);
-                }
-                this.setState({ grid: updatedGrid });
-            });
+            let shortest = find_shortest_path(possiblePaths);
+            if (shortest !== null ) {
+                this.setState({ grid: shortest.grid, path: shortest.direction }, () => {
+                    const updatedGrid = clone_2DA(this.state.grid);
+                    for (let i = 1; i < this.state.path.length - 1; i++) {
+                        updatedGrid[this.state.path[i][0]][this.state.path[i][1]] = get_path_arrow(this.state.path[i], this.state.path[i + 1]);
+                    }
+                    this.setState({ grid: updatedGrid });
+                });
+            }
         }
     }
 
@@ -148,7 +150,7 @@ export default class Grid extends React.Component {
                                 className={`cell ${col === 8 ? 'cross' : ''}`}
                                 style={{
                                     height: 15, width: 15, border: 'solid 1px gray', display: 'flex', flexDirection: 'column', padding: 25, cursor: col === 8 ? 'auto' : 'pointer', margin: 1,
-                                    color: col === 1 ? '#0E9C24' : col === 9 ? '#FF4E4E' : col === 8 ? '#6701CD' : 'black', fontWeight: 'bold'
+                                    color: col === 1 ? '#0E9C24' : col === 9 ? '#FF4E4E' : col === 8 ? '#6701CD' : 'orange', fontWeight: 'bold'
                                 }}
                                 onClick={() => this.getCordinants(i, j)}>
                                 {to_cell_char(col)}
