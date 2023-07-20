@@ -1,0 +1,22 @@
+.cell {
+    position: relative;
+}
+
+.cross::before,
+.cross::after {
+    content: '';
+    position: absolute;
+    width: 50%;
+    height: 2px;
+    top: 50%;
+    left: 25%;
+    background-color: purple;
+}
+
+.cross::before {
+    transform: translateY(-50%) rotate(45deg);
+}
+
+.cross::after {
+    transform: translateY(-50%) rotate(-45deg);
+}
