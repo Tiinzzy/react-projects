@@ -13,10 +13,11 @@ export default class Matrix extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            rows: 0,
-            columns: 0,
-            blocks: 0,
-            valueError: false
+            rows: 5,
+            columns: 5,
+            blocks: 3,
+            valueError: false,
+            disableButton: false
         }
     }
 
@@ -35,6 +36,7 @@ export default class Matrix extends React.Component {
     createMatrix() {
         if (this.state.rows > 0 && this.state.columns > 0 && this.state.blocks > 0) {
             eventEmitter.emit('gridData', { rows: this.state.rows, columns: this.state.columns, blocks: this.state.blocks, message: 'matrix-data' });
+            this.setState({ disableButton: true });
         } else {
             this.setState({ valueError: true });
         }
@@ -45,14 +47,14 @@ export default class Matrix extends React.Component {
             <>
                 <Box style={{ width: '30%', display: 'flex', flexDirection: 'column' }}>
                     <Typography variant="body1" fontSize="14" fontWeight="400">Create a Matrix</Typography>
-                    <TextField label="Number of Rows" variant="outlined" style={{ marginTop: 20 }}
+                    <TextField label="Number of Rows" variant="outlined" style={{ marginTop: 20 }} value={this.state.rows}
                         onChange={(e) => this.getRows(e)} type="number" error={this.state.valueError} helperText={this.state.valueError && 'Value bigger than 0'} />
-                    <TextField label="Number of Columns" variant="outlined" style={{ marginTop: 20 }}
+                    <TextField label="Number of Columns" variant="outlined" style={{ marginTop: 20 }} value={this.state.columns}
                         onChange={(e) => this.getColumns(e)} type="number" error={this.state.valueError} helperText={this.state.valueError && 'Value bigger than 0'} />
-                    <TextField label="Number of Blocked Houses" variant="outlined" style={{ marginTop: 20 }}
+                    <TextField label="Number of Blocked Houses" variant="outlined" style={{ marginTop: 20 }} value={this.state.blocks}
                         onChange={(e) => this.getBlocks(e)} type="number" error={this.state.valueError} helperText={this.state.valueError && 'Value bigger than 0'} />
                     <Box style={{ display: 'flex', justifyContent: 'right', alignItems: 'right', marginTop: 20 }}>
-                        <Button variant="contained" onClick={() => this.createMatrix()}>Create</Button>
+                        <Button variant="contained" onClick={() => this.createMatrix()} disabled={this.state.disableButton}>Create</Button>
                     </Box>
                 </Box>
             </>
