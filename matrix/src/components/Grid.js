@@ -24,6 +24,19 @@ function findShortestPath(arrayOfObjects) {
     return minObject;
 }
 
+const get_path_arrow = (from_cell, to_cell) => {
+    if (from_cell[0] === to_cell[0] && from_cell[1] === to_cell[1] - 1) {
+        return '→'
+    } else if (from_cell[0] === to_cell[0] && from_cell[1] === to_cell[1] + 1) {
+        return '←'
+    } else if (from_cell[0] === to_cell[0] - 1 && from_cell[1] === to_cell[1]) {
+        return '↓'
+    } else if (from_cell[0] === to_cell[0] + 1 && from_cell[1] === to_cell[1]) {
+        return '↑'
+    }
+    return '?';
+}
+
 let count = 0;
 
 export default class Grid extends React.Component {
@@ -35,7 +48,8 @@ export default class Grid extends React.Component {
             blocked: 0,
             grid: null,
             start: null,
-            end: null
+            end: null,
+            options: [1, 9]
         };
     }
 
@@ -53,39 +67,47 @@ export default class Grid extends React.Component {
 
     getCordinants(r, c) {
         const updatedGrid = clone_2DA(this.state.grid);
-        if (updatedGrid[r][c] === 0) {
+        if (count === 0 && updatedGrid.some(row => row.includes(1)) && updatedGrid.some(row => row.includes(9))) {
+            return;
+        }
+
+        if (updatedGrid[r][c] !== 8) {
             if (count === 0) {
                 updatedGrid[r][c] = 1;
-                this.setState({ start: [r, c] }, () => {
-                    count += 1;
-                });
+                if (updatedGrid[r][c] === 1) {
+                    this.setState({ start: [r, c] }, () => {
+                        count = 1;
+                    });
+                }
             } else if (count === 1) {
                 updatedGrid[r][c] = 9;
-                this.setState({ end: [r, c] }, () => {
-                    count -= 1;
-                });
+                if (updatedGrid[r][c] === 9) {
+                    this.setState({ end: [r, c] }, () => {
+                        count = 0;
+                    });
+                }
             }
             this.setState({ grid: updatedGrid });
         }
     }
 
+
     resetMatrix() {
         window.location = '/';
     }
 
-    findMShortestPath() {
+    findShortestPath() {
         let possiblePaths = [];
 
         for (let i = 0; i < 500; i++) {
             let { path, grid, result } = this.state.matrix.find_a_path(clone_2DA(this.state.cleanGrid), this.state.start, this.state.end);
             if (result) {
-                possiblePaths.push({ path: path.length, grid });
+                possiblePaths.push({ path: path.length, grid, direction: path });
             };
         }
 
         let shortest = findShortestPath(possiblePaths);
-        this.setState({ grid: shortest.grid });
-
+        this.setState({ grid: shortest.grid, path: shortest.direction });
     }
 
     componentWillUnmount() {
@@ -100,18 +122,20 @@ export default class Grid extends React.Component {
                         {row.map((col, j) => (
                             <div
                                 key={j}
-                                style={{ height: 15, width: 15, border: 'solid 1px gray', display: 'flex', flexDirection: 'column', padding: 25, cursor: col === 8 ? 'auto' : 'pointer', margin: 1 }}
-                                onClick={() => { this.getCordinants(i, j) }}>
-                                {col}
+                                style={{
+                                    height: 15, width: 15, border: 'solid 1px gray', display: 'flex', flexDirection: 'column', padding: 25, cursor: col === 8 ? 'auto' : 'pointer', margin: 1,
+                                    color: col === 1 ? 'green' : col === 9 ? 'red' : col === 8 ? 'purple' : col === 2 ? 'orange' : 'black', fontWeight: 'bold', backgroundColor: col === 8 ? 'purple' : 'white'
+                                }}
+                                onClick={() => this.getCordinants(i, j)}>
+                                {col === 1 ? '○' : col === 9 ? '●' : col === 2 ? '>' : ' '}
                             </div>
                         ))}
                     </div>
-                ))
-                }
+                ))}
                 {
                     this.state.grid &&
                     <Box style={{ display: 'flex', justifyContent: 'right', alignItems: 'right', marginTop: 20 }}>
-                        <Button variant="contained" onClick={() => this.findMShortestPath()}>Find path</Button>
+                        <Button variant="contained" onClick={() => this.findShortestPath()}>Find path</Button>
                         <Button variant="contained" onClick={() => this.resetMatrix()} style={{ marginLeft: 10 }}>Reset</Button>
                     </Box>
                 }
