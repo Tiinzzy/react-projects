@@ -67,7 +67,8 @@ export default class Grid extends React.Component {
 
     getCordinants(r, c) {
         const updatedGrid = clone_2DA(this.state.grid);
-        if (count === 0 && updatedGrid.some(row => row.includes(1)) && updatedGrid.some(row => row.includes(9))) {
+        if ((count === 0 && updatedGrid.some(row => row.includes(1)) && updatedGrid.some(row => row.includes(9))) ||
+            (count === 1 && updatedGrid.some(row => row.includes(1)) && updatedGrid.some(row => row.includes(9)))) {
             return;
         }
 
@@ -127,7 +128,7 @@ export default class Grid extends React.Component {
                                     color: col === 1 ? 'green' : col === 9 ? 'red' : col === 8 ? 'purple' : col === 2 ? 'orange' : 'black', fontWeight: 'bold', backgroundColor: col === 8 ? 'purple' : 'white'
                                 }}
                                 onClick={() => this.getCordinants(i, j)}>
-                                {col === 1 ? '○' : col === 9 ? '●' : col === 2 ? '>' : ' '}
+                                {col === 1 ? '○' : col === 9 ? '●' : col === 2 ? '*' : ' '}
                             </div>
                         ))}
                     </div>
