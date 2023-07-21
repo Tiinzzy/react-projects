@@ -4,7 +4,9 @@ import EventEmitter from 'eventemitter3';
 
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
+import Snackbar from '@mui/material/Snackbar';
 import Button from '@mui/material/Button';
+import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 
 export const eventEmitter = new EventEmitter();
@@ -17,7 +19,9 @@ export default class Matrix extends React.Component {
             columns: 15,
             blocks: 20,
             valueError: false,
-            disableButton: false
+            disableButton: false,
+            displaySnack: false,
+            openSnackBar: false
         }
     }
 
@@ -38,8 +42,12 @@ export default class Matrix extends React.Component {
             eventEmitter.emit('gridData', { rows: this.state.rows, columns: this.state.columns, blocks: this.state.blocks, message: 'matrix-data' });
             this.setState({ disableButton: true });
         } else {
-            this.setState({ valueError: true });
+            this.setState({ valueError: true, displaySnack: true, openSnackBar: true });
         }
+    }
+
+    closeAlert(){
+        this.setState({ displaySnack: false, openSnackBar: false });
     }
 
     render() {
@@ -57,6 +65,12 @@ export default class Matrix extends React.Component {
                         <Button variant="contained" onClick={() => this.createMatrix()} disabled={this.state.disableButton} size="small">Submit</Button>
                     </Box>
                 </Box>
+                {this.state.displaySnack === true &&
+                    <Snackbar open={this.state.openSnackBar} onClose={() => this.closeAlert()} autoHideDuration={4500} anchorOrigin={{ vertical: "top", horizontal: "center" }}>
+                        <Alert severity="error">
+                            Need values more than zero
+                        </Alert>
+                    </Snackbar>}
             </>
         );
     }
