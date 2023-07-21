@@ -3,7 +3,9 @@ import React from "react";
 import { eventEmitter } from './Matrix';
 import Matrix from "./MatrixClass";
 
+import Snackbar from '@mui/material/Snackbar';
 import Button from '@mui/material/Button';
+import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 
 import './style.css';
@@ -64,7 +66,10 @@ export default class Grid extends React.Component {
             blocked: 0,
             grid: null,
             start: null,
-            end: null
+            end: null,
+            displaySnack: false,
+            openSnackBar: false,
+            nullError: false
         };
     }
 
@@ -123,7 +128,7 @@ export default class Grid extends React.Component {
             }
 
             let shortest = find_shortest_path(possiblePaths);
-            if (shortest !== null ) {
+            if (shortest !== null) {
                 this.setState({ grid: shortest.grid, path: shortest.direction }, () => {
                     const updatedGrid = clone_2DA(this.state.grid);
                     for (let i = 1; i < this.state.path.length - 1; i++) {
@@ -131,8 +136,16 @@ export default class Grid extends React.Component {
                     }
                     this.setState({ grid: updatedGrid });
                 });
+            } else {
+                this.setState({ displaySnack: true, openSnackBar: true });
             }
+        } else {
+            this.setState({ displaySnack: true, openSnackBar: true, nullError: true });
         }
+    }
+
+    closeAlert() {
+        this.setState({ displaySnack: false, openSnackBar: false });
     }
 
     componentWillUnmount() {
@@ -158,13 +171,17 @@ export default class Grid extends React.Component {
                         ))}
                     </div>
                 ))}
-                {
-                    this.state.grid &&
+                {this.state.grid &&
                     <Box style={{ display: 'flex', justifyContent: 'right', alignItems: 'right', marginTop: 20 }}>
                         <Button variant="contained" onClick={() => this.findShortestPath()} >Find path</Button>
                         <Button variant="contained" onClick={() => this.resetMatrix()} style={{ marginLeft: 10 }}>Reset</Button>
-                    </Box>
-                }
+                    </Box>}
+                {this.state.displaySnack === true &&
+                    <Snackbar open={this.state.openSnackBar} onClose={() => this.closeAlert()} autoHideDuration={4500} anchorOrigin={{ vertical: "top", horizontal: "center" }}>
+                        <Alert severity="error">
+                            {this.state.nullError ? "Have to set both start and end points!" : "Couldn't find a path!"}
+                        </Alert>
+                    </Snackbar>}
             </Box >
         );
     }
