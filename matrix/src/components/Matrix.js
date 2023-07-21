@@ -4,7 +4,9 @@ import EventEmitter from 'eventemitter3';
 
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
+import Snackbar from '@mui/material/Snackbar';
 import Button from '@mui/material/Button';
+import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 
 export const eventEmitter = new EventEmitter();
@@ -17,7 +19,9 @@ export default class Matrix extends React.Component {
             columns: 15,
             blocks: 20,
             valueError: false,
-            disableButton: false
+            disableButton: false,
+            displaySnack: false,
+            openSnackBar: false
         }
     }
 
@@ -30,16 +34,20 @@ export default class Matrix extends React.Component {
     }
 
     getBlocks(e) {
-        this.setState({ blocks: e.target.value, valueError: false });
+        this.setState({ blocks: e.target.value });
     }
 
     createMatrix() {
-        if (this.state.rows > 0 && this.state.columns > 0 && this.state.blocks > 0) {
+        if (this.state.rows > 0 && this.state.columns > 0) {
             eventEmitter.emit('gridData', { rows: this.state.rows, columns: this.state.columns, blocks: this.state.blocks, message: 'matrix-data' });
             this.setState({ disableButton: true });
         } else {
-            this.setState({ valueError: true });
+            this.setState({ valueError: true, displaySnack: true, openSnackBar: true });
         }
+    }
+
+    closeAlert(){
+        this.setState({ displaySnack: false, openSnackBar: false });
     }
 
     render() {
@@ -53,10 +61,16 @@ export default class Matrix extends React.Component {
                         <TextField label="Number of Columns" variant="outlined" style={{ marginRight: 20 }} value={this.state.columns}
                             onChange={(e) => this.getColumns(e)} type="number" error={this.state.valueError} helperText={this.state.valueError && 'Value bigger than 0'} />
                         <TextField label="Number of Blocked Houses" variant="outlined" style={{ marginRight: 20 }} value={this.state.blocks}
-                            onChange={(e) => this.getBlocks(e)} type="number" error={this.state.valueError} helperText={this.state.valueError && 'Value bigger than 0'} />
+                            onChange={(e) => this.getBlocks(e)} type="number" />
                         <Button variant="contained" onClick={() => this.createMatrix()} disabled={this.state.disableButton} size="small">Submit</Button>
                     </Box>
                 </Box>
+                {this.state.displaySnack === true &&
+                    <Snackbar open={this.state.openSnackBar} onClose={() => this.closeAlert()} autoHideDuration={4500} anchorOrigin={{ vertical: "top", horizontal: "center" }}>
+                        <Alert severity="error">
+                            Need values more than zero for rows and columns!
+                        </Alert>
+                    </Snackbar>}
             </>
         );
     }
