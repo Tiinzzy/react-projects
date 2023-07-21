@@ -34,11 +34,11 @@ export default class Matrix extends React.Component {
     }
 
     getBlocks(e) {
-        this.setState({ blocks: e.target.value, valueError: false });
+        this.setState({ blocks: e.target.value });
     }
 
     createMatrix() {
-        if (this.state.rows > 0 && this.state.columns > 0 && this.state.blocks > 0) {
+        if (this.state.rows > 0 && this.state.columns > 0) {
             eventEmitter.emit('gridData', { rows: this.state.rows, columns: this.state.columns, blocks: this.state.blocks, message: 'matrix-data' });
             this.setState({ disableButton: true });
         } else {
@@ -61,14 +61,14 @@ export default class Matrix extends React.Component {
                         <TextField label="Number of Columns" variant="outlined" style={{ marginRight: 20 }} value={this.state.columns}
                             onChange={(e) => this.getColumns(e)} type="number" error={this.state.valueError} helperText={this.state.valueError && 'Value bigger than 0'} />
                         <TextField label="Number of Blocked Houses" variant="outlined" style={{ marginRight: 20 }} value={this.state.blocks}
-                            onChange={(e) => this.getBlocks(e)} type="number" error={this.state.valueError} helperText={this.state.valueError && 'Value bigger than 0'} />
+                            onChange={(e) => this.getBlocks(e)} type="number" />
                         <Button variant="contained" onClick={() => this.createMatrix()} disabled={this.state.disableButton} size="small">Submit</Button>
                     </Box>
                 </Box>
                 {this.state.displaySnack === true &&
                     <Snackbar open={this.state.openSnackBar} onClose={() => this.closeAlert()} autoHideDuration={4500} anchorOrigin={{ vertical: "top", horizontal: "center" }}>
                         <Alert severity="error">
-                            Need values more than zero
+                            Need values more than zero for rows and columns!
                         </Alert>
                     </Snackbar>}
             </>
