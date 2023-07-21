@@ -169,8 +169,7 @@ export default class Grid extends React.Component {
                                 {to_cell_char(col)}
                             </div>
                         ))}
-                    </div>
-                ))}
+                    </div>))}
                 {this.state.grid &&
                     <Box style={{ display: 'flex', justifyContent: 'right', alignItems: 'right', marginTop: 20 }}>
                         <Button variant="contained" onClick={() => this.findShortestPath()} >Find path</Button>
