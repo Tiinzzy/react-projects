@@ -2,6 +2,21 @@
 <h3> This is a reposity with mini projects that focuses on different aspects of React and Javascript.</h3>
 
 <br/>
+<h3>matrix</h3>
+<div>A project that creates a 2d array aka Matrix based on given input of rows and columns.User can decide if they want to have blocks in the matrix and also choose to set start and end point in the maze. The green circle represents the start point and the red circle represents the end point, and the purple X represents the blocked houses.</div>
+<br/>
+<img width="499" style="-webkit-user-select: none; display: block; margin: auto; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); cursor: zoom-in;" src="https://github.com/Tiinzzy/react-projects/assets/117464310/5142e64f-fb31-48d4-b77b-74b86bcade0a">
+
+<img width="499" style="-webkit-user-select: none; display: block; margin: auto; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); cursor: zoom-in;" src="https://github.com/Tiinzzy/react-projects/assets/117464310/9b10530a-1f5c-4177-a72a-0ea69f881894">
+
+<img width="499" style="-webkit-user-select: none; display: block; margin: auto; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); cursor: zoom-in;" src="https://github.com/Tiinzzy/react-projects/assets/117464310/0d8dc29d-9029-43a8-8f9b-b127de52975e">
+
+<br/>
+
+<h3>data-structure</h3>
+<div>A folder that focuses on few different data structures and algorithms, and test for each.</div>
+
+<br/>
 <h3>infinite-scroll</h3>
 <div>A project that displays more than 40,000 data fetched from MySQL in html table, allowing for scroll up and down. As the scrolled hit the end of the div, it will load the next batch to show and previous batch of data will be gone, unless the scroller goes up and the scroller hit the top and the previous batch is loaded and fetched again. clicking over each rows overview, will open popover with full overview.</div>
 <br/>
