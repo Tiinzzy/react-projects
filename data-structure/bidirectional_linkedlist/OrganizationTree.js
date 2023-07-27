@@ -7,7 +7,7 @@ module.exports = class OrganizationTree {
 
     add_child(name, parent = null) {
         if (parent === null) {
-            if (this.root === None) {
+            if (this.root === null) {
                 this.root = new Node(name);
                 return this.root;
             } else {
@@ -25,7 +25,7 @@ module.exports = class OrganizationTree {
     }
 
     show_org_chart() {
-        this._print_node(this.root, 2);
+        this.#print_node(this.root, 2);
     }
 
     find_first_parent(node) {
@@ -38,7 +38,7 @@ module.exports = class OrganizationTree {
         return true;
     }
 
-    #traverse_parent_nodes(currentNode, targetNode, parent_node = None) {
+    #traverse_parent_nodes(currentNode, targetNode, parent_node = null) {
         if (currentNode.name === targetNode) {
             return parent_node;
         } else {
