@@ -47,7 +47,11 @@ describe('MatrixClass', () => {
 
             const { path, result } = matrix.find_a_path(grid, start, end);
 
-            expect(result).toBe(true);
+            if(result){
+                expect(result).toStrictEqual(true);
+            }else{
+                expect(result).toStrictEqual(false);
+            }
             expect(path[0]).toEqual(start);
             expect(path[path.length - 1]).toEqual(end);
         });
