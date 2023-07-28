@@ -44,7 +44,7 @@ module.exports = class OrganizationTree {
         } else {
             for (let i = 0; i < currentNode.children.length; i++) {
                 const child = currentNode.children[i];
-                const result = traverseParentNodes(child, targetNode, currentNode);
+                const result = this.#traverse_parent_nodes(child, targetNode, currentNode);
                 if (result !== null) {
                     return result;
                 }
@@ -59,7 +59,7 @@ module.exports = class OrganizationTree {
         } else {
             for (let i = 0; i < node.children.length; i++) {
                 const child = node.children[i];
-                const result = traverseNodeUntilFind(child, name);
+                const result = this.#travers_node_until_find(child, name);
                 if (result !== null) {
                     return result;
                 }
