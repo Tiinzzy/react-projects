@@ -32,8 +32,8 @@ const RootMutation = new GraphQLObjectType({
             args: {
                 content: { type: GraphQLNonNull(GraphQLString) },
             },
-            resolve: (_, { content }) => {
-                const newTask = { id: tasks.length + 1, content };
+            resolve: (parent, args) => {
+                const newTask = { id: tasks.length + 1, content: args.content };
                 tasks.push(newTask);
                 return newTask;
             },
