@@ -16,10 +16,6 @@ export default class Test extends React.Component {
     }
 
     componentDidMount() {
-        this.fetchTasks();
-    }
-
-    fetchTasks() {
         let query = `
         query{
           tasks {
@@ -29,10 +25,11 @@ export default class Test extends React.Component {
         }
       `;
         backend.graphql_get_tasks(query, (data) => {
-            console.log(data);
+            if (data.data.tasks.length > 0) {
+                this.setState({ tasks: data.data.tasks });
+            }
         });
     }
-
 
     handleInputChange(e) {
         this.setState({ newTaskContent: e.target.value });
@@ -50,7 +47,9 @@ export default class Test extends React.Component {
         }`;
 
             backend.graphql_update_tasks(query, content, (data) => {
-                console.log(data);
+                let clone = [...this.state.tasks];
+                clone.push(data.data.addTask);
+                this.setState({ tasks: clone });
             });
         };
     }
@@ -59,7 +58,7 @@ export default class Test extends React.Component {
         return (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                 <h1>To-Do List</h1>
-                <div>
+                <div style={{ marginBottom: 15 }}>
                     <input
                         type="text"
                         value={this.state.newTaskContent}
@@ -68,8 +67,9 @@ export default class Test extends React.Component {
                     />
                     <button onClick={() => this.addTask()} style={{ marginLeft: 10 }}>Add Task</button>
                 </div>
-                <ul>
-                    {this.state.tasks.map((task) => (
+                <h4> Current Tasks</h4>
+                <ul style={{ margin: 0, padding: 0 }}>
+                    {this.state.tasks.length > 0 && this.state.tasks.map((task) => (
                         <li key={task.id}>{task.content}</li>
                     ))}
                 </ul>
