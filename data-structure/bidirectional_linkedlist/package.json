@@ -1,0 +1,21 @@
+{
+  "name": "bidirectional_linkedlist",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "express": "^4.18.2",
+    "fs": "^0.0.1-security",
+    "graphviz": "^0.0.9"
+  },
+  "devDependencies": {
+    "jest": "^29.6.1"
+  }
+}
