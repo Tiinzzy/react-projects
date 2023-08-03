@@ -1,5 +1,9 @@
 # react-projects
 <h3> This is a reposity with mini projects that focuses on different aspects of React and Javascript.</h3>
+<br/>
+
+<h3>GraphQL</h3>
+<div>A folder that focuses on GraphQL, where I tested query handling instead of REST APIs and ended up not liking it!</div>
 
 <br/>
 <h3>matrix</h3>
