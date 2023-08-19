@@ -1,5 +1,4 @@
-// TRY THESE =>>>   https://twm.me/how-to-run-your-react-application-on-a-subpath/
-//                  https://plainenglish.io/blog/how-you-can-serve-react-js-build-folder-from-an-express-end-point-127e236e4d67
+const { Client } = require('undici');
 
 const express = require('express');
 const { createProxyMiddleware } = require('http-proxy-middleware');
@@ -16,21 +15,13 @@ app.get('/info', (req, res, next) => {
 
 const dbProxy = createProxyMiddleware({
     target: "http://localhost:3000",
-    changeOrigin: true,
-    // pathRewrite: {
-    //     '^/db': '',
-    // },
+    changeOrigin: true
 });
-
 
 const bankProxy = createProxyMiddleware({
     target: "http://localhost:4000",
-    changeOrigin: true,
-    // pathRewrite: {
-    //     '^/bank': '',
-    // },
+    changeOrigin: true
 });
-
 
 app.use('/bank', bankProxy);
 app.use('/db', dbProxy);
