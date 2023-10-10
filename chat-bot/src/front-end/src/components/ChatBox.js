@@ -80,22 +80,27 @@ class ChatBox extends React.Component {
         this.setState({ newMessage: e.target.value });
     };
 
+    goBottom = () => {
+        let div = document.getElementById("chat-box-container");
+        div.scrollTop = div.scrollHeight;
+    }
+
     submitUserMessage = () => {
         if (this.state.newMessage.trim() !== '') {
-            let query = { 'user_message': this.state.newMessage.trim().replace(/'/g, '') }
+            let query = { 'user_message': this.state.newMessage.trim().replace("'", "") }
             backend.send_chatbot_question(query, (data) => {
                 if (data) {
                     const chatbotResponse = { text: data.result, isUser: false };
                     this.setState({ loading: true });
                     setTimeout(() => {
                         const updatedMessages = [...this.state.messages, chatbotResponse];
-                        this.setState({ messages: updatedMessages, loading: false });
+                        this.setState({ messages: updatedMessages, loading: false }, this.goBottom);
                     }, 1000);
                 };
 
             })
             const updatedMessages = [...this.state.messages, { text: this.state.newMessage, isUser: true }];
-            this.setState({ messages: updatedMessages, newMessage: '' });
+            this.setState({ messages: updatedMessages, newMessage: '' }, this.goBottom);
         }
     };
 
@@ -108,13 +113,13 @@ class ChatBox extends React.Component {
                     </Typography>
                     <Paper style={containerStyle}>
                         <div style={messageContainerWrapperStyle}>
-                            <div style={messageContainerStyle}>
+                            <div id='chat-box-container' style={messageContainerStyle}>
                                 {this.state.messages.map((e, i) => (
                                     <div key={i} style={e.isUser ? userMessageStyle : chatbotMessageStyle}>
                                         {e.text}
                                     </div>
                                 ))}
-                                {this.state.loading === true && <LoadingDots />}
+                                {this.state.loading && <LoadingDots />}
                             </div>
                         </div>
                         <Divider style={{ marginTop: '16px' }} />

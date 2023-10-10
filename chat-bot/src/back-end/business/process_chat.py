@@ -1,17 +1,14 @@
 from transformers import AutoModelForCausalLM, AutoTokenizer
-import torch
 
-tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-medium")
-model = AutoModelForCausalLM.from_pretrained("microsoft/DialoGPT-medium")
-class GLOBALS:
-    step = 0
-    chat_history_ids = None
+chatbot_name = "microsoft/DialoGPT-medium"
+tokenizer = AutoTokenizer.from_pretrained(chatbot_name)
+tokenizer.add_special_tokens({'pad_token': tokenizer.eos_token})
+model = AutoModelForCausalLM.from_pretrained(chatbot_name)
 
-def reply(question):
-    new_user_input_ids = tokenizer.encode(question + tokenizer.eos_token, return_tensors='pt')
-    bot_input_ids = torch.cat([GLOBALS.chat_history_ids, new_user_input_ids], dim=-1) if GLOBALS.step > 0 else new_user_input_ids
-    GLOBALS.chat_history_ids = model.generate(bot_input_ids, max_length=1000, pad_token_id=tokenizer.eos_token_id)
-    print("DialoGPT: {}".format(tokenizer.decode(GLOBALS.chat_history_ids[:, bot_input_ids.shape[-1]:][0], skip_special_tokens=True)))
-    GLOBALS.step += 1
-    return format(tokenizer.decode(GLOBALS.chat_history_ids[:, bot_input_ids.shape[-1]:][0], skip_special_tokens=True))
 
+def reply(input_text):
+    print(tokenizer.eos_token)
+    bot_input_ids = tokenizer.encode(input_text + tokenizer.eos_token, return_tensors='pt', padding=False)
+    chatbot_output = model.generate(bot_input_ids, max_length=1000, num_return_sequences=1, pad_token_id=50256)
+    chatbot_response = tokenizer.decode(chatbot_output[:, bot_input_ids.shape[-1]:][0], skip_special_tokens=True)
+    return chatbot_response
