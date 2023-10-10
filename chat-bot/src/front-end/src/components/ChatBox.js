@@ -3,6 +3,7 @@ import React from "react";
 import { Box, Paper, TextField, Button, Typography, Divider } from '@mui/material';
 
 import BackEndConnection from './BackEndConnection';
+import LoadingDots from './LoadingDots';
 
 const backend = BackEndConnection.INSTANCE();
 
@@ -19,10 +20,13 @@ const inputFieldStyle = {
 };
 
 const messageContainerStyle = {
-    display: 'flex',
-    flexDirection: 'column',
-    border: 'solid 1px #eaeaea',
-    padding: '15px'
+    display: "flex",
+    flexDirection: "column",
+    border: "solid 1px #eaeaea",
+    padding: "15px",
+    maxHeight: "250px",
+    height: '250px',
+    overflowY: "auto",
 };
 
 const messageStyle = {
@@ -34,21 +38,32 @@ const messageStyle = {
 
 const userMessageStyle = {
     ...messageStyle,
-    backgroundColor: '#e1e1e1',
+    backgroundColor: '#2196f3',
+    color: 'white',
     alignSelf: 'flex-end',
 };
 
 const chatbotMessageStyle = {
     ...messageStyle,
-    backgroundColor: '#4caf50',
-    color: 'white',
+    backgroundColor: '#e0e0e0',
+    color: 'black',
     alignSelf: 'flex-start',
 };
 
-const header = {
+const messageContainerWrapperStyle = {
+    height: '300px',
+    maxHeight: '300px',
+    overflowY: 'auto',
+};
+
+const headerStyle = {
     alignContent: 'center',
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    color: '#000000',
+    background: '#FFFFFF',
+    textShadow: '1px 1px 0 #bcbcbc, 2px 2px 0 #9c9c9c',
+    fontWeight: 'bold'
 }
 
 class ChatBox extends React.Component {
@@ -57,6 +72,7 @@ class ChatBox extends React.Component {
         this.state = {
             messages: [],
             newMessage: '',
+            loading: false
         };
     }
 
@@ -66,14 +82,17 @@ class ChatBox extends React.Component {
 
     submitUserMessage = () => {
         if (this.state.newMessage.trim() !== '') {
-            let query = { 'user_message': this.state.newMessage.trim() }
+            let query = { 'user_message': this.state.newMessage.trim().replace(/'/g, '') }
             backend.send_chatbot_question(query, (data) => {
-                console.log(data);
-                const chatbotResponse = { text: data.result, isUser: false };
-                setTimeout(() => {
-                    const updatedMessages = [...this.state.messages, chatbotResponse];
-                    this.setState({ messages: updatedMessages });
-                }, 1000);
+                if (data) {
+                    const chatbotResponse = { text: data.result, isUser: false };
+                    this.setState({ loading: true });
+                    setTimeout(() => {
+                        const updatedMessages = [...this.state.messages, chatbotResponse];
+                        this.setState({ messages: updatedMessages, loading: false });
+                    }, 1000);
+                };
+
             })
             const updatedMessages = [...this.state.messages, { text: this.state.newMessage, isUser: true }];
             this.setState({ messages: updatedMessages, newMessage: '' });
@@ -83,15 +102,20 @@ class ChatBox extends React.Component {
     render() {
         return (
             <>
-                <Box >
-                    <Typography variant="h6" style={header}>Chat Box</Typography>
+                <Box>
+                    <Typography variant="h6" style={headerStyle}>
+                        Chat Box
+                    </Typography>
                     <Paper style={containerStyle}>
-                        <div style={messageContainerStyle}>
-                            {this.state.messages.map((e, i) => (
-                                <div key={i} style={e.isUser ? userMessageStyle : chatbotMessageStyle}>
-                                    {e.text}
-                                </div>
-                            ))}
+                        <div style={messageContainerWrapperStyle}>
+                            <div style={messageContainerStyle}>
+                                {this.state.messages.map((e, i) => (
+                                    <div key={i} style={e.isUser ? userMessageStyle : chatbotMessageStyle}>
+                                        {e.text}
+                                    </div>
+                                ))}
+                                {this.state.loading === true && <LoadingDots />}
+                            </div>
                         </div>
                         <Divider style={{ marginTop: '16px' }} />
                         <TextField
