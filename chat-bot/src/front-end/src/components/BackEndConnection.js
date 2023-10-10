@@ -1,8 +1,7 @@
 import axios from 'axios';
 
 class BackEndConnectionImpl {
-    async send_search_prompt(query, callback) {
-
+    async send_chatbot_question(query, callback) {
         return axios.post('/chatbot/recieve_message', query, {})
             .then(function (response) {
                 if (callback) {
