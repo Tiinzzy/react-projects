@@ -2,7 +2,6 @@ const { Client } = require('undici');
 
 const express = require('express');
 const { createProxyMiddleware } = require('http-proxy-middleware');
-const vhost = require('vhost');
 
 const app = express();
 
@@ -23,8 +22,8 @@ const bankProxy = createProxyMiddleware({
     changeOrigin: true
 });
 
-app.use('/bank', bankProxy);
-app.use('/db', dbProxy);
+app.use('/backend/bank', bankProxy);
+app.use('/backend/db', dbProxy);
 
 
 app.listen(PORT, HOST, () => {
