@@ -78,6 +78,15 @@ class ChatBox extends React.Component {
 
     handleInputChange = (e) => {
         this.setState({ newMessage: e.target.value });
+
+        if (e.keyCode === 13) {
+            e.preventDefault();
+        }
+        let key = e.code || "";
+        let isEnter = key.toLowerCase().indexOf('enter') >= 0;
+        if (isEnter) {
+            this.submitUserMessage();
+        }
     };
 
     goBottom = () => {
@@ -129,6 +138,7 @@ class ChatBox extends React.Component {
                             variant="outlined"
                             value={this.state.newMessage}
                             onChange={(e) => this.handleInputChange(e)}
+                            onKeyDown={(e) => this.handleInputChange(e)}
                         />
                         <Button size="small" variant="contained" color="primary" onClick={() => this.submitUserMessage()}>
                             Submit
