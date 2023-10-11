@@ -132,6 +132,7 @@ export default class ChatBox extends React.Component {
                     </Box>
                     <Divider style={{ marginTop: '16px' }} />
                     <TextField
+                        autoFocus
                         style={inputFieldStyle}
                         label="Type a message"
                         variant="outlined"
