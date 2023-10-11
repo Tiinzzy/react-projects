@@ -11,7 +11,7 @@ def get_parameters(req):
 
 
 @app.route('/chatbot/recieve_message', methods=["POST"])
-def get_search_prompt():
+def get_users_question():
     parameters = get_parameters(request)
     user_message = parameters['user_message']
     result = reply(user_message)

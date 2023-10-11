@@ -8,7 +8,7 @@ import LoadingDots from './LoadingDots';
 const backend = BackEndConnection.INSTANCE();
 
 const containerStyle = {
-    width: '400px',
+    width: '600px',
     padding: '16px',
     margin: '20px auto',
 };
@@ -24,8 +24,8 @@ const messageContainerStyle = {
     flexDirection: "column",
     border: "solid 1px #eaeaea",
     padding: "15px",
-    maxHeight: "250px",
-    height: '250px',
+    maxHeight: "360px",
+    height: '360px',
     overflowY: "auto",
 };
 
@@ -51,8 +51,8 @@ const chatbotMessageStyle = {
 };
 
 const messageContainerWrapperStyle = {
-    height: '300px',
-    maxHeight: '300px',
+    height: '400px',
+    maxHeight: '400px',
     overflowY: 'auto',
 };
 
@@ -66,7 +66,7 @@ const headerStyle = {
     fontWeight: 'bold'
 }
 
-class ChatBox extends React.Component {
+export default class ChatBox extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -78,6 +78,15 @@ class ChatBox extends React.Component {
 
     handleInputChange = (e) => {
         this.setState({ newMessage: e.target.value });
+
+        if (e.keyCode === 13) {
+            e.preventDefault();
+        }
+        let key = e.code || "";
+        let isEnter = key.toLowerCase().indexOf('enter') >= 0;
+        if (isEnter) {
+            this.submitUserMessage();
+        }
     };
 
     goBottom = () => {
@@ -106,37 +115,35 @@ class ChatBox extends React.Component {
 
     render() {
         return (
-            <>
-                <Box>
-                    <Typography variant="h6" style={headerStyle}>
-                        Chat Box
-                    </Typography>
-                    <Paper style={containerStyle}>
-                        <div style={messageContainerWrapperStyle}>
-                            <div id='chat-box-container' style={messageContainerStyle}>
-                                {this.state.messages.map((e, i) => (
-                                    <div key={i} style={e.isUser ? userMessageStyle : chatbotMessageStyle}>
-                                        {e.text}
-                                    </div>
-                                ))}
-                                {this.state.loading && <LoadingDots />}
-                            </div>
-                        </div>
-                        <Divider style={{ marginTop: '16px' }} />
-                        <TextField
-                            style={inputFieldStyle}
-                            label="Type a message"
-                            variant="outlined"
-                            value={this.state.newMessage}
-                            onChange={(e) => this.handleInputChange(e)}
-                        />
-                        <Button size="small" variant="contained" color="primary" onClick={() => this.submitUserMessage()}>
-                            Submit
-                        </Button>
-                    </Paper>
-                </Box>
-            </>
+            <Box>
+                <Typography variant="h6" style={headerStyle}>
+                    Chat Box
+                </Typography>
+                <Paper style={containerStyle}>
+                    <Box style={messageContainerWrapperStyle}>
+                        <Box id='chat-box-container' style={messageContainerStyle}>
+                            {this.state.messages.map((e, i) => (
+                                <Box key={i} style={e.isUser ? userMessageStyle : chatbotMessageStyle}>
+                                    {e.text}
+                                </Box>
+                            ))}
+                            {this.state.loading && <LoadingDots />}
+                        </Box>
+                    </Box>
+                    <Divider style={{ marginTop: '16px' }} />
+                    <TextField
+                        autoFocus
+                        style={inputFieldStyle}
+                        label="Type a message"
+                        variant="outlined"
+                        value={this.state.newMessage}
+                        onChange={(e) => this.handleInputChange(e)}
+                        onKeyDown={(e) => this.handleInputChange(e)} />
+                    <Button size="small" variant="contained" color="primary" onClick={() => this.submitUserMessage()}>
+                        Submit
+                    </Button>
+                </Paper>
+            </Box>
         );
     }
-}
-export default ChatBox;
+};
