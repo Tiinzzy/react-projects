@@ -8,7 +8,7 @@ import LoadingDots from './LoadingDots';
 const backend = BackEndConnection.INSTANCE();
 
 const containerStyle = {
-    width: '400px',
+    width: '600px',
     padding: '16px',
     margin: '20px auto',
 };
@@ -24,8 +24,8 @@ const messageContainerStyle = {
     flexDirection: "column",
     border: "solid 1px #eaeaea",
     padding: "15px",
-    maxHeight: "250px",
-    height: '250px',
+    maxHeight: "360px",
+    height: '360px',
     overflowY: "auto",
 };
 
@@ -51,8 +51,8 @@ const chatbotMessageStyle = {
 };
 
 const messageContainerWrapperStyle = {
-    height: '300px',
-    maxHeight: '300px',
+    height: '400px',
+    maxHeight: '400px',
     overflowY: 'auto',
 };
 
