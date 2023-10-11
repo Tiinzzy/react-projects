@@ -20,17 +20,11 @@ export default class Home extends React.Component {
         }
     }
 
-    componentDidMount() {
-
-    }
-
     render() {
         return (
-            <>
-                <Box style={homeStyle}>
-                    <ChatBox />
-                </Box>
-            </>
+            <Box style={homeStyle}>
+                <ChatBox />
+            </Box>
         );
     }
 };
