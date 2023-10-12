@@ -2,7 +2,24 @@ import axios from 'axios';
 
 class BackEndConnectionImpl {
     async send_chatbot_question(query, callback) {
-        return axios.post('/chatbot/recieve_message', query, {})
+        return axios.post('/chatbot/recieve-message', query, {})
+            .then(function (response) {
+                if (callback) {
+                    callback(response.data);
+                }
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+                if (callback) {
+                    callback({ result: false })
+                }
+                return { result: false };
+            })
+    }
+
+    async process_image_detection(query, callback) {
+        return axios.post('/image/process-detection', query, {})
             .then(function (response) {
                 if (callback) {
                     callback(response.data);
