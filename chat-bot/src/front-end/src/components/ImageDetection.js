@@ -24,7 +24,7 @@ export default class ImageDetection extends React.Component {
     }
 
     handleImageSelect(e) {
-        const imageFile = e.target.files[0]; 
+        const imageFile = e.target.files[0];
         if (imageFile) {
             const imageUrl = URL.createObjectURL(imageFile);
             this.setState({ image: imageUrl }, () => {
@@ -48,13 +48,10 @@ export default class ImageDetection extends React.Component {
                         <div
                             onDrop={(e) => this.handleImageDrop(e)}
                             onDragOver={(e) => this.preventDefault(e)}
-                            style={{ border: '2px dashed #ccc', textAlign: 'center', padding: '20px', cursor: 'pointer' }}
-                        >
+                            style={{ border: '2px dashed #ccc', textAlign: 'center', padding: '20px', cursor: 'pointer' }}>
                             {this.state.image ? (
-                                <img src={this.state.image} alt="Uploaded" style={{ maxWidth: '100%' }} />
-                            ) : (
-                                <p>Drag & drop an image here or click to select one.</p>
-                            )}
+                                <img src={this.state.image} alt="Uploaded" style={{ maxWidth: '100%' }} />) :
+                                (<p>Drag & drop an image here or click to select one.</p>)}
                         </div>
                     </Grid>
                     <Grid item xs={12} md={6} mt={5} alignItems="right">
