@@ -27,6 +27,7 @@ export default class ImageDetection extends React.Component {
         const imageFile = e.target.files[0];
         if (imageFile) {
             const imageUrl = URL.createObjectURL(imageFile);
+            console.log(imageUrl);
             this.setState({ image: imageUrl }, () => {
                 let query = { 'image_url': this.state.image };
                 backend.process_image_detection(query, (data) => {
