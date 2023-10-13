@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import json
 import os
+import uuid
 
 from business.process_chat import reply
 from business.process_image_detection import image_detection
@@ -38,9 +39,9 @@ def get_image_url():
         return jsonify({'error': 'No selected file'})
 
     if file:
-        filename = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+        unique_filename = str(uuid.uuid4()) + "_" + file.filename
+        filename = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
         file.save(filename)
-        url = 'http://localhost:3000/user-uploaded-images/' + file.filename
+        url = 'http://localhost:3000/user-uploaded-images/' + unique_filename
         result = image_detection(url)
-        print(result)
         return jsonify({'result': result})
