@@ -18,8 +18,8 @@ class BackEndConnectionImpl {
             })
     }
 
-    async process_image_detection(query, callback) {
-        return axios.post('/image/process-detection', query, {})
+    async process_image_detection(formData, callback) {
+        return axios.post('/image/process-detection', formData, {})
             .then(function (response) {
                 if (callback) {
                     callback(response.data);

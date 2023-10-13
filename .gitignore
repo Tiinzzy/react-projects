@@ -110,3 +110,5 @@ dist
 *.drawio.bkp
 
 .idea/
+
+huggingface-ui/src/front-end/public/user-uploaded-images/

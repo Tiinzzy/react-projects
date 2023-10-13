@@ -7,7 +7,7 @@ model = ViTForImageClassification.from_pretrained('google/vit-base-patch16-224')
 
 
 def image_detection(url):
-    image = Image.open(requests.get(url, stream=True).raw)
+    image = Image.open(requests.get(url, stream=True).raw).convert("RGB")
     inputs = processor(images=image, return_tensors="pt")
     outputs = model(**inputs)
     logits = outputs.logits
