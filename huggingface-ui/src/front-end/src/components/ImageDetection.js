@@ -23,19 +23,14 @@ export default class ImageDetection extends React.Component {
         };
     }
 
-    handleImageSelect(e) {
-        const image = e.target.files[0];
-        this.handleImageChange(image);
-    }
-
     handleImageDrop(e) {
-        e.preventDefault();
-        const file = e.dataTransfer.files[0];
-        this.handleImageChange(file);
+        e.target = e.dataTransfer;
+        this.handleImageSelect(e);
     }
 
     handleImageSelect(e) {
         const imageFile = e.target.files[0];
+        e.preventDefault();
         if (imageFile) {
             const imageUrl = URL.createObjectURL(imageFile);
             const formData = new FormData();
@@ -62,7 +57,7 @@ export default class ImageDetection extends React.Component {
                     <Grid item xs={12} md={6}>
                         <div
                             onDrop={(e) => this.handleImageDrop(e)}
-                            onDragOver={(e) => this.preventDefault(e)}
+                            onDragOver={(e) => { this.preventDefault(e); }}
                             style={{ border: '2px dashed #ccc', textAlign: 'center', padding: '20px', cursor: 'pointer' }}>
                             {this.state.image ? (
                                 <img src={this.state.image} alt="Uploaded" style={{ maxWidth: '90%' }} />) :
