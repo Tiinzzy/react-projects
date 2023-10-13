@@ -1,10 +1,19 @@
 import React from 'react';
 
-import { Button, Container, Grid } from '@mui/material';
+import { Button, Container, Divider, Grid, Typography } from '@mui/material';
 
 import BackEndConnection from './BackEndConnection';
 
 const backend = BackEndConnection.INSTANCE();
+
+const headerStyle = {
+    alignContent: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+    color: '#455a64',
+    background: '#FFFFFF',
+    marginBottom: '20px'
+}
 
 export default class ImageDetection extends React.Component {
     constructor(props) {
@@ -30,11 +39,10 @@ export default class ImageDetection extends React.Component {
         if (imageFile) {
             const imageUrl = URL.createObjectURL(imageFile);
             const formData = new FormData();
-            formData.append('file', imageFile);            
+            formData.append('file', imageFile);
             this.setState({ image: imageUrl }, () => {
-                // let query = { 'image_url': this.state.image };
                 backend.process_image_detection(formData, (data) => {
-                    console.log(data)
+                    this.setState({ imageResult: data.result })
                 });
             });
         }
@@ -47,14 +55,17 @@ export default class ImageDetection extends React.Component {
     render() {
         return (
             <Container style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Grid alignItems="center">
+                <Grid alignItems="center" justifyContent="center">
+                    <Typography variant="h6" style={headerStyle}>
+                        Detected Image: <span style={{ color: '#263238', fontWeight: 'bold', marginLeft: 11 }}>{this.state.imageResult}</span>
+                    </Typography>
                     <Grid item xs={12} md={6}>
                         <div
                             onDrop={(e) => this.handleImageDrop(e)}
                             onDragOver={(e) => this.preventDefault(e)}
                             style={{ border: '2px dashed #ccc', textAlign: 'center', padding: '20px', cursor: 'pointer' }}>
                             {this.state.image ? (
-                                <img src={this.state.image} alt="Uploaded" style={{ maxWidth: '100%' }} />) :
+                                <img src={this.state.image} alt="Uploaded" style={{ maxWidth: '90%' }} />) :
                                 (<p>Drag & drop an image here or click to select one.</p>)}
                         </div>
                     </Grid>
