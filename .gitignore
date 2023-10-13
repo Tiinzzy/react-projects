@@ -111,4 +111,4 @@ dist
 
 .idea/
 
-public/user-uploaded-images/
+huggingface-ui/src/front-end/public/user-uploaded-images/
