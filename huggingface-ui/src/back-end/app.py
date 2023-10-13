@@ -1,10 +1,17 @@
 from flask import Flask, request, jsonify
 import json
+import os
 
 from business.process_chat import reply
 from business.process_image_detection import image_detection
 
 app = Flask(__name__)
+
+UPLOAD_FOLDER = '/home/tina/Documents/projects/react-projects/huggingface-ui/src/front-end/public/user-uploaded-images'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
 
 
 def get_parameters(req):
@@ -22,8 +29,18 @@ def get_users_question():
 
 @app.route('/image/process-detection', methods=["POST"])
 def get_image_url():
-    parameters = get_parameters(request)
-    image_url = parameters['image_url']
-    result = image_detection(image_url)
-    print(result)
-    return jsonify({'result': True})
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part'})
+
+    file = request.files['file']
+
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'})
+
+    if file:
+        filename = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+        file.save(filename)
+        url = 'http://localhost:3000/user-uploaded-images/' + file.filename
+        result = image_detection(url)
+        print(result)
+        return jsonify({'result': result})
