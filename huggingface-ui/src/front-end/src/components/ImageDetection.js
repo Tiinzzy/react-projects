@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { Button, Container, Grid } from '@mui/material';
+
 import BackEndConnection from './BackEndConnection';
 
 const backend = BackEndConnection.INSTANCE();
@@ -27,10 +29,11 @@ export default class ImageDetection extends React.Component {
         const imageFile = e.target.files[0];
         if (imageFile) {
             const imageUrl = URL.createObjectURL(imageFile);
-            console.log(imageUrl);
+            const formData = new FormData();
+            formData.append('file', imageFile);            
             this.setState({ image: imageUrl }, () => {
-                let query = { 'image_url': this.state.image };
-                backend.process_image_detection(query, (data) => {
+                // let query = { 'image_url': this.state.image };
+                backend.process_image_detection(formData, (data) => {
                     console.log(data)
                 });
             });
