@@ -17,7 +17,7 @@ class DisplayList extends React.Component {
 
     render() {
         return (
-            <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper', border: 'solid 1px #eaeaea' }}>
+            <Box sx={{ width: '100%', maxWidth: 250, bgcolor: 'background.paper', border: 'solid 1px #eaeaea', borderRadius: 1.5 }}>
                 <nav aria-label="main mailbox folders">
                     <List >
                         {NETFLIX_MODEL.map((e, i) => (
