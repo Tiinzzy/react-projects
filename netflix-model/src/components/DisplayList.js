@@ -6,18 +6,23 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 
+import EventEmitter from 'eventemitter3';
+
+export const eventEmitter = new EventEmitter();
 const NETFLIX_MODEL = ["Customer", "Genre", "Movies", "Subscription", "TV Series"];
 
 class DisplayList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            selected: ''
+            selectedIndex: ''
         }
     }
 
-    handleClick(index) {
-        this.setState({ selected: index });
+    handleClick(index, item) {
+        this.setState({ selectedIndex: index, selectedItem: item }, () => {
+            eventEmitter.emit('selectedItem', { item: this.state.selectedItem });
+        });
     }
 
     render() {
@@ -26,7 +31,7 @@ class DisplayList extends React.Component {
                 <nav aria-label="main mailbox folders">
                     <List >
                         {NETFLIX_MODEL.map((e, i) => (
-                            <ListItem disablePadding key={i} onClick={() => this.handleClick(i)} style={{ backgroundColor: this.state.selected === i ? "#f0f0f0" : "transparent" }}>
+                            <ListItem disablePadding key={i} onClick={() => this.handleClick(i, e)} style={{ backgroundColor: this.state.selectedIndex === i ? "#f0f0f0" : "transparent" }}>
                                 <ListItemButton>
                                     <ListItemText primary={e} />
                                 </ListItemButton>
