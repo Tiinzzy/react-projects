@@ -12,7 +12,6 @@ class ListAllSubscription extends React.Component {
     }
 
     componentDidMount() {
-        console.log(this.state.subscriptionData);
     }
 
     render() {

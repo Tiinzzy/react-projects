@@ -12,7 +12,6 @@ class ListAllGenre extends React.Component {
     }
 
     componentDidMount() {
-        console.log(this.state.genreData);
     }
 
     render() {

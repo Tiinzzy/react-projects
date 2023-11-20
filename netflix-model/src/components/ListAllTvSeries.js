@@ -12,7 +12,6 @@ class ListAllTvSeries extends React.Component {
     }
 
     componentDidMount() {
-        console.log(this.state.tvseriesData);
     }
 
     render() {

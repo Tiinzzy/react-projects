@@ -12,7 +12,6 @@ class ListAllCustomer extends React.Component {
     }
 
     componentDidMount() {
-        console.log(this.state.customerData);
     }
 
     render() {
