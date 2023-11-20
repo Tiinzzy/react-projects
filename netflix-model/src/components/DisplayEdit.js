@@ -2,11 +2,23 @@ import React from "react";
 
 import Box from '@mui/material/Box';
 
+import { eventEmitter } from './DisplayList';
+
 class DisplayEdit extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
         }
+    }
+
+    componentDidMount() {
+        eventEmitter.on('selectedItem', (data) => {
+            console.log(data.item)
+        });
+    }
+
+    componentWillUnmount() {
+        eventEmitter.off('selectedItem');
     }
 
     render() {
