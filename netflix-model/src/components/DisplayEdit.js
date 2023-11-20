@@ -13,8 +13,40 @@ class DisplayEdit extends React.Component {
 
     componentDidMount() {
         eventEmitter.on('selectedItem', (data) => {
-            console.log(data.item)
+            if (data.item === "Customer") {
+                this.handleCustomer();
+            } else if (data.item === "Genre") {
+                this.handleGenre();
+            } else if (data.item === "Movies") {
+                this.handleMovies();
+            } else if (data.item === "Subscription") {
+                this.handleSubscription();
+            } else if (data.item === "TV Series") {
+                this.handleTvSeries();
+            }
         });
+    }
+
+    handleCustomer() {
+        console.log("customer");
+    }
+
+    handleGenre() {
+        console.log("genre");
+
+    }
+
+    handleMovies() {
+        console.log("movies");
+
+    }
+
+    handleSubscription() {
+        console.log("subscription");
+    }
+
+    handleTvSeries() {
+        console.log("tv series");
     }
 
     componentWillUnmount() {
