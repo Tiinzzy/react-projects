@@ -14,7 +14,7 @@ class Home extends React.Component {
 
     render() {
         return (
-            <Box style={{ border: 'solid 1px red', paddingTop: 50, paddingRight: 10, paddingLeft: 10, paddingBottom: 50, display: 'flex', flexDirection: 'row' }}>
+            <Box style={{ paddingTop: 50, paddingRight: 10, paddingLeft: 10, paddingBottom: 50, display: 'flex', flexDirection: 'row' }}>
                 <DisplayList />
                 <DisplayEdit />
             </Box>
