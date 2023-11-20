@@ -87,7 +87,7 @@ class BackEndConnectionImpl {
     }
 
     async add_genre(query, callback) {
-        return axios.post('/genre/add', query, {})
+        return axios.post('/genre/add', query, { headers: { 'Content-Type': 'application/json' } })
             .then(function (response) {
                 if (callback) {
                     callback(response.data);
