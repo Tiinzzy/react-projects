@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import { eventEmitter } from './DisplayList';
 import BackEndConnection from './BackEndConnection';
 import ListAllGenre from './ListAllGenre';
+import ListAllCustomer from "./ListAllCustomer";
 
 const backend = BackEndConnection.INSTANCE();
 
@@ -12,7 +13,8 @@ class DisplayEdit extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            genreData: null
+            genreData: null,
+            customerData: null
         }
     }
 
@@ -33,14 +35,15 @@ class DisplayEdit extends React.Component {
     }
 
     handleCustomer() {
-        console.log("customer");
+        backend.get_all_customers((data) => {
+            this.setState({ customerData: data, genreData: null });
+        })
     }
 
     handleGenre() {
         backend.get_all_genre((data) => {
-            this.setState({ genreData: data });
-        })
-
+            this.setState({ genreData: data, customerData: null });
+        });
     }
 
     handleMovies() {
@@ -64,6 +67,7 @@ class DisplayEdit extends React.Component {
         return (
             <Box style={{ border: 'solid 1px #eaeaea', marginLeft: 40, width: '90%', borderRadius: 6 }}>
                 {this.state.genreData !== null && <ListAllGenre genreData={this.state.genreData} />}
+                {this.state.customerData !== null && <ListAllCustomer customerData={this.state.customerData} />}
             </Box>
         );
     }
