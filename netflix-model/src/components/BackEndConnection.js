@@ -51,6 +51,23 @@ class BackEndConnectionImpl {
                 return { result: false };
             })
     }
+
+    async get_all_subscriptions(callback) {
+        return axios.get('/subscription/all', {}, {})
+            .then(function (response) {
+                if (callback) {
+                    callback(response.data);
+                }
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+                if (callback) {
+                    callback({ result: false })
+                }
+                return { result: false };
+            })
+    }
 }
 
 export default class BackEndConnection {
