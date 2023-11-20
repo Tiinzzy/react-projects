@@ -26,20 +26,14 @@ class AddDialog extends React.Component {
 
     agreeAndClose() {
         if (this.props.addClick === "Genre") {
-            this.processAddGenre();
+            let query = { 'description': this.state.genreDescription };
+            backend.add_genre(query, (data) => {
+                if (data === true) {
+                    this.state.handleClose();
+                };
+            })
         }
-
     }
-
-    processAddGenre() {
-        let query = { 'description': this.state.genreDescription };
-        backend.add_genre(query, (data) => {
-            if (data === true) {
-                this.state.handleClose();
-            };
-        })
-    }
-
 
     render() {
         return (
