@@ -35,11 +35,16 @@ class DisplayList extends React.Component {
     }
 
     addClicked(e) {
-        this.setState({ addClick: e, openDialog: true })
+        this.setState({ addClick: e, openDialog: true });
     }
 
-    handleCloseDialog() {
-        this.setState({ openDialog: false, addClick: '' })
+    handleCloseDialog(e) {
+        if(e && e === 'reload'){
+            this.setState({ openDialog: false, addClick: '' },()=>{
+                eventEmitter.emit('selectedItem', { item: this.state.addClick });
+            });
+        }
+        this.setState({ openDialog: false, addClick: '' });
     }
 
     render() {
