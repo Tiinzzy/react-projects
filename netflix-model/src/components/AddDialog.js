@@ -1,11 +1,14 @@
 import React from "react";
 
-import Box from '@mui/material/Box';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
+
+import BackEndConnection from './BackEndConnection';
+
+const backend = BackEndConnection.INSTANCE();
 
 class AddDialog extends React.Component {
     constructor(props) {
@@ -17,9 +20,16 @@ class AddDialog extends React.Component {
     }
 
     componentDidMount() {
+        if (this.state.addClick === "Genre") {
+            this.agreeAndClose();
+        };
     }
 
-    agreeAndClose(){
+    agreeAndClose() {
+        let query = { 'description': 'test' };
+        backend.add_genre('query', (data) => {
+            console.log(data);
+        })
         this.state.handleClose();
     }
 
