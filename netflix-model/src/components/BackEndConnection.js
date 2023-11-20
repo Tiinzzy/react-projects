@@ -17,6 +17,23 @@ class BackEndConnectionImpl {
                 return { result: false };
             })
     }
+
+    async get_all_customers(callback) {
+        return axios.get('/customer/all', {}, {})
+            .then(function (response) {
+                if (callback) {
+                    callback(response.data);
+                }
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+                if (callback) {
+                    callback({ result: false })
+                }
+                return { result: false };
+            })
+    }
 }
 
 export default class BackEndConnection {
