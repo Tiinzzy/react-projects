@@ -8,6 +8,7 @@ import ListAllGenre from './ListAllGenre';
 import ListAllCustomer from "./ListAllCustomer";
 import ListAllMovie from "./ListAllMovie";
 import ListAllSubscription from "./ListAllSubscription";
+import ListAllTvSeries from "./ListAllTvSeries";
 
 const backend = BackEndConnection.INSTANCE();
 
@@ -18,7 +19,8 @@ class DisplayEdit extends React.Component {
             genreData: null,
             customerData: null,
             movieData: null,
-            subscriptionData: null
+            subscriptionData: null,
+            tvseriesData: null
         }
     }
 
@@ -40,30 +42,32 @@ class DisplayEdit extends React.Component {
 
     handleCustomer() {
         backend.get_all_customers((data) => {
-            this.setState({ customerData: data, genreData: null, movieData: null, subscriptionData: null });
+            this.setState({ customerData: data, genreData: null, movieData: null, subscriptionData: null, tvseriesData: null });
         })
     }
 
     handleGenre() {
         backend.get_all_genre((data) => {
-            this.setState({ genreData: data, customerData: null, movieData: null, subscriptionData: null });
+            this.setState({ genreData: data, customerData: null, movieData: null, subscriptionData: null, tvseriesData: null });
         });
     }
 
     handleMovies() {
         backend.get_all_movies((data) => {
-            this.setState({ movieData: data, customerData: null, genreData: null, subscriptionData: null });
+            this.setState({ movieData: data, customerData: null, genreData: null, subscriptionData: null, tvseriesData: null });
         });
     }
 
     handleSubscription() {
         backend.get_all_subscriptions((data) => {
-            this.setState({ subscriptionData: data, customerData: null, genreData: null, movieData: null });
+            this.setState({ subscriptionData: data, customerData: null, genreData: null, movieData: null, tvseriesData: null });
         });
     }
 
     handleTvSeries() {
-        console.log("tv series");
+        backend.get_all_tvseries((data) => {
+            this.setState({ tvseriesData: data, subscriptionData: null, customerData: null, genreData: null, movieData: null });
+        });
     }
 
     componentWillUnmount() {
@@ -77,6 +81,7 @@ class DisplayEdit extends React.Component {
                 {this.state.customerData !== null && <ListAllCustomer customerData={this.state.customerData} />}
                 {this.state.movieData !== null && <ListAllMovie movieData={this.state.movieData} />}
                 {this.state.subscriptionData !== null && <ListAllSubscription subscriptionData={this.state.subscriptionData} />}
+                {this.state.tvseriesData !== null && <ListAllTvSeries tvseriesData={this.state.tvseriesData} />}
             </Box>
         );
     }
