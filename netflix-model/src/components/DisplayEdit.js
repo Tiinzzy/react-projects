@@ -3,6 +3,9 @@ import React from "react";
 import Box from '@mui/material/Box';
 
 import { eventEmitter } from './DisplayList';
+import BackEndConnection from './BackEndConnection';
+
+const backend = BackEndConnection.INSTANCE();
 
 class DisplayEdit extends React.Component {
     constructor(props) {
@@ -33,6 +36,9 @@ class DisplayEdit extends React.Component {
 
     handleGenre() {
         console.log("genre");
+        backend.get_all_genre((data) => {
+            console.log(data);
+        })
 
     }
 
