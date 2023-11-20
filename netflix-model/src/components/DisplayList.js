@@ -10,10 +10,10 @@ import Dialog from '@mui/material/Dialog';
 
 import EventEmitter from 'eventemitter3';
 
-import AddDialog from "./AddDialog";
+import AddGenreDialog from "./AddGenreDialog";
 
 export const eventEmitter = new EventEmitter();
-const NETFLIX_MODEL = ["Customer", "Genre", "Movie", "Subscription", "TV Series"];
+const NETFLIX_MODEL = ["Customer", "Genre", "Movies", "Subscription", "TV Series"];
 
 class DisplayList extends React.Component {
     constructor(props) {
@@ -57,7 +57,7 @@ class DisplayList extends React.Component {
                     </List>
                 </nav>
                 <Dialog open={this.state.openDialog} onClose={() => this.handleCloseDialog()}>
-                    <AddDialog addClick={this.state.addClick} handleClose={this.handleCloseDialog}/>
+                    <AddGenreDialog addClick={this.state.addClick} handleClose={this.handleCloseDialog}/>
                 </Dialog>
             </Box>
         );
