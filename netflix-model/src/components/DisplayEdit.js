@@ -7,6 +7,7 @@ import BackEndConnection from './BackEndConnection';
 import ListAllGenre from './ListAllGenre';
 import ListAllCustomer from "./ListAllCustomer";
 import ListAllMovie from "./ListAllMovie";
+import ListAllSubscription from "./ListAllSubscription";
 
 const backend = BackEndConnection.INSTANCE();
 
@@ -16,7 +17,8 @@ class DisplayEdit extends React.Component {
         this.state = {
             genreData: null,
             customerData: null,
-            movieData: null
+            movieData: null,
+            subscriptionData: null
         }
     }
 
@@ -38,25 +40,26 @@ class DisplayEdit extends React.Component {
 
     handleCustomer() {
         backend.get_all_customers((data) => {
-            this.setState({ customerData: data, genreData: null });
+            this.setState({ customerData: data, genreData: null, movieData: null, subscriptionData: null });
         })
     }
 
     handleGenre() {
         backend.get_all_genre((data) => {
-            this.setState({ genreData: data, customerData: null });
+            this.setState({ genreData: data, customerData: null, movieData: null, subscriptionData: null });
         });
     }
 
     handleMovies() {
         backend.get_all_movies((data) => {
-            this.setState({ movieData: data, customerData: null, genreData: null });
-            console.log(data)
+            this.setState({ movieData: data, customerData: null, genreData: null, subscriptionData: null });
         });
     }
 
     handleSubscription() {
-        console.log("subscription");
+        backend.get_all_subscriptions((data) => {
+            this.setState({ subscriptionData: data, customerData: null, genreData: null, movieData: null });
+        });
     }
 
     handleTvSeries() {
@@ -73,6 +76,7 @@ class DisplayEdit extends React.Component {
                 {this.state.genreData !== null && <ListAllGenre genreData={this.state.genreData} />}
                 {this.state.customerData !== null && <ListAllCustomer customerData={this.state.customerData} />}
                 {this.state.movieData !== null && <ListAllMovie movieData={this.state.movieData} />}
+                {this.state.subscriptionData !== null && <ListAllSubscription subscriptionData={this.state.subscriptionData} />}
             </Box>
         );
     }
