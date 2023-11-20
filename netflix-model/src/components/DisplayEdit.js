@@ -6,6 +6,7 @@ import { eventEmitter } from './DisplayList';
 import BackEndConnection from './BackEndConnection';
 import ListAllGenre from './ListAllGenre';
 import ListAllCustomer from "./ListAllCustomer";
+import ListAllMovie from "./ListAllMovie";
 
 const backend = BackEndConnection.INSTANCE();
 
@@ -14,7 +15,8 @@ class DisplayEdit extends React.Component {
         super(props);
         this.state = {
             genreData: null,
-            customerData: null
+            customerData: null,
+            movieData: null
         }
     }
 
@@ -47,8 +49,10 @@ class DisplayEdit extends React.Component {
     }
 
     handleMovies() {
-        console.log("movies");
-
+        backend.get_all_movies((data) => {
+            this.setState({ movieData: data, customerData: null, genreData: null });
+            console.log(data)
+        });
     }
 
     handleSubscription() {
@@ -68,6 +72,7 @@ class DisplayEdit extends React.Component {
             <Box style={{ border: 'solid 1px #eaeaea', marginLeft: 40, width: '90%', borderRadius: 6 }}>
                 {this.state.genreData !== null && <ListAllGenre genreData={this.state.genreData} />}
                 {this.state.customerData !== null && <ListAllCustomer customerData={this.state.customerData} />}
+                {this.state.movieData !== null && <ListAllMovie movieData={this.state.movieData} />}
             </Box>
         );
     }
