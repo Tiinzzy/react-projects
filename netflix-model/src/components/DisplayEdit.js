@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 
 import { eventEmitter } from './DisplayList';
 import BackEndConnection from './BackEndConnection';
+import ListAllGenre from './ListAllGenre';
 
 const backend = BackEndConnection.INSTANCE();
 
@@ -11,6 +12,7 @@ class DisplayEdit extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            genreData: null
         }
     }
 
@@ -35,9 +37,8 @@ class DisplayEdit extends React.Component {
     }
 
     handleGenre() {
-        console.log("genre");
         backend.get_all_genre((data) => {
-            console.log(data);
+            this.setState({ genreData: data });
         })
 
     }
@@ -62,7 +63,7 @@ class DisplayEdit extends React.Component {
     render() {
         return (
             <Box style={{ border: 'solid 1px #eaeaea', marginLeft: 40, width: '90%', borderRadius: 6 }}>
-                this is edit page
+                {this.state.genreData !== null && <ListAllGenre genreData={this.state.genreData} />}
             </Box>
         );
     }
