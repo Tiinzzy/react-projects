@@ -12,7 +12,12 @@ class DisplayList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            selected: ''
         }
+    }
+
+    handleClick(index) {
+        this.setState({ selected: index });
     }
 
     render() {
@@ -21,7 +26,7 @@ class DisplayList extends React.Component {
                 <nav aria-label="main mailbox folders">
                     <List >
                         {NETFLIX_MODEL.map((e, i) => (
-                            <ListItem disablePadding key={i}>
+                            <ListItem disablePadding key={i} onClick={() => this.handleClick(i)} style={{ backgroundColor: this.state.selected === i ? "#f0f0f0" : "transparent" }}>
                                 <ListItemButton>
                                     <ListItemText primary={e} />
                                 </ListItemButton>
