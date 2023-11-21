@@ -2,6 +2,7 @@ import React from "react";
 
 import Box from '@mui/material/Box';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 class ListAllCustomer extends React.Component {
     constructor(props) {
@@ -12,6 +13,10 @@ class ListAllCustomer extends React.Component {
     }
 
     componentDidMount() {
+    }
+
+    dialogToDelete(e){
+        console.log(e)
     }
 
     render() {
@@ -25,6 +30,7 @@ class ListAllCustomer extends React.Component {
                                 <TableCell>Name</TableCell>
                                 <TableCell>Phone Number</TableCell>
                                 <TableCell>Email</TableCell>
+                                <TableCell></TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -39,6 +45,7 @@ class ListAllCustomer extends React.Component {
                                     <TableCell>{e.name}</TableCell>
                                     <TableCell>{e.phoneNo}</TableCell>
                                     <TableCell>{e.email}</TableCell>
+                                    <TableCell><DeleteIcon onClick={() => this.dialogToDelete(e)} /></TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
