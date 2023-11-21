@@ -8,6 +8,7 @@ import Dialog from '@mui/material/Dialog';
 import SubscriptionDelete from "../delete/SubscriptionDelete";
 
 import EventEmitter from 'eventemitter3';
+import UpdateSubscription from "../edit/UpdateSubscription";
 
 export const subscriptionUpdate = new EventEmitter();
 
@@ -22,7 +23,7 @@ class ListAllSubscription extends React.Component {
     }
 
     dialogToDelete(e) {
-        this.setState({ openDialog: true, toBeDeleted: e });
+        this.setState({ openDialog: true, toBeDeleted: e, selection: 'delete' });
     }
 
     handleCloseDialog(e) {
@@ -32,7 +33,13 @@ class ListAllSubscription extends React.Component {
                     subscriptionUpdate.emit('update', { task: 'update' });
                 }
             })
+        } else {
+            this.setState({ openDialog: false });
         }
+    }
+
+    openEdit(e) {
+        this.setState({ openDialog: true, toBeUpdated: e, selection: 'update' })
     }
 
     render() {
@@ -53,6 +60,7 @@ class ListAllSubscription extends React.Component {
                         <TableBody>
                             {this.props.subscriptionData.map((e, i) => (
                                 <TableRow
+                                    onDoubleClick={() => this.openEdit(e)}
                                     hover
                                     key={i}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
@@ -70,7 +78,8 @@ class ListAllSubscription extends React.Component {
                     </Table>
                 </TableContainer>
                 <Dialog open={this.state.openDialog} onClose={() => this.handleCloseDialog()}>
-                    <SubscriptionDelete closeDialog={this.handleCloseDialog} toBeDeleted={this.state.toBeDeleted} />
+                    {this.state.selection === 'delete' && <SubscriptionDelete closeDialog={this.handleCloseDialog} toBeDeleted={this.state.toBeDeleted} />}
+                    {this.state.selection === 'update' && <UpdateSubscription toBeUpdated={this.state.toBeUpdated} handleClose={this.handleCloseDialog} />}
                 </Dialog>
             </Box>
         );
