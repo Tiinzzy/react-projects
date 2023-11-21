@@ -3,12 +3,13 @@ import React from "react";
 import Box from '@mui/material/Box';
 
 import { eventEmitter } from './DisplayList';
+
 import BackEndConnection from './BackEndConnection';
-import ListAllGenre from './ListAllGenre';
-import ListAllCustomer from "./ListAllCustomer";
-import ListAllMovie from "./ListAllMovie";
-import ListAllSubscription from "./ListAllSubscription";
-import ListAllTvSeries from "./ListAllTvSeries";
+import ListAllGenre from './list/ListAllGenre';
+import ListAllCustomer from "./list/ListAllCustomer";
+import ListAllMovie from "./list/ListAllMovie";
+import ListAllSubscription from "./list/ListAllSubscription";
+import ListAllTvSeries from "./list/ListAllTvSeries";
 
 const backend = BackEndConnection.INSTANCE();
 
