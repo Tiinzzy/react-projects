@@ -7,6 +7,10 @@ import Dialog from '@mui/material/Dialog';
 
 import MovieDelete from "../delete/MovieDelete";
 
+import EventEmitter from 'eventemitter3';
+
+export const movieUpdate = new EventEmitter();
+
 class ListAllMovie extends React.Component {
     constructor(props) {
         super(props);
@@ -21,8 +25,14 @@ class ListAllMovie extends React.Component {
         this.setState({ openDialog: true, toBeDeleted: e })
     }
 
-    handleCloseDialog() {
-        this.setState({ openDialog: false })
+    handleCloseDialog(e) {
+        if (e) {
+            this.setState({ openDialog: false }, () => {
+                if (e === 'reload movie') {
+                    movieUpdate.emit('update', { task: 'update' });
+                }
+            })
+        }
     }
 
     render() {

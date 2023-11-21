@@ -26,7 +26,7 @@ class MovieDelete extends React.Component {
         let query = { 'oid': this.props.toBeDeleted.oid };
         backend.delete_movie(query, (data) => {
             if (data === true) {
-                this.state.closeDialog();
+                this.state.closeDialog('reload movie');
             };
         })
     }
