@@ -45,15 +45,15 @@ class DisplayList extends React.Component {
         if (e) {
             this.setState({ openDialog: false, addClick: '' }, () => {
                 if (e === 'reload movie') {
-                    eventUpdateEmitter.emit('reloadList', { for: 'movie' })
+                    eventUpdateEmitter.emit('reloadList', { for: 'movie' });
                 } else if (e === 'reload customer') {
-                    eventUpdateEmitter.emit('reloadList', { for: 'customer' })
+                    eventUpdateEmitter.emit('reloadList', { for: 'customer' });
                 } else if (e === 'reload genre') {
-                    eventUpdateEmitter.emit('reloadList', { for: 'genre' })
+                    eventUpdateEmitter.emit('reloadList', { for: 'genre' });
                 } else if (e === 'reload subscription') {
-                    eventUpdateEmitter.emit('reloadList', { for: 'subsription' })
+                    eventUpdateEmitter.emit('reloadList', { for: 'subsription' });
                 } else if (e === 'reload tvseries') {
-                    eventUpdateEmitter.emit('reloadList', { for: 'tvseries' })
+                    eventUpdateEmitter.emit('reloadList', { for: 'tvseries' });
                 }
             });
         }
