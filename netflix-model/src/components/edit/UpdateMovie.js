@@ -6,16 +6,19 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
-import BackEndConnection from './BackEndConnection';
+import BackEndConnection from '../BackEndConnection';
 
 const backend = BackEndConnection.INSTANCE();
 
-class AddMoviesDialog extends React.Component {
+class UpdateMovie extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            addClick: props.addClick,
-            handleClose: props.handleClose
+            toBeUpdated: props.toBeUpdated,
+            handleClose: props.handleClose,
+            movieTitle: props.toBeUpdated.movieTitle,
+            releaseDate: props.toBeUpdated.releaseDate,
+            rating: props.toBeUpdated.rating
         }
     }
 
@@ -32,28 +35,26 @@ class AddMoviesDialog extends React.Component {
     }
 
     agreeAndClose() {
-        if (this.props.addClick === "Movies") {
-            let query = { 'movieTitle': this.state.movieTitle, 'releaseDate': this.state.releaseDate, 'rating': this.state.rating };
-            backend.add_movie(query, (data) => {
-                if (data === true) {
-                    this.state.handleClose('reload');
-                };
-            })
-        }
-
+        let query = { 'oid': this.state.toBeUpdated.oid, 'movieTitle': this.state.movieTitle, 'releaseDate': this.state.releaseDate, 'rating': this.state.rating };
+        backend.update_movie(query, (data) => {
+            if (data === true) {
+                this.state.handleClose('reload movie');
+            };
+        })
     }
 
     render() {
         return (
             <>
                 <DialogTitle id="alert-dialog-title" mb={2}>
-                    {"Add " + this.state.addClick}
+                    {"Update Movie OID: " + this.state.toBeUpdated.oid}
                 </DialogTitle>
                 <DialogContent style={{ display: 'flex', flexDirection: 'column', width: '500PX' }}>
-                    <TextField label="Movie Title" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getMovieTitle(e)} />
-                    <TextField label="Release Date" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getReleaseDate(e)} />
+                    <TextField label="Movie Title" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getMovieTitle(e)} value={this.state.movieTitle} />
+                    <TextField label="Release Date" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getReleaseDate(e)} value={this.state.releaseDate} />
                     <TextField label="Rating" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getRating(e)} type="number" InputProps={{
-                        inputProps: { max: 10, min: 0 }}} />
+                        inputProps: { max: 10, min: 0 }
+                    }} value={this.state.rating} />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={this.state.handleClose} variant="outlined">Disagree</Button>
@@ -63,4 +64,4 @@ class AddMoviesDialog extends React.Component {
         );
     }
 }
-export default AddMoviesDialog;
+export default UpdateMovie;
