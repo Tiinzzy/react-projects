@@ -14,7 +14,14 @@ class PriceMenu extends React.Component {
         this.state = {
             anchorEl: null,
             selectedOption: 'NOT_DEFINED',
-            priceCallback: props.priceCallback
+            priceCallback: props.priceCallback,
+            value: props.value
+        };
+    }
+
+    componentDidMount() {
+        if (this.state.value !== undefined) {
+            this.setState({ selectedOption: this.state.value })
         };
     }
 
