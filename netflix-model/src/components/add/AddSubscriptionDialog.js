@@ -21,9 +21,17 @@ class AddSubscriptionDialog extends React.Component {
         }
     }
 
+    getStartDate(e) {
+        this.setState({ startDate: e.target.value });
+    }
+
+    getEndDate(e) {
+        this.setState({ endDate: e.target.value });
+    }
 
     agreeAndClose() {
         if (this.props.addClick === "Subscription") {
+            let query = { 'subscriptionType': '', 'price': '', 'expiryDate': this.state.endDate, 'subscriptionDate': this.state.startDate };
             backend.add_subscription(query, (data) => {
                 if (data === true) {
                     this.state.handleClose();
@@ -38,7 +46,9 @@ class AddSubscriptionDialog extends React.Component {
                 <DialogTitle id="alert-dialog-title" mb={2}>
                     {"Add " + this.state.addClick}
                 </DialogTitle>
-                <DialogContent>
+                <DialogContent style={{ display: 'flex', flexDirection: 'column', width: '450px' }}>
+                    <TextField label="Subscription Start Date" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getStartDate(e)} />
+                    <TextField label="Subscription End Date" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getEndDate(e)} />
                     <PriceMenu />
                     <TypeMenu />
                 </DialogContent>
