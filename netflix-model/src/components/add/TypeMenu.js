@@ -6,14 +6,14 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Typography from "@mui/material/Typography";
 
-const TYPE_OPTIONS = ['Monthly', 'Annualy', 'Not Defined'];
+const TYPE_OPTIONS = ['MONTHLY', 'ANNUALLY', 'NOT_DEFINED'];
 
 class TypeMenu extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             anchorEl: null,
-            selectedOption: 'Not Defined',
+            selectedOption: 'NOT_DEFINED',
             typeCallBack: props.typeCallBack
         };
     }

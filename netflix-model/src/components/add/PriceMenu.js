@@ -6,14 +6,14 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Typography from "@mui/material/Typography";
 
-const PRICE_OPTIONS = ['Single User', 'Multi User', 'Multi 4k', 'Not Defined'];
+const PRICE_OPTIONS = ['SINGLE_USER', 'MULTI_USER', 'MULTI_4K', 'NOT_DEFINED'];
 
 class PriceMenu extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             anchorEl: null,
-            selectedOption: 'Not Defined',
+            selectedOption: 'NOT_DEFINED',
             priceCallback: props.priceCallback
         };
     }
