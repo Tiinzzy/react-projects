@@ -36,7 +36,7 @@ class AddSubscriptionDialog extends React.Component {
             let query = { 'subscriptionType': this.state.type, 'price': this.state.price, 'expiryDate': this.state.endDate, 'subscriptionDate': this.state.startDate };
             backend.add_subscription(query, (data) => {
                 if (data === true) {
-                    this.state.handleClose();
+                    this.state.handleClose('reload subscription');
                 };
             })
         }

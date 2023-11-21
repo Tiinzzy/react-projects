@@ -28,7 +28,7 @@ class AddDialog extends React.Component {
             let query = { 'description': this.state.genreDescription };
             backend.add_genre(query, (data) => {
                 if (data === true) {
-                    this.state.handleClose();
+                    this.state.handleClose('reload genre');
                 };
             })
         }

@@ -36,7 +36,7 @@ class AddMoviesDialog extends React.Component {
             let query = { 'movieTitle': this.state.movieTitle, 'releaseDate': this.state.releaseDate, 'rating': this.state.rating };
             backend.add_movie(query, (data) => {
                 if (data === true) {
-                    this.state.handleClose('reload');
+                    this.state.handleClose('reload movie');
                 };
             })
         }
