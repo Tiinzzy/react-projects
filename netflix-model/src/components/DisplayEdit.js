@@ -2,7 +2,7 @@ import React from "react";
 
 import Box from '@mui/material/Box';
 
-import { eventEmitter } from './DisplayList';
+import { eventEmitter, eventUpdateEmitter } from './DisplayList';
 
 import BackEndConnection from './BackEndConnection';
 import ListAllGenre from './list/ListAllGenre';
@@ -39,6 +39,20 @@ class DisplayEdit extends React.Component {
                 this.handleTvSeries();
             }
         });
+
+        eventUpdateEmitter.on('reloadList', (data) => {
+            if (data.for === 'movie') {
+                this.handleMovies();
+            } else if (data.for === 'customer') {
+                this.handleCustomer();
+            } else if (data.for === 'genre') {
+                this.handleGenre();
+            } else if (data.for === 'subsription') {
+                this.handleSubscription();
+            } else if (data.for === 'tvseries') {
+                this.handleTvSeries();
+            }
+        })
     }
 
     handleCustomer() {
