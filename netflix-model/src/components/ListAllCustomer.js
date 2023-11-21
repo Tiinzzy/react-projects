@@ -3,20 +3,29 @@ import React from "react";
 import Box from '@mui/material/Box';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Dialog from '@mui/material/Dialog';
+
+import CustomerDelete from "./delete/CustomerDelete";
 
 class ListAllCustomer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            customerData: props.customerData
+            customerData: props.customerData,
+            openDialog: false
         }
+        this.handleCloseDialog = this.handleCloseDialog.bind(this);
     }
 
     componentDidMount() {
     }
 
-    dialogToDelete(e){
-        console.log(e)
+    dialogToDelete(e) {
+        this.setState({ openDialog: true, toBeDeleted: e })
+    }
+
+    handleCloseDialog() {
+        this.setState({ openDialog: false })
     }
 
     render() {
@@ -45,12 +54,15 @@ class ListAllCustomer extends React.Component {
                                     <TableCell>{e.name}</TableCell>
                                     <TableCell>{e.phoneNo}</TableCell>
                                     <TableCell>{e.email}</TableCell>
-                                    <TableCell><DeleteIcon onClick={() => this.dialogToDelete(e)} /></TableCell>
+                                    <TableCell><DeleteIcon onClick={() => this.dialogToDelete(e)} style={{ cursor: 'pointer' }} /></TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
                     </Table>
                 </TableContainer>
+                <Dialog open={this.state.openDialog} onClose={() => this.handleCloseDialog()}>
+                    <CustomerDelete closeDialog={this.handleCloseDialog} toBeDeleted={this.state.toBeDeleted}/>
+                </Dialog>
             </Box>
         );
     }
