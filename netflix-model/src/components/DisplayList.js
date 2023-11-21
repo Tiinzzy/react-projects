@@ -10,9 +10,9 @@ import Dialog from '@mui/material/Dialog';
 
 import EventEmitter from 'eventemitter3';
 
-import AddGenreDialog from "./AddGenreDialog";
-import AddCustomerDialog from "./AddCustomerDialog";
-import AddMoviesDialog from './AddMoviesDialog';
+import AddGenreDialog from "./add/AddGenreDialog";
+import AddCustomerDialog from "./add/AddCustomerDialog";
+import AddMoviesDialog from './add/AddMoviesDialog';
 
 export const eventEmitter = new EventEmitter();
 const NETFLIX_MODEL = ["Customer", "Genre", "Movies", "Subscription", "TV Series"];
@@ -39,8 +39,8 @@ class DisplayList extends React.Component {
     }
 
     handleCloseDialog(e) {
-        if(e && e === 'reload'){
-            this.setState({ openDialog: false, addClick: '' },()=>{
+        if (e && e === 'reload') {
+            this.setState({ openDialog: false, addClick: '' }, () => {
                 eventEmitter.emit('selectedItem', { item: this.state.addClick });
             });
         }
