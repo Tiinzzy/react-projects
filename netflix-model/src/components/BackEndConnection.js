@@ -136,6 +136,23 @@ class BackEndConnectionImpl {
                 return { result: false };
             })
     }
+
+    async delete_customer(query, callback) {
+        return axios.post('/customer/delete', query, { headers: { 'Content-Type': 'application/json' } })
+            .then(function (response) {
+                if (callback) {
+                    callback(response.data);
+                }
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+                if (callback) {
+                    callback({ result: false })
+                }
+                return { result: false };
+            })
+    }
 }
 
 export default class BackEndConnection {
