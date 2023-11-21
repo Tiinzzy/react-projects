@@ -16,6 +16,8 @@ import AddMoviesDialog from './add/AddMoviesDialog';
 import AddSubscriptionDialog from './add/AddSubscriptionDialog';
 
 export const eventEmitter = new EventEmitter();
+export const eventUpdateEmitter = new EventEmitter();
+
 const NETFLIX_MODEL = ["Customer", "Genre", "Movies", "Subscription", "TV Series"];
 
 class DisplayList extends React.Component {
@@ -36,16 +38,25 @@ class DisplayList extends React.Component {
     }
 
     addClicked(e) {
-        this.setState({ addClick: e, openDialog: true });
+        this.setState({ addClick: e, openDialog: true, readyData: e });
     }
 
     handleCloseDialog(e) {
-        if (e && e === 'reload') {
+        if (e) {
             this.setState({ openDialog: false, addClick: '' }, () => {
-                eventEmitter.emit('selectedItem', { item: this.state.addClick });
+                if (e === 'reload movie') {
+                    eventUpdateEmitter.emit('reloadList', { for: 'movie' })
+                } else if (e === 'reload customer') {
+                    eventUpdateEmitter.emit('reloadList', { for: 'customer' })
+                } else if (e === 'reload genre') {
+                    eventUpdateEmitter.emit('reloadList', { for: 'genre' })
+                } else if (e === 'reload subscription') {
+                    eventUpdateEmitter.emit('reloadList', { for: 'subsription' })
+                } else if (e === 'reload tvseries') {
+                    eventUpdateEmitter.emit('reloadList', { for: 'tvseries' })
+                }
             });
         }
-        this.setState({ openDialog: false, addClick: '' });
     }
 
     render() {
