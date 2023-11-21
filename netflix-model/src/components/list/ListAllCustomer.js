@@ -7,6 +7,10 @@ import Dialog from '@mui/material/Dialog';
 
 import CustomerDelete from "../delete/CustomerDelete"
 
+import EventEmitter from 'eventemitter3';
+
+export const customerUpdate = new EventEmitter();
+
 class ListAllCustomer extends React.Component {
     constructor(props) {
         super(props);
@@ -17,15 +21,19 @@ class ListAllCustomer extends React.Component {
         this.handleCloseDialog = this.handleCloseDialog.bind(this);
     }
 
-    componentDidMount() {
-    }
 
     dialogToDelete(e) {
         this.setState({ openDialog: true, toBeDeleted: e })
     }
 
-    handleCloseDialog() {
-        this.setState({ openDialog: false })
+    handleCloseDialog(e) {
+        if (e) {
+            this.setState({ openDialog: false }, () => {
+                if (e === 'reload customer') {
+                    customerUpdate.emit('update', { task: 'update' });
+                }
+            })
+        }
     }
 
     render() {
@@ -61,7 +69,7 @@ class ListAllCustomer extends React.Component {
                     </Table>
                 </TableContainer>
                 <Dialog open={this.state.openDialog} onClose={() => this.handleCloseDialog()}>
-                    <CustomerDelete closeDialog={this.handleCloseDialog} toBeDeleted={this.state.toBeDeleted}/>
+                    <CustomerDelete closeDialog={this.handleCloseDialog} toBeDeleted={this.state.toBeDeleted} />
                 </Dialog>
             </Box>
         );

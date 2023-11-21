@@ -26,7 +26,7 @@ class CustomerDelete extends React.Component {
         let query = { 'oid': this.state.toBeDeleted.oid };
         backend.delete_customer(query, (data) => {
             if(data === true){
-                this.state.closeDialog();
+                this.state.closeDialog('reload customer');
             };
         })
     }
