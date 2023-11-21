@@ -6,6 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Dialog from '@mui/material/Dialog';
 
 import MovieDelete from "../delete/MovieDelete";
+import UpdateMovie from '../edit/UpdateMovie';
 
 import EventEmitter from 'eventemitter3';
 
@@ -22,7 +23,7 @@ class ListAllMovie extends React.Component {
     }
 
     dialogToDelete(e) {
-        this.setState({ openDialog: true, toBeDeleted: e })
+        this.setState({ openDialog: true, toBeDeleted: e, selection: 'delete' })
     }
 
     handleCloseDialog(e) {
@@ -32,7 +33,13 @@ class ListAllMovie extends React.Component {
                     movieUpdate.emit('update', { task: 'update' });
                 }
             })
+        } else {
+            this.setState({ openDialog: false });
         }
+    }
+
+    openEdit(e) {
+        this.setState({ openDialog: true, toBeUpdated: e, selection: 'update' })
     }
 
     render() {
@@ -52,6 +59,7 @@ class ListAllMovie extends React.Component {
                         <TableBody>
                             {this.props.movieData.map((e, i) => (
                                 <TableRow
+                                    onDoubleClick={() => this.openEdit(e)}
                                     hover
                                     key={i}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
@@ -68,7 +76,8 @@ class ListAllMovie extends React.Component {
                     </Table>
                 </TableContainer>
                 <Dialog open={this.state.openDialog} onClose={() => this.handleCloseDialog()}>
-                    <MovieDelete closeDialog={this.handleCloseDialog} toBeDeleted={this.state.toBeDeleted} />
+                    {this.state.selection === 'delete' && <MovieDelete closeDialog={this.handleCloseDialog} toBeDeleted={this.state.toBeDeleted} />}
+                    {this.state.selection === 'update' && <UpdateMovie toBeUpdated={this.state.toBeUpdated} handleClose={this.handleCloseDialog} />}
                 </Dialog>
             </Box>
         );
