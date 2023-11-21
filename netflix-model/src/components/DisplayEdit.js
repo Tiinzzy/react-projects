@@ -87,6 +87,7 @@ class DisplayEdit extends React.Component {
 
     componentWillUnmount() {
         eventEmitter.off('selectedItem');
+        eventUpdateEmitter.off('reloadList');
     }
 
     render() {
