@@ -14,7 +14,14 @@ class TypeMenu extends React.Component {
         this.state = {
             anchorEl: null,
             selectedOption: 'NOT_DEFINED',
-            typeCallBack: props.typeCallBack
+            typeCallBack: props.typeCallBack,
+            value: props.value
+        };
+    }
+
+    componentDidMount() {
+        if (this.state.value !== undefined) {
+            this.setState({ selectedOption: this.state.value })
         };
     }
 
