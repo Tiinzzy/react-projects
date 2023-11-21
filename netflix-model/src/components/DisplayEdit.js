@@ -3,6 +3,10 @@ import React from "react";
 import Box from '@mui/material/Box';
 
 import { eventEmitter, eventUpdateEmitter } from './DisplayList';
+import { customerUpdate } from './list/ListAllCustomer';
+import { genreUpdate } from './list/ListAllGenre';
+import { movieUpdate } from './list/ListAllMovie';
+import { subscriptionUpdate } from './list/ListAllSubscription';
 
 import BackEndConnection from './BackEndConnection';
 import ListAllGenre from './list/ListAllGenre';
@@ -52,7 +56,28 @@ class DisplayEdit extends React.Component {
             } else if (data.for === 'tvseries') {
                 this.handleTvSeries();
             }
-        })
+        });
+
+        customerUpdate.on('update', (data) => {
+            if (data.task === 'update')
+                this.handleCustomer();
+        });
+
+        genreUpdate.on('update', (data) => {
+            if (data.task === 'update')
+                this.handleGenre();
+        });
+
+        movieUpdate.on('update', (data) => {
+            if (data.task === 'update')
+                this.handleMovies();
+        });
+
+        subscriptionUpdate.on('update', (data) => {
+            if (data.task === 'update')
+                this.handleSubscription();
+        });
+
     }
 
     handleCustomer() {
@@ -88,6 +113,10 @@ class DisplayEdit extends React.Component {
     componentWillUnmount() {
         eventEmitter.off('selectedItem');
         eventUpdateEmitter.off('reloadList');
+        customerUpdate.off('update');
+        genreUpdate.off('update');
+        movieUpdate.off('update');
+        subscriptionUpdate.off('update')
     }
 
     render() {
