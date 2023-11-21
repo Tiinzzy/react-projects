@@ -6,7 +6,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
-import BackEndConnection from './BackEndConnection';
+import BackEndConnection from '../BackEndConnection';
 
 const backend = BackEndConnection.INSTANCE();
 
@@ -28,7 +28,7 @@ class AddDialog extends React.Component {
             let query = { 'description': this.state.genreDescription };
             backend.add_genre(query, (data) => {
                 if (data === true) {
-                    this.state.handleClose();
+                    this.state.handleClose('reload genre');
                 };
             })
         }

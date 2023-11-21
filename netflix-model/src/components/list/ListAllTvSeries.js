@@ -3,11 +3,11 @@ import React from "react";
 import Box from '@mui/material/Box';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
-class ListAllMovie extends React.Component {
+class ListAllTvSeries extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            movieData: props.movieData
+            tvseriesData: props.tvseriesData
         }
     }
 
@@ -22,22 +22,23 @@ class ListAllMovie extends React.Component {
                         <TableHead>
                             <TableRow>
                                 <TableCell>OID</TableCell>
-                                <TableCell>Movie Title</TableCell>
-                                <TableCell>Release Date</TableCell>
-                                <TableCell>Rating</TableCell>
+                                <TableCell>Title</TableCell>
+                                <TableCell>Summary</TableCell>
+                                <TableCell>Start Date</TableCell>
+                                <TableCell>End Date</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {this.state.movieData.map((e, i) => (
+                            {this.props.tvseriesData.map((e, i) => (
                                 <TableRow
+                                    hover
                                     key={i}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                    <TableCell component="th" scope="e">
-                                        {e.oid}
-                                    </TableCell>
-                                    <TableCell>{e.movieTitle}</TableCell>
-                                    <TableCell>{e.releaseDate}</TableCell>
-                                    <TableCell>{e.rating}</TableCell>
+                                    <TableCell component="th" scope="e">{e.oid}</TableCell>
+                                    <TableCell>{e.title}</TableCell>
+                                    <TableCell>{e.summary}</TableCell>
+                                    <TableCell>{e.startDate}</TableCell>
+                                    <TableCell>{e.endDate}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -47,4 +48,4 @@ class ListAllMovie extends React.Component {
         );
     }
 }
-export default ListAllMovie;
+export default ListAllTvSeries;

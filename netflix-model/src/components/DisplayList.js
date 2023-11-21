@@ -10,11 +10,14 @@ import Dialog from '@mui/material/Dialog';
 
 import EventEmitter from 'eventemitter3';
 
-import AddGenreDialog from "./AddGenreDialog";
-import AddCustomerDialog from "./AddCustomerDialog";
-import AddMoviesDialog from './AddMoviesDialog';
+import AddGenreDialog from "./add/AddGenreDialog";
+import AddCustomerDialog from "./add/AddCustomerDialog";
+import AddMoviesDialog from './add/AddMoviesDialog';
+import AddSubscriptionDialog from './add/AddSubscriptionDialog';
 
 export const eventEmitter = new EventEmitter();
+export const eventUpdateEmitter = new EventEmitter();
+
 const NETFLIX_MODEL = ["Customer", "Genre", "Movies", "Subscription", "TV Series"];
 
 class DisplayList extends React.Component {
@@ -35,16 +38,27 @@ class DisplayList extends React.Component {
     }
 
     addClicked(e) {
-        this.setState({ addClick: e, openDialog: true });
+        this.setState({ addClick: e, openDialog: true, readyData: e });
     }
 
     handleCloseDialog(e) {
-        if(e && e === 'reload'){
-            this.setState({ openDialog: false, addClick: '' },()=>{
-                eventEmitter.emit('selectedItem', { item: this.state.addClick });
+        if (e) {
+            this.setState({ openDialog: false, addClick: '' }, () => {
+                if (e === 'reload movie') {
+                    eventUpdateEmitter.emit('reloadList', { for: 'movie' });
+                } else if (e === 'reload customer') {
+                    eventUpdateEmitter.emit('reloadList', { for: 'customer' });
+                } else if (e === 'reload genre') {
+                    eventUpdateEmitter.emit('reloadList', { for: 'genre' });
+                } else if (e === 'reload subscription') {
+                    eventUpdateEmitter.emit('reloadList', { for: 'subsription' });
+                } else if (e === 'reload tvseries') {
+                    eventUpdateEmitter.emit('reloadList', { for: 'tvseries' });
+                }
             });
+        } else {
+            this.setState({ openDialog: false, addClick: '' });
         }
-        this.setState({ openDialog: false, addClick: '' });
     }
 
     render() {
@@ -67,6 +81,7 @@ class DisplayList extends React.Component {
                     {this.state.addClick === "Genre" && <AddGenreDialog addClick={this.state.addClick} handleClose={this.handleCloseDialog} />}
                     {this.state.addClick === "Customer" && <AddCustomerDialog addClick={this.state.addClick} handleClose={this.handleCloseDialog} />}
                     {this.state.addClick === "Movies" && <AddMoviesDialog addClick={this.state.addClick} handleClose={this.handleCloseDialog} />}
+                    {this.state.addClick === "Subscription" && <AddSubscriptionDialog addClick={this.state.addClick} handleClose={this.handleCloseDialog} />}
                 </Dialog>
             </Box>
         );

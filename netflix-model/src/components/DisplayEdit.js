@@ -2,13 +2,18 @@ import React from "react";
 
 import Box from '@mui/material/Box';
 
-import { eventEmitter } from './DisplayList';
+import { eventEmitter, eventUpdateEmitter } from './DisplayList';
+import { customerUpdate } from './list/ListAllCustomer';
+import { genreUpdate } from './list/ListAllGenre';
+import { movieUpdate } from './list/ListAllMovie';
+import { subscriptionUpdate } from './list/ListAllSubscription';
+
 import BackEndConnection from './BackEndConnection';
-import ListAllGenre from './ListAllGenre';
-import ListAllCustomer from "./ListAllCustomer";
-import ListAllMovie from "./ListAllMovie";
-import ListAllSubscription from "./ListAllSubscription";
-import ListAllTvSeries from "./ListAllTvSeries";
+import ListAllGenre from './list/ListAllGenre';
+import ListAllCustomer from "./list/ListAllCustomer";
+import ListAllMovie from "./list/ListAllMovie";
+import ListAllSubscription from "./list/ListAllSubscription";
+import ListAllTvSeries from "./list/ListAllTvSeries";
 
 const backend = BackEndConnection.INSTANCE();
 
@@ -38,6 +43,41 @@ class DisplayEdit extends React.Component {
                 this.handleTvSeries();
             }
         });
+
+        eventUpdateEmitter.on('reloadList', (data) => {
+            if (data.for === 'movie') {
+                this.handleMovies();
+            } else if (data.for === 'customer') {
+                this.handleCustomer();
+            } else if (data.for === 'genre') {
+                this.handleGenre();
+            } else if (data.for === 'subsription') {
+                this.handleSubscription();
+            } else if (data.for === 'tvseries') {
+                this.handleTvSeries();
+            }
+        });
+
+        customerUpdate.on('update', (data) => {
+            if (data.task === 'update')
+                this.handleCustomer();
+        });
+
+        genreUpdate.on('update', (data) => {
+            if (data.task === 'update')
+                this.handleGenre();
+        });
+
+        movieUpdate.on('update', (data) => {
+            if (data.task === 'update')
+                this.handleMovies();
+        });
+
+        subscriptionUpdate.on('update', (data) => {
+            if (data.task === 'update')
+                this.handleSubscription();
+        });
+
     }
 
     handleCustomer() {
@@ -72,6 +112,11 @@ class DisplayEdit extends React.Component {
 
     componentWillUnmount() {
         eventEmitter.off('selectedItem');
+        eventUpdateEmitter.off('reloadList');
+        customerUpdate.off('update');
+        genreUpdate.off('update');
+        movieUpdate.off('update');
+        subscriptionUpdate.off('update')
     }
 
     render() {

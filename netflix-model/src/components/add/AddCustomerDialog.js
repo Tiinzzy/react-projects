@@ -6,7 +6,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
-import BackEndConnection from './BackEndConnection';
+import BackEndConnection from '../BackEndConnection';
 
 const backend = BackEndConnection.INSTANCE();
 
@@ -36,9 +36,10 @@ class AddCustomerDialog extends React.Component {
             let query = { 'name': this.state.customerName, 'phoneNo': this.state.phoneNumber, 'email': this.state.email };
             backend.add_customer(query, (data) => {
                 if (data === true) {
-                    this.state.handleClose();
+                    this.state.handleClose('reload customer');
                 };
-            })        }
+            })
+        }
 
     }
 
