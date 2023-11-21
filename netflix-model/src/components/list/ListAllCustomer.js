@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import DeleteIcon from '@mui/icons-material/Delete';
 import Dialog from '@mui/material/Dialog';
 
-import CustomerDelete from "./delete/CustomerDelete";
+import CustomerDelete from "../delete/CustomerDelete"
 
 class ListAllCustomer extends React.Component {
     constructor(props) {
