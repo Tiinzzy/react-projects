@@ -2,18 +2,28 @@ import React from "react";
 
 import Box from '@mui/material/Box';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Dialog from '@mui/material/Dialog';
+
+import MovieDelete from "../delete/MovieDelete";
 
 class ListAllMovie extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            movieData: props.movieData
+            movieData: props.movieData,
+            openDialog: false
         }
+        this.handleCloseDialog = this.handleCloseDialog.bind(this);
     }
 
-    componentDidMount() {
+    dialogToDelete(e) {
+        this.setState({ openDialog: true, toBeDeleted: e })
     }
 
+    handleCloseDialog() {
+        this.setState({ openDialog: false })
+    }
     render() {
         return (
             <Box>
@@ -25,6 +35,7 @@ class ListAllMovie extends React.Component {
                                 <TableCell>Movie Title</TableCell>
                                 <TableCell>Release Date</TableCell>
                                 <TableCell>Rating</TableCell>
+                                <TableCell></TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -39,11 +50,15 @@ class ListAllMovie extends React.Component {
                                     <TableCell>{e.movieTitle}</TableCell>
                                     <TableCell>{e.releaseDate}</TableCell>
                                     <TableCell>{e.rating}</TableCell>
+                                    <TableCell><DeleteIcon onClick={() => this.dialogToDelete(e)} style={{ cursor: 'pointer' }} /></TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
                     </Table>
                 </TableContainer>
+                <Dialog open={this.state.openDialog} onClose={() => this.handleCloseDialog()}>
+                    <MovieDelete closeDialog={this.handleCloseDialog} toBeDeleted={this.state.toBeDeleted} />
+                </Dialog>
             </Box>
         );
     }
