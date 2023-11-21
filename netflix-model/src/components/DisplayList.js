@@ -56,6 +56,8 @@ class DisplayList extends React.Component {
                     eventUpdateEmitter.emit('reloadList', { for: 'tvseries' });
                 }
             });
+        } else {
+            this.setState({ openDialog: false, addClick: '' });
         }
     }
 
