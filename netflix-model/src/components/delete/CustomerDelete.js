@@ -1,17 +1,16 @@
 import React from "react";
 
 import DialogActions from '@mui/material/DialogActions';
-import FormLabel from '@mui/material/FormLabel';
-import FormControl from '@mui/material/FormControl';
-import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import FormHelperText from '@mui/material/FormHelperText';
 import Checkbox from '@mui/material/Checkbox';
 import DialogContent from '@mui/material/DialogContent';
 import Typography from '@mui/material/Typography';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 
+import BackEndConnection from '../BackEndConnection';
+
+const backend = BackEndConnection.INSTANCE();
 
 class CustomerDelete extends React.Component {
     constructor(props) {
@@ -23,12 +22,13 @@ class CustomerDelete extends React.Component {
         }
     }
 
-    componentDidMount() {
-        console.log(this.state.toBeDeleted)
-    }
-
     agreeAndClose() {
-
+        let query = { 'oid': this.state.toBeDeleted.oid };
+        backend.delete_customer(query, (data) => {
+            if(data === true){
+                this.state.closeDialog();
+            };
+        })
     }
 
     handleCheckBox() {
