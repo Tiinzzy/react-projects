@@ -29,7 +29,7 @@ class ListAllTvSeries extends React.Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {this.state.tvseriesData.map((e, i) => (
+                            {this.props.tvseriesData.map((e, i) => (
                                 <TableRow
                                     hover
                                     key={i}

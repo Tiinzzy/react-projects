@@ -38,7 +38,7 @@ class ListAllGenre extends React.Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {this.state.genreData.map((e, i) => (
+                            {this.props.genreData.map((e, i) => (
                                 <TableRow
                                     hover
                                     key={i}

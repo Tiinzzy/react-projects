@@ -41,7 +41,7 @@ class ListAllSubscription extends React.Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {this.state.subscriptionData.map((e, i) => (
+                            {this.props.subscriptionData.map((e, i) => (
                                 <TableRow
                                     hover
                                     key={i}

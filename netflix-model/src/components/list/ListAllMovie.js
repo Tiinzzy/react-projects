@@ -24,6 +24,7 @@ class ListAllMovie extends React.Component {
     handleCloseDialog() {
         this.setState({ openDialog: false })
     }
+
     render() {
         return (
             <Box>
@@ -39,7 +40,7 @@ class ListAllMovie extends React.Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {this.state.movieData.map((e, i) => (
+                            {this.props.movieData.map((e, i) => (
                                 <TableRow
                                     hover
                                     key={i}

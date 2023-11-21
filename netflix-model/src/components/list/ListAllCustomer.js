@@ -43,7 +43,7 @@ class ListAllCustomer extends React.Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {this.state.customerData.map((e, i) => (
+                            {this.props.customerData.map((e, i) => (
                                 <TableRow
                                     hover
                                     key={i}
