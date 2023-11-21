@@ -29,7 +29,7 @@ class PriceMenu extends React.Component {
 
     render() {
         return (
-            <div>
+            <>
                 <Button aria-controls="simple-menu" aria-haspopup="true" onClick={(e) => this.handleClick(e)} variant="outlined">
                     {this.state.selectedOption}
                 </Button>
@@ -39,15 +39,13 @@ class PriceMenu extends React.Component {
                     keepMounted
                     open={Boolean(this.state.anchorEl)}
                     onClose={() => this.handleClose()}>
-                    {PRICE_OPTIONS.map((e,i) => (
+                    {PRICE_OPTIONS.map((e, i) => (
                         <MenuItem key={i} selected={e === this.state.selectedOption} onClick={() => this.handleSelect(e)}>
                             {e}
                         </MenuItem>
                     ))}
                 </Menu>
-            </div>
+            </>
         );
     }
-}
-
-export default PriceMenu;
+} export default PriceMenu;
