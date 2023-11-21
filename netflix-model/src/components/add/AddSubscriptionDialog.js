@@ -19,6 +19,8 @@ class AddSubscriptionDialog extends React.Component {
             addClick: props.addClick,
             handleClose: props.handleClose
         }
+        this.priceCallback = this.priceCallback.bind(this);
+        this.typeCallBack = this.typeCallBack.bind(this);
     }
 
     getStartDate(e) {
@@ -31,13 +33,21 @@ class AddSubscriptionDialog extends React.Component {
 
     agreeAndClose() {
         if (this.props.addClick === "Subscription") {
-            let query = { 'subscriptionType': '', 'price': '', 'expiryDate': this.state.endDate, 'subscriptionDate': this.state.startDate };
+            let query = { 'subscriptionType': this.state.type, 'price': this.state.price, 'expiryDate': this.state.endDate, 'subscriptionDate': this.state.startDate };
             backend.add_subscription(query, (data) => {
                 if (data === true) {
                     this.state.handleClose();
                 };
             })
         }
+    }
+
+    priceCallback(price) {
+        this.setState({ price: price });
+    }
+
+    typeCallBack(type) {
+        this.setState({ type: type });
     }
 
     render() {
@@ -49,8 +59,8 @@ class AddSubscriptionDialog extends React.Component {
                 <DialogContent style={{ display: 'flex', flexDirection: 'column', width: '450px' }}>
                     <TextField label="Subscription Start Date" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getStartDate(e)} />
                     <TextField label="Subscription End Date" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getEndDate(e)} />
-                    <PriceMenu />
-                    <TypeMenu />
+                    <PriceMenu priceCallback={this.priceCallback} />
+                    <TypeMenu typeCallBack={this.typeCallBack} />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={this.state.handleClose} variant="outlined">Disagree</Button>
