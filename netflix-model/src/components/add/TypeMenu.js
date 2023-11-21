@@ -3,6 +3,7 @@ import React from "react";
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 
 const TYPE_OPTIONS = ['Monthly', 'Annualy', 'Not Defined'];
 
@@ -29,7 +30,7 @@ class TypeMenu extends React.Component {
 
     render() {
         return (
-            <>
+            <Box style={{ marginTop: 10, marginBottom: 10, marginLeft: 10 }}>
                 <Button aria-controls="simple-menu" aria-haspopup="true" onClick={(e) => this.handleClick(e)} variant="outlined">
                     {this.state.selectedOption}
                 </Button>
@@ -45,7 +46,7 @@ class TypeMenu extends React.Component {
                         </MenuItem>
                     ))}
                 </Menu>
-            </>
+            </Box>
         );
     }
 } export default TypeMenu;
