@@ -4,6 +4,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
+import Typography from "@mui/material/Typography";
 
 const TYPE_OPTIONS = ['Monthly', 'Annualy', 'Not Defined'];
 
@@ -12,7 +13,8 @@ class TypeMenu extends React.Component {
         super(props);
         this.state = {
             anchorEl: null,
-            selectedOption: 'Not Defined'
+            selectedOption: 'Not Defined',
+            typeCallBack: props.typeCallBack
         };
     }
 
@@ -25,12 +27,15 @@ class TypeMenu extends React.Component {
     };
 
     handleSelect(option) {
-        this.setState({ selectedOption: option, anchorEl: null });
+        this.setState({ selectedOption: option, anchorEl: null }, () => {
+            this.state.typeCallBack(this.state.selectedOption);
+        });
     };
 
     render() {
         return (
             <Box style={{ marginTop: 10, marginBottom: 10, marginLeft: 10 }}>
+                <Typography mb={1}>Subscription Type:</Typography>
                 <Button aria-controls="simple-menu" aria-haspopup="true" onClick={(e) => this.handleClick(e)} variant="outlined">
                     {this.state.selectedOption}
                 </Button>
