@@ -30,6 +30,7 @@ class ListAllMovie extends React.Component {
                         <TableBody>
                             {this.state.movieData.map((e, i) => (
                                 <TableRow
+                                    hover
                                     key={i}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                     <TableCell component="th" scope="e">

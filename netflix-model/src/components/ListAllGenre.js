@@ -28,6 +28,7 @@ class ListAllGenre extends React.Component {
                         <TableBody>
                             {this.state.genreData.map((e, i) => (
                                 <TableRow
+                                    hover
                                     key={i}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                     <TableCell component="th" scope="e">
