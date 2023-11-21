@@ -13,6 +13,7 @@ import EventEmitter from 'eventemitter3';
 import AddGenreDialog from "./add/AddGenreDialog";
 import AddCustomerDialog from "./add/AddCustomerDialog";
 import AddMoviesDialog from './add/AddMoviesDialog';
+import AddSubscriptionDialog from './add/AddSubscriptionDialog';
 
 export const eventEmitter = new EventEmitter();
 const NETFLIX_MODEL = ["Customer", "Genre", "Movies", "Subscription", "TV Series"];
@@ -67,6 +68,7 @@ class DisplayList extends React.Component {
                     {this.state.addClick === "Genre" && <AddGenreDialog addClick={this.state.addClick} handleClose={this.handleCloseDialog} />}
                     {this.state.addClick === "Customer" && <AddCustomerDialog addClick={this.state.addClick} handleClose={this.handleCloseDialog} />}
                     {this.state.addClick === "Movies" && <AddMoviesDialog addClick={this.state.addClick} handleClose={this.handleCloseDialog} />}
+                    {this.state.addClick === "Subscription" && <AddSubscriptionDialog addClick={this.state.addClick} handleClose={this.handleCloseDialog} />}
                 </Dialog>
             </Box>
         );
