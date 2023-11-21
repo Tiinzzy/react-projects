@@ -7,6 +7,10 @@ import Dialog from '@mui/material/Dialog';
 
 import GenreDelete from "../delete/GenreDelete";
 
+import EventEmitter from 'eventemitter3';
+
+export const genreUpdate = new EventEmitter();
+
 class ListAllGenre extends React.Component {
     constructor(props) {
         super(props);
@@ -21,8 +25,14 @@ class ListAllGenre extends React.Component {
         this.setState({ openDialog: true, toBeDeleted: e })
     }
 
-    handleCloseDialog() {
-        this.setState({ openDialog: false })
+    handleCloseDialog(e) {
+        if (e) {
+            this.setState({ openDialog: false }, () => {
+                if (e === 'reload genre') {
+                    genreUpdate.emit('update', { task: 'update' });
+                }
+            })
+        }
     }
 
     render() {
@@ -51,7 +61,7 @@ class ListAllGenre extends React.Component {
                     </Table>
                 </TableContainer>
                 <Dialog open={this.state.openDialog} onClose={() => this.handleCloseDialog()}>
-                    <GenreDelete closeDialog={this.handleCloseDialog} toBeDeleted={this.state.toBeDeleted}/>
+                    <GenreDelete closeDialog={this.handleCloseDialog} toBeDeleted={this.state.toBeDeleted} />
                 </Dialog>
             </Box>
         );
