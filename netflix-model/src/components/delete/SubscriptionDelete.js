@@ -26,7 +26,7 @@ class SubscriptionDelete extends React.Component {
         let query = { 'oid': this.props.toBeDeleted.oid };
         backend.delete_subscription(query, (data) => {
             if (data === true) {
-                this.state.closeDialog();
+                this.state.closeDialog('reload subscription');
             };
         })
     }

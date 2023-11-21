@@ -7,6 +7,10 @@ import Dialog from '@mui/material/Dialog';
 
 import SubscriptionDelete from "../delete/SubscriptionDelete";
 
+import EventEmitter from 'eventemitter3';
+
+export const subscriptionUpdate = new EventEmitter();
+
 class ListAllSubscription extends React.Component {
     constructor(props) {
         super(props);
@@ -18,11 +22,17 @@ class ListAllSubscription extends React.Component {
     }
 
     dialogToDelete(e) {
-        this.setState({ openDialog: true, toBeDeleted: e })
+        this.setState({ openDialog: true, toBeDeleted: e });
     }
 
-    handleCloseDialog() {
-        this.setState({ openDialog: false })
+    handleCloseDialog(e) {
+        if (e) {
+            this.setState({ openDialog: false }, () => {
+                if (e === 'reload subscription') {
+                    subscriptionUpdate.emit('update', { task: 'update' });
+                }
+            })
+        }
     }
 
     render() {
