@@ -8,6 +8,7 @@ import Dialog from '@mui/material/Dialog';
 import CustomerDelete from "../delete/CustomerDelete"
 
 import EventEmitter from 'eventemitter3';
+import UpdateCustomer from "../edit/UpdateCustomer";
 
 export const customerUpdate = new EventEmitter();
 
@@ -23,7 +24,7 @@ class ListAllCustomer extends React.Component {
 
 
     dialogToDelete(e) {
-        this.setState({ openDialog: true, toBeDeleted: e })
+        this.setState({ openDialog: true, toBeDeleted: e, selection: 'delete' })
     }
 
     handleCloseDialog(e) {
@@ -33,7 +34,13 @@ class ListAllCustomer extends React.Component {
                     customerUpdate.emit('update', { task: 'update' });
                 }
             })
+        } else {
+            this.setState({ openDialog: false });
         }
+    }
+
+    openEdit(e) {
+        this.setState({ openDialog: true, toBeUpdated: e, selection: 'update' })
     }
 
     render() {
@@ -53,6 +60,7 @@ class ListAllCustomer extends React.Component {
                         <TableBody>
                             {this.props.customerData.map((e, i) => (
                                 <TableRow
+                                    onDoubleClick={() => this.openEdit(e)}
                                     hover
                                     key={i}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
@@ -69,7 +77,8 @@ class ListAllCustomer extends React.Component {
                     </Table>
                 </TableContainer>
                 <Dialog open={this.state.openDialog} onClose={() => this.handleCloseDialog()}>
-                    <CustomerDelete closeDialog={this.handleCloseDialog} toBeDeleted={this.state.toBeDeleted} />
+                    {this.state.selection === 'delete' && <CustomerDelete closeDialog={this.handleCloseDialog} toBeDeleted={this.state.toBeDeleted} />}
+                    {this.state.selection === 'update' && <UpdateCustomer toBeUpdated={this.state.toBeUpdated} handleClose={this.handleCloseDialog} />}
                 </Dialog>
             </Box>
         );
