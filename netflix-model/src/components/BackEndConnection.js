@@ -222,6 +222,23 @@ class BackEndConnectionImpl {
             })
     }
 
+    async update_customer(query, callback) {
+        return axios.post('/customer/update', query, { headers: { 'Content-Type': 'application/json' } })
+            .then(function (response) {
+                if (callback) {
+                    callback(response.data);
+                }
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+                if (callback) {
+                    callback({ result: false })
+                }
+                return { result: false };
+            })
+    }
+
 
 }
 
