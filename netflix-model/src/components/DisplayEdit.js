@@ -81,7 +81,7 @@ class DisplayEdit extends React.Component {
 
         tvSeriesUpdate.on('update', (data) => {
             if (data.task === 'update')
-                this.handleSubscription();
+                this.handleTvSeries();
         });
 
     }
