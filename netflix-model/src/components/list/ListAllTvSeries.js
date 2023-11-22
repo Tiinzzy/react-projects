@@ -76,7 +76,7 @@ class ListAllTvSeries extends React.Component {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <Dialog open={this.state.openDialog} onClose={() => this.handleCloseDialog()}>
+                <Dialog open={this.state.openDialog} onClose={() => this.handleCloseDialog()} maxWidth="md" fullWidth={true}>
                     {this.state.selection === 'delete' && <TvSeriesDelete closeDialog={this.handleCloseDialog} toBeDeleted={this.state.toBeDeleted} />}
                     {this.state.selection === 'update' && <UpdateTvSeries toBeUpdated={this.state.toBeUpdated} handleClose={this.handleCloseDialog} />}
                 </Dialog>
