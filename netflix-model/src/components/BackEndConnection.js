@@ -307,6 +307,23 @@ class BackEndConnectionImpl {
             })
     }
 
+    async load_tv_seasons(query, callback) {
+        return axios.post('/tvseries/load-seasons', query, { headers: { 'Content-Type': 'application/json' } })
+            .then(function (response) {
+                if (callback) {
+                    callback(response.data);
+                }
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+                if (callback) {
+                    callback({ result: false })
+                }
+                return { result: false };
+            })
+    }
+
 
 }
 
