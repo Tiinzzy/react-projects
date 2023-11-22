@@ -55,11 +55,16 @@ class UpdateTvSeries extends React.Component {
     }
 
     agreeAndClose() {
-        let query = { 'oid': this.state.toBeUpdated.oid, 'title': this.state.title, 'summary': this.state.summary, 'startDate': this.state.startDate, 'endDate': this.state.endDate };
+        let query = {
+            'oid': this.state.toBeUpdated.oid, 'title': this.state.title, 'summary': this.state.summary,
+            'startDate': this.state.startDate, 'endDate': this.state.endDate, 'action': 'update'
+        };
         if (this.state.hasSeason) {
             query.seasonNumber = this.state.seasonNum * 1;
             query.seasonStartDate = this.state.seasonStartDate;
             query.seasonEndDate = this.state.seasonEndDate;
+            query.action = this.state.action;
+            query.seasonOid = this.state.seasons[0].oid;
         }
         backend.update_tvseries(query, (data) => {
             if (data === true) {
@@ -85,7 +90,7 @@ class UpdateTvSeries extends React.Component {
     }
 
     addSeason() {
-        this.setState({ hasSeason: true, seasonNum: '', seasonStartDate: '', seasonEndDate: '' });
+        this.setState({ hasSeason: true, seasonNum: '', seasonStartDate: '', seasonEndDate: '', action: 'addNew' });
     }
 
     render() {
