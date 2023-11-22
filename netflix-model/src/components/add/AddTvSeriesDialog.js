@@ -17,7 +17,8 @@ class AddTvSeriesDialog extends React.Component {
         super(props);
         this.state = {
             addClick: props.addClick,
-            handleClose: props.handleClose
+            handleClose: props.handleClose,
+            displayEpisode: false
         }
     }
 
@@ -39,6 +40,11 @@ class AddTvSeriesDialog extends React.Component {
 
     agreeAndClose() {
         let query = { 'title': this.state.title, 'summary': this.state.summary, 'startDate': this.state.startDate, 'endDate': this.state.endDate };
+        if (this.state.displayEpisode) {
+            query.seasonNumber = this.state.seasonNum * 1;
+            query.seasonStartDate = this.state.seasonStartDate;
+            query.seasonEndDate = this.state.seasonEndDate;
+        }
         backend.add_tvseries(query, (data) => {
             if (data === true) {
                 this.state.handleClose('reload tvseries');
@@ -46,8 +52,20 @@ class AddTvSeriesDialog extends React.Component {
         })
     }
 
-    openEpisodeDetail(){
-        console.log(11)
+    openEpisodeDetail() {
+        this.setState({ displayEpisode: !this.state.displayEpisode });
+    }
+
+    getSeasonNum(e) {
+        this.setState({ seasonNum: e.target.value * 1 });
+    }
+
+    getSeasonStartDate(e) {
+        this.setState({ seasonStartDate: e.target.value });
+    }
+
+    getSeasonEndDate(e) {
+        this.setState({ seasonEndDate: e.target.value });
     }
 
     render() {
@@ -63,9 +81,14 @@ class AddTvSeriesDialog extends React.Component {
                         <TextField label="Start Date" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getStartDate(e)} size='small' />
                         <TextField label="End Date" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getEndDate(e)} size='small' />
                     </Box>
-                    <Button variant="contained" size="small" style={{ marginLeft: 'auto', marginBottom: 15 }} onClick={() => this.openEpisodeDetail()}>Add Episode</Button>
-
+                    <Button variant="contained" size="small" style={{ marginLeft: 'auto', marginBottom: 15 }} onClick={() => this.openEpisodeDetail()}>Add Season</Button>
                     <Divider />
+                    {this.state.displayEpisode &&
+                        <Box style={{ marginTop: 15 }}>
+                            <TextField label="Season Number" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getSeasonNum(e)} size='small' />
+                            <TextField label="Start Date" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getSeasonStartDate(e)} size='small' />
+                            <TextField label="End Date" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getSeasonEndDate(e)} size='small' />
+                        </Box>}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={this.state.handleClose} variant="outlined">Disagree</Button>
