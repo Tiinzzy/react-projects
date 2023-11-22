@@ -14,6 +14,7 @@ import AddGenreDialog from "./add/AddGenreDialog";
 import AddCustomerDialog from "./add/AddCustomerDialog";
 import AddMoviesDialog from './add/AddMoviesDialog';
 import AddSubscriptionDialog from './add/AddSubscriptionDialog';
+import AddTvSeriesDialog from './add/AddTvSeriesDialog';
 
 export const eventEmitter = new EventEmitter();
 export const eventUpdateEmitter = new EventEmitter();
@@ -77,11 +78,12 @@ class DisplayList extends React.Component {
                         ))}
                     </List>
                 </nav>
-                <Dialog open={this.state.openDialog} onClose={() => this.handleCloseDialog()}>
+                <Dialog open={this.state.openDialog} onClose={() => this.handleCloseDialog()} maxWidth="lg">
                     {this.state.addClick === "Genre" && <AddGenreDialog addClick={this.state.addClick} handleClose={this.handleCloseDialog} />}
                     {this.state.addClick === "Customer" && <AddCustomerDialog addClick={this.state.addClick} handleClose={this.handleCloseDialog} />}
                     {this.state.addClick === "Movies" && <AddMoviesDialog addClick={this.state.addClick} handleClose={this.handleCloseDialog} />}
                     {this.state.addClick === "Subscription" && <AddSubscriptionDialog addClick={this.state.addClick} handleClose={this.handleCloseDialog} />}
+                    {this.state.addClick === "TV Series" && <AddTvSeriesDialog addClick={this.state.addClick} handleClose={this.handleCloseDialog} />}
                 </Dialog>
             </Box>
         );
