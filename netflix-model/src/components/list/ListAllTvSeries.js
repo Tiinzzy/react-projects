@@ -11,9 +11,6 @@ class ListAllTvSeries extends React.Component {
         }
     }
 
-    componentDidMount() {
-    }
-
     render() {
         return (
             <Box>
