@@ -6,9 +6,11 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from "@mui/material/Box";
+import AddBoxIcon from '@mui/icons-material/AddBox';
 import Divider from "@mui/material/Divider";
 
 import BackEndConnection from '../BackEndConnection';
+import { Typography } from "@mui/material";
 
 const backend = BackEndConnection.INSTANCE();
 
@@ -29,7 +31,7 @@ class UpdateTvSeries extends React.Component {
         let query = { 'oid': this.state.toBeUpdated.oid };
         backend.load_tv_seasons(query, (data) => {
             if (data.length > 0) {
-                this.setState({ hasSeason: true, seasons: data });
+                this.setState({ seasons: data });
             } else {
                 this.setState({ hasSeason: false });
             }
@@ -54,11 +56,20 @@ class UpdateTvSeries extends React.Component {
 
     agreeAndClose() {
         let query = { 'oid': this.state.toBeUpdated.oid, 'title': this.state.title, 'summary': this.state.summary, 'startDate': this.state.startDate, 'endDate': this.state.endDate };
+        if (this.state.hasSeason) {
+            query.seasonNumber = this.state.seasonNum * 1;
+            query.seasonStartDate = this.state.seasonStartDate;
+            query.seasonEndDate = this.state.seasonEndDate;
+        }
         backend.update_tvseries(query, (data) => {
             if (data === true) {
                 this.state.handleClose('reload tvseries');
             };
         })
+    }
+
+    handleClickedSeason(e) {
+        this.setState({ hasSeason: true, seasonNum: e.seasonNumber, seasonStartDate: e.startDate, seasonEndDate: e.endDate });
     }
 
     getSeasonNum(e) {
@@ -73,6 +84,10 @@ class UpdateTvSeries extends React.Component {
         this.setState({ seasonEndDate: e.target.value });
     }
 
+    addSeason() {
+        this.setState({ hasSeason: true, seasonNum: '', seasonStartDate: '', seasonEndDate: '' });
+    }
+
     render() {
         return (
             <Box style={{ width: '500px' }}>
@@ -85,13 +100,21 @@ class UpdateTvSeries extends React.Component {
                         <TextField label="Summary" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getSummary(e)} size='small' value={this.state.summary} />
                         <TextField label="Start Date" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getStartDate(e)} size='small' value={this.state.startDate} />
                         <TextField label="End Date" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getEndDate(e)} size='small' value={this.state.endDate} />
+                        <Typography style={{ margin: 10, display: 'flex', alignItems: 'center' }}>Seasons:
+                            {this.state.seasons && this.state.seasons.map((e, i) => (
+                                <span key={i} style={{ paddingLeft: 5, fontWeight: 'bold', cursor: 'pointer' }} onClick={() => this.handleClickedSeason(e)}>{e.seasonNumber}</span>))}
+                            <AddBoxIcon onClick={() => this.addSeason()} style={{ 'cursor': 'pointer', marginLeft: 'auto' }} />
+                        </Typography>
                     </Box>
                     <Divider />
                     {this.state.hasSeason &&
                         <Box style={{ marginTop: 15 }}>
-                            <TextField label="Season Number" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getSeasonNum(e)} size='small' />
-                            <TextField label="Start Date" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getSeasonStartDate(e)} size='small' />
-                            <TextField label="End Date" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getSeasonEndDate(e)} size='small' />
+                            <TextField label="Season Number" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getSeasonNum(e)} size='small'
+                                value={this.state.seasonNum} />
+                            <TextField label="Start Date" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getSeasonStartDate(e)} size='small'
+                                value={this.state.seasonStartDate} />
+                            <TextField label="End Date" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getSeasonEndDate(e)} size='small'
+                                value={this.state.seasonEndDate} />
                         </Box>}
                 </DialogContent>
                 <DialogActions>
