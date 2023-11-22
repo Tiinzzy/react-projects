@@ -7,6 +7,7 @@ import { customerUpdate } from './list/ListAllCustomer';
 import { genreUpdate } from './list/ListAllGenre';
 import { movieUpdate } from './list/ListAllMovie';
 import { subscriptionUpdate } from './list/ListAllSubscription';
+import { tvSeriesUpdate } from './list/ListAllTvSeries';
 
 import BackEndConnection from './BackEndConnection';
 import ListAllGenre from './list/ListAllGenre';
@@ -78,6 +79,11 @@ class DisplayEdit extends React.Component {
                 this.handleSubscription();
         });
 
+        tvSeriesUpdate.on('update', (data) => {
+            if (data.task === 'update')
+                this.handleSubscription();
+        });
+
     }
 
     handleCustomer() {
@@ -116,7 +122,8 @@ class DisplayEdit extends React.Component {
         customerUpdate.off('update');
         genreUpdate.off('update');
         movieUpdate.off('update');
-        subscriptionUpdate.off('update')
+        subscriptionUpdate.off('update');
+        tvSeriesUpdate.off('update');
     }
 
     render() {
