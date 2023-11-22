@@ -16,10 +16,24 @@ class UpdateTvSeries extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            addClick: props.addClick,
+            toBeUpdated: props.toBeUpdated,
             handleClose: props.handleClose,
-            displayEpisode: false
+            title: props.toBeUpdated.title,
+            summary: props.toBeUpdated.summary,
+            startDate: props.toBeUpdated.startDate,
+            endDate: props.toBeUpdated.endDate
         }
+    }
+
+    componentDidMount() {
+        let query = { 'oid': this.state.toBeUpdated.oid };
+        backend.load_tv_seasons(query, (data) => {
+            if (data.length > 0) {
+                this.setState({ hasSeason: true, seasons: data });
+            } else {
+                this.setState({ hasSeason: false });
+            }
+        })
     }
 
     getTitle(e) {
@@ -39,21 +53,12 @@ class UpdateTvSeries extends React.Component {
     }
 
     agreeAndClose() {
-        let query = { 'title': this.state.title, 'summary': this.state.summary, 'startDate': this.state.startDate, 'endDate': this.state.endDate };
-        if (this.state.displayEpisode) {
-            query.seasonNumber = this.state.seasonNum * 1;
-            query.seasonStartDate = this.state.seasonStartDate;
-            query.seasonEndDate = this.state.seasonEndDate;
-        }
-        backend.add_tvseries(query, (data) => {
+        let query = { 'oid': this.state.toBeUpdated.oid, 'title': this.state.title, 'summary': this.state.summary, 'startDate': this.state.startDate, 'endDate': this.state.endDate };
+        backend.update_tvseries(query, (data) => {
             if (data === true) {
                 this.state.handleClose('reload tvseries');
             };
         })
-    }
-
-    openEpisodeDetail() {
-        this.setState({ displayEpisode: !this.state.displayEpisode });
     }
 
     getSeasonNum(e) {
@@ -76,14 +81,13 @@ class UpdateTvSeries extends React.Component {
                 </DialogTitle>
                 <DialogContent style={{ display: 'flex', flexDirection: 'column' }}>
                     <Box style={{ paddingRight: 100 }}>
-                        <TextField label="Title" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getTitle(e)} size='small' />
-                        <TextField label="Summary" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getSummary(e)} size='small' />
-                        <TextField label="Start Date" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getStartDate(e)} size='small' />
-                        <TextField label="End Date" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getEndDate(e)} size='small' />
+                        <TextField label="Title" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getTitle(e)} size='small' value={this.state.title} />
+                        <TextField label="Summary" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getSummary(e)} size='small' value={this.state.summary} />
+                        <TextField label="Start Date" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getStartDate(e)} size='small' value={this.state.startDate} />
+                        <TextField label="End Date" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getEndDate(e)} size='small' value={this.state.endDate} />
                     </Box>
-                    <Button variant="contained" size="small" style={{ marginLeft: 'auto', marginBottom: 15 }} onClick={() => this.openEpisodeDetail()}>Add Season</Button>
                     <Divider />
-                    {this.state.displayEpisode &&
+                    {this.state.hasSeason &&
                         <Box style={{ marginTop: 15 }}>
                             <TextField label="Season Number" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getSeasonNum(e)} size='small' />
                             <TextField label="Start Date" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getSeasonStartDate(e)} size='small' />
