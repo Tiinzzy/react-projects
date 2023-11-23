@@ -104,20 +104,28 @@ class UpdateTvSeries extends React.Component {
                 </DialogTitle>
                 <DialogContent style={{ display: 'flex', flexDirection: 'column' }}>
                     <Box style={{ paddingRight: 0 }}>
-                        <TextField label="Title" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getTitle(e)} size='small' value={this.state.title} />
-                        <TextField label="Start Date" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getStartDate(e)} size='small' value={this.state.startDate} />
-                        <TextField label="End Date" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getEndDate(e)} size='small' value={this.state.endDate} />
-                        <TextField label="Summary" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getSummary(e)} size='small' value={this.state.summary}
-                            fullWidth={true} multiline={true} maxRows={10} minRows={4} />
-                        <Typography style={{ margin: 10, display: 'flex', alignItems: 'center' }}>Seasons:
-                            {this.state.seasons && this.state.seasons.map((e, i) => (
-                                <span key={i} style={{ paddingLeft: 5, fontWeight: 'bold', cursor: 'pointer' }} onClick={() => this.handleClickedSeason(e)}>
-                                    {e.seasonNumber}</span>))}
-                            <Box display="flex" width={1}>
-                                <Box flexGrow={1} />
-                                <AddBoxIcon onClick={() => this.addSeason()} style={{ 'cursor': 'pointer' }} />
-                            </Box>
-                        </Typography>
+                        <Box mt={3}>
+                            <TextField sx={{ mr: 2 }} label="Title" variant="outlined" onChange={(e) => this.getTitle(e)} size='small' value={this.state.title} />
+                            <TextField sx={{ mr: 2 }} label="Start Date" variant="outlined" onChange={(e) => this.getStartDate(e)} size='small' value={this.state.startDate} />
+                            <TextField label="End Date" variant="outlined" onChange={(e) => this.getEndDate(e)} size='small' value={this.state.endDate} />
+                        </Box>
+
+                        <Box mt={3}>
+                            <TextField label="Summary" variant="outlined" onChange={(e) => this.getSummary(e)} size='small' value={this.state.summary}
+                                fullWidth={true} multiline={true} maxRows={10} minRows={4} />
+                        </Box>
+
+
+                        <Box display="flex" width={1} mt={2}>
+                            <Typography style={{ display: 'flex', alignItems: 'center' }}>Seasons:
+                                {this.state.seasons && this.state.seasons.map((e, i) => (
+                                    <span key={i} style={{ paddingLeft: 5, fontWeight: 'bold', cursor: 'pointer' }} onClick={() => this.handleClickedSeason(e)}>
+                                        {e.seasonNumber}</span>))}
+                            </Typography>
+                            <Box flexGrow={1} />
+                            <AddBoxIcon onClick={() => this.addSeason()} style={{ 'cursor': 'pointer' }} />
+                        </Box>
+
                     </Box>
                     <Divider />
                     {this.state.hasSeason &&
