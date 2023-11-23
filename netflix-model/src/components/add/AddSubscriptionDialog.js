@@ -5,6 +5,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import Typography from "@mui/material/Typography";
 
 import BackEndConnection from '../BackEndConnection';
 import PriceMenu from "./PriceMenu";
@@ -17,7 +19,9 @@ class AddSubscriptionDialog extends React.Component {
         super(props);
         this.state = {
             addClick: props.addClick,
-            handleClose: props.handleClose
+            handleClose: props.handleClose,
+            startDate: '',
+            endDate: ''
         }
         this.priceCallback = this.priceCallback.bind(this);
         this.typeCallBack = this.typeCallBack.bind(this);
@@ -32,13 +36,15 @@ class AddSubscriptionDialog extends React.Component {
     }
 
     agreeAndClose() {
-        if (this.props.addClick === "Subscription") {
+        if (this.props.addClick === "Subscription" && (this.state.startDate.length !== 0 || this.state.endDate.length !== 0)) {
             let query = { 'subscriptionType': this.state.type, 'price': this.state.price, 'expiryDate': this.state.endDate, 'subscriptionDate': this.state.startDate };
             backend.add_subscription(query, (data) => {
                 if (data === true) {
                     this.state.handleClose('reload subscription');
                 };
             })
+        } else {
+            this.setState({ message: 'Please fill all fields!' });
         }
     }
 
@@ -63,6 +69,8 @@ class AddSubscriptionDialog extends React.Component {
                     <TypeMenu typeCallBack={this.typeCallBack} />
                 </DialogContent>
                 <DialogActions>
+                    <Typography style={{ color: 'crimson', marginLeft: 25 }}>{this.state.message}</Typography>
+                    <Box display="flex" flexGrow={1} />
                     <Button onClick={this.state.handleClose} variant="outlined">Disagree</Button>
                     <Button autoFocus onClick={() => this.agreeAndClose()} variant="outlined">Agree</Button>
                 </DialogActions>
