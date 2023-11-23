@@ -46,7 +46,7 @@ class ListAllGenre extends React.Component {
         return (
             <Box>
                 <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <Table sx={{ minWidth: 650 }} aria-label="simple table" stickyHeader>
                         <TableHead>
                             <TableRow>
                                 <TableCell>OID</TableCell>
