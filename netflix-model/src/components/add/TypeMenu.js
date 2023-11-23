@@ -43,7 +43,7 @@ class TypeMenu extends React.Component {
         return (
             <Box style={{ marginTop: 10, marginBottom: 10, marginLeft: 10 }}>
                 <Typography mb={1}>Subscription Type:</Typography>
-                <Button aria-controls="simple-menu" aria-haspopup="true" onClick={(e) => this.handleClick(e)} variant="outlined">
+                <Button fullWidth={true} aria-controls="simple-menu" aria-haspopup="true" onClick={(e) => this.handleClick(e)} variant="outlined">
                     {this.state.selectedOption}
                 </Button>
                 <Menu

@@ -4,9 +4,10 @@ import DialogActions from '@mui/material/DialogActions';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import DialogContent from '@mui/material/DialogContent';
-import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
+import Box from "@mui/material/Box";
 
 import BackEndConnection from '../BackEndConnection';
 
@@ -39,20 +40,21 @@ class SubscriptionDelete extends React.Component {
         return (
             <>
                 <DialogTitle id="alert-dialog-title" mb={2}>
-                    {"Delete Movie"}
+                    {"Delete Movie OID: " + this.state.oid}
                 </DialogTitle>
-                <DialogContent style={{ display: 'flex', flexDirection: 'column', width: '500PX' }}>
-                    <Typography>OID: <span>{this.state.toBeDeleted.oid}</span></Typography>
-                    <Typography>Type: <span>{this.state.toBeDeleted.subscriptionType}</span></Typography>
-                    <Typography>Price: <span>{this.state.toBeDeleted.price}</span></Typography>
-                    <Typography>Expiry Date: <span>{this.state.toBeDeleted.expiryDate}</span></Typography>
-                    <Typography>Start Date: <span>{this.state.toBeDeleted.subscriptionDate}</span></Typography>
+                <DialogContent style={{ display: 'flex', flexDirection: 'column' }}>
+                    <TextField label="Type" variant="outlined" style={{ margin: 10 }} size='small' value={this.state.toBeDeleted.subscriptionType} disabled={true} />
+                    <TextField label="Price" variant="outlined" style={{ margin: 10 }} size='small' value={this.state.toBeDeleted.price} disabled={true} />
+                    <TextField label="Expiry Date" variant="outlined" style={{ margin: 10 }} size='small' value={this.state.toBeDeleted.expiryDate} disabled={true} />
+                    <TextField label="Start Date" variant="outlined" style={{ margin: 10 }} size='small' value={this.state.toBeDeleted.subscriptionDate} disabled={true} />
                 </DialogContent>
                 <DialogActions>
                     <FormControlLabel
+                        style={{ marginLeft: 15 }}
                         control={
                             <Checkbox checked={this.state.checkBox} onChange={() => this.handleCheckBox()} />}
                         label="Are you sure you want to delete the dollowing?" />
+                    <Box display="flex" flexGrow={1} />
                     <Button onClick={this.state.closeDialog} variant="outlined">No</Button>
                     <Button autoFocus onClick={() => this.agreeAndClose()} variant="outlined" disabled={this.state.checkBox === false}>Yes</Button>
                 </DialogActions>

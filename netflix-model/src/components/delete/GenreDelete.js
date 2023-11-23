@@ -4,7 +4,7 @@ import DialogActions from '@mui/material/DialogActions';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import DialogContent from '@mui/material/DialogContent';
-import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 
@@ -25,7 +25,7 @@ class GenreDelete extends React.Component {
     agreeAndClose() {
         let query = { 'oid': this.props.toBeDeleted.oid };
         backend.delete_genre(query, (data) => {
-            if(data === true){
+            if (data === true) {
                 this.state.closeDialog('reload genre');
             };
         })
@@ -39,14 +39,14 @@ class GenreDelete extends React.Component {
         return (
             <>
                 <DialogTitle id="alert-dialog-title" mb={2}>
-                    {"Delete Genre"}
+                    {"Delete Genre OID: " + this.state.toBeDeleted.oid}
                 </DialogTitle>
-                <DialogContent style={{ display: 'flex', flexDirection: 'column', width: '500PX' }}>
-                    <Typography>OID: <span>{this.state.toBeDeleted.oid}</span></Typography>
-                    <Typography>Description: <span>{this.state.toBeDeleted.description}</span></Typography>
+                <DialogContent style={{ display: 'flex', flexDirection: 'column' }}>
+                    <TextField label="Description" variant="outlined" style={{ margin: 10 }} size='small' value={this.state.toBeDeleted.description} disabled={true} />
                 </DialogContent>
                 <DialogActions>
                     <FormControlLabel
+                        style={{ marginLeft: 15 }}
                         control={
                             <Checkbox checked={this.state.checkBox} onChange={() => this.handleCheckBox()} />}
                         label="Are you sure you want to delete the dollowing?" />

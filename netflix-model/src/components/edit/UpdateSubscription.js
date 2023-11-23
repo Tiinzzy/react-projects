@@ -58,7 +58,7 @@ class UpdateSubscription extends React.Component {
                 <DialogTitle id="alert-dialog-title" mb={2}>
                     {"Update Subscription OID: " + this.state.toBeUpdated.oid}
                 </DialogTitle>
-                <DialogContent style={{ display: 'flex', flexDirection: 'column', width: '450px' }}>
+                <DialogContent style={{ display: 'flex', flexDirection: 'column' }}>
                     <TextField label="Subscription Start Date" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getStartDate(e)} value={this.state.startDate} />
                     <TextField label="Subscription End Date" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getEndDate(e)} value={this.state.endDate} />
                     <PriceMenu priceCallback={this.priceCallback} value={this.state.price} />
