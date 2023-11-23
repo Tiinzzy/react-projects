@@ -341,6 +341,22 @@ class BackEndConnectionImpl {
             })
     }
 
+    async delete_tvseries(query, callback) {
+        return axios.post('/tvseries/delete', query, { headers: { 'Content-Type': 'application/json' } })
+            .then(function (response) {
+                if (callback) {
+                    callback(response.data);
+                }
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+                if (callback) {
+                    callback({ result: false })
+                }
+                return { result: false };
+            })
+    }
 
 }
 

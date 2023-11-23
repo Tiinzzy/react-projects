@@ -49,7 +49,7 @@ class UpdateCustomer extends React.Component {
                 <DialogTitle id="alert-dialog-title" mb={2}>
                     {"Update Customer OID: " + this.state.toBeUpdated.oid}
                 </DialogTitle>
-                <DialogContent style={{ display: 'flex', flexDirection: 'column', width: '500PX' }}>
+                <DialogContent style={{ display: 'flex', flexDirection: 'column'}}>
                     <TextField label="Customer Name" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getCustomerName(e)} value={this.state.customerName} />
                     <TextField label="Phone Number" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getPhoneNumber(e)} value={this.state.phoneNumber} />
                     <TextField label="Email" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getEmail(e)} value={this.state.email} />

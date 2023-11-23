@@ -47,7 +47,7 @@ class ListAllCustomer extends React.Component {
         return (
             <Box>
                 <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <Table sx={{ minWidth: 650 }} aria-label="simple table" stickyHeader>
                         <TableHead>
                             <TableRow>
                                 <TableCell>OID</TableCell>
@@ -76,7 +76,7 @@ class ListAllCustomer extends React.Component {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <Dialog open={this.state.openDialog} onClose={() => this.handleCloseDialog()}>
+                <Dialog open={this.state.openDialog} onClose={() => this.handleCloseDialog()} maxWidth="sm" fullWidth={true}>
                     {this.state.selection === 'delete' && <CustomerDelete closeDialog={this.handleCloseDialog} toBeDeleted={this.state.toBeDeleted} />}
                     {this.state.selection === 'update' && <UpdateCustomer toBeUpdated={this.state.toBeUpdated} handleClose={this.handleCloseDialog} />}
                 </Dialog>

@@ -46,7 +46,7 @@ class ListAllSubscription extends React.Component {
         return (
             <Box>
                 <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <Table sx={{ minWidth: 650 }} aria-label="simple table" stickyHeader>
                         <TableHead>
                             <TableRow>
                                 <TableCell>OID</TableCell>
@@ -77,7 +77,7 @@ class ListAllSubscription extends React.Component {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <Dialog open={this.state.openDialog} onClose={() => this.handleCloseDialog()}>
+                <Dialog open={this.state.openDialog} onClose={() => this.handleCloseDialog()} maxWidth="md" fullWidth>
                     {this.state.selection === 'delete' && <SubscriptionDelete closeDialog={this.handleCloseDialog} toBeDeleted={this.state.toBeDeleted} />}
                     {this.state.selection === 'update' && <UpdateSubscription toBeUpdated={this.state.toBeUpdated} handleClose={this.handleCloseDialog} />}
                 </Dialog>

@@ -39,11 +39,12 @@ class AddTvSeriesDialog extends React.Component {
     }
 
     agreeAndClose() {
-        let query = { 'title': this.state.title, 'summary': this.state.summary, 'startDate': this.state.startDate, 'endDate': this.state.endDate };
-        if (this.state.displayEpisode) {
+        let query = { 'title': this.state.title, 'summary': this.state.summary, 'startDate': this.state.startDate, 'endDate': this.state.endDate, action: 'noSeason' };
+        if (this.state.displayEpisode && this.state.seasonNum > 0) {
             query.seasonNumber = this.state.seasonNum * 1;
             query.seasonStartDate = this.state.seasonStartDate;
             query.seasonEndDate = this.state.seasonEndDate;
+            query.action = 'addSeason';
         }
         backend.add_tvseries(query, (data) => {
             if (data === true) {
@@ -70,7 +71,7 @@ class AddTvSeriesDialog extends React.Component {
 
     render() {
         return (
-            <Box style={{ width: '500px' }}>
+            <>
                 <DialogTitle id="alert-dialog-title" mb={2}>
                     {"Add " + this.state.addClick}
                 </DialogTitle>
@@ -94,7 +95,7 @@ class AddTvSeriesDialog extends React.Component {
                     <Button onClick={this.state.handleClose} variant="outlined">Disagree</Button>
                     <Button autoFocus onClick={() => this.agreeAndClose()} variant="outlined">Agree</Button>
                 </DialogActions>
-            </Box>
+            </>
         );
     }
 }
