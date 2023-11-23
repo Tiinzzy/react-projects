@@ -68,7 +68,7 @@ class ListAllGenre extends React.Component {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <Dialog open={this.state.openDialog} onClose={() => this.handleCloseDialog()} maxWidth="sm" >
+                <Dialog open={this.state.openDialog} onClose={() => this.handleCloseDialog()} maxWidth="sm">
                     {this.state.selection === 'delete' && <GenreDelete closeDialog={this.handleCloseDialog} toBeDeleted={this.state.toBeDeleted} />}
                     {this.state.selection === 'update' && <UpdateGenre toBeUpdated={this.state.toBeUpdated} handleClose={this.handleCloseDialog} />}
                 </Dialog>
