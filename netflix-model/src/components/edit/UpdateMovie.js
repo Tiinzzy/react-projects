@@ -49,7 +49,7 @@ class UpdateMovie extends React.Component {
                 <DialogTitle id="alert-dialog-title" mb={2}>
                     {"Update Movie OID: " + this.state.toBeUpdated.oid}
                 </DialogTitle>
-                <DialogContent style={{ display: 'flex', flexDirection: 'column', width: '500PX' }}>
+                <DialogContent style={{ display: 'flex', flexDirection: 'column' }}>
                     <TextField label="Movie Title" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getMovieTitle(e)} value={this.state.movieTitle} />
                     <TextField label="Release Date" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getReleaseDate(e)} value={this.state.releaseDate} />
                     <TextField label="Rating" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getRating(e)} type="number" InputProps={{
