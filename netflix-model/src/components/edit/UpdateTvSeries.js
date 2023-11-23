@@ -63,24 +63,20 @@ class UpdateTvSeries extends React.Component {
             query.seasonNumber = this.state.seasonNum * 1;
             query.seasonStartDate = this.state.seasonStartDate;
             query.seasonEndDate = this.state.seasonEndDate;
-            query.toDoAction = 'update';
-            // query.action = this.state.toUpdate;
-            // query.seasonOid = this.state.seasons[0].oid * 1;
-            console.log(this.state.hasSeason);
-            console.log(this.state.toDoAction);
+            query.action = this.state.toDoAction;
+            if (this.state.toDoAction === 'update') {
+                query.seasonOid = this.state.seasonOid;
+            }
         }
-        console.log(this.state.hasSeason);
-        console.log(this.state.toDoAction);
-
-        // backend.update_tvseries(query, (data) => {
-        //     if (data === true) {
-        //         this.state.handleClose('reload tvseries');
-        //     };
-        // })
+        backend.update_tvseries(query, (data) => {
+            if (data === true) {
+                this.state.handleClose('reload tvseries');
+            };
+        })
     }
 
     handleClickedSeason(e) {
-        this.setState({ hasSeason: true, seasonNum: e.seasonNumber, seasonStartDate: e.startDate, seasonEndDate: e.endDate });
+        this.setState({ hasSeason: true, seasonNum: e.seasonNumber, seasonStartDate: e.startDate, seasonEndDate: e.endDate, toDoAction: 'update', seasonOid: e.oid });
     }
 
     getSeasonNum(e) {
@@ -115,7 +111,8 @@ class UpdateTvSeries extends React.Component {
                             fullWidth={true} multiline={true} maxRows={10} minRows={4} />
                         <Typography style={{ margin: 10, display: 'flex', alignItems: 'center' }}>Seasons:
                             {this.state.seasons && this.state.seasons.map((e, i) => (
-                                <span key={i} style={{ paddingLeft: 5, fontWeight: 'bold', cursor: 'pointer' }} onClick={() => this.handleClickedSeason(e)}>{e.seasonNumber}</span>))}
+                                <span key={i} style={{ paddingLeft: 5, fontWeight: 'bold', cursor: 'pointer' }} onClick={() => this.handleClickedSeason(e)}>
+                                    {e.seasonNumber}</span>))}
                             <Box display="flex" width={1}>
                                 <Box flexGrow={1} />
                                 <AddBoxIcon onClick={() => this.addSeason()} style={{ 'cursor': 'pointer' }} />
@@ -126,7 +123,7 @@ class UpdateTvSeries extends React.Component {
                     {this.state.hasSeason &&
                         <Box style={{ marginTop: 15 }}>
                             <TextField label="Season Number" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getSeasonNum(e)} size='small'
-                                value={this.state.seasonNum} />
+                                value={this.state.seasonNum} disabled={this.state.seasons.length > 0} />
                             <TextField label="Start Date" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getSeasonStartDate(e)} size='small'
                                 value={this.state.seasonStartDate} />
                             <TextField label="End Date" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getSeasonEndDate(e)} size='small'
