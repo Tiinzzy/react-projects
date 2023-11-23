@@ -71,7 +71,7 @@ class AddTvSeriesDialog extends React.Component {
 
     render() {
         return (
-            <Box style={{ width: '500px' }}>
+            <>
                 <DialogTitle id="alert-dialog-title" mb={2}>
                     {"Add " + this.state.addClick}
                 </DialogTitle>
@@ -95,7 +95,7 @@ class AddTvSeriesDialog extends React.Component {
                     <Button onClick={this.state.handleClose} variant="outlined">Disagree</Button>
                     <Button autoFocus onClick={() => this.agreeAndClose()} variant="outlined">Agree</Button>
                 </DialogActions>
-            </Box>
+            </>
         );
     }
 }
