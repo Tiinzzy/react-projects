@@ -30,7 +30,6 @@ class UpdateTvSeries extends React.Component {
     componentDidMount() {
         let query = { 'oid': this.state.toBeUpdated.oid };
         backend.load_tv_seasons(query, (data) => {
-            console.log(data)
             if (data.length > 0) {
                 this.setState({ seasons: data });
             } else {
@@ -58,21 +57,26 @@ class UpdateTvSeries extends React.Component {
     agreeAndClose() {
         let query = {
             'oid': this.state.toBeUpdated.oid, 'title': this.state.title, 'summary': this.state.summary,
-            'startDate': this.state.startDate, 'endDate': this.state.endDate, 'action': 'addNew'
+            'startDate': this.state.startDate, 'endDate': this.state.endDate
         };
         if (this.state.hasSeason) {
             query.seasonNumber = this.state.seasonNum * 1;
             query.seasonStartDate = this.state.seasonStartDate;
             query.seasonEndDate = this.state.seasonEndDate;
+            query.toDoAction = 'update';
             // query.action = this.state.toUpdate;
             // query.seasonOid = this.state.seasons[0].oid * 1;
-            console.log(this.state.toUpdate);
+            console.log(this.state.hasSeason);
+            console.log(this.state.toDoAction);
         }
-        backend.update_tvseries(query, (data) => {
-            if (data === true) {
-                this.state.handleClose('reload tvseries');
-            };
-        })
+        console.log(this.state.hasSeason);
+        console.log(this.state.toDoAction);
+
+        // backend.update_tvseries(query, (data) => {
+        //     if (data === true) {
+        //         this.state.handleClose('reload tvseries');
+        //     };
+        // })
     }
 
     handleClickedSeason(e) {
@@ -92,7 +96,8 @@ class UpdateTvSeries extends React.Component {
     }
 
     addSeason() {
-        this.setState({ hasSeason: true, seasonNum: this.state.seasons.length + 1, seasonStartDate: '', seasonEndDate: '', toUpdate: 'addNew' });
+        let condition = this.state.seasons === undefined ? 1 : this.state.seasons.length + 1;
+        this.setState({ toDoAction: 'addNew', hasSeason: true, seasonNum: condition, seasonStartDate: '', seasonEndDate: '' });
     }
 
     render() {
