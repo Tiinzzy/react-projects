@@ -42,7 +42,7 @@ class SubscriptionDelete extends React.Component {
                 <DialogTitle id="alert-dialog-title" mb={2}>
                     {"Delete Movie OID: " + this.state.oid}
                 </DialogTitle>
-                <DialogContent style={{ display: 'flex', flexDirection: 'column', width: '500PX' }}>
+                <DialogContent style={{ display: 'flex', flexDirection: 'column' }}>
                     <TextField label="Type" variant="outlined" style={{ margin: 10 }} size='small' value={this.state.toBeDeleted.subscriptionType} disabled={true} />
                     <TextField label="Price" variant="outlined" style={{ margin: 10 }} size='small' value={this.state.toBeDeleted.price} disabled={true} />
                     <TextField label="Expiry Date" variant="outlined" style={{ margin: 10 }} size='small' value={this.state.toBeDeleted.expiryDate} disabled={true} />
