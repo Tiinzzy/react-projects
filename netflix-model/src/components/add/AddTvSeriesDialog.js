@@ -39,11 +39,12 @@ class AddTvSeriesDialog extends React.Component {
     }
 
     agreeAndClose() {
-        let query = { 'title': this.state.title, 'summary': this.state.summary, 'startDate': this.state.startDate, 'endDate': this.state.endDate };
-        if (this.state.displayEpisode) {
+        let query = { 'title': this.state.title, 'summary': this.state.summary, 'startDate': this.state.startDate, 'endDate': this.state.endDate, action: 'noSeason' };
+        if (this.state.displayEpisode && this.state.seasonNum > 0) {
             query.seasonNumber = this.state.seasonNum * 1;
             query.seasonStartDate = this.state.seasonStartDate;
             query.seasonEndDate = this.state.seasonEndDate;
+            query.action = 'addSeason';
         }
         backend.add_tvseries(query, (data) => {
             if (data === true) {
