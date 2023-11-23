@@ -92,7 +92,7 @@ class UpdateTvSeries extends React.Component {
     }
 
     addSeason() {
-        this.setState({ hasSeason: true, seasonNum: '', seasonStartDate: '', seasonEndDate: '', toUpdate: 'addNew' });
+        this.setState({ hasSeason: true, seasonNum: this.state.seasons.length + 1, seasonStartDate: '', seasonEndDate: '', toUpdate: 'addNew' });
     }
 
     render() {
@@ -107,7 +107,7 @@ class UpdateTvSeries extends React.Component {
                         <TextField label="Start Date" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getStartDate(e)} size='small' value={this.state.startDate} />
                         <TextField label="End Date" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getEndDate(e)} size='small' value={this.state.endDate} />
                         <TextField label="Summary" variant="outlined" style={{ margin: 10 }} onChange={(e) => this.getSummary(e)} size='small' value={this.state.summary}
-                            fullWidth={true} multiline={true} maxRows={10} minRows={4}/>
+                            fullWidth={true} multiline={true} maxRows={10} minRows={4} />
                         <Typography style={{ margin: 10, display: 'flex', alignItems: 'center' }}>Seasons:
                             {this.state.seasons && this.state.seasons.map((e, i) => (
                                 <span key={i} style={{ paddingLeft: 5, fontWeight: 'bold', cursor: 'pointer' }} onClick={() => this.handleClickedSeason(e)}>{e.seasonNumber}</span>))}
