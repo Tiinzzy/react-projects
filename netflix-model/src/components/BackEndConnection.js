@@ -358,6 +358,23 @@ class BackEndConnectionImpl {
             })
     }
 
+    async get_directory_path(query, callback) {
+        return axios.post('/directory/path', query, { headers: { 'Content-Type': 'application/json' } })
+            .then(function (response) {
+                if (callback) {
+                    callback(response.data);
+                }
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+                if (callback) {
+                    callback({ result: false })
+                }
+                return { result: false };
+            })
+    }
+
 }
 
 export default class BackEndConnection {
