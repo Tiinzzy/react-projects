@@ -6,6 +6,10 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 
+import BackEndConnection from '../BackEndConnection';
+
+const backend = BackEndConnection.INSTANCE();
+
 class SearchDirectory extends React.Component {
     constructor(props) {
         super(props);
@@ -26,6 +30,10 @@ class SearchDirectory extends React.Component {
 
     searchGetTree() {
         if (this.state.depth.length !== 0 || this.state.path.length !== 0) {
+            let query = { 'depth': this.state.depth * 1, 'path': this.state.path };
+            backend.get_directory_path(query, (data) => {
+                console.log(data);
+            });
 
         } else {
             this.setState({ erroMsg: 'PLease fill in all fields!' })
