@@ -62,9 +62,15 @@ class DisplayList extends React.Component {
         }
     }
 
+    openSearchForDirectory() {
+        this.setState({ selectedItem: 'directory' }, () => {
+            eventEmitter.emit('selectedItem', { item: this.state.selectedItem });
+        })
+    }
+
     render() {
         return (
-            <Box sx={{ width: '100%', maxWidth: 250, bgcolor: 'background.paper', border: 'solid 1px #eaeaea', borderRadius: 1.5, height: 255 }}>
+            <Box sx={{ width: '100%', maxWidth: 250, bgcolor: 'background.paper', border: 'solid 1px #eaeaea', borderRadius: 1.5, height: 305 }}>
                 <nav aria-label="main mailbox folders">
                     <List >
                         {NETFLIX_MODEL.map((e, i) => (
@@ -76,6 +82,11 @@ class DisplayList extends React.Component {
                                 </ListItemButton>
                             </ListItem>
                         ))}
+                        <ListItem disablePadding onClick={() => this.openSearchForDirectory()}>
+                            <ListItemButton>
+                                <ListItemText primary="Directory Depth Search" />
+                            </ListItemButton>
+                        </ListItem>
                     </List>
                 </nav>
                 <Dialog open={this.state.openDialog} onClose={() => this.handleCloseDialog()} maxWidth="lg">
