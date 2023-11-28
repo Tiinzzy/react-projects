@@ -44,7 +44,7 @@ class DisplayEdit extends React.Component {
                 this.handleSubscription();
             } else if (data.item === "TV Series") {
                 this.handleTvSeries();
-            } else if (data.item === "directory") {
+            } else if (data.item === "Directory Depth Search") {
                 this.setState({ directorySearch: true, subscriptionData: null, customerData: null, genreData: null, movieData: null, tvseriesData: null });
             }
         });

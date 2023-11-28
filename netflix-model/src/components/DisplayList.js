@@ -19,7 +19,7 @@ import AddTvSeriesDialog from './add/AddTvSeriesDialog';
 export const eventEmitter = new EventEmitter();
 export const eventUpdateEmitter = new EventEmitter();
 
-const NETFLIX_MODEL = ["Customer", "Genre", "Movies", "Subscription", "TV Series"];
+const NETFLIX_MODEL = ["Customer", "Genre", "Movies", "Subscription", "TV Series", "Directory Depth Search"];
 
 class DisplayList extends React.Component {
     constructor(props) {
@@ -27,7 +27,7 @@ class DisplayList extends React.Component {
         this.state = {
             selectedIndex: '',
             addClick: '',
-            openDialog: false
+            openDialog: false,
         }
         this.handleCloseDialog = this.handleCloseDialog.bind(this);
     }
@@ -62,12 +62,6 @@ class DisplayList extends React.Component {
         }
     }
 
-    openSearchForDirectory() {
-        this.setState({ selectedItem: 'directory' }, () => {
-            eventEmitter.emit('selectedItem', { item: this.state.selectedItem });
-        })
-    }
-
     render() {
         return (
             <Box sx={{ width: '100%', maxWidth: 250, bgcolor: 'background.paper', border: 'solid 1px #eaeaea', borderRadius: 1.5, height: 305 }}>
@@ -78,15 +72,10 @@ class DisplayList extends React.Component {
                                 <ListItemButton>
                                     <ListItemText primary={e} />
                                     <Box display="flex" flexGrow={1} />
-                                    <AddBoxIcon onClick={() => this.addClicked(e)} style={{ color: this.state.addClick === e ? '#08A045' : 'black' }} />
+                                    {e !== "Directory Depth Search" && <AddBoxIcon onClick={() => this.addClicked(e)} style={{ color: this.state.addClick === e ? '#08A045' : 'black' }} />}
                                 </ListItemButton>
                             </ListItem>
                         ))}
-                        <ListItem disablePadding onClick={() => this.openSearchForDirectory()}>
-                            <ListItemButton>
-                                <ListItemText primary="Directory Depth Search" />
-                            </ListItemButton>
-                        </ListItem>
                     </List>
                 </nav>
                 <Dialog open={this.state.openDialog} onClose={() => this.handleCloseDialog()} maxWidth="lg">
