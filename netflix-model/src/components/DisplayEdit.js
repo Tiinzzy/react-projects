@@ -15,6 +15,7 @@ import ListAllCustomer from "./list/ListAllCustomer";
 import ListAllMovie from "./list/ListAllMovie";
 import ListAllSubscription from "./list/ListAllSubscription";
 import ListAllTvSeries from "./list/ListAllTvSeries";
+import SearchDirectory from "./list/SearchDirectory";
 
 const backend = BackEndConnection.INSTANCE();
 
@@ -26,7 +27,8 @@ class DisplayEdit extends React.Component {
             customerData: null,
             movieData: null,
             subscriptionData: null,
-            tvseriesData: null
+            tvseriesData: null,
+            directorySearch: false
         }
     }
 
@@ -42,6 +44,8 @@ class DisplayEdit extends React.Component {
                 this.handleSubscription();
             } else if (data.item === "TV Series") {
                 this.handleTvSeries();
+            } else if (data.item === "Directory Depth Search") {
+                this.setState({ directorySearch: true, subscriptionData: null, customerData: null, genreData: null, movieData: null, tvseriesData: null });
             }
         });
 
@@ -88,31 +92,31 @@ class DisplayEdit extends React.Component {
 
     handleCustomer() {
         backend.get_all_customers((data) => {
-            this.setState({ customerData: data, genreData: null, movieData: null, subscriptionData: null, tvseriesData: null });
+            this.setState({ customerData: data, genreData: null, movieData: null, subscriptionData: null, tvseriesData: null, directorySearch: false });
         })
     }
 
     handleGenre() {
         backend.get_all_genre((data) => {
-            this.setState({ genreData: data, customerData: null, movieData: null, subscriptionData: null, tvseriesData: null });
+            this.setState({ genreData: data, customerData: null, movieData: null, subscriptionData: null, tvseriesData: null, directorySearch: false });
         });
     }
 
     handleMovies() {
         backend.get_all_movies((data) => {
-            this.setState({ movieData: data, customerData: null, genreData: null, subscriptionData: null, tvseriesData: null });
+            this.setState({ movieData: data, customerData: null, genreData: null, subscriptionData: null, tvseriesData: null, directorySearch: false });
         });
     }
 
     handleSubscription() {
         backend.get_all_subscriptions((data) => {
-            this.setState({ subscriptionData: data, customerData: null, genreData: null, movieData: null, tvseriesData: null });
+            this.setState({ subscriptionData: data, customerData: null, genreData: null, movieData: null, tvseriesData: null, directorySearch: false });
         });
     }
 
     handleTvSeries() {
         backend.get_all_tvseries((data) => {
-            this.setState({ tvseriesData: data, subscriptionData: null, customerData: null, genreData: null, movieData: null });
+            this.setState({ tvseriesData: data, subscriptionData: null, customerData: null, genreData: null, movieData: null, directorySearch: false });
         });
     }
 
@@ -134,6 +138,7 @@ class DisplayEdit extends React.Component {
                 {this.state.movieData !== null && <ListAllMovie movieData={this.state.movieData} />}
                 {this.state.subscriptionData !== null && <ListAllSubscription subscriptionData={this.state.subscriptionData} />}
                 {this.state.tvseriesData !== null && <ListAllTvSeries tvseriesData={this.state.tvseriesData} />}
+                {this.state.directorySearch && <SearchDirectory />}
             </Box>
         );
     }
