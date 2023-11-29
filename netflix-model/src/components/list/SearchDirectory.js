@@ -26,11 +26,11 @@ class SearchDirectory extends React.Component {
     }
 
     getPath(e) {
-        this.setState({ path: e.target.value, erroMsg: '' });
+        this.setState({ path: e.target.value, erroMsg: '', treeData: null });
     }
 
     getDepth(e) {
-        this.setState({ depth: e.target.value * 1, erroMsg: '' });
+        this.setState({ depth: e.target.value * 1, erroMsg: '', treeData: null });
     }
 
     searchGetTree() {
