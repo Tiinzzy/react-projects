@@ -5,6 +5,10 @@ import Box from '@mui/material/Box';
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { TreeView } from '@mui/x-tree-view/TreeView';
+import { TreeItem } from '@mui/x-tree-view/TreeItem';
 
 import BackEndConnection from '../BackEndConnection';
 
@@ -16,7 +20,8 @@ class SearchDirectory extends React.Component {
         this.state = {
             path: '',
             depth: '',
-            erroMsg: ''
+            erroMsg: '',
+            treeData: null
         }
     }
 
@@ -32,12 +37,23 @@ class SearchDirectory extends React.Component {
         if (this.state.depth.length !== 0 || this.state.path.length !== 0) {
             let query = { 'depth': this.state.depth * 1, 'path': this.state.path };
             backend.get_directory_path(query, (data) => {
-                console.log(data);
+                this.setState({ treeData: this.createTreeItems(data) });
             });
 
         } else {
             this.setState({ erroMsg: 'PLease fill in all fields!' })
         }
+    }
+
+    createTreeItems(data, parentId = null) {
+        return data.map((item, index) => {
+            const nodeId = parentId ? `${parentId}-${index}` : `root-${index}`;
+            return (
+                <TreeItem key={nodeId} nodeId={nodeId} label={item.name}>
+                    {item.children && item.children.length > 0 ? this.createTreeItems(item.children, nodeId) : null}
+                </TreeItem>
+            );
+        });
     }
 
     render() {
@@ -51,6 +67,13 @@ class SearchDirectory extends React.Component {
                     <Button variant="outlined" onClick={() => this.searchGetTree()}>Search</Button>
                 </Box>
                 <Divider sx={{ mt: 1 }} />
+                {this.state.treeData &&
+                    <TreeView aria-label="file system navigator"
+                        defaultCollapseIcon={<ExpandMoreIcon />}
+                        defaultExpandIcon={<ChevronRightIcon />}>
+                        {this.state.treeData}
+                    </TreeView>
+                }
             </Box>
         );
     }
