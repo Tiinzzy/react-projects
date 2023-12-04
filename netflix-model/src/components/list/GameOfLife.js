@@ -16,6 +16,7 @@ class GameOfLife extends React.Component {
             width: 10,
             generations: '100',
             grid: [],
+            currentGeneration: 0
         }
     }
 
@@ -40,7 +41,22 @@ class GameOfLife extends React.Component {
             let query = { 'height': this.state.height * 1, 'width': this.state.width * 1, 'generations': this.state.generations };
             backend.game_of_life(query, (data) => {
                 console.log(data);
+                this.fetchGeneration(0);
             })
+        });
+    }
+
+    fetchGeneration(gen) {
+        backend.fetch_generation(gen, (data) => {
+            console.log(data);
+            if (data && data.result !== false) {
+                this.setState({ grid: data, currentGeneration: gen });
+                if (gen < this.state.generations - 1) {
+                    setTimeout(() => this.fetchGeneration(gen + 1), 300);
+                }
+            } else {
+                console.error('Error fetching generation:', gen);
+            }
         });
     }
 
