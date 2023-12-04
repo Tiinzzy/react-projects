@@ -375,7 +375,7 @@ class BackEndConnectionImpl {
             })
     }
 
-    async game_of_liofe(query, callback) {
+    async game_of_life(query, callback) {
         return axios.post('/game-of-life', query, { headers: { 'Content-Type': 'application/json' } })
             .then(function (response) {
                 if (callback) {
