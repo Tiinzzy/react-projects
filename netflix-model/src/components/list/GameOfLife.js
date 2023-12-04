@@ -15,7 +15,7 @@ class GameOfLife extends React.Component {
     }
 
     handleChange(e) {
-        this.setState({ [e.target.name]: e.target.value });
+        this.setState({ [e.target.name]: parseInt(e.target.value, 10) });
     }
 
     createGrid() {
@@ -32,19 +32,31 @@ class GameOfLife extends React.Component {
 
     handleCellClick(row, col) {
         console.log(`Cell clicked: Row ${row}, Col ${col}`);
+        let newGrid = this.state.grid.map((currentRow, rowIndex) => {
+            if (rowIndex === row) {
+                return currentRow.map((cell, colIndex) => {
+                    if (colIndex === col) {
+                        return cell ? 0 : 1; 
+                    }
+                    return cell;
+                });
+            }
+            return currentRow;
+        });
+        this.setState({ grid: newGrid });
     }
 
     renderGrid() {
         return this.state.grid.map((row, rowIndex) => (
-            <Grid container key={rowIndex}>
-                {row.map((cell, colIndex) => (
-                    <Grid item key={colIndex} xs={1}
-                        style={{ width: '20px', height: '20px', border: '1px solid black', backgroundColor: cell ? 'black' : 'white' }}
-                        onClick={() => this.handleCellClick(rowIndex, colIndex)}
-                    />
-                ))}
+            <Grid container key={rowIndex} spacing={1}>
+              {row.map((cell, colIndex) => (
+                <Grid item key={colIndex} xs={1}
+                      style={{ width: '20px', height: '20px', border: '1px solid black', backgroundColor: cell ? 'black' : 'white' }}
+                      onClick={() => this.handleCellClick(rowIndex, colIndex)}
+                />
+              ))}
             </Grid>
-        ));
+          ));
     }
 
     render() {
