@@ -16,6 +16,7 @@ import ListAllMovie from "./list/ListAllMovie";
 import ListAllSubscription from "./list/ListAllSubscription";
 import ListAllTvSeries from "./list/ListAllTvSeries";
 import SearchDirectory from "./list/SearchDirectory";
+import GameOfLife from "./list/GameOfLife";
 
 const backend = BackEndConnection.INSTANCE();
 
@@ -28,7 +29,8 @@ class DisplayEdit extends React.Component {
             movieData: null,
             subscriptionData: null,
             tvseriesData: null,
-            directorySearch: false
+            directorySearch: null,
+            gol: null
         }
     }
 
@@ -45,7 +47,11 @@ class DisplayEdit extends React.Component {
             } else if (data.item === "TV Series") {
                 this.handleTvSeries();
             } else if (data.item === "Directory Depth Search") {
-                this.setState({ directorySearch: true, subscriptionData: null, customerData: null, genreData: null, movieData: null, tvseriesData: null });
+                this.setState({
+                    directorySearch: true, subscriptionData: null, customerData: null, genreData: null, movieData: null, tvseriesData: null, gol: null
+                });
+            } else if (data.item === "Game of Life") {
+                this.setState({ gol: true, directorySearch: null, subscriptionData: null, customerData: null, genreData: null, movieData: null, tvseriesData: null });
             }
         });
 
@@ -92,31 +98,33 @@ class DisplayEdit extends React.Component {
 
     handleCustomer() {
         backend.get_all_customers((data) => {
-            this.setState({ customerData: data, genreData: null, movieData: null, subscriptionData: null, tvseriesData: null, directorySearch: false });
+            this.setState({
+                customerData: data, genreData: null, movieData: null, subscriptionData: null, tvseriesData: null, directorySearch: null, gol: null
+            });
         })
     }
 
     handleGenre() {
         backend.get_all_genre((data) => {
-            this.setState({ genreData: data, customerData: null, movieData: null, subscriptionData: null, tvseriesData: null, directorySearch: false });
+            this.setState({ genreData: data, customerData: null, movieData: null, subscriptionData: null, tvseriesData: null, directorySearch: null, gol: null });
         });
     }
 
     handleMovies() {
         backend.get_all_movies((data) => {
-            this.setState({ movieData: data, customerData: null, genreData: null, subscriptionData: null, tvseriesData: null, directorySearch: false });
+            this.setState({ movieData: data, customerData: null, genreData: null, subscriptionData: null, tvseriesData: null, directorySearch: null, gol: null });
         });
     }
 
     handleSubscription() {
         backend.get_all_subscriptions((data) => {
-            this.setState({ subscriptionData: data, customerData: null, genreData: null, movieData: null, tvseriesData: null, directorySearch: false });
+            this.setState({ subscriptionData: data, customerData: null, genreData: null, movieData: null, tvseriesData: null, directorySearch: null, gol: null });
         });
     }
 
     handleTvSeries() {
         backend.get_all_tvseries((data) => {
-            this.setState({ tvseriesData: data, subscriptionData: null, customerData: null, genreData: null, movieData: null, directorySearch: false });
+            this.setState({ tvseriesData: data, subscriptionData: null, customerData: null, genreData: null, movieData: null, directorySearch: null, gol: null });
         });
     }
 
@@ -138,7 +146,8 @@ class DisplayEdit extends React.Component {
                 {this.state.movieData !== null && <ListAllMovie movieData={this.state.movieData} />}
                 {this.state.subscriptionData !== null && <ListAllSubscription subscriptionData={this.state.subscriptionData} />}
                 {this.state.tvseriesData !== null && <ListAllTvSeries tvseriesData={this.state.tvseriesData} />}
-                {this.state.directorySearch && <SearchDirectory />}
+                {this.state.directorySearch !== null && <SearchDirectory />}
+                {this.state.gol !== null && <GameOfLife />}
             </Box>
         );
     }
