@@ -10,12 +10,17 @@ class GameOfLife extends React.Component {
         this.state = {
             height: 10,
             width: 10,
+            generations: '100',
             grid: [],
         }
     }
 
     handleChange(e) {
         this.setState({ [e.target.name]: parseInt(e.target.value, 10) });
+    }
+
+    handleGetGenerations(e) {
+        this.setState({ generations: e.target.value * 1 });
     }
 
     createGrid() {
@@ -27,7 +32,9 @@ class GameOfLife extends React.Component {
             }
             grid.push(row);
         }
-        this.setState({ grid });
+        this.setState({ grid }, () => {
+            let query = { 'height': this.state.height * 1, 'width': this.state.width * 1, 'generations': this.state.generations };
+        });
     }
 
     handleCellClick(row, col) {
@@ -36,7 +43,7 @@ class GameOfLife extends React.Component {
             if (rowIndex === row) {
                 return currentRow.map((cell, colIndex) => {
                     if (colIndex === col) {
-                        return cell ? 0 : 1; 
+                        return cell ? 0 : 1;
                     }
                     return cell;
                 });
@@ -49,14 +56,14 @@ class GameOfLife extends React.Component {
     renderGrid() {
         return this.state.grid.map((row, rowIndex) => (
             <Grid container key={rowIndex} spacing={1}>
-              {row.map((cell, colIndex) => (
-                <Grid item key={colIndex} xs={1}
-                      style={{ width: '20px', height: '20px', border: '1px solid black', backgroundColor: cell ? 'black' : 'white' }}
-                      onClick={() => this.handleCellClick(rowIndex, colIndex)}
-                />
-              ))}
+                {row.map((cell, colIndex) => (
+                    <Grid item key={colIndex} xs={1}
+                        style={{ width: '20px', height: '20px', border: '1px solid black', backgroundColor: cell ? 'black' : 'white' }}
+                        onClick={() => this.handleCellClick(rowIndex, colIndex)}
+                    />
+                ))}
             </Grid>
-          ));
+        ));
     }
 
     render() {
@@ -64,6 +71,7 @@ class GameOfLife extends React.Component {
             <Box style={{ display: 'flex', flexDirection: 'column', margin: 5, padding: 20 }}>
                 <TextField label="Height" name="height" type="number" value={this.state.height} onChange={(e) => this.handleChange(e)} />
                 <TextField label="Width" name="width" type="number" value={this.state.width} onChange={(e) => this.handleChange(e)} sx={{ mt: 3 }} />
+                <TextField label="Generations" name="Generations" type="number" value={this.state.generations} onChange={(e) => this.handleGetGenerations(e)} sx={{ mt: 3 }} />
                 <Box style={{ display: 'flex', marginTop: 15 }}>
                     <Box flexGrow={1} />
                     <Button variant="outlined" onClick={() => this.createGrid()}>Create Grid</Button>
