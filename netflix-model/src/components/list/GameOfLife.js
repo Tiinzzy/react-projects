@@ -4,6 +4,10 @@ import Box from '@mui/material/Box';
 import { TextField, Button, Grid } from '@mui/material';
 import Divider from "@mui/material/Divider";
 
+import BackEndConnection from '../BackEndConnection';
+
+const backend = BackEndConnection.INSTANCE();
+
 class GameOfLife extends React.Component {
     constructor(props) {
         super(props);
@@ -34,6 +38,9 @@ class GameOfLife extends React.Component {
         }
         this.setState({ grid }, () => {
             let query = { 'height': this.state.height * 1, 'width': this.state.width * 1, 'generations': this.state.generations };
+            backend.game_of_life(query, (data) => {
+                console.log(data);
+            })
         });
     }
 
