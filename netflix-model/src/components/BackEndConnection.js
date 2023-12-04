@@ -392,6 +392,23 @@ class BackEndConnectionImpl {
             })
     }
 
+    async fetch_generation(id, callback) {
+        return axios.get(`/generation/${id}`, {}, {})
+            .then(function (response) {
+                if (callback) {
+                    callback(response.data);
+                }
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+                if (callback) {
+                    callback({ result: false })
+                }
+                return { result: false };
+            })
+    }
+
 }
 
 export default class BackEndConnection {
