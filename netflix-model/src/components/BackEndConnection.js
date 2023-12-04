@@ -359,8 +359,41 @@ class BackEndConnectionImpl {
     }
 
     async get_directory_path(query, callback) {
-        
         return axios.post('/directory/path', query, { headers: { 'Content-Type': 'application/json' } })
+            .then(function (response) {
+                if (callback) {
+                    callback(response.data);
+                }
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+                if (callback) {
+                    callback({ result: false })
+                }
+                return { result: false };
+            })
+    }
+
+    async game_of_life(query, callback) {
+        return axios.post('/game-of-life', query, { headers: { 'Content-Type': 'application/json' } })
+            .then(function (response) {
+                if (callback) {
+                    callback(response.data);
+                }
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+                if (callback) {
+                    callback({ result: false })
+                }
+                return { result: false };
+            })
+    }
+
+    async fetch_generation(id, callback) {
+        return axios.get(`/generation/${id}`, {}, {})
             .then(function (response) {
                 if (callback) {
                     callback(response.data);
