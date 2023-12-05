@@ -5,18 +5,31 @@ import { TextField, Button, Grid } from '@mui/material';
 import Divider from "@mui/material/Divider";
 
 import BackEndConnection from '../BackEndConnection';
+import { ThirtyFpsOutlined } from "@mui/icons-material";
 
 const backend = BackEndConnection.INSTANCE();
+
+function boardIsEmpty(boardObject) {
+    let count = 0;
+    for (let array of boardObject) {
+        if (array.includes(1)) {
+            count++;
+        }
+    }
+    return count < 1;
+}
 
 class GameOfLife extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            height: 10,
-            width: 10,
-            generations: '100',
+            height: 30,
+            width: 40,
+            initialization: 100,
             grid: [],
-            currentGeneration: 0
+            currentGeneration: 0,
+            delay: 900,
+            evolveGenerations: null
         }
     }
 
@@ -28,36 +41,38 @@ class GameOfLife extends React.Component {
         this.setState({ generations: e.target.value * 1 });
     }
 
-    createGrid() {
-        let grid = [];
-        for (let i = 0; i < this.state.height; i++) {
-            let row = [];
-            for (let j = 0; j < this.state.width; j++) {
-                row.push(0);
-            }
-            grid.push(row);
-        }
-        this.setState({ grid }, () => {
-            let query = { 'height': this.state.height * 1, 'width': this.state.width * 1, 'generations': this.state.generations };
-            backend.game_of_life(query, (data) => {
-                console.log(data);
-                this.fetchGeneration(0);
-            })
-        });
+    handleGetRandomIniti(e) {
+        this.setState({ initialization: e.target.value * 1 });
     }
 
-    fetchGeneration(gen) {
-        backend.fetch_generation(gen, (data) => {
-            console.log(data);
-            if (data && data.result !== false) {
-                this.setState({ grid: data, currentGeneration: gen });
-                if (gen < this.state.generations - 1) {
-                    setTimeout(() => this.fetchGeneration(gen + 1), 300);
-                }
-            } else {
-                console.error('Error fetching generation:', gen);
+    createGrid() {
+        let query = {
+            row: this.state.height * 1,
+            column: this.state.width * 1,
+            generations: this.state.generations,
+            initCount: this.state.initialization
+        };
+        backend.game_of_life_init(query, (data) => {
+            if (data.board.length > 0) {
+                this.setState({ grid: data.board }, () => this.fetchGeneration());
             }
-        });
+        })
+    }
+
+    fetchGeneration() {
+        if (this.state.evolveGenerations !== null) {
+            clearInterval(this.state.evolveGenerations);
+        }
+        let evolveGenerations = setInterval(() => {
+            backend.fetch_evolved_generation((data) => {
+                this.setState({ grid: data.board }, () => {
+                    if (boardIsEmpty(data.board)) {
+                        clearInterval(evolveGenerations);
+                    }
+                });
+            })
+        }, this.state.delay);
+        this.setState({ evolveGenerations });
     }
 
     handleCellClick(row, col) {
@@ -77,30 +92,58 @@ class GameOfLife extends React.Component {
     }
 
     renderGrid() {
+        let cellSize = 25;
+
+        let rowStyle = {
+            padding: 0,
+            margin: 0,
+            height: cellSize,
+            marginBottom: 4,
+        }
+
+        let cellStyle = (cell) => {
+            return {
+                border: 'solid 1px gray',                
+                marginRight: 2,
+                height: cellSize,
+                width: cellSize * 1.1,
+                display: 'inline-block',
+                backgroundColor: cell ? 'black' : 'white',
+                color: cell ? 'white' : 'black',
+                fontSize: 8
+            }
+        }
         return this.state.grid.map((row, rowIndex) => (
-            <Grid container key={rowIndex} spacing={1}>
+            <div key={rowIndex} style={rowStyle}>
                 {row.map((cell, colIndex) => (
-                    <Grid item key={colIndex} xs={1}
-                        style={{ width: '20px', height: '20px', border: '1px solid black', backgroundColor: cell ? 'black' : 'white' }}
-                        onClick={() => this.handleCellClick(rowIndex, colIndex)}
-                    />
+                    <div key={colIndex} style={cellStyle(cell)} >{rowIndex},{colIndex}</div>
                 ))}
-            </Grid>
+            </div>
         ));
     }
 
     render() {
         return (
             <Box style={{ display: 'flex', flexDirection: 'column', margin: 5, padding: 20 }}>
-                <TextField label="Height" name="height" type="number" value={this.state.height} onChange={(e) => this.handleChange(e)} />
-                <TextField label="Width" name="width" type="number" value={this.state.width} onChange={(e) => this.handleChange(e)} sx={{ mt: 3 }} />
-                <TextField label="Generations" name="Generations" type="number" value={this.state.generations} onChange={(e) => this.handleGetGenerations(e)} sx={{ mt: 3 }} />
-                <Box style={{ display: 'flex', marginTop: 15 }}>
-                    <Box flexGrow={1} />
-                    <Button variant="outlined" onClick={() => this.createGrid()}>Create Grid</Button>
+
+                <Box display='flex'>
+                    <TextField label="Row" type="number" name='height' value={this.state.height}
+                        onChange={(e) => this.handleChange(e)} sx={{ width: 120 }} />
+
+                    <TextField label="Column" type="number" name='width' value={this.state.width}
+                        onChange={(e) => this.handleChange(e)} sx={{ ml: 2, width: 120 }} />
+
+                    <TextField label="Random Initialization" type="number" value={this.state.initialization}
+                        onChange={(e) => this.handleGetRandomIniti(e)} sx={{ ml: 2, width: 200 }} />
+
+                    <Button variant="outlined" onClick={() => this.createGrid()} sx={{ ml: 3 }} >Start</Button>
                 </Box>
+
+
                 <Divider sx={{ mt: 2, mb: 2 }} />
-                {this.renderGrid()}
+                <Box style={{ border: 'solid 0px red' }}>
+                    {this.renderGrid()}
+                </Box>
             </Box>
         );
     }
