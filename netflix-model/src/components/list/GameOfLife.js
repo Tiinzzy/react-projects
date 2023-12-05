@@ -10,17 +10,12 @@ const backend = BackEndConnection.INSTANCE();
 
 function checkBoard(boardObject) {
     let count = 0;
-
     for (let array of boardObject) {
         if (array.includes(1)) {
             count++;
         }
-
-        if (count > 1) {
-            return false;
-        }
     }
-    return count === 1;
+    return count >= 1;
 }
 
 class GameOfLife extends React.Component {
@@ -70,14 +65,15 @@ class GameOfLife extends React.Component {
     fetchGeneration() {
         let evolveGenerations = setInterval(() => {
             backend.fetch_evolved_generation((data) => {
-                console.log(checkBoard(data.board))
                 this.setState({ grid: data.board });
-                // setTimeout(() => {
-                //     this.setState({ grid: data.board });
-                //     clearInterval(evolveGenerations);
-                // }, 5000);
+                if(checkBoard(data.board) === false){
+                setTimeout(() => {
+                    this.setState({ grid: data.board });
+                    clearInterval(evolveGenerations);
+                }, 500);
+                }
             })
-        }, 5000)
+        }, 600)
     }
 
     handleCellClick(row, col) {
