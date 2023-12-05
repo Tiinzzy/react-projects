@@ -140,7 +140,7 @@ class DisplayEdit extends React.Component {
 
     render() {
         return (
-            <Box style={{ border: 'solid 1px #eaeaea', marginLeft: 40, width: '90%', borderRadius: 6, height: 600, maxHeight: 900, overflowY: 'scroll' }}>
+            <Box style={{ border: 'solid 1px #eaeaea', marginLeft: 40, width: '90%', borderRadius: 6}}>
                 {this.state.genreData !== null && <ListAllGenre genreData={this.state.genreData} />}
                 {this.state.customerData !== null && <ListAllCustomer customerData={this.state.customerData} />}
                 {this.state.movieData !== null && <ListAllMovie movieData={this.state.movieData} />}

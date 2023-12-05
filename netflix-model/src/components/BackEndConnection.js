@@ -375,8 +375,8 @@ class BackEndConnectionImpl {
             })
     }
 
-    async game_of_life(query, callback) {
-        return axios.post('/game-of-life', query, { headers: { 'Content-Type': 'application/json' } })
+    async game_of_life_init(query, callback) {
+        return axios.post('/gol/init', query, { headers: { 'Content-Type': 'application/json' } })
             .then(function (response) {
                 if (callback) {
                     callback(response.data);
@@ -392,8 +392,8 @@ class BackEndConnectionImpl {
             })
     }
 
-    async fetch_generation(id, callback) {
-        return axios.get(`/generation/${id}`, {}, {})
+    async fetch_evolved_generation(callback) {
+        return axios.get('/gol/evolve', {}, {})
             .then(function (response) {
                 if (callback) {
                     callback(response.data);
