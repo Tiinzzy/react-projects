@@ -8,6 +8,21 @@ import BackEndConnection from '../BackEndConnection';
 
 const backend = BackEndConnection.INSTANCE();
 
+function checkBoard(boardObject) {
+    let count = 0;
+
+    for (let array of boardObject) {
+        if (array.includes(1)) {
+            count++;
+        }
+
+        if (count > 1) {
+            return false;
+        }
+    }
+    return count === 1;
+}
+
 class GameOfLife extends React.Component {
     constructor(props) {
         super(props);
@@ -16,7 +31,8 @@ class GameOfLife extends React.Component {
             width: 10,
             generations: '100',
             grid: [],
-            currentGeneration: 0
+            currentGeneration: 0,
+            initialization: 5
         }
     }
 
@@ -26,6 +42,10 @@ class GameOfLife extends React.Component {
 
     handleGetGenerations(e) {
         this.setState({ generations: e.target.value * 1 });
+    }
+
+    handleGetRandomIniti(e) {
+        this.setState({ initialization: e.target.value * 1 });
     }
 
     createGrid() {
@@ -38,26 +58,26 @@ class GameOfLife extends React.Component {
             grid.push(row);
         }
         this.setState({ grid }, () => {
-            let query = { 'height': this.state.height * 1, 'width': this.state.width * 1, 'generations': this.state.generations };
-            backend.game_of_life(query, (data) => {
-                console.log(data);
-                this.fetchGeneration(0);
+            let query = { 'column': this.state.height * 1, 'row': this.state.width * 1, 'generations': this.state.generations, 'initCount': this.state.initialization };
+            backend.game_of_life_init(query, (data) => {
+                if (data.board.length > 0) {
+                    this.setState({ grid: data.board }, () => this.fetchGeneration());
+                }
             })
         });
     }
 
-    fetchGeneration(gen) {
-        backend.fetch_generation(gen, (data) => {
-            console.log(data);
-            if (data && data.result !== false) {
-                this.setState({ grid: data, currentGeneration: gen });
-                if (gen < this.state.generations - 1) {
-                    setTimeout(() => this.fetchGeneration(gen + 1), 300);
-                }
-            } else {
-                console.error('Error fetching generation:', gen);
-            }
-        });
+    fetchGeneration() {
+        let evolveGenerations = setInterval(() => {
+            backend.fetch_evolved_generation((data) => {
+                console.log(checkBoard(data.board))
+                this.setState({ grid: data.board });
+                // setTimeout(() => {
+                //     this.setState({ grid: data.board });
+                //     clearInterval(evolveGenerations);
+                // }, 5000);
+            })
+        }, 5000)
     }
 
     handleCellClick(row, col) {
@@ -94,6 +114,7 @@ class GameOfLife extends React.Component {
             <Box style={{ display: 'flex', flexDirection: 'column', margin: 5, padding: 20 }}>
                 <TextField label="Height" name="height" type="number" value={this.state.height} onChange={(e) => this.handleChange(e)} />
                 <TextField label="Width" name="width" type="number" value={this.state.width} onChange={(e) => this.handleChange(e)} sx={{ mt: 3 }} />
+                <TextField label="Random Initialization" name="Random Initialization" type="number" value={this.state.initialization} onChange={(e) => this.handleGetRandomIniti(e)} sx={{ mt: 3 }} />
                 <TextField label="Generations" name="Generations" type="number" value={this.state.generations} onChange={(e) => this.handleGetGenerations(e)} sx={{ mt: 3 }} />
                 <Box style={{ display: 'flex', marginTop: 15 }}>
                     <Box flexGrow={1} />
