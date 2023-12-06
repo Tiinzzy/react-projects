@@ -24,7 +24,7 @@ class GameOfLife extends React.Component {
         this.state = {
             height: 30,
             width: 40,
-            initialization: 100,
+            initialization: 10,
             grid: [],
             currentGeneration: 0,
             delay: 900,
@@ -60,7 +60,9 @@ class GameOfLife extends React.Component {
                     };
                     backend.update_grid(query, (data) => {
                         console.log(data);
-                        // this.setState({ grid: data.board }, () => this.fetchGeneration());
+                        if (data) {
+                            this.setState({ grid: data.board }, () => this.fetchGeneration());
+                        }
                     })
                 } else {
                     let query = {
@@ -96,17 +98,8 @@ class GameOfLife extends React.Component {
     }
 
     handleCellClick(row, col) {
-        let newGrid = this.state.grid.map((currentRow, rowIndex) => {
-            if (rowIndex === row) {
-                return currentRow.map((cell, colIndex) => {
-                    if (colIndex === col) {
-                        return cell ? 0 : 1;
-                    }
-                    return cell;
-                });
-            }
-            return currentRow;
-        });
+        let newGrid = this.state.grid;
+        newGrid[row][col] = (newGrid[row][col] + 1) % 2;  // newGrid[row][col] === 1 ? 0 : 1;
         this.setState({ grid: newGrid, msg: 'update' });
     }
 
