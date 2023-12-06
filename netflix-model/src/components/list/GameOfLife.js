@@ -30,7 +30,8 @@ class GameOfLife extends React.Component {
             delay: 900,
             evolveGenerations: null,
             largeValueError: false,
-            initialClick: true
+            initialClick: true,
+            msg: 'initial'
         }
     }
 
@@ -51,17 +52,29 @@ class GameOfLife extends React.Component {
             if (this.state.initialClick === false) {
                 clearInterval(this.state.evolveGenerations);
             } else {
-                let query = {
-                    row: this.state.height * 1,
-                    column: this.state.width * 1,
-                    generations: this.state.generations,
-                    initCount: this.state.initialization
-                };
-                backend.game_of_life_init(query, (data) => {
-                    if (data.board.length > 0) {
-                        this.setState({ grid: data.board }, () => this.fetchGeneration());
-                    }
-                })
+                if (this.state.msg === 'update') {
+                    let query = {
+                        grid: this.state.grid,
+                        row: this.state.height * 1,
+                        column: this.state.width * 1,
+                    };
+                    backend.update_grid(query, (data) => {
+                        console.log(data);
+                        // this.setState({ grid: data.board }, () => this.fetchGeneration());
+                    })
+                } else {
+                    let query = {
+                        row: this.state.height * 1,
+                        column: this.state.width * 1,
+                        generations: this.state.generations,
+                        initCount: this.state.initialization
+                    };
+                    backend.game_of_life_init(query, (data) => {
+                        if (data.board.length > 0) {
+                            this.setState({ grid: data.board }, () => this.fetchGeneration());
+                        }
+                    })
+                }
             }
         }
     }
@@ -83,7 +96,6 @@ class GameOfLife extends React.Component {
     }
 
     handleCellClick(row, col) {
-        console.log(`Cell clicked: Row ${row}, Col ${col}`);
         let newGrid = this.state.grid.map((currentRow, rowIndex) => {
             if (rowIndex === row) {
                 return currentRow.map((cell, colIndex) => {
@@ -95,7 +107,7 @@ class GameOfLife extends React.Component {
             }
             return currentRow;
         });
-        this.setState({ grid: newGrid });
+        this.setState({ grid: newGrid, msg: 'update' });
     }
 
     renderGrid() {
@@ -123,7 +135,7 @@ class GameOfLife extends React.Component {
         return this.state.grid.map((row, rowIndex) => (
             <div key={rowIndex} style={rowStyle}>
                 {row.map((cell, colIndex) => (
-                    <div key={colIndex} style={cellStyle(cell)} >{rowIndex},{colIndex}</div>
+                    <div key={colIndex} style={cellStyle(cell)} onClick={() => this.handleCellClick(rowIndex, colIndex)}>{rowIndex},{colIndex}</div>
                 ))}
             </div>
         ));
