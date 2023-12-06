@@ -29,7 +29,8 @@ class GameOfLife extends React.Component {
             currentGeneration: 0,
             delay: 900,
             evolveGenerations: null,
-            largeValueError: false
+            largeValueError: false,
+            initialClick: true
         }
     }
 
@@ -43,20 +44,25 @@ class GameOfLife extends React.Component {
     }
 
     createGrid() {
+        this.setState({ initialClick: !this.state.initialClick });
         if (this.state.initialization >= this.state.height * this.state.width) {
             this.setState({ largeValueError: true });
         } else {
-            let query = {
-                row: this.state.height * 1,
-                column: this.state.width * 1,
-                generations: this.state.generations,
-                initCount: this.state.initialization
-            };
-            backend.game_of_life_init(query, (data) => {
-                if (data.board.length > 0) {
-                    this.setState({ grid: data.board }, () => this.fetchGeneration());
-                }
-            })
+            if (this.state.initialClick === false) {
+                clearInterval(this.state.evolveGenerations);
+            } else {
+                let query = {
+                    row: this.state.height * 1,
+                    column: this.state.width * 1,
+                    generations: this.state.generations,
+                    initCount: this.state.initialization
+                };
+                backend.game_of_life_init(query, (data) => {
+                    if (data.board.length > 0) {
+                        this.setState({ grid: data.board }, () => this.fetchGeneration());
+                    }
+                })
+            }
         }
     }
 
@@ -138,7 +144,7 @@ class GameOfLife extends React.Component {
                         onChange={(e) => this.handleGetRandomIniti(e)} sx={{ ml: 2, width: 200 }} error={this.state.largeValueError}
                         helperText={this.state.largeValueError && "Large Value"} />
                     <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <Button variant="outlined" onClick={() => this.createGrid()} sx={{ ml: 3, mb: 2 }} size="large">Start</Button>
+                        <Button variant="outlined" onClick={() => this.createGrid()} sx={{ ml: 3, mb: 2 }} size="large">{this.state.initialClick === false ? 'Stop' : 'Start'}</Button>
                     </Box>
                 </Box>
                 <Divider sx={{ mt: 2, mb: 2 }} />
