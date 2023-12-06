@@ -19,7 +19,7 @@ import AddTvSeriesDialog from './add/AddTvSeriesDialog';
 export const eventEmitter = new EventEmitter();
 export const eventUpdateEmitter = new EventEmitter();
 
-const NETFLIX_MODEL = ["Customer", "Genre", "Movies", "Subscription", "TV Series", "Directory Depth Search","Game of Life"];
+const NETFLIX_MODEL = ["Customer", "Genre", "Movies", "Subscription", "TV Series", "Directory Depth Search", "Game of Life"];
 
 class DisplayList extends React.Component {
     constructor(props) {
