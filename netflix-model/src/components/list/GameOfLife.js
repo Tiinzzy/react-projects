@@ -1,11 +1,10 @@
 import React from "react";
 
 import Box from '@mui/material/Box';
-import { TextField, Button, Grid } from '@mui/material';
+import { TextField, Button } from '@mui/material';
 import Divider from "@mui/material/Divider";
 
 import BackEndConnection from '../BackEndConnection';
-import { ThirtyFpsOutlined } from "@mui/icons-material";
 
 const backend = BackEndConnection.INSTANCE();
 
@@ -29,34 +28,36 @@ class GameOfLife extends React.Component {
             grid: [],
             currentGeneration: 0,
             delay: 900,
-            evolveGenerations: null
+            evolveGenerations: null,
+            largeValueError: false
         }
     }
 
     handleChange(e) {
-        this.setState({ [e.target.name]: parseInt(e.target.value, 10) });
+        this.setState({ [e.target.name]: parseInt(e.target.value, 10), largeValueError: false });
     }
 
-    handleGetGenerations(e) {
-        this.setState({ generations: e.target.value * 1 });
-    }
 
     handleGetRandomIniti(e) {
-        this.setState({ initialization: e.target.value * 1 });
+        this.setState({ initialization: e.target.value * 1, largeValueError: false });
     }
 
     createGrid() {
-        let query = {
-            row: this.state.height * 1,
-            column: this.state.width * 1,
-            generations: this.state.generations,
-            initCount: this.state.initialization
-        };
-        backend.game_of_life_init(query, (data) => {
-            if (data.board.length > 0) {
-                this.setState({ grid: data.board }, () => this.fetchGeneration());
-            }
-        })
+        if (this.state.initialization >= this.state.height * this.state.width) {
+            this.setState({ largeValueError: true });
+        } else {
+            let query = {
+                row: this.state.height * 1,
+                column: this.state.width * 1,
+                generations: this.state.generations,
+                initCount: this.state.initialization
+            };
+            backend.game_of_life_init(query, (data) => {
+                if (data.board.length > 0) {
+                    this.setState({ grid: data.board }, () => this.fetchGeneration());
+                }
+            })
+        }
     }
 
     fetchGeneration() {
@@ -103,7 +104,7 @@ class GameOfLife extends React.Component {
 
         let cellStyle = (cell) => {
             return {
-                border: 'solid 1px gray',                
+                border: 'solid 1px gray',
                 marginRight: 2,
                 height: cellSize,
                 width: cellSize * 1.1,
@@ -126,7 +127,7 @@ class GameOfLife extends React.Component {
         return (
             <Box style={{ display: 'flex', flexDirection: 'column', margin: 5, padding: 20 }}>
 
-                <Box display='flex'>
+                <Box display='flex' style={{ height: 80 }}>
                     <TextField label="Row" type="number" name='height' value={this.state.height}
                         onChange={(e) => this.handleChange(e)} sx={{ width: 120 }} />
 
@@ -134,12 +135,12 @@ class GameOfLife extends React.Component {
                         onChange={(e) => this.handleChange(e)} sx={{ ml: 2, width: 120 }} />
 
                     <TextField label="Random Initialization" type="number" value={this.state.initialization}
-                        onChange={(e) => this.handleGetRandomIniti(e)} sx={{ ml: 2, width: 200 }} />
-
-                    <Button variant="outlined" onClick={() => this.createGrid()} sx={{ ml: 3 }} >Start</Button>
+                        onChange={(e) => this.handleGetRandomIniti(e)} sx={{ ml: 2, width: 200 }} error={this.state.largeValueError}
+                        helperText={this.state.largeValueError && "Large Value"} />
+                    <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Button variant="outlined" onClick={() => this.createGrid()} sx={{ ml: 3, mb: 2 }} size="large">Start</Button>
+                    </Box>
                 </Box>
-
-
                 <Divider sx={{ mt: 2, mb: 2 }} />
                 <Box style={{ border: 'solid 0px red' }}>
                     {this.renderGrid()}
