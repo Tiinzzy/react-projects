@@ -19,7 +19,7 @@ import AddTvSeriesDialog from './add/AddTvSeriesDialog';
 export const eventEmitter = new EventEmitter();
 export const eventUpdateEmitter = new EventEmitter();
 
-const NETFLIX_MODEL = ["Customer", "Genre", "Movies", "Subscription", "TV Series", "Directory Depth Search", "Game of Life"];
+const NETFLIX_MODEL = ["Customer", "Genre", "Movies", "Subscription", "TV Series", "Directory Depth Search", "Game of Life", "Gravity"];
 
 class DisplayList extends React.Component {
     constructor(props) {
@@ -64,7 +64,7 @@ class DisplayList extends React.Component {
 
     render() {
         return (
-            <Box sx={{ width: '100%', maxWidth: 250, bgcolor: 'background.paper', border: 'solid 1px #eaeaea', borderRadius: 1.5, height: 352 }}>
+            <Box sx={{ width: '100%', maxWidth: 250, bgcolor: 'background.paper', border: 'solid 1px #eaeaea', borderRadius: 1.5, height: 402 }}>
                 <nav aria-label="main mailbox folders">
                     <List >
                         {NETFLIX_MODEL.map((e, i) => (
@@ -72,7 +72,7 @@ class DisplayList extends React.Component {
                                 <ListItemButton>
                                     <ListItemText primary={e} />
                                     <Box display="flex" flexGrow={1} />
-                                    {e !== "Directory Depth Search" && e !== "Game of Life" && <AddBoxIcon onClick={() => this.addClicked(e)} style={{ color: this.state.addClick === e ? '#08A045' : 'black' }} />}
+                                    {e !== "Directory Depth Search" && e !== "Game of Life" && e !== "Gravity" && <AddBoxIcon onClick={() => this.addClicked(e)} style={{ color: this.state.addClick === e ? '#08A045' : 'black' }} />}
                                 </ListItemButton>
                             </ListItem>
                         ))}

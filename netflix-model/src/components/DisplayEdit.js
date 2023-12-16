@@ -17,6 +17,7 @@ import ListAllSubscription from "./list/ListAllSubscription";
 import ListAllTvSeries from "./list/ListAllTvSeries";
 import SearchDirectory from "./list/SearchDirectory";
 import GameOfLife from "./list/GameOfLife";
+import Gravity from "./list/Gravity";
 
 const backend = BackEndConnection.INSTANCE();
 
@@ -30,7 +31,8 @@ class DisplayEdit extends React.Component {
             subscriptionData: null,
             tvseriesData: null,
             directorySearch: null,
-            gol: null
+            gol: null,
+            gravity: null
         }
     }
 
@@ -48,10 +50,12 @@ class DisplayEdit extends React.Component {
                 this.handleTvSeries();
             } else if (data.item === "Directory Depth Search") {
                 this.setState({
-                    directorySearch: true, subscriptionData: null, customerData: null, genreData: null, movieData: null, tvseriesData: null, gol: null
+                    directorySearch: true, subscriptionData: null, customerData: null, genreData: null, movieData: null, tvseriesData: null, gol: null, gravity: null
                 });
             } else if (data.item === "Game of Life") {
-                this.setState({ gol: true, directorySearch: null, subscriptionData: null, customerData: null, genreData: null, movieData: null, tvseriesData: null });
+                this.setState({ gol: true, directorySearch: null, subscriptionData: null, customerData: null, genreData: null, movieData: null, tvseriesData: null, gravity: null });
+            } else if (data.item === "Gravity") {
+                this.setState({ gravity: true, gol: null, directorySearch: null, subscriptionData: null, customerData: null, genreData: null, movieData: null, tvseriesData: null });
             }
         });
 
@@ -99,32 +103,32 @@ class DisplayEdit extends React.Component {
     handleCustomer() {
         backend.get_all_customers((data) => {
             this.setState({
-                customerData: data, genreData: null, movieData: null, subscriptionData: null, tvseriesData: null, directorySearch: null, gol: null
+                customerData: data, genreData: null, movieData: null, subscriptionData: null, tvseriesData: null, directorySearch: null, gol: null, gravity: null
             });
         })
     }
 
     handleGenre() {
         backend.get_all_genre((data) => {
-            this.setState({ genreData: data, customerData: null, movieData: null, subscriptionData: null, tvseriesData: null, directorySearch: null, gol: null });
+            this.setState({ genreData: data, customerData: null, movieData: null, subscriptionData: null, tvseriesData: null, directorySearch: null, gol: null, gravity: null });
         });
     }
 
     handleMovies() {
         backend.get_all_movies((data) => {
-            this.setState({ movieData: data, customerData: null, genreData: null, subscriptionData: null, tvseriesData: null, directorySearch: null, gol: null });
+            this.setState({ movieData: data, customerData: null, genreData: null, subscriptionData: null, tvseriesData: null, directorySearch: null, gol: null, gravity: null });
         });
     }
 
     handleSubscription() {
         backend.get_all_subscriptions((data) => {
-            this.setState({ subscriptionData: data, customerData: null, genreData: null, movieData: null, tvseriesData: null, directorySearch: null, gol: null });
+            this.setState({ subscriptionData: data, customerData: null, genreData: null, movieData: null, tvseriesData: null, directorySearch: null, gol: null, gravity: null });
         });
     }
 
     handleTvSeries() {
         backend.get_all_tvseries((data) => {
-            this.setState({ tvseriesData: data, subscriptionData: null, customerData: null, genreData: null, movieData: null, directorySearch: null, gol: null });
+            this.setState({ tvseriesData: data, subscriptionData: null, customerData: null, genreData: null, movieData: null, directorySearch: null, gol: null, gravity: null });
         });
     }
 
@@ -148,6 +152,7 @@ class DisplayEdit extends React.Component {
                 {this.state.tvseriesData !== null && <ListAllTvSeries tvseriesData={this.state.tvseriesData} />}
                 {this.state.directorySearch !== null && <SearchDirectory />}
                 {this.state.gol !== null && <GameOfLife />}
+                {this.state.gravity !== null && < Gravity />}
             </Box>
         );
     }
