@@ -410,8 +410,41 @@ class BackEndConnectionImpl {
     }
 
     async update_grid(query, callback) {
-        console.log(query)
         return axios.post('/gol/update', query, { headers: { 'Content-Type': 'application/json' } })
+            .then(function (response) {
+                if (callback) {
+                    callback(response.data);
+                }
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+                if (callback) {
+                    callback({ result: false })
+                }
+                return { result: false };
+            })
+    }
+
+    async get_initial_space(spaceSize, count, callback) {
+        return axios.get(`/gravity/init/size/${spaceSize}/count/${count}`, {}, {})
+            .then(function (response) {
+                if (callback) {
+                    callback(response.data);
+                }
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+                if (callback) {
+                    callback({ result: false })
+                }
+                return { result: false };
+            })
+    }
+
+    async get_tick_merge(callback) {
+        return axios.get('/gravity/tick', {}, {})
             .then(function (response) {
                 if (callback) {
                     callback(response.data);
