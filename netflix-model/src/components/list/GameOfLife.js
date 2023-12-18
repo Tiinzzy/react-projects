@@ -1,7 +1,8 @@
 import React from "react";
 
 import Box from '@mui/material/Box';
-import { TextField, Button } from '@mui/material';
+import TextField from '@mui/material/TextField';
+import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 
 import BackEndConnection from '../BackEndConnection';

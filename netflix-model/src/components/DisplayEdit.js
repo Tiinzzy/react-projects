@@ -18,6 +18,7 @@ import ListAllTvSeries from "./list/ListAllTvSeries";
 import SearchDirectory from "./list/SearchDirectory";
 import GameOfLife from "./list/GameOfLife";
 import Gravity from "./list/Gravity";
+import LangtonsAnt from "./list/LangtonsAnt";
 
 const backend = BackEndConnection.INSTANCE();
 
@@ -50,12 +51,14 @@ class DisplayEdit extends React.Component {
                 this.handleTvSeries();
             } else if (data.item === "Directory Depth Search") {
                 this.setState({
-                    directorySearch: true, subscriptionData: null, customerData: null, genreData: null, movieData: null, tvseriesData: null, gol: null, gravity: null
+                    directorySearch: true, subscriptionData: null, customerData: null, genreData: null, movieData: null, tvseriesData: null, gol: null, gravity: null, ant: null
                 });
             } else if (data.item === "Game of Life") {
-                this.setState({ gol: true, directorySearch: null, subscriptionData: null, customerData: null, genreData: null, movieData: null, tvseriesData: null, gravity: null });
+                this.setState({ gol: true, directorySearch: null, subscriptionData: null, customerData: null, genreData: null, movieData: null, tvseriesData: null, gravity: null, ant: null });
             } else if (data.item === "Gravity") {
-                this.setState({ gravity: true, gol: null, directorySearch: null, subscriptionData: null, customerData: null, genreData: null, movieData: null, tvseriesData: null });
+                this.setState({ gravity: true, gol: null, directorySearch: null, subscriptionData: null, customerData: null, genreData: null, movieData: null, tvseriesData: null, ant: null });
+            } else if (data.item === "Langtons Ant") {
+                this.setState({ ant: true, gravity: null, gol: null, directorySearch: null, subscriptionData: null, customerData: null, genreData: null, movieData: null, tvseriesData: null });
             }
         });
 
@@ -103,32 +106,32 @@ class DisplayEdit extends React.Component {
     handleCustomer() {
         backend.get_all_customers((data) => {
             this.setState({
-                customerData: data, genreData: null, movieData: null, subscriptionData: null, tvseriesData: null, directorySearch: null, gol: null, gravity: null
+                customerData: data, genreData: null, movieData: null, subscriptionData: null, tvseriesData: null, directorySearch: null, gol: null, gravity: null, ant: null
             });
         })
     }
 
     handleGenre() {
         backend.get_all_genre((data) => {
-            this.setState({ genreData: data, customerData: null, movieData: null, subscriptionData: null, tvseriesData: null, directorySearch: null, gol: null, gravity: null });
+            this.setState({ genreData: data, customerData: null, movieData: null, subscriptionData: null, tvseriesData: null, directorySearch: null, gol: null, gravity: null, ant: null });
         });
     }
 
     handleMovies() {
         backend.get_all_movies((data) => {
-            this.setState({ movieData: data, customerData: null, genreData: null, subscriptionData: null, tvseriesData: null, directorySearch: null, gol: null, gravity: null });
+            this.setState({ movieData: data, customerData: null, genreData: null, subscriptionData: null, tvseriesData: null, directorySearch: null, gol: null, gravity: null, ant: null });
         });
     }
 
     handleSubscription() {
         backend.get_all_subscriptions((data) => {
-            this.setState({ subscriptionData: data, customerData: null, genreData: null, movieData: null, tvseriesData: null, directorySearch: null, gol: null, gravity: null });
+            this.setState({ subscriptionData: data, customerData: null, genreData: null, movieData: null, tvseriesData: null, directorySearch: null, gol: null, gravity: null, ant: null });
         });
     }
 
     handleTvSeries() {
         backend.get_all_tvseries((data) => {
-            this.setState({ tvseriesData: data, subscriptionData: null, customerData: null, genreData: null, movieData: null, directorySearch: null, gol: null, gravity: null });
+            this.setState({ tvseriesData: data, subscriptionData: null, customerData: null, genreData: null, movieData: null, directorySearch: null, gol: null, gravity: null, ant: null });
         });
     }
 
@@ -152,7 +155,9 @@ class DisplayEdit extends React.Component {
                 {this.state.tvseriesData !== null && <ListAllTvSeries tvseriesData={this.state.tvseriesData} />}
                 {this.state.directorySearch !== null && <SearchDirectory />}
                 {this.state.gol !== null && <GameOfLife />}
-                {this.state.gravity !== null && < Gravity />}
+                {this.state.gravity !== null && <Gravity />}
+                {this.state.ant !== null && <LangtonsAnt />}
+
             </Box>
         );
     }
