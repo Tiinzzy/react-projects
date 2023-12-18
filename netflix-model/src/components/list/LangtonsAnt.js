@@ -12,23 +12,31 @@ class LangtonsAnt extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            delay: 1000,
-            grid: []
+            delay: 50,
+            grid: null,
+            counter: 0
         }
     }
 
     initializeSimulation() {
-        setInterval(() => {
+        let updateBoard = () => {
+            this.setState({ counter: this.state.counter + 1 })
             backend.get_langtons_ant((data) => {
-                this.setState({ grid: data }, () => {
-                    console.log(this.state.grid)
+                if (this.state.counter % 10 === 0) {
+                    console.log(this.state.counter);
+                }
+                this.setState({ grid: null }, () => {
+                    this.setState({ grid: data });
                 });
-            })
-        }, this.state.delay);
+            });
+        }
+
+        updateBoard();
+        setInterval(updateBoard, this.state.delay);
     }
 
     renderGrid() {
-        let cellSize = 25;
+        let cellSize = 12;
 
         let rowStyle = {
             padding: 0,
@@ -52,7 +60,8 @@ class LangtonsAnt extends React.Component {
         return this.state.grid.map((row, rowIndex) => (
             <div key={rowIndex} style={rowStyle}>
                 {row.map((cell, colIndex) => (
-                    <div key={colIndex} style={cellStyle(cell)}>{rowIndex},{colIndex}</div>
+                    <div key={colIndex} style={cellStyle(cell)}>
+                    </div>
                 ))}
             </div>
         ));
@@ -60,11 +69,11 @@ class LangtonsAnt extends React.Component {
 
     render() {
         return (
-            <Box style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', marhinTop: 15 }}>
+            <Box style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', marginTop: 15 }}>
                 <Button variant="outlined" onClick={() => this.initializeSimulation()}>Initialize Langtons Ant Simulation</Button>
                 <Divider sx={{ mt: 2, mb: 2 }} />
                 <Box >
-                    {this.renderGrid()}
+                    {this.state.grid && this.renderGrid()}
                 </Box>
             </Box>
         );
