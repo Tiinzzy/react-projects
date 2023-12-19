@@ -44,7 +44,20 @@ class LangtonsAnt extends React.Component {
         }
 
         updateBoard();
-        setInterval(updateBoard, this.state.delay);
+        let updateGrid = setInterval(updateBoard, this.state.delay);
+        this.setState({ updateGrid });
+    }
+
+    stopGrid() {
+        clearInterval(this.state.updateGrid);
+    }
+
+    resetGrid() {
+        backend.reset_langtons((data) => {
+            if (data.grid === "reset") {
+                this.setState({ grid: null });
+            };
+        })
     }
 
     renderGrid() {
@@ -88,13 +101,17 @@ class LangtonsAnt extends React.Component {
                     <TextField label="Number of Steps" type="number" name='width' value={this.state.steps}
                         onChange={(e) => this.getStepsNumber(e)} sx={{ width: 150 }} />
                 </Box>
-                <Button variant="outlined" onClick={() => this.initializeSimulation()}>Initialize Langtons Ant Simulation</Button>
-                <Divider sx={{ mt: 2, mb: 2 }} />
-                {this.state.stepNum && <Typography>Step Number: {this.state.stepNum}</Typography>}
+                <Button variant="outlined" onClick={() => this.initializeSimulation()}>Start Langtons Ant Simulation</Button>
+                <Box style={{ display: 'flex', flexDirection: 'row' }}>
+                    {this.state.grid && <Button variant="outlined" onClick={() => this.stopGrid()} sx={{ mt: 1, mr: 2 }}>Stop</Button>}
+                    {this.state.grid && <Button variant="outlined" onClick={() => this.resetGrid()} sx={{ mt: 1 }}>Reset</Button>}
+                </Box>
+                <Divider sx={{ mt: 2, mb: 1 }} />
+                {this.state.grid && this.state.stepNum && <Typography fontSize={20}>Step Number: {this.state.stepNum}</Typography>}
                 <Box >
                     {this.state.grid && this.renderGrid()}
                 </Box>
-            </Box>
+            </Box >
         );
     }
 }
