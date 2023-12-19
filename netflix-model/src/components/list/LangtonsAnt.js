@@ -14,11 +14,12 @@ class LangtonsAnt extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            delay: 50,
+            delay: 500,
             grid: null,
             counter: 0,
-            boardSize: 100,
-            steps: 100
+            boardSize: 50,
+            steps: 10,
+            updateGrid: null
         }
     }
 
@@ -31,6 +32,10 @@ class LangtonsAnt extends React.Component {
     }
 
     initializeSimulation() {
+        if (this.state.updateGrid !== null) {
+            clearInterval(this.state.updateGrid);
+        }
+
         let updateBoard = () => {
             this.setState({ counter: this.state.counter + 1 })
             backend.get_langtons_ant(this.state.boardSize, this.state.steps, (data) => {
@@ -49,6 +54,7 @@ class LangtonsAnt extends React.Component {
     }
 
     stopGrid() {
+        console.log('stopGrid()');
         clearInterval(this.state.updateGrid);
     }
 
