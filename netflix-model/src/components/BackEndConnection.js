@@ -460,8 +460,8 @@ class BackEndConnectionImpl {
             })
     }
 
-    async get_langtons_ant(callback) {
-        return axios.get('/langtons-ant/tick', {}, {})
+    async get_langtons_ant(boardSize, steps, callback) {
+        return axios.get(`/langtons-ant/tick/board/${boardSize}/steps/${steps}`, {}, {})
             .then(function (response) {
                 if (callback) {
                     callback(response.data);
