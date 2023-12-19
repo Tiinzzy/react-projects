@@ -460,8 +460,25 @@ class BackEndConnectionImpl {
             })
     }
 
-    async get_langtons_ant(callback) {
-        return axios.get('/langtons-ant/tick', {}, {})
+    async get_langtons_ant(boardSize, steps, callback) {
+        return axios.get(`/langtons-ant/tick/board/${boardSize}/steps/${steps}`, {}, {})
+            .then(function (response) {
+                if (callback) {
+                    callback(response.data);
+                }
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+                if (callback) {
+                    callback({ result: false })
+                }
+                return { result: false };
+            })
+    }
+
+    async reset_langtons(callback) {
+        return axios.get('/langtons-ant/reset', {}, {})
             .then(function (response) {
                 if (callback) {
                     callback(response.data);
