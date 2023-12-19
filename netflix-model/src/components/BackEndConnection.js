@@ -476,6 +476,23 @@ class BackEndConnectionImpl {
                 return { result: false };
             })
     }
+
+    async reset_langtons(callback) {
+        return axios.get('/langtons-ant/reset', {}, {})
+            .then(function (response) {
+                if (callback) {
+                    callback(response.data);
+                }
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+                if (callback) {
+                    callback({ result: false })
+                }
+                return { result: false };
+            })
+    }
 }
 
 export default class BackEndConnection {
