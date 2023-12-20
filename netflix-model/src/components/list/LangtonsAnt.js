@@ -17,6 +17,7 @@ class LangtonsAnt extends React.Component {
             delay: 500,
             grid: null,
             counter: 0,
+            ants: 1,
             boardSize: 50,
             steps: 10,
             updateGrid: null,
@@ -33,6 +34,10 @@ class LangtonsAnt extends React.Component {
         this.setState({ steps: e.target.value * 1 });
     }
 
+    getAntsNumber(e) {
+        this.setState({ ants: e.target.value * 1 });
+    }
+
     initializeSimulation() {
         if (this.state.updateGrid !== null) {
             clearInterval(this.state.updateGrid);
@@ -44,10 +49,10 @@ class LangtonsAnt extends React.Component {
 
         let updateBoard = () => {
             this.setState({ counter: this.state.counter + 1, disAbleButton: true })
-            backend.get_langtons_ant(this.state.boardSize, this.state.steps, (data) => {
-                if (this.state.counter % 10 === 0) {
-                    // console.log(this.state.counter);
-                }
+            backend.get_langtons_ant(this.state.boardSize, this.state.steps, this.state.ants, (data) => {
+                // if (this.state.counter % 10 === 0) {
+                //     // console.log(this.state.counter);
+                // }
                 this.setState({ grid: null }, () => {
                     this.setState({ grid: data.data, stepNum: data.steps });
                 });
@@ -118,6 +123,8 @@ class LangtonsAnt extends React.Component {
                         onChange={(e) => this.getBoardSize(e)} sx={{ width: 150, mr: 2 }} />
                     <TextField label="Number of Steps" type="number" name='width' value={this.state.steps}
                         onChange={(e) => this.getStepsNumber(e)} sx={{ width: 150, mr: 2 }} />
+                    <TextField label="Number of Ants" type="number" name='width' value={this.state.ants}
+                        onChange={(e) => this.getAntsNumber(e)} sx={{ width: 150, mr: 2 }} />
                     <Button variant="outlined" onClick={() => this.initializeSimulation()} style={{ height: 58 }} disabled={this.state.disAbleButton}>Initialize</Button>
                 </Box>
                 <Box style={{ display: 'flex', flexDirection: 'row', marginTop: 10 }}>
