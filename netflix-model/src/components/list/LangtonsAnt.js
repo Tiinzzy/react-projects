@@ -19,7 +19,9 @@ class LangtonsAnt extends React.Component {
             counter: 0,
             boardSize: 50,
             steps: 10,
-            updateGrid: null
+            updateGrid: null,
+            disAbleButton: false,
+            buttonMsg: 'Stop'
         }
     }
 
@@ -36,11 +38,15 @@ class LangtonsAnt extends React.Component {
             clearInterval(this.state.updateGrid);
         }
 
+        if (this.state.buttonMsg === "Start") {
+            this.setState({ buttonMsg: "Stop" });
+        }
+
         let updateBoard = () => {
-            this.setState({ counter: this.state.counter + 1 })
+            this.setState({ counter: this.state.counter + 1, disAbleButton: true })
             backend.get_langtons_ant(this.state.boardSize, this.state.steps, (data) => {
                 if (this.state.counter % 10 === 0) {
-                    console.log(this.state.counter);
+                    // console.log(this.state.counter);
                 }
                 this.setState({ grid: null }, () => {
                     this.setState({ grid: data.data, stepNum: data.steps });
@@ -54,14 +60,19 @@ class LangtonsAnt extends React.Component {
     }
 
     stopGrid() {
-        console.log('stopGrid()');
-        clearInterval(this.state.updateGrid);
+        if (this.state.buttonMsg === "Stop") {
+            clearInterval(this.state.updateGrid);
+            this.setState({ buttonMsg: "Start" });
+        } else {
+            this.initializeSimulation();
+        }
     }
 
     resetGrid() {
+        clearInterval(this.state.updateGrid);
         backend.reset_langtons((data) => {
             if (data.grid === "reset") {
-                this.setState({ grid: null });
+                this.setState({ grid: null, disAbleButton: false });
             };
         })
     }
@@ -101,19 +112,20 @@ class LangtonsAnt extends React.Component {
     render() {
         return (
             <Box style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', marginTop: 20 }}>
+                <Typography mb={5} fontSize={25} fontWeight="bold">Langtons Ant Simulation</Typography>
                 <Box style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', marginBottom: 20 }}>
                     <TextField label="Board Size" type="number" value={this.state.boardSize}
                         onChange={(e) => this.getBoardSize(e)} sx={{ width: 150, mr: 2 }} />
                     <TextField label="Number of Steps" type="number" name='width' value={this.state.steps}
-                        onChange={(e) => this.getStepsNumber(e)} sx={{ width: 150 }} />
+                        onChange={(e) => this.getStepsNumber(e)} sx={{ width: 150, mr: 2 }} />
+                    <Button variant="outlined" onClick={() => this.initializeSimulation()} style={{ height: 58 }} disabled={this.state.disAbleButton}>Initialize</Button>
                 </Box>
-                <Button variant="outlined" onClick={() => this.initializeSimulation()}>Start Langtons Ant Simulation</Button>
-                <Box style={{ display: 'flex', flexDirection: 'row' }}>
-                    {this.state.grid && <Button variant="outlined" onClick={() => this.stopGrid()} sx={{ mt: 1, mr: 2 }}>Stop</Button>}
-                    {this.state.grid && <Button variant="outlined" onClick={() => this.resetGrid()} sx={{ mt: 1 }}>Reset</Button>}
+                <Box style={{ display: 'flex', flexDirection: 'row', marginTop: 10 }}>
+                    {this.state.grid && <Button variant="outlined" onClick={() => this.stopGrid()} style={{ marginRight: 10 }} size="large">{this.state.buttonMsg}</Button>}
+                    {this.state.grid && <Button variant="outlined" onClick={() => this.resetGrid()} size="large">Reset</Button>}
                 </Box>
                 <Divider sx={{ mt: 2, mb: 1 }} />
-                {this.state.grid && this.state.stepNum && <Typography fontSize={20}>Step Number: {this.state.stepNum}</Typography>}
+                {this.state.grid && this.state.stepNum && <Typography fontSize={20} mb={1}>Step Number: {this.state.stepNum}</Typography>}
                 <Box >
                     {this.state.grid && this.renderGrid()}
                 </Box>
