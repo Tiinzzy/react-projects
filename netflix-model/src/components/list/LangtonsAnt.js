@@ -10,6 +10,8 @@ import BackEndConnection from '../BackEndConnection';
 
 const backend = BackEndConnection.INSTANCE();
 
+const COLORS = ['red', 'green', 'blue', 'orange', 'purple', 'stellblue', 'pink', 'gray'];
+
 class LangtonsAnt extends React.Component {
     constructor(props) {
         super(props);
@@ -26,6 +28,10 @@ class LangtonsAnt extends React.Component {
         }
     }
 
+    componentDidMount() {
+        this.resetGrid();
+    }
+
     getBoardSize(e) {
         this.setState({ boardSize: e.target.value * 1 });
     }
@@ -39,10 +45,6 @@ class LangtonsAnt extends React.Component {
     }
 
     initializeSimulation() {
-        if (this.state.updateGrid !== null) {
-            clearInterval(this.state.updateGrid);
-        }
-
         if (this.state.buttonMsg === "Start") {
             this.setState({ buttonMsg: "Stop" });
         }
@@ -50,6 +52,7 @@ class LangtonsAnt extends React.Component {
         let updateBoard = () => {
             this.setState({ counter: this.state.counter + 1, disAbleButton: true })
             backend.get_langtons_ant(this.state.boardSize, this.state.steps, this.state.ants, (data) => {
+                console.log(data);
                 this.setState({ grid: null }, () => {
                     this.setState({ grid: data.data, stepNum: data.steps });
                 });
@@ -96,8 +99,8 @@ class LangtonsAnt extends React.Component {
                 height: cellSize,
                 width: cellSize * 1.1,
                 display: 'inline-block',
-                backgroundColor: cell ? 'black' : 'white',
-                color: cell ? 'white' : 'black',
+                backgroundColor: cell ? COLORS[cell % COLORS.length] : 'white',
+                color: cell ? 'white' : COLORS[cell % COLORS.length],
                 fontSize: 8
             }
         }
@@ -117,11 +120,11 @@ class LangtonsAnt extends React.Component {
                 <Typography mb={5} fontSize={25} fontWeight="bold">Langtons Ant Simulation</Typography>
                 <Box style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', marginBottom: 20 }}>
                     <TextField label="Board Size" type="number" value={this.state.boardSize}
-                        onChange={(e) => this.getBoardSize(e)} sx={{ width: 150, mr: 2 }} />
+                        onChange={(e) => this.getBoardSize(e)} sx={{ width: 150, mr: 2 }} disabled={this.state.disAbleButton}/>
                     <TextField label="Number of Steps" type="number" name='width' value={this.state.steps}
-                        onChange={(e) => this.getStepsNumber(e)} sx={{ width: 150, mr: 2 }} />
+                        onChange={(e) => this.getStepsNumber(e)} sx={{ width: 150, mr: 2 }} disabled={this.state.disAbleButton}/>
                     <TextField label="Number of Ants" type="number" name='width' value={this.state.ants}
-                        onChange={(e) => this.getAntsNumber(e)} sx={{ width: 150, mr: 2 }} />
+                        onChange={(e) => this.getAntsNumber(e)} sx={{ width: 150, mr: 2 }} disabled={this.state.disAbleButton}/>
                     <Button variant="outlined" onClick={() => this.initializeSimulation()} style={{ height: 58 }} disabled={this.state.disAbleButton}>Initialize</Button>
                 </Box>
                 <Box style={{ display: 'flex', flexDirection: 'row', marginTop: 10 }}>
