@@ -1,0 +1,22 @@
+.grid line {
+    stroke: #ddd;
+    stroke-width: 2px;
+    opacity: 0.5;
+}
+
+.grid path {
+    stroke: #ddd;
+    stroke-width: 2px;
+    opacity: 0.5;
+}
+
+.circle {
+    fill: royalblue !important;
+}
+
+
+
+.line {
+    stroke: steelblue;
+    stroke-width: 2px;
+}
