@@ -6,7 +6,7 @@ import { Box } from "@mui/material";
 
 const getWidth = () => window.innerWidth * 0.95;
 const getHeight = () => window.innerHeight * 0.95;
-const TICK_MILI_SEC = 5 * 100;
+const TICK_MILI_SEC = 1 * 100;
 
 const myTextButtonStyle = {
   marginTop: 10,
@@ -32,9 +32,9 @@ class Gravity extends React.Component {
       xAxis: null,
       yAxis: null,
       universe: [
-        { x: 0, y: 100, r: 3, s: 5, a: 0 },
-        { x: 310, y: 290, r: 20, s: 1, a: -Math.PI / 2 },
-        { x: 1500, y: 800, r: 5, s: 15, a: Math.PI / 4 * 3 }
+        { id: 0, x: 500, y: 700, r: 50, s: 0, a: 0 },
+        { id: 1, x: 0, y: 400, r: 30, s: 5, a: 0 },
+        // { id: 2, x: 900, y: 800, r: 25, s: 1, a: 3 *  Math.PI / 4  }
       ],
       autoUpdate: false
     };
