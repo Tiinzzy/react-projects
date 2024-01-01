@@ -2,7 +2,9 @@
 // import LangtonsAnt from "./components/list/LangtonsAnt";
 // import Motion from "./components/mechanics/Motion";
 
-import Gravity from "./components/gravity/Gravity";
+import KGravity from "./components/gravity_kamran/KGravity";
+
+// import Gravity from "./components/gravity/Gravity";
 
 export default function App() {
   return (
@@ -10,7 +12,8 @@ export default function App() {
       {/* <Home /> */}
       {/* <LangtonsAnt /> */}
       {/* <Motion /> */}
-      <Gravity />
+      {/* <Gravity /> */}
+      <KGravity />
     </>
   );
 };
