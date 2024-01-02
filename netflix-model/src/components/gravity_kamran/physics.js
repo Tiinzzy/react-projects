@@ -19,7 +19,7 @@ export function getForceVelocity(b1, b2) {
         let s = b1.v.s;
         let dx = b1.dx ? b1.dx : Math.abs(s * Math.cos(a * D2R));
         let dy = b1.dy ? b1.dy : Math.abs(s * Math.sin(a * D2R));
-        velocity = { s, a, dx, dy };
+        velocity = { s, a, dx, dy };zz
     } else {
         let b2Force = G * b1.m * b2.m / ((b1.x - b2.x) ** 2 + (b1.y - b2.y) ** 2);
         let s = b2Force / b1.m;
