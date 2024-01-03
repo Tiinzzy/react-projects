@@ -27,17 +27,22 @@ const timeStyle = {
   fontSize: 10
 }
 
-const COLORS = ['red', 'green', 'blue', 'gray'];
+const COLORS = ['red', 'red', 'blue', 'blue'];
 
 class KGravity extends React.Component {
   constructor() {
     super();
 
     let data = [
-      { id: 0, x: 0, y: 0, m: 20, v: { s: 3, a: 0 } },
-      { id: 1, x: 0, y: 2500, m: 10, v: { s: 0, a: 0 } },
-      { id: 2, x: 0, y: 3000, m: 10, v: { s: 0, a: 0 } },
-      { id: 3, x: 0, y: 3500, m: 16, v: { s: 0, a: 0 } },
+      { id: 0, x: 1000, y: 4800, m: 10, v: { s: 0, a: 0 } },
+      { id: 1, x: 1000, y: 5000, m: 1, v: { s: 0.5, a: 0 } },
+
+      { id: 2, x: 3000, y: 4800, m: 10, v: { s: 0, a: 0 } },
+      { id: 3, x: 3000, y: 5000, m: 1, v: { s: 0.5, a: 0 } },
+
+
+      // { id: 2, x: 0, y: 3000, m: 10, v: { s: 0, a: 0 } },
+      // { id: 3, x: 0, y: 3500, m: 16, v: { s: 0, a: 0 } },
       // { id: 4, x: 0, y: 2000, m: 6, v: { s: 1, a: 40 } },
     ];
 
@@ -47,7 +52,7 @@ class KGravity extends React.Component {
       yAxis: null,
       data: data,
       auto: false,
-      autoUpdateSpeed: 5,
+      autoUpdateSpeed: 15,
       time: 0
     };
 
@@ -152,7 +157,6 @@ class KGravity extends React.Component {
     this.setState({ time, data, svg, xAxis, yAxis }, () => {
       this.update(svg, xAxis, yAxis);
     });
-
   }
 
   render() {
