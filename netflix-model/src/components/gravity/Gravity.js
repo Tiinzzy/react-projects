@@ -4,7 +4,11 @@ import { updateUniverse } from './physics';
 import { Box } from "@mui/material";
 
 const getWidth = () => window.innerWidth * 0.95;
-const getHeight = () => window.innerHeight * 0.95;
+const getHeight = () => window.innerHeight * 0.90;
+
+const MAX_Y = 10000;
+const MAX_X = 10000;
+
 const TICK_MILI_SEC = 1 * 100;
 
 const myTextButtonStyle = {
@@ -27,8 +31,11 @@ class Gravity extends React.Component {
       xAxis: null,
       yAxis: null,
       universe: [
-        { id: 0, x: 400, y: 400, r: 50, s: 0, a: 0 },
-        { id: 1, x: 0, y: 300, r: 30, s: 5, a: 0 },
+        { id: 0, x: 3000, y: 6000, r: 50, s: 0, a: 0 },
+        { id: 1, x: 3000, y: 5000, r: 10, s: 1, a: 0 },
+
+        { id: 3, x: 7000, y: 6000, r: 50, s: 0, a: 0 },
+        { id: 4, x: 7000, y: 5000, r: 10, s: 1, a: 0 },
       ],
       autoUpdate: false
     };
@@ -53,10 +60,16 @@ class Gravity extends React.Component {
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    let xAxis = d3.scaleLinear().domain([0, getWidth()]).range([0, width]);
+
+    let minX = 0;
+    let maxX = MAX_X;
+    let minY = 0;
+    let maxY = MAX_Y;
+
+    let xAxis = d3.scaleLinear().domain([minX, maxX]).range([0, width]);
     svg.append("g").attr("class", "x-axis").attr("transform", "translate(0," + height + ")").call(d3.axisBottom(xAxis));
 
-    let yAxis = d3.scaleLinear().domain([0, getHeight()]).range([height, 0]);
+    let yAxis = d3.scaleLinear().domain([minY, maxY]).range([height, 0]);
     svg.append("g").attr("class", "y-axis").call(d3.axisLeft(yAxis));
 
     this.setState({ svg, xAxis, yAxis }, () => {
@@ -81,19 +94,17 @@ class Gravity extends React.Component {
   update = () => {
     const { svg, xAxis, yAxis, universe } = this.state;
 
-    // Update axes dynamically based on the current position of circles
     const maxX = d3.max(universe, d => d.x);
     const maxY = d3.max(universe, d => d.y);
 
-    const marginThreshold = 50; // Set a threshold for the margin
+    const marginThreshold = 50; 
 
-    xAxis.domain([0, maxX + marginThreshold]);
-    yAxis.domain([0, maxY + marginThreshold]);
+    // xAxis.domain([0, maxX + marginThreshold]);
+    // yAxis.domain([0, maxY + marginThreshold]);
 
     svg.select(".x-axis").call(d3.axisBottom(xAxis));
     svg.select(".y-axis").call(d3.axisLeft(yAxis));
 
-    // Update circles
     svg.selectAll("circle").remove();
     svg
       .append("g")
@@ -103,7 +114,7 @@ class Gravity extends React.Component {
       .append("circle")
       .attr("cx", d => xAxis(d.x))
       .attr("cy", d => yAxis(d.y))
-      .attr("r", d => d.r)
+      .attr("r", d => d.r / 10)
       .style("fill", "red");
   }
 
@@ -122,7 +133,7 @@ class Gravity extends React.Component {
 
       <div
         id="container"
-        style={{ width: getWidth(), height: getHeight(), display: "block" }}
+        style={{ width: getWidth(), height: getHeight(), display: "block"}}
       ></div>
     </div>
   }
