@@ -1,6 +1,5 @@
 import React from "react";
 import * as d3 from "d3";
-
 import { updateUniverse } from './physics';
 import { Box } from "@mui/material";
 
@@ -15,26 +14,21 @@ const myTextButtonStyle = {
   userSelect: 'none',
   cursor: 'pointer',
   background: '#eaeaea',
-  padding: '2px 5px 2px 5px',
   fontSize: 12,
   borderRadius: 4
 }
 
-let that = null;
-
 class Gravity extends React.Component {
   constructor() {
     super();
-    that = this;
 
     this.state = {
       svg: null,
       xAxis: null,
       yAxis: null,
       universe: [
-        { id: 0, x: 500, y: 700, r: 50, s: 0, a: 0 },
-        { id: 1, x: 0, y: 400, r: 30, s: 5, a: 0 },
-        // { id: 2, x: 900, y: 800, r: 25, s: 1, a: 3 *  Math.PI / 4  }
+        { id: 0, x: 400, y: 400, r: 50, s: 0, a: 0 },
+        { id: 1, x: 0, y: 300, r: 30, s: 5, a: 0 },
       ],
       autoUpdate: false
     };
@@ -60,10 +54,10 @@ class Gravity extends React.Component {
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     let xAxis = d3.scaleLinear().domain([0, getWidth()]).range([0, width]);
-    svg.append("g").attr("transform", "translate(0," + height + ")").call(d3.axisBottom(xAxis));
+    svg.append("g").attr("class", "x-axis").attr("transform", "translate(0," + height + ")").call(d3.axisBottom(xAxis));
 
     let yAxis = d3.scaleLinear().domain([0, getHeight()]).range([height, 0]);
-    svg.append("g").call(d3.axisLeft(yAxis));
+    svg.append("g").attr("class", "y-axis").call(d3.axisLeft(yAxis));
 
     this.setState({ svg, xAxis, yAxis }, () => {
       this.update();
@@ -77,25 +71,39 @@ class Gravity extends React.Component {
       this.initSvg();
     });
 
-
     setInterval(() => {
-      if (that.state.autoUpdate) {
-        that.setState({ universe: updateUniverse(that.state.universe) }, that.update)
+      if (this.state.autoUpdate) {
+        this.setState({ universe: updateUniverse(this.state.universe) }, this.update)
       }
     }, TICK_MILI_SEC);
   }
 
   update = () => {
-    d3.select("#container").selectAll("circle").remove();
-    this.state.svg
+    const { svg, xAxis, yAxis, universe } = this.state;
+
+    // Update axes dynamically based on the current position of circles
+    const maxX = d3.max(universe, d => d.x);
+    const maxY = d3.max(universe, d => d.y);
+
+    const marginThreshold = 50; // Set a threshold for the margin
+
+    xAxis.domain([0, maxX + marginThreshold]);
+    yAxis.domain([0, maxY + marginThreshold]);
+
+    svg.select(".x-axis").call(d3.axisBottom(xAxis));
+    svg.select(".y-axis").call(d3.axisLeft(yAxis));
+
+    // Update circles
+    svg.selectAll("circle").remove();
+    svg
       .append("g")
       .selectAll("dot")
-      .data(this.state.universe)
+      .data(universe)
       .enter()
       .append("circle")
-      .attr("cx", (d) => this.state.xAxis(d.x))
-      .attr("cy", (d) => this.state.yAxis(d.y))
-      .attr("r", (d) => d.r)
+      .attr("cx", d => xAxis(d.x))
+      .attr("cy", d => yAxis(d.y))
+      .attr("r", d => d.r)
       .style("fill", "red");
   }
 
@@ -108,13 +116,13 @@ class Gravity extends React.Component {
   render() {
     return <div>
       <Box display='flex' justifyContent='center'>
-        {!this.state.autoUpdate && <Box style={myTextButtonStyle} onClick={(e) => this.handleTick(e)}>Click to update universe!</Box>}
-        <Box style={myTextButtonStyle} onClick={(e) => this.setState({ autoUpdate: !this.state.autoUpdate })}>{this.state.autoUpdate ? 'Click to manual mode!' : 'Click to auto mode!'} </Box>
+        {!this.state.autoUpdate && <Box style={myTextButtonStyle} onClick={this.handleTick}>Click to update universe!</Box>}
+        <Box style={myTextButtonStyle} onClick={() => this.setState({ autoUpdate: !this.state.autoUpdate })}>{this.state.autoUpdate ? 'Click to manual mode!' : 'Click to auto mode!'} </Box>
       </Box>
 
       <div
         id="container"
-        style={{ width: getHeight(), height: getHeight(), display: "block" }}
+        style={{ width: getWidth(), height: getHeight(), display: "block" }}
       ></div>
     </div>
   }
