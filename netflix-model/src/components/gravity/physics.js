@@ -1,6 +1,6 @@
 const G = 1;
-const FORWARD_SPEED = 0.5;
-const FORWARD_DIRECTION = Math.PI / 4;
+const FORWARD_SPEED = 0.1;
+const FORWARD_DIRECTION = Math.PI / 4; 
 
 export function updateUniverse(universe) {
     return universe.map(body => nextState(body, universe));
