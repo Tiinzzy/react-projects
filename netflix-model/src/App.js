@@ -4,7 +4,7 @@
 
 import KGravity from "./components/gravity_kamran/KGravity";
 
-// import Gravity from "./components/gravity/Gravity";
+import Gravity from "./components/gravity/Gravity";
 
 export default function App() {
   return (
@@ -12,8 +12,8 @@ export default function App() {
       {/* <Home /> */}
       {/* <LangtonsAnt /> */}
       {/* <Motion /> */}
-      {/* <Gravity /> */}
-      <KGravity />
+      <Gravity />
+      {/* <KGravity /> */}
     </>
   );
 };
