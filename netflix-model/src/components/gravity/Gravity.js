@@ -34,8 +34,8 @@ class Gravity extends React.Component {
         { id: 0, x: 3000, y: 6000, r: 50, s: 0, a: 0 },
         { id: 1, x: 3000, y: 5000, r: 10, s: 1, a: 0 },
 
-        { id: 3, x: 7000, y: 6000, r: 50, s: 0, a: 0 },
-        { id: 4, x: 7000, y: 5000, r: 10, s: 1, a: 0 },
+        // { id: 3, x: 7000, y: 6000, r: 50, s: 0, a: 0 },
+        // { id: 4, x: 7000, y: 5000, r: 10, s: 1, a: 0 },
       ],
       autoUpdate: false
     };
