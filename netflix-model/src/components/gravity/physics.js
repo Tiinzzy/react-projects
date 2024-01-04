@@ -1,4 +1,6 @@
 const G = 1;
+const FORWARD_SPEED = 0.5;
+const FORWARD_DIRECTION = Math.PI / 4;
 
 export function updateUniverse(universe) {
     return universe.map(body => nextState(body, universe));
@@ -7,9 +9,8 @@ export function updateUniverse(universe) {
 function nextState(body, universe) {
     let newState = { ...body, vx: body.vx || 0, vy: body.vy || 0 };
 
-    // Handling for single objects
-    if (newState.s === 0 && newState.a === 0) {
-        applyDefaultMotion(newState);
+    if (isLargerObjectInPair(body)) {
+        applyForwardMotion(newState);
     }
 
     universe.forEach(otherBody => {
@@ -18,7 +19,6 @@ function nextState(body, universe) {
         }
     });
 
-    // Prioritize maintaining orbit with paired object
     const pairedObject = findPairedObject(body, universe);
     if (pairedObject) {
         lockIntoOrbit(newState, pairedObject);
@@ -28,6 +28,11 @@ function nextState(body, universe) {
     newState.y += newState.vy;
 
     return newState;
+}
+
+function applyForwardMotion(body) {
+    body.vx += FORWARD_SPEED * Math.cos(FORWARD_DIRECTION);
+    body.vy += FORWARD_SPEED * Math.sin(FORWARD_DIRECTION);
 }
 
 function applyGravitationalForce(body, externalBody) {
@@ -44,13 +49,8 @@ function applyGravitationalForce(body, externalBody) {
     body.vy += Math.sin(forceDirection) * acceleration;
 
     if (isWithinOrbitRange(body, externalBody, distance)) {
-        lockIntoOrbit(body, externalBody, distance);
+        lockIntoOrbit(body, externalBody);
     }
-}
-
-function isWithinOrbitRange(body, externalBody, distance) {
-    let orbitThreshold = externalBody.r * 5;
-    return distance < orbitThreshold;
 }
 
 function lockIntoOrbit(body, externalBody) {
@@ -68,6 +68,11 @@ function getMass(r) {
     return 4 / 3 * Math.PI * r * r * r * weightPerVolume;
 }
 
+function isWithinOrbitRange(body, externalBody, distance) {
+    let orbitThreshold = externalBody.r * 5;
+    return distance < orbitThreshold;
+}
+
 function isPairedWith(body, otherBody) {
     return Math.abs(body.id - otherBody.id) === 1;
 }
@@ -76,9 +81,6 @@ function findPairedObject(body, universe) {
     return universe.find(otherBody => isPairedWith(body, otherBody));
 }
 
-function applyDefaultMotion(body) {
-    // Logic to apply default motion for single objects
-    // For example, a slow circular motion
-    body.vx += 0.1;
-    body.vy += 0.1;
+function isLargerObjectInPair(body) {
+    return body.id % 2 === 0;
 }
