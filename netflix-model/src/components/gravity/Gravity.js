@@ -31,11 +31,11 @@ class Gravity extends React.Component {
       xAxis: null,
       yAxis: null,
       universe: [
-        { id: 0, x: 3000, y: 6000, r: 50, s: 0, a: 0 },
-        { id: 1, x: 3000, y: 5000, r: 10, s: 1, a: 0 },
+        { id: 0, x: 4000, y: 6000, r: 50, s: 0, a: 0 },
+        { id: 1, x: 4000, y: 5000, r: 10, s: 1, a: 0 },
 
-        // { id: 3, x: 7000, y: 6000, r: 50, s: 0, a: 0 },
-        // { id: 4, x: 7000, y: 5000, r: 10, s: 1, a: 0 },
+        { id: 3, x: 7000, y: 6000, r: 50, s: 0, a: 0 },
+        { id: 4, x: 7000, y: 5000, r: 10, s: 1, a: 0 },
       ],
       autoUpdate: false
     };
@@ -62,9 +62,33 @@ class Gravity extends React.Component {
 
 
     let minX = 0;
-    let maxX = MAX_X;
+    let maxX = 0;
     let minY = 0;
-    let maxY = MAX_Y;
+    let maxY = 0;
+
+    for (let d of this.state.universe) {
+      minX = Math.min(d.x, minX);
+      minY = Math.min(d.y, minY);
+      maxX = Math.max(d.x, maxX);
+      maxY = Math.max(d.y, maxY);
+    }
+
+    let scale = 10;
+    if (maxX < getWidth() * scale) {
+      minX = 0;
+      maxX = getWidth() * scale;
+    } else {
+      maxX = maxX + getWidth() * scale / 3;
+      minX = maxX - getWidth() * scale / 3 * 2;
+    }
+
+    if (maxY < getHeight() * scale) {
+      minY = 0;
+      maxY = getHeight() * scale;
+    } else {
+      maxY = maxY + getHeight() * scale / 3;
+      minY = maxY - getHeight() * scale / 3 * 2;
+    }
 
     let xAxis = d3.scaleLinear().domain([minX, maxX]).range([0, width]);
     svg.append("g").attr("class", "x-axis").attr("transform", "translate(0," + height + ")").call(d3.axisBottom(xAxis));
@@ -97,7 +121,7 @@ class Gravity extends React.Component {
     const maxX = d3.max(universe, d => d.x);
     const maxY = d3.max(universe, d => d.y);
 
-    const marginThreshold = 50; 
+    const marginThreshold = 50;
 
     // xAxis.domain([0, maxX + marginThreshold]);
     // yAxis.domain([0, maxY + marginThreshold]);
@@ -133,7 +157,7 @@ class Gravity extends React.Component {
 
       <div
         id="container"
-        style={{ width: getWidth(), height: getHeight(), display: "block"}}
+        style={{ width: getWidth(), height: getHeight(), display: "block" }}
       ></div>
     </div>
   }
