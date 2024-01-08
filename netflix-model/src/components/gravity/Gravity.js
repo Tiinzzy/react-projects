@@ -32,7 +32,7 @@ class Gravity extends React.Component {
       yAxis: null,
       universe: [
         { id: 0, x: 4000, y: 6000, r: 50, s: 0, a: 0 },
-        { id: 1, x: 4000, y: 5000, r: 10, s: 1, a: 0 },
+        { id: 1, x: 4000, y: 5000, r: 10, s: 2, a: 0 },
 
         { id: 3, x: 7000, y: 6000, r: 50, s: 0, a: 0 },
         { id: 4, x: 7000, y: 5000, r: 10, s: 1, a: 0 },
@@ -107,6 +107,7 @@ class Gravity extends React.Component {
     window.addEventListener("resize", () => {
       this.initSvg();
     });
+
 
     setInterval(() => {
       if (this.state.autoUpdate) {
