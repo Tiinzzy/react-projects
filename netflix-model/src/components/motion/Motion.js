@@ -62,16 +62,13 @@ class Motion extends React.Component {
                         const cellStyle = {
                             width: '20px',
                             height: '20px',
-                            backgroundColor: isSelected ? 'red' : 'white',
-                            boxSizing: 'border-box'
+                            backgroundColor: isSelected ? 'red' : 'transparent',
+                            boxSizing: 'border-box',
+                            borderRadius: '50%',
+                            border: '1px solid white',
                         };
-
                         return (
-                            <div
-                                key={`${rowIndex}-${colIndex}`}
-                                style={cellStyle}
-                                onClick={() => this.handleGridClick(rowIndex, colIndex)}
-                            />
+                            <div key={`${rowIndex}-${colIndex}`} style={cellStyle} onClick={() => this.handleGridClick(rowIndex, colIndex)} />
                         );
                     })
                 )}
