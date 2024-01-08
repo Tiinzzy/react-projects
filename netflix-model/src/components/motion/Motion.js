@@ -14,7 +14,8 @@ class Motion extends React.Component {
             initForce: '',
             time: 1,
             g: 9.81,
-            grid: Array(50).fill(Array(50).fill(null))
+            grid: Array(50).fill(Array(50).fill(null)),
+            selectedCoord: null,
         }
     }
 
@@ -36,8 +37,10 @@ class Motion extends React.Component {
         this.setState({ velocity: initVel });
     }
 
-    handleGridClick(row, col) {
-        console.log(`Clicked on row ${row}, column ${col}`);
+    handleGridClick = (row, col) => {
+        this.setState({
+            selectedCoord: this.state.selectedCoord?.row === row && this.state.selectedCoord?.col === col ? null : { row, col }
+        });
     }
 
     renderGrid() {
@@ -54,12 +57,23 @@ class Motion extends React.Component {
         return (
             <div style={gridStyle}>
                 {this.state.grid.flatMap((row, rowIndex) =>
-                    row.map((_, colIndex) => (
-                        <div key={`${rowIndex}-${colIndex}`}
-                            style={{ width: '20px', height: '20px', boxSizing: 'border-box' }}
-                            onClick={() => this.handleGridClick(rowIndex, colIndex)}
-                        />
-                    ))
+                    row.map((_, colIndex) => {
+                        const isSelected = this.state.selectedCoord?.row === rowIndex && this.state.selectedCoord?.col === colIndex;
+                        const cellStyle = {
+                            width: '20px',
+                            height: '20px',
+                            backgroundColor: isSelected ? 'red' : 'white',
+                            boxSizing: 'border-box'
+                        };
+
+                        return (
+                            <div
+                                key={`${rowIndex}-${colIndex}`}
+                                style={cellStyle}
+                                onClick={() => this.handleGridClick(rowIndex, colIndex)}
+                            />
+                        );
+                    })
                 )}
             </div>
         );
