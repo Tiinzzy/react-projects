@@ -15,7 +15,8 @@ class Motion extends React.Component {
             time: 1,
             g: 9.81,
             grid: Array(50).fill(Array(50).fill(null)),
-            selectedCoord: null,
+            selectedRedCoord: null,
+            selectedBlackCoord: null,
         }
     }
 
@@ -37,9 +38,23 @@ class Motion extends React.Component {
         this.setState({ velocity: initVel });
     }
 
-    handleGridClick = (row, col) => {
-        this.setState({
-            selectedCoord: this.state.selectedCoord?.row === row && this.state.selectedCoord?.col === col ? null : { row, col }
+    handleGridClick(row, col) {
+        this.setState(prevState => {
+            if (prevState.selectedRedCoord?.row === row && prevState.selectedRedCoord?.col === col) {
+                return { selectedRedCoord: null };
+            }
+            else if (prevState.selectedBlackCoord?.row === row && prevState.selectedBlackCoord?.col === col) {
+                return { selectedBlackCoord: null };
+            }
+            else if (!prevState.selectedRedCoord) {
+                return { selectedRedCoord: { row, col } };
+            }
+            else if (!prevState.selectedBlackCoord) {
+                return { selectedBlackCoord: { row, col } };
+            }
+            else {
+                return { selectedRedCoord: { row, col }, selectedBlackCoord: prevState.selectedBlackCoord };
+            }
         });
     }
 
@@ -58,15 +73,18 @@ class Motion extends React.Component {
             <div style={gridStyle}>
                 {this.state.grid.flatMap((row, rowIndex) =>
                     row.map((_, colIndex) => {
-                        const isSelected = this.state.selectedCoord?.row === rowIndex && this.state.selectedCoord?.col === colIndex;
+                        const isRedSelected = this.state.selectedRedCoord?.row === rowIndex && this.state.selectedRedCoord?.col === colIndex;
+                        const isBlackSelected = this.state.selectedBlackCoord?.row === rowIndex && this.state.selectedBlackCoord?.col === colIndex;
+
                         const cellStyle = {
                             width: '20px',
                             height: '20px',
-                            backgroundColor: isSelected ? 'red' : 'transparent',
+                            backgroundColor: isRedSelected ? 'red' : isBlackSelected ? 'black' : 'transparent',
                             boxSizing: 'border-box',
                             borderRadius: '50%',
                             border: '1px solid white',
                         };
+
                         return (
                             <div key={`${rowIndex}-${colIndex}`} style={cellStyle} onClick={() => this.handleGridClick(rowIndex, colIndex)} />
                         );
