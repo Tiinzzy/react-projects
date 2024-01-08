@@ -4,6 +4,8 @@ import TextField from '@mui/material/TextField';
 import Button from "@mui/material/Button";
 import Box from '@mui/material/Box';
 
+import { startMotion } from './Physics';
+
 class Motion extends React.Component {
     constructor(props) {
         super(props);
@@ -33,9 +35,10 @@ class Motion extends React.Component {
     }
 
     createGrid() {
-        let friction = this.state.mass * this.state.miu * this.state.g;
         let initVel = this.state.initForce / this.state.mass;
         this.setState({ velocity: initVel });
+
+        // startMotion(this.state.mass, this.state.miu, this.state.velocity, this.state.initForce, this.state.selectedRedCoord, this.state.selectedBlackCoord);
     }
 
     handleGridClick(row, col) {
@@ -103,7 +106,7 @@ class Motion extends React.Component {
                             onChange={(e) => this.handleGetMass(e)} sx={{ width: 120 }} />
                         <TextField label="Initial Force" type="number" value={this.state.initForce}
                             onChange={(e) => this.handleGetInitForce(e)} sx={{ ml: 2, width: 120 }} />
-                        <TextField label="Miu" type="number" value={this.state.miu}
+                        <TextField label="μ" type="number" value={this.state.miu}
                             onChange={(e) => this.handleGetMiu(e)} sx={{ ml: 2, width: 120 }} />
                         <TextField label="g" type="number" value={this.state.g} sx={{ ml: 2, width: 120 }} disabled />
                         <TextField label="Time" type="number" value={this.state.time} sx={{ ml: 2, width: 120 }} disabled />
