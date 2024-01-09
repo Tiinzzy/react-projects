@@ -69,9 +69,11 @@ class Motion extends React.Component {
     }
 
     createSvg() {
+        const svg = d3.select("#container");
+
         var points = [
-            { xpoint: 0, ypoint: 400 },
-            { xpoint: 400, ypoint: 400 }
+            { xpoint: 0, ypoint: 1000 },
+            { xpoint: 1000, ypoint: 1000 }
         ];
 
         var Gen = d3.area()
@@ -84,6 +86,14 @@ class Motion extends React.Component {
             .attr("d", Gen(points))
             .attr("fill", "white")
             .attr("stroke", "black");
+
+        svg.on("click", (event) => {
+            const [x, y] = d3.pointer(event);
+            const row = Math.floor(y / 20);
+            const col = Math.floor(x / 20);
+
+            this.handleGridClick(row, col);
+        });
     }
 
     render() {
@@ -106,7 +116,7 @@ class Motion extends React.Component {
                     </Box>
                 </Box>
                 <div style={{ marginTop: '20px' }}>
-                    <svg id="container" width="400" height="400"></svg>
+                    <svg id="container" width="1000" height="1000"></svg>
                 </div>
             </Box>
         );
