@@ -1,8 +1,8 @@
-export function startMotion(mass, miu, velocity, initForce, selectedRedCoord, selectedBlackCoord) {
-    let friction = mass * miu * 9.81;
-
-    let x = selectedBlackCoord.col - selectedRedCoord.col;
-    let y = selectedBlackCoord.row - selectedRedCoord.row;
-
-    console.log('x ->', x, 'y ->', y, 'friction ->', friction);
+export function getRedBallDirection(redCoord, blackCoord) {
+    let dx = blackCoord.col - redCoord.col;
+    let dy = blackCoord.row - redCoord.row;
+    const magnitude = Math.sqrt(dx * dx + dy * dy);
+    dx /= magnitude;
+    dy /= magnitude;
+    return { dx, dy };
 }
