@@ -4,6 +4,8 @@ import TextField from '@mui/material/TextField';
 import Button from "@mui/material/Button";
 import Box from '@mui/material/Box';
 
+import * as d3 from "d3";
+
 import { startMotion } from './Physics';
 
 class Motion extends React.Component {
@@ -20,6 +22,11 @@ class Motion extends React.Component {
             selectedRedCoord: null,
             selectedBlackCoord: null,
         }
+        this.createSvg = this.createSvg.bind(this);
+    }
+
+    componentDidMount() {
+        this.createSvg();
     }
 
     handleGetMass(e) {
@@ -61,40 +68,22 @@ class Motion extends React.Component {
         });
     }
 
-    renderGrid() {
-        const gridStyle = {
-            display: 'grid',
-            gridTemplateColumns: 'repeat(50, 20px)',
-            gridTemplateRows: 'repeat(50, 20px)',
-            border: '2px solid black',
-            backgroundColor: 'white',
-            width: '1000px',
-            height: '1000px',
-        };
+    createSvg() {
+        var points = [
+            { xpoint: 0, ypoint: 400 },
+            { xpoint: 400, ypoint: 400 }
+        ];
 
-        return (
-            <div style={gridStyle}>
-                {this.state.grid.flatMap((row, rowIndex) =>
-                    row.map((_, colIndex) => {
-                        const isRedSelected = this.state.selectedRedCoord?.row === rowIndex && this.state.selectedRedCoord?.col === colIndex;
-                        const isBlackSelected = this.state.selectedBlackCoord?.row === rowIndex && this.state.selectedBlackCoord?.col === colIndex;
+        var Gen = d3.area()
+            .x((p) => p.xpoint)
+            .y0((p) => 0)
+            .y1((p) => p.ypoint);
 
-                        const cellStyle = {
-                            width: '20px',
-                            height: '20px',
-                            backgroundColor: isRedSelected ? 'red' : isBlackSelected ? 'black' : 'transparent',
-                            boxSizing: 'border-box',
-                            borderRadius: '50%',
-                            border: '1px solid white',
-                        };
-
-                        return (
-                            <div key={`${rowIndex}-${colIndex}`} style={cellStyle} onClick={() => this.handleGridClick(rowIndex, colIndex)} />
-                        );
-                    })
-                )}
-            </div>
-        );
+        d3.select("#container")
+            .append("path")
+            .attr("d", Gen(points))
+            .attr("fill", "white")
+            .attr("stroke", "black");
     }
 
     render() {
@@ -117,7 +106,7 @@ class Motion extends React.Component {
                     </Box>
                 </Box>
                 <div style={{ marginTop: '20px' }}>
-                    {this.renderGrid()}
+                    <svg id="container" width="400" height="400"></svg>
                 </div>
             </Box>
         );
