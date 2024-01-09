@@ -23,6 +23,8 @@ class Motion extends React.Component {
             selectedBlackCoord: null,
         }
         this.createSvg = this.createSvg.bind(this);
+        this.updateSvg = this.updateSvg.bind(this);
+        this.handleGridClick = this.handleSvgClick.bind(this);
     }
 
     componentDidMount() {
@@ -48,23 +50,25 @@ class Motion extends React.Component {
         // startMotion(this.state.mass, this.state.miu, this.state.velocity, this.state.initForce, this.state.selectedRedCoord, this.state.selectedBlackCoord);
     }
 
-    handleGridClick(row, col) {
+    handleSvgClick(row, col) {
         this.setState(prevState => {
-            if (prevState.selectedRedCoord?.row === row && prevState.selectedRedCoord?.col === col) {
-                return { selectedRedCoord: null };
+            let selectedRedCoord = prevState.selectedRedCoord;
+            let selectedBlackCoord = prevState.selectedBlackCoord;
+
+            if (selectedRedCoord && selectedRedCoord.row === row && selectedRedCoord.col === col) {
+                selectedRedCoord = null;
+            } else if (selectedBlackCoord && selectedBlackCoord.row === row && selectedBlackCoord.col === col) {
+                selectedBlackCoord = null;
+            } else if (!selectedRedCoord) {
+                selectedRedCoord = { row, col };
+            } else if (!selectedBlackCoord) {
+                selectedBlackCoord = { row, col };
+            } else {
+                selectedRedCoord = { row, col };
             }
-            else if (prevState.selectedBlackCoord?.row === row && prevState.selectedBlackCoord?.col === col) {
-                return { selectedBlackCoord: null };
-            }
-            else if (!prevState.selectedRedCoord) {
-                return { selectedRedCoord: { row, col } };
-            }
-            else if (!prevState.selectedBlackCoord) {
-                return { selectedBlackCoord: { row, col } };
-            }
-            else {
-                return { selectedRedCoord: { row, col }, selectedBlackCoord: prevState.selectedBlackCoord };
-            }
+
+            this.updateSvg(selectedRedCoord, selectedBlackCoord);
+            return { selectedRedCoord, selectedBlackCoord };
         });
     }
 
@@ -92,8 +96,29 @@ class Motion extends React.Component {
             const row = Math.floor(y / 20);
             const col = Math.floor(x / 20);
 
-            this.handleGridClick(row, col);
+            this.handleSvgClick(row, col);
         });
+    }
+
+    updateSvg(redCoord, blackCoord) {
+        const svg = d3.select("#container");
+        svg.selectAll("circle").remove();
+
+        if (redCoord) {
+            svg.append("circle")
+                .attr("cx", redCoord.col * 20 + 10)
+                .attr("cy", redCoord.row * 20 + 10)
+                .attr("r", 9)
+                .attr("fill", "red");
+        }
+
+        if (blackCoord) {
+            svg.append("circle")
+                .attr("cx", blackCoord.col * 20 + 10)
+                .attr("cy", blackCoord.row * 20 + 10)
+                .attr("r", 9)
+                .attr("fill", "black");
+        }
     }
 
     render() {
