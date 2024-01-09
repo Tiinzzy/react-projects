@@ -1,6 +1,7 @@
 import React from "react";
 
 import TextField from '@mui/material/TextField';
+import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Box from '@mui/material/Box';
 
@@ -23,7 +24,8 @@ class Motion extends React.Component {
             selectedBlackCoord: null,
             massError: false,
             initForceError: false,
-            disableButton: false
+            disableButton: false,
+            ballMessage: ''
         }
         this.createSvg = this.createSvg.bind(this);
         this.updateSvg = this.updateSvg.bind(this);
@@ -50,15 +52,20 @@ class Motion extends React.Component {
     }
 
     createGrid() {
+
         if (this.state.mass.length <= 0 && this.state.initForce <= 0) {
             this.setState({ massError: true, initForceError: true });
         } else if (this.state.mass.length <= 0) {
             this.setState({ massError: true });
         } else if (this.state.initForce <= 0) {
             this.setState({ initForceError: true });
+        } else if (!this.state.selectedBlackCoord || !this.state.selectedRedCoord) {
+            this.setState({ ballMessage: 'Please select red and black balls before you start!' });
         } else {
             console.log('test');
         }
+
+
         // startMotion(this.state.mass, this.state.miu, this.state.velocity, this.state.initForce, this.state.selectedRedCoord, this.state.selectedBlackCoord);
     }
 
@@ -66,6 +73,7 @@ class Motion extends React.Component {
         this.setState(prevState => {
             let selectedRedCoord = prevState.selectedRedCoord;
             let selectedBlackCoord = prevState.selectedBlackCoord;
+            let newBallMessage = prevState.ballMessage;
 
             if (selectedRedCoord && selectedRedCoord.row === row && selectedRedCoord.col === col) {
                 selectedRedCoord = null;
@@ -79,8 +87,14 @@ class Motion extends React.Component {
                 selectedRedCoord = { row, col };
             }
 
+            if (selectedRedCoord && selectedBlackCoord) {
+                newBallMessage = '';
+            } else {
+                newBallMessage = 'Please select red and black balls before you start!';
+            }
+
             this.updateSvg(selectedRedCoord, selectedBlackCoord);
-            return { selectedRedCoord, selectedBlackCoord };
+            return { selectedRedCoord, selectedBlackCoord, ballMessage: newBallMessage };
         });
     }
 
@@ -149,6 +163,7 @@ class Motion extends React.Component {
                         <TextField label="Velocity" type="number" value={this.state.velocity} sx={{ ml: 2, width: 120 }} disabled />
                         <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                             <Button variant="outlined" onClick={() => this.createGrid()} sx={{ ml: 3 }} size="large">Start Motion</Button>
+                            <Typography style={{ color: 'crimson', fontSize: '14px', marginLeft: 20 }}>{this.state.ballMessage}</Typography>
                         </Box>
                     </Box>
                 </Box>
