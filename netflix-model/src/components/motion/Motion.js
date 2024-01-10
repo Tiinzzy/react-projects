@@ -63,23 +63,28 @@ class Motion extends React.Component {
             this.setState({ ballMessage: 'Please select red and black balls before you start!' });
         } else {
             const redCoord = this.state.selectedRedCoord;
-
+    
             let { dx, dy } = getRedBallDirection(this.state.selectedRedCoord, this.state.selectedBlackCoord);
-
+    
             let interval = setInterval(() => {
                 redCoord.col += dx;
                 redCoord.row += dy;
-
-                if (redCoord.col <= 0 || redCoord.col >= 50) dx = -dx;
-                if (redCoord.row <= 0 || redCoord.row >= 50) dy = -dy;
-
+    
+                if (redCoord.col <= 0 || redCoord.col >= 50) {
+                    dx = -dx; 
+                    redCoord.col = Math.max(0, Math.min(redCoord.col, 50)); 
+                }
+    
+                if (redCoord.row <= 0 || redCoord.row >= 50) {
+                    redCoord.row = Math.max(0, Math.min(redCoord.row, 50)); 
+                }
+    
                 this.updateSvg(redCoord, null);
-
                 if (redCoord.col < 0 || redCoord.col > 50 || redCoord.row < 0 || redCoord.row > 50) {
                     clearInterval(interval);
                 }
             }, 100);
-
+    
             this.setState({ selectedBlackCoord: null });
         }
     }
