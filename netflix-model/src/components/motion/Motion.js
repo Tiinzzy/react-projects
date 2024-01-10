@@ -7,25 +7,31 @@ import Box from '@mui/material/Box';
 
 import * as d3 from "d3";
 
-import { getRedBallDirection } from './Physics';
+import { getRedBallDirection, getForce } from './physics';
+
+const MAX_X = 1000;
+const MAX_Y = 1000;
+const DISK_RADIUS = 5;
+const UPDATE_INTERVAL = 50;
 
 class Motion extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            mass: '',
-            miu: '',
+            mass: 1,
+            miu: 0.42,
             velocity: '',
-            initForce: '',
+            initForce: 10,
             time: 1,
             g: 9.81,
-            grid: Array(50).fill(Array(50).fill(null)),
             selectedRedCoord: null,
             selectedBlackCoord: null,
             massError: false,
             initForceError: false,
             disableButton: false,
-            ballMessage: ''
+            ballMessage: '',
+            systemStarted: false,
+            interval: null
         }
         this.createSvg = this.createSvg.bind(this);
         this.updateSvg = this.updateSvg.bind(this);
@@ -63,55 +69,48 @@ class Motion extends React.Component {
             this.setState({ ballMessage: 'Please select red and black balls before you start!' });
         } else {
             const redCoord = { ...this.state.selectedRedCoord };
-
             let { dx, dy } = getRedBallDirection(this.state.selectedRedCoord, this.state.selectedBlackCoord);
 
+            if (this.state.interval !== null) {
+                clearInterval(this.state.interval);
+                console.log(this.state.interval);
+            }
             let interval = setInterval(() => {
-                redCoord.col += dx;
-                redCoord.row += dy;
-
-                if (redCoord.col <= 0 || redCoord.col >= 50) {
-                    dx = -dx; 
-                    redCoord.col = Math.max(0, Math.min(redCoord.col, 50));
+                redCoord.x += dx;
+                redCoord.y += dy;
+                if (redCoord.x <= 0 || redCoord.x >= MAX_X) {
+                    dx = -dx;
+                    redCoord.x = Math.max(0, Math.min(redCoord.x, MAX_X));
                 }
-
-                if (redCoord.row <= 0 || redCoord.row >= 50) {
-                    dy = -dy; 
-                    redCoord.row = Math.max(0, Math.min(redCoord.row, 50));
+                if (redCoord.y <= 0 || redCoord.y >= MAX_Y) {
+                    dy = -dy;
+                    redCoord.y = Math.max(0, Math.min(redCoord.y, MAX_Y));
                 }
-
                 this.updateSvg(redCoord, null);
-                this.setState({ selectedRedCoord: redCoord });
-            }, 100);
+                this.setState({ selectedRedCoord: redCoord, systemStarted: true });
+                d3.select('#container').selectAll("line").remove();
+            }, UPDATE_INTERVAL);
 
-            this.setState({ selectedBlackCoord: null });
+            this.setState({ selectedBlackCoord: null, interval });
         }
     }
 
-    handleSvgClick(row, col) {
+    handleSvgClick(x, y, ctrlKey) {
         this.setState(prevState => {
             let selectedRedCoord = prevState.selectedRedCoord;
             let selectedBlackCoord = prevState.selectedBlackCoord;
             let newBallMessage = prevState.ballMessage;
-
-            if (selectedRedCoord && selectedRedCoord.row === row && selectedRedCoord.col === col) {
-                selectedRedCoord = null;
-            } else if (selectedBlackCoord && selectedBlackCoord.row === row && selectedBlackCoord.col === col) {
+            if ((selectedRedCoord && ctrlKey) || !selectedRedCoord) {
+                selectedRedCoord = { x, y };
                 selectedBlackCoord = null;
-            } else if (!selectedRedCoord) {
-                selectedRedCoord = { row, col };
             } else if (!selectedBlackCoord) {
-                selectedBlackCoord = { row, col };
-            } else {
-                selectedRedCoord = { row, col };
+                selectedBlackCoord = { x, y };
             }
-
             if (selectedRedCoord && selectedBlackCoord) {
                 newBallMessage = '';
             } else {
                 newBallMessage = 'Please select red and black balls before you start!';
             }
-
             this.updateSvg(selectedRedCoord, selectedBlackCoord);
             return { selectedRedCoord, selectedBlackCoord, ballMessage: newBallMessage };
         });
@@ -119,29 +118,37 @@ class Motion extends React.Component {
 
     createSvg() {
         const svg = d3.select("#container");
-
         var points = [
-            { xpoint: 0, ypoint: 1000 },
-            { xpoint: 1000, ypoint: 1000 }
+            { xpoint: 0, ypoint: MAX_Y },
+            { xpoint: MAX_X, ypoint: MAX_Y }
         ];
-
         var Gen = d3.area()
             .x((p) => p.xpoint)
             .y0((p) => 0)
             .y1((p) => p.ypoint);
-
         d3.select("#container")
             .append("path")
             .attr("d", Gen(points))
             .attr("fill", "white")
             .attr("stroke", "black");
-
-        svg.on("click", (event) => {
-            const [x, y] = d3.pointer(event);
-            const row = Math.floor(y / 20);
-            const col = Math.floor(x / 20);
-
-            this.handleSvgClick(row, col);
+        svg.on("click", (e) => {
+            this.handleSvgClick(e.offsetX, e.offsetY, e.ctrlKey);
+        }).on('mousemove', (e) => {
+            if (!this.state.systemStarted && this.state.selectedRedCoord !== null && this.state.selectedBlackCoord === null) {
+                if (this.state.mousePointer) {
+                    if (Math.abs(this.state.mousePointer.x - e.offsetX) + Math.abs(this.state.mousePointer.y - e.offsetY) < 10) {
+                        svg.select("line").remove();
+                        svg.append('line')
+                            .attr('stroke', 'gray')
+                            .attr('x1', this.state.selectedRedCoord.x)
+                            .attr('y1', this.state.selectedRedCoord.y)
+                            .attr('x2', e.offsetX)
+                            .attr('y2', e.offsetY);
+                        // console.log(getForce(this.state.selectedRedCoord, { x: e.offsetX, y: e.offsetY }));
+                    }
+                }
+            }
+            this.setState({ mousePointer: { x: e.offsetX, y: e.offsetY } });
         });
     }
 
@@ -151,17 +158,17 @@ class Motion extends React.Component {
 
         if (redCoord) {
             svg.append("circle")
-                .attr("cx", redCoord.col * 20 + 10)
-                .attr("cy", redCoord.row * 20 + 10)
-                .attr("r", 9)
+                .attr("cx", redCoord.x)
+                .attr("cy", redCoord.y)
+                .attr("r", DISK_RADIUS)
                 .attr("fill", "red");
         }
 
         if (blackCoord) {
             svg.append("circle")
-                .attr("cx", blackCoord.col * 20 + 10)
-                .attr("cy", blackCoord.row * 20 + 10)
-                .attr("r", 9)
+                .attr("cx", blackCoord.x)
+                .attr("cy", blackCoord.y)
+                .attr("r", DISK_RADIUS / 2)
                 .attr("fill", "black");
         }
     }
