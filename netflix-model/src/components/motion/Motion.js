@@ -11,14 +11,13 @@ import { getRedBallDirection, getForce } from './physics';
 
 const MAX_X = 1000;
 const MAX_Y = 1000;
-const DISK_RADIUS = 5;
 const UPDATE_INTERVAL = 50;
 
 class Motion extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            mass: 2,
+            mass: 5,
             miu: 0.42,
             velocity: 0,
             initForce: 0,
@@ -152,7 +151,7 @@ class Motion extends React.Component {
             svg.append("circle")
                 .attr("cx", redCoord.x)
                 .attr("cy", redCoord.y)
-                .attr("r", DISK_RADIUS)
+                .attr("r", this.state.mass)
                 .attr("fill", "red");
         }
 
@@ -160,7 +159,7 @@ class Motion extends React.Component {
             svg.append("circle")
                 .attr("cx", blackCoord.x)
                 .attr("cy", blackCoord.y)
-                .attr("r", DISK_RADIUS / 2)
+                .attr("r", this.state.mass / 2)
                 .attr("fill", "black");
         }
     }
