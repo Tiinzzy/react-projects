@@ -103,10 +103,15 @@ class Motion extends React.Component {
             } else {
                 newBallMessage = 'Please select red and black balls before you start!';
             }
-            this.updateSvg(selectedRedCoord, selectedBlackCoord);
             return { selectedRedCoord, selectedBlackCoord, ballMessage: newBallMessage };
         });
     }
+
+    componentDidUpdate(prevState) {
+        if (!prevState.selectedBlackCoord && this.state.selectedBlackCoord) {
+            this.createGrid();
+        }
+    } I
 
     createSvg() {
         const svg = d3.select("#container");
@@ -179,7 +184,7 @@ class Motion extends React.Component {
                         <TextField label="Time" type="number" value={this.state.time} sx={{ ml: 2, width: 120 }} disabled />
                         <TextField label="Velocity" type="number" value={this.state.velocity} sx={{ ml: 2, width: 120 }} disabled />
                         <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <Button variant="outlined" onClick={() => this.createGrid()} sx={{ ml: 3 }} size="large">Start Motion</Button>
+                            <Button variant="outlined" onClick={() => { window.location.reload(false); }} sx={{ ml: 3 }} size="large">Reset</Button>
                             <Typography style={{ color: 'crimson', fontSize: '14px', marginLeft: 20 }}>{this.state.ballMessage}</Typography>
                         </Box>
                     </Box>
