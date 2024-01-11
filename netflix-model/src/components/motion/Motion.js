@@ -35,7 +35,7 @@ class Motion extends React.Component {
         this.createSvg = this.createSvg.bind(this);
         this.updateSvg = this.updateSvg.bind(this);
         this.handleSvgClick = this.handleSvgClick.bind(this);
-        this.createGrid = this.createGrid.bind(this);
+        this.selectColoredBalls = this.selectColoredBalls.bind(this);
     }
 
     componentDidMount() {
@@ -50,14 +50,8 @@ class Motion extends React.Component {
         this.setState({ miu: e.target.value * 1 });
     }
 
-    createGrid() {
-        if (this.state.mass.length <= 0 && this.state.initForce <= 0) {
-            this.setState({ massError: true, initForceError: true });
-        } else if (this.state.mass.length <= 0) {
-            this.setState({ massError: true });
-        } else if (this.state.initForce <= 0) {
-            this.setState({ initForceError: true });
-        } else if (!this.state.selectedBlackCoord || !this.state.selectedRedCoord) {
+    selectColoredBalls() {
+        if (!this.state.selectedBlackCoord || !this.state.selectedRedCoord) {
             this.setState({ ballMessage: 'Please select red and black balls before you start!' });
         } else {
             const redCoord = { ...this.state.selectedRedCoord };
@@ -93,9 +87,11 @@ class Motion extends React.Component {
             let selectedBlackCoord = prevState.selectedBlackCoord;
             let newBallMessage = prevState.ballMessage;
             if ((selectedRedCoord && ctrlKey) || !selectedRedCoord) {
+                console.log('red')
                 selectedRedCoord = { x, y };
                 selectedBlackCoord = null;
             } else if (!selectedBlackCoord) {
+                console.log('firee')
                 selectedBlackCoord = { x, y };
             }
             if (selectedRedCoord && selectedBlackCoord) {
@@ -103,13 +99,14 @@ class Motion extends React.Component {
             } else {
                 newBallMessage = 'Please select red and black balls before you start!';
             }
+            this.updateSvg(selectedRedCoord, selectedBlackCoord);
             return { selectedRedCoord, selectedBlackCoord, ballMessage: newBallMessage };
         });
     }
 
     componentDidUpdate(prevState) {
         if (!prevState.selectedBlackCoord && this.state.selectedBlackCoord) {
-            this.createGrid();
+            this.selectColoredBalls();
         }
     } I
 
