@@ -18,16 +18,15 @@ class Motion extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            mass: 1,
+            mass: 2,
             miu: 0.42,
-            velocity: '',
-            initForce: 10,
+            velocity: 0,
+            initForce: 0,
             time: 1,
             g: 9.81,
             selectedRedCoord: null,
             selectedBlackCoord: null,
             massError: false,
-            initForceError: false,
             disableButton: false,
             ballMessage: '',
             systemStarted: false,
@@ -44,18 +43,11 @@ class Motion extends React.Component {
     }
 
     handleGetMass(e) {
-        this.setState({ mass: e.target.value * 1, massError: false, initForceError: false });
+        this.setState({ mass: e.target.value * 1, massError: false });
     }
 
     handleGetMiu(e) {
         this.setState({ miu: e.target.value * 1 });
-    }
-
-    handleGetInitForce(e) {
-        this.setState({ initForce: e.target.value * 1, massError: false, initForceError: false }, () => {
-            let initVel = this.state.initForce / this.state.mass;
-            this.setState({ velocity: initVel });
-        });
     }
 
     createGrid() {
@@ -144,7 +136,7 @@ class Motion extends React.Component {
                             .attr('y1', this.state.selectedRedCoord.y)
                             .attr('x2', e.offsetX)
                             .attr('y2', e.offsetY);
-                        // console.log(getForce(this.state.selectedRedCoord, { x: e.offsetX, y: e.offsetY }));
+                        this.setState({ initForce: getForce(this.state.selectedRedCoord, { x: e.offsetX, y: e.offsetY }), velocity: this.state.initForce / this.state.mass });
                     }
                 }
             }
@@ -180,10 +172,9 @@ class Motion extends React.Component {
                     <Box display='flex'>
                         <TextField label="Mass" type="number" value={this.state.mass}
                             onChange={(e) => this.handleGetMass(e)} sx={{ width: 120 }} error={this.state.massError} />
-                        <TextField label="Initial Force" type="number" value={this.state.initForce}
-                            onChange={(e) => this.handleGetInitForce(e)} sx={{ ml: 2, width: 120 }} error={this.state.initForceError} />
                         <TextField label="μ" type="number" value={this.state.miu}
                             onChange={(e) => this.handleGetMiu(e)} sx={{ ml: 2, width: 120 }} />
+                        <TextField label="Initial Force" type="number" value={this.state.initForce} sx={{ ml: 2, width: 120 }} disabled />
                         <TextField label="g" type="number" value={this.state.g} sx={{ ml: 2, width: 120 }} disabled />
                         <TextField label="Time" type="number" value={this.state.time} sx={{ ml: 2, width: 120 }} disabled />
                         <TextField label="Velocity" type="number" value={this.state.velocity} sx={{ ml: 2, width: 120 }} disabled />
