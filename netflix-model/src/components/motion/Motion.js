@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 
 import * as d3 from "d3";
 
-import { getRedBallDirection, getForce } from './physics';
+import { getRedBallDirection, getForce, getNewVelocity, getVelocityVector } from './physics';
 
 const MAX_X = 1000;
 const MAX_Y = 1000;
@@ -17,8 +17,8 @@ class Motion extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            mass: 5,
-            miu: 0.42,
+            mass: 0.5,
+            miu: 0.1,
             velocity: 0,
             initForce: 0,
             time: 1,
@@ -60,26 +60,46 @@ class Motion extends React.Component {
             this.setState({ ballMessage: 'Please select red and black balls before you start!' });
         } else {
             const redCoord = { ...this.state.selectedRedCoord };
-            let { dx, dy } = getRedBallDirection(this.state.selectedRedCoord, this.state.selectedBlackCoord, this.state.miu, this.state.mass, this.state.initForce);
-            dx = -dx;
-            dy = -dy;
             if (this.state.interval !== null) {
                 clearInterval(this.state.interval);
             }
+
+            let { dx, dy } = getRedBallDirection(this.state.selectedRedCoord,
+                this.state.selectedBlackCoord,
+                this.state.miu,
+                this.state.mass,
+                this.state.initForce);
+
+            let currentVelocity = this.state.initForce / this.state.mass;
+            let miu = this.state.miu;
+
+
             let interval = setInterval(() => {
-                redCoord.x += dx;
-                redCoord.y += dy;
-                if (redCoord.x <= 0 || redCoord.x >= MAX_X) {
-                    dx = -dx;
-                    redCoord.x = Math.max(0, Math.min(redCoord.x, MAX_X));
+
+                if (currentVelocity > 0) {
+                    redCoord.x += dx;
+                    redCoord.y += dy;
+                    if (redCoord.x <= 0 || redCoord.x >= MAX_X) {
+                        dx = -dx;
+                        redCoord.x = Math.max(0, Math.min(redCoord.x, MAX_X));
+                    }
+                    if (redCoord.y <= 0 || redCoord.y >= MAX_Y) {
+                        dy = -dy;
+                        redCoord.y = Math.max(0, Math.min(redCoord.y, MAX_Y));
+                    }
+                    this.updateSvg(redCoord, null);
+                    this.setState({ selectedRedCoord: redCoord, systemStarted: true });
+                    d3.select('#container').selectAll("line").remove();
+
+
+                    console.log(currentVelocity);
+                    currentVelocity = getNewVelocity(currentVelocity, miu);
+                    let currentDXY = getVelocityVector(currentVelocity, dx, dy);
+                    dx = currentDXY.dx;
+                    dy = currentDXY.dy;
                 }
-                if (redCoord.y <= 0 || redCoord.y >= MAX_Y) {
-                    dy = -dy;
-                    redCoord.y = Math.max(0, Math.min(redCoord.y, MAX_Y));
-                }
-                this.updateSvg(redCoord, null);
-                this.setState({ selectedRedCoord: redCoord, systemStarted: true });
-                d3.select('#container').selectAll("line").remove();
+
+
             }, UPDATE_INTERVAL);
 
             this.setState({ selectedBlackCoord: null, interval });
@@ -131,6 +151,7 @@ class Motion extends React.Component {
                         svg.select("line").remove();
                         svg.append('line')
                             .attr('stroke', 'gray')
+                            .attr('stroke-dasharray', '5 5')
                             .attr('x1', this.state.selectedRedCoord.x)
                             .attr('y1', this.state.selectedRedCoord.y)
                             .attr('x2', e.offsetX)
@@ -145,21 +166,28 @@ class Motion extends React.Component {
 
     updateSvg(redCoord, blackCoord) {
         const svg = d3.select("#container");
-        svg.selectAll("circle").remove();
+        svg.selectAll(".test").remove();
 
         if (redCoord) {
             svg.append("circle")
+                .attr("class", 'test')
                 .attr("cx", redCoord.x)
                 .attr("cy", redCoord.y)
-                .attr("r", this.state.mass)
+                .attr("r", 3 + Math.sqrt(this.state.mass))
                 .attr("fill", "red");
+            // svg.append("circle")
+            //     .attr("cx", redCoord.x)
+            //     .attr("cy", redCoord.y)
+            //     .attr("r", 2)
+            //     .attr("fill", "black");
         }
 
         if (blackCoord) {
             svg.append("circle")
+                .attr("class", 'test')
                 .attr("cx", blackCoord.x)
                 .attr("cy", blackCoord.y)
-                .attr("r", this.state.mass / 2)
+                .attr("r", 3)
                 .attr("fill", "black");
         }
     }
