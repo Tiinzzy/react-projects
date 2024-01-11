@@ -60,7 +60,7 @@ class Motion extends React.Component {
             this.setState({ ballMessage: 'Please select red and black balls before you start!' });
         } else {
             const redCoord = { ...this.state.selectedRedCoord };
-            let { dx, dy } = getRedBallDirection(this.state.selectedRedCoord, this.state.selectedBlackCoord);
+            let { dx, dy } = getRedBallDirection(this.state.selectedRedCoord, this.state.selectedBlackCoord, this.state.miu, this.state.mass, this.state.initForce);
             dx = -dx;
             dy = -dy;
             if (this.state.interval !== null) {
