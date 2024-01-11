@@ -42,6 +42,12 @@ class Motion extends React.Component {
         this.createSvg();
     }
 
+    componentDidUpdate(prevState) {
+        if (!prevState.selectedBlackCoord && this.state.selectedBlackCoord) {
+            this.selectColoredBalls();
+        }
+    }
+
     handleGetMass(e) {
         this.setState({ mass: e.target.value * 1, massError: false });
     }
@@ -87,11 +93,9 @@ class Motion extends React.Component {
             let selectedBlackCoord = prevState.selectedBlackCoord;
             let newBallMessage = prevState.ballMessage;
             if ((selectedRedCoord && ctrlKey) || !selectedRedCoord) {
-                console.log('red')
                 selectedRedCoord = { x, y };
                 selectedBlackCoord = null;
             } else if (!selectedBlackCoord) {
-                console.log('firee')
                 selectedBlackCoord = { x, y };
             }
             if (selectedRedCoord && selectedBlackCoord) {
@@ -103,12 +107,6 @@ class Motion extends React.Component {
             return { selectedRedCoord, selectedBlackCoord, ballMessage: newBallMessage };
         });
     }
-
-    componentDidUpdate(prevState) {
-        if (!prevState.selectedBlackCoord && this.state.selectedBlackCoord) {
-            this.selectColoredBalls();
-        }
-    } I
 
     createSvg() {
         const svg = d3.select("#container");
