@@ -61,10 +61,10 @@ class Motion extends React.Component {
         } else {
             const redCoord = { ...this.state.selectedRedCoord };
             let { dx, dy } = getRedBallDirection(this.state.selectedRedCoord, this.state.selectedBlackCoord);
-
+            dx = -dx;
+            dy = -dy;
             if (this.state.interval !== null) {
                 clearInterval(this.state.interval);
-                console.log(this.state.interval);
             }
             let interval = setInterval(() => {
                 redCoord.x += dx;
