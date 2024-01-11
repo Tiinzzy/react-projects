@@ -1,10 +1,15 @@
 const FORCE_SCALE = 100 / 1300;
+const g = 9.81;
 
-export function getRedBallDirection(redCoord, blackCoord) {
+export function getRedBallDirection(redCoord, blackCoord, miu, mass, initForce) {
     let dx = blackCoord.x - redCoord.x;
     let dy = blackCoord.y - redCoord.y;
     dx *= FORCE_SCALE;
     dy *= FORCE_SCALE;
+
+    let friction = miu * mass * g;
+    let velocity = initForce / mass;
+   
     return { dx, dy };
 }
 
