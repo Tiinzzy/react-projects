@@ -7,27 +7,25 @@ import Box from '@mui/material/Box';
 
 import * as d3 from "d3";
 
-import { getRedBallDirection, getForce } from './physics';
+import { getRedBallDirection, getForce, getNewVelocity, getVelocityVector } from './physics';
 
 const MAX_X = 1000;
 const MAX_Y = 1000;
-const DISK_RADIUS = 5;
 const UPDATE_INTERVAL = 50;
 
 class Motion extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            mass: 1,
-            miu: 0.42,
-            velocity: '',
-            initForce: 10,
+            mass: 0.5,
+            miu: 0.1,
+            velocity: 0,
+            initForce: 0,
             time: 1,
             g: 9.81,
             selectedRedCoord: null,
             selectedBlackCoord: null,
             massError: false,
-            initForceError: false,
             disableButton: false,
             ballMessage: '',
             systemStarted: false,
@@ -36,59 +34,72 @@ class Motion extends React.Component {
         this.createSvg = this.createSvg.bind(this);
         this.updateSvg = this.updateSvg.bind(this);
         this.handleSvgClick = this.handleSvgClick.bind(this);
-        this.createGrid = this.createGrid.bind(this);
+        this.selectColoredBalls = this.selectColoredBalls.bind(this);
     }
 
     componentDidMount() {
         this.createSvg();
     }
 
+    componentDidUpdate(prevState) {
+        if (!prevState.selectedBlackCoord && this.state.selectedBlackCoord) {
+            this.selectColoredBalls();
+        }
+    }
+
     handleGetMass(e) {
-        this.setState({ mass: e.target.value * 1, massError: false, initForceError: false });
+        this.setState({ mass: e.target.value * 1, massError: false });
     }
 
     handleGetMiu(e) {
         this.setState({ miu: e.target.value * 1 });
     }
 
-    handleGetInitForce(e) {
-        this.setState({ initForce: e.target.value * 1, massError: false, initForceError: false }, () => {
-            let initVel = this.state.initForce / this.state.mass;
-            this.setState({ velocity: initVel });
-        });
-    }
-
-    createGrid() {
-        if (this.state.mass.length <= 0 && this.state.initForce <= 0) {
-            this.setState({ massError: true, initForceError: true });
-        } else if (this.state.mass.length <= 0) {
-            this.setState({ massError: true });
-        } else if (this.state.initForce <= 0) {
-            this.setState({ initForceError: true });
-        } else if (!this.state.selectedBlackCoord || !this.state.selectedRedCoord) {
+    selectColoredBalls() {
+        if (!this.state.selectedBlackCoord || !this.state.selectedRedCoord) {
             this.setState({ ballMessage: 'Please select red and black balls before you start!' });
         } else {
             const redCoord = { ...this.state.selectedRedCoord };
-            let { dx, dy } = getRedBallDirection(this.state.selectedRedCoord, this.state.selectedBlackCoord);
-
             if (this.state.interval !== null) {
                 clearInterval(this.state.interval);
-                console.log(this.state.interval);
             }
+
+            let { dx, dy } = getRedBallDirection(this.state.selectedRedCoord,
+                this.state.selectedBlackCoord,
+                this.state.miu,
+                this.state.mass,
+                this.state.initForce);
+
+            let currentVelocity = this.state.initForce / this.state.mass;
+            let miu = this.state.miu;
+
+
             let interval = setInterval(() => {
-                redCoord.x += dx;
-                redCoord.y += dy;
-                if (redCoord.x <= 0 || redCoord.x >= MAX_X) {
-                    dx = -dx;
-                    redCoord.x = Math.max(0, Math.min(redCoord.x, MAX_X));
+
+                if (currentVelocity > 0) {
+                    redCoord.x += dx;
+                    redCoord.y += dy;
+                    if (redCoord.x <= 0 || redCoord.x >= MAX_X) {
+                        dx = -dx;
+                        redCoord.x = Math.max(0, Math.min(redCoord.x, MAX_X));
+                    }
+                    if (redCoord.y <= 0 || redCoord.y >= MAX_Y) {
+                        dy = -dy;
+                        redCoord.y = Math.max(0, Math.min(redCoord.y, MAX_Y));
+                    }
+                    this.updateSvg(redCoord, null);
+                    this.setState({ selectedRedCoord: redCoord, systemStarted: true });
+                    d3.select('#container').selectAll("line").remove();
+
+
+                    console.log(currentVelocity);
+                    currentVelocity = getNewVelocity(currentVelocity, miu);
+                    let currentDXY = getVelocityVector(currentVelocity, dx, dy);
+                    dx = currentDXY.dx;
+                    dy = currentDXY.dy;
                 }
-                if (redCoord.y <= 0 || redCoord.y >= MAX_Y) {
-                    dy = -dy;
-                    redCoord.y = Math.max(0, Math.min(redCoord.y, MAX_Y));
-                }
-                this.updateSvg(redCoord, null);
-                this.setState({ selectedRedCoord: redCoord, systemStarted: true });
-                d3.select('#container').selectAll("line").remove();
+
+
             }, UPDATE_INTERVAL);
 
             this.setState({ selectedBlackCoord: null, interval });
@@ -140,11 +151,12 @@ class Motion extends React.Component {
                         svg.select("line").remove();
                         svg.append('line')
                             .attr('stroke', 'gray')
+                            .attr('stroke-dasharray', '5 5')
                             .attr('x1', this.state.selectedRedCoord.x)
                             .attr('y1', this.state.selectedRedCoord.y)
                             .attr('x2', e.offsetX)
                             .attr('y2', e.offsetY);
-                        // console.log(getForce(this.state.selectedRedCoord, { x: e.offsetX, y: e.offsetY }));
+                        this.setState({ initForce: getForce(this.state.selectedRedCoord, { x: e.offsetX, y: e.offsetY }), velocity: this.state.initForce / this.state.mass });
                     }
                 }
             }
@@ -154,21 +166,28 @@ class Motion extends React.Component {
 
     updateSvg(redCoord, blackCoord) {
         const svg = d3.select("#container");
-        svg.selectAll("circle").remove();
+        svg.selectAll(".test").remove();
 
         if (redCoord) {
             svg.append("circle")
+                .attr("class", 'test')
                 .attr("cx", redCoord.x)
                 .attr("cy", redCoord.y)
-                .attr("r", DISK_RADIUS)
+                .attr("r", 3 + Math.sqrt(this.state.mass))
                 .attr("fill", "red");
+            // svg.append("circle")
+            //     .attr("cx", redCoord.x)
+            //     .attr("cy", redCoord.y)
+            //     .attr("r", 2)
+            //     .attr("fill", "black");
         }
 
         if (blackCoord) {
             svg.append("circle")
+                .attr("class", 'test')
                 .attr("cx", blackCoord.x)
                 .attr("cy", blackCoord.y)
-                .attr("r", DISK_RADIUS / 2)
+                .attr("r", 3)
                 .attr("fill", "black");
         }
     }
@@ -180,15 +199,14 @@ class Motion extends React.Component {
                     <Box display='flex'>
                         <TextField label="Mass" type="number" value={this.state.mass}
                             onChange={(e) => this.handleGetMass(e)} sx={{ width: 120 }} error={this.state.massError} />
-                        <TextField label="Initial Force" type="number" value={this.state.initForce}
-                            onChange={(e) => this.handleGetInitForce(e)} sx={{ ml: 2, width: 120 }} error={this.state.initForceError} />
                         <TextField label="μ" type="number" value={this.state.miu}
                             onChange={(e) => this.handleGetMiu(e)} sx={{ ml: 2, width: 120 }} />
+                        <TextField label="Initial Force" type="number" value={this.state.initForce} sx={{ ml: 2, width: 120 }} disabled />
                         <TextField label="g" type="number" value={this.state.g} sx={{ ml: 2, width: 120 }} disabled />
                         <TextField label="Time" type="number" value={this.state.time} sx={{ ml: 2, width: 120 }} disabled />
                         <TextField label="Velocity" type="number" value={this.state.velocity} sx={{ ml: 2, width: 120 }} disabled />
                         <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <Button variant="outlined" onClick={() => this.createGrid()} sx={{ ml: 3 }} size="large">Start Motion</Button>
+                            <Button variant="outlined" onClick={() => { window.location.reload(false); }} sx={{ ml: 3 }} size="large">Reset</Button>
                             <Typography style={{ color: 'crimson', fontSize: '14px', marginLeft: 20 }}>{this.state.ballMessage}</Typography>
                         </Box>
                     </Box>
