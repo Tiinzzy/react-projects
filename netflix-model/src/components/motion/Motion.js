@@ -91,12 +91,13 @@ class Motion extends React.Component {
                     this.setState({ selectedRedCoord: redCoord, systemStarted: true });
                     d3.select('#container').selectAll("line").remove();
 
-
-                    console.log(currentVelocity);
                     currentVelocity = getNewVelocity(currentVelocity, miu);
                     let currentDXY = getVelocityVector(currentVelocity, dx, dy);
                     dx = currentDXY.dx;
                     dy = currentDXY.dy;
+                    if (currentVelocity >= 0) {
+                        this.setState({ velocity: currentVelocity });
+                    }
                 }
 
 
@@ -175,11 +176,11 @@ class Motion extends React.Component {
                 .attr("cy", redCoord.y)
                 .attr("r", 3 + Math.sqrt(this.state.mass))
                 .attr("fill", "red");
-            // svg.append("circle")
-            //     .attr("cx", redCoord.x)
-            //     .attr("cy", redCoord.y)
-            //     .attr("r", 2)
-            //     .attr("fill", "black");
+            svg.append("circle")
+                .attr("cx", redCoord.x)
+                .attr("cy", redCoord.y)
+                .attr("r", 2)
+                .attr("fill", "#FF5BCB");
         }
 
         if (blackCoord) {
