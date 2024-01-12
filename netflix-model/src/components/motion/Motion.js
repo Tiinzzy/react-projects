@@ -38,6 +38,7 @@ class Motion extends React.Component {
         this.updateSvg = this.updateSvg.bind(this);
         this.handleSvgClick = this.handleSvgClick.bind(this);
         this.selectColoredBalls = this.selectColoredBalls.bind(this);
+        this.state.resetMotion = this.resetMotion.bind(this);
     }
 
     componentDidMount() {
@@ -54,10 +55,26 @@ class Motion extends React.Component {
         if (this.state.timerInterval) {
             clearInterval(this.state.timerInterval);
         }
-
         if (this.state.interval) {
-            clearInterval(this.state.interval);
+            clearInterval(this.state.timerInterval);
         }
+    }
+
+    resetMotion() {
+        if (this.state.timerInterval) {
+            clearInterval(this.state.timerInterval);
+        }
+        if (this.state.interval) {
+            clearInterval(this.state.timerInterval);
+        }
+        this.setState({
+            velocity: 0, initForce: 0, time: 1, g: 9.81, selectedRedCoord: null, selectedBlackCoord: null, massError: false,
+            disableButton: false, ballMessage: '', systemStarted: false, interval: null, timer: { minutes: 0, seconds: 0, milliseconds: 0 },
+            timerInterval: null, systemStarted: false
+        })
+
+        let svg = d3.select("#container");
+        svg.selectAll("circle").remove();
     }
 
     handleGetMass(e) {
@@ -246,7 +263,7 @@ class Motion extends React.Component {
                         <TextField label="Momentom Time" type="number" value={this.state.time} sx={{ ml: 2, width: 125 }} disabled />
                         <TextField label="Velocity" type="number" value={this.state.velocity} sx={{ ml: 2, width: 125 }} disabled />
                         <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <Button variant="outlined" onClick={() => { window.location.reload(false); }} sx={{ ml: 3 }} size="large">Reset</Button>
+                            <Button variant="outlined" onClick={() => this.resetMotion()} sx={{ ml: 3 }} size="large">Reset</Button>
                             {/* <Typography style={{ color: 'crimson', fontSize: '14px', marginLeft: 20 }}>{this.state.ballMessage}</Typography> */}
                             <Typography style={{ marginLeft: 60, fontSize: 20, userSelect: 'none' }}>
                                 {`${String(this.state.timer.minutes).padStart(2, '0')}:${String(this.state.timer.seconds).padStart(2, '0')}.${String(this.state.timer.milliseconds).padStart(3, '0')}`}
