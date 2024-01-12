@@ -69,7 +69,7 @@ class Motion extends React.Component {
         }
         this.setState({
             velocity: 0, initForce: 0, time: 1, g: 9.81, selectedRedCoord: null, selectedBlackCoord: null, massError: false,
-            disableButton: false, ballMessage: '', systemStarted: false, interval: null, timer: { minutes: 0, seconds: 0, milliseconds: 0 },
+            disableButton: false, ballMessage: '', systemStarted: false, interval: null, timer: { time: 1, minutes: 0, seconds: 0, milliseconds: 0 },
             timerInterval: null, systemStarted: false
         })
         let svg = d3.select("#container");
