@@ -30,7 +30,7 @@ class Motion extends React.Component {
             ballMessage: '',
             systemStarted: false,
             interval: null,
-            timer: { minutes: 0, seconds: 0, milliseconds: 0 },
+            timer: { time: 1, minutes: 0, seconds: 0, milliseconds: 0 },
             timerInterval: null,
             systemStarted: false
         }
@@ -73,7 +73,7 @@ class Motion extends React.Component {
             timerInterval: null, systemStarted: false
         })
         let svg = d3.select("#container");
-        svg.selectAll("circle, line").remove(); 
+        svg.selectAll("circle, line").remove();
     }
 
     handleGetMass(e) {
@@ -95,10 +95,10 @@ class Motion extends React.Component {
             if (this.state.timerInterval) {
                 clearInterval(this.state.timerInterval);
             }
-            this.setState({ timer: { minutes: 0, seconds: 0, milliseconds: 0 } });
+            this.setState({ timer: { time: 1, minutes: 0, seconds: 0, milliseconds: 0 } });
             let timerInterval = setInterval(() => {
                 this.setState(prevState => {
-                    let { minutes, seconds, milliseconds } = prevState.timer;
+                    let { time, minutes, seconds, milliseconds } = prevState.timer;
                     milliseconds += 10;
                     if (milliseconds >= 1000) {
                         milliseconds = 0;
@@ -108,7 +108,8 @@ class Motion extends React.Component {
                         seconds = 0;
                         minutes += 1;
                     }
-                    return { timer: { minutes, seconds, milliseconds } };
+                    time += 1;
+                    return { timer: { time, minutes, seconds, milliseconds } };
                 });
             }, 10);
 
@@ -223,10 +224,10 @@ class Motion extends React.Component {
                             .attr('stroke', 'gray')
                             .attr('stroke-dasharray', '5 5')
                             .attr('x1', e.offsetX)
-                            .attr('y1', e.offsetY) 
-                            .attr('x2', this.state.selectedRedCoord.x) 
-                            .attr('y2', this.state.selectedRedCoord.y) 
-                            .attr("marker-start", "url(#arrowhead)"); 
+                            .attr('y1', e.offsetY)
+                            .attr('x2', this.state.selectedRedCoord.x)
+                            .attr('y2', this.state.selectedRedCoord.y)
+                            .attr("marker-start", "url(#arrowhead)");
                         this.setState({ initForce: getForce(this.state.selectedRedCoord, { x: e.offsetX, y: e.offsetY }), velocity: this.state.initForce / this.state.mass });
                     }
                 }
@@ -282,7 +283,7 @@ class Motion extends React.Component {
                             <Button variant="outlined" onClick={() => this.resetMotion()} sx={{ ml: 3 }} size="large">Reset</Button>
                             {/* <Typography style={{ color: 'crimson', fontSize: '14px', marginLeft: 20 }}>{this.state.ballMessage}</Typography> */}
                             <Typography style={{ marginLeft: 60, fontSize: 20, userSelect: 'none' }}>
-                                {`${String(this.state.timer.minutes).padStart(2, '0')}:${String(this.state.timer.seconds).padStart(2, '0')}.${String(this.state.timer.milliseconds).padStart(3, '0')}`}
+                                {`Time: ${this.state.timer.time}`}
                             </Typography>
                         </Box>
                     </Box>
