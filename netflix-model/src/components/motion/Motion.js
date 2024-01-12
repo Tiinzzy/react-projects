@@ -30,7 +30,7 @@ class Motion extends React.Component {
             ballMessage: '',
             systemStarted: false,
             interval: null,
-            elapsedTime: 0,
+            timer: { minutes: 0, seconds: 0, milliseconds: 0 },
             timerInterval: null,
         }
         this.createSvg = this.createSvg.bind(this);
@@ -46,6 +46,16 @@ class Motion extends React.Component {
     componentDidUpdate(prevState) {
         if (!prevState.selectedBlackCoord && this.state.selectedBlackCoord) {
             this.selectColoredBalls();
+        }
+    }
+
+    componentWillUnmount() {
+        if (this.state.timerInterval) {
+            clearInterval(this.state.timerInterval);
+        }
+
+        if (this.state.interval) {
+            clearInterval(this.state.interval);
         }
     }
 
@@ -65,6 +75,25 @@ class Motion extends React.Component {
             if (this.state.interval !== null) {
                 clearInterval(this.state.interval);
             }
+            if (this.state.timerInterval) {
+                clearInterval(this.state.timerInterval);
+            }
+            this.setState({ timer: { minutes: 0, seconds: 0, milliseconds: 0 } });
+            let timerInterval = setInterval(() => {
+                this.setState(prevState => {
+                    let { minutes, seconds, milliseconds } = prevState.timer;
+                    milliseconds += 10;
+                    if (milliseconds >= 1000) {
+                        milliseconds = 0;
+                        seconds += 1;
+                    }
+                    if (seconds >= 60) {
+                        seconds = 0;
+                        minutes += 1;
+                    }
+                    return { timer: { minutes, seconds, milliseconds } };
+                });
+            }, 10);
 
             let { dx, dy } = getRedBallDirection(this.state.selectedRedCoord,
                 this.state.selectedBlackCoord,
@@ -74,8 +103,6 @@ class Motion extends React.Component {
 
             let currentVelocity = this.state.initForce / this.state.mass;
             let miu = this.state.miu;
-
-
             let interval = setInterval(() => {
 
                 if (currentVelocity > 0) {
@@ -97,15 +124,21 @@ class Motion extends React.Component {
                     let currentDXY = getVelocityVector(currentVelocity, dx, dy);
                     dx = currentDXY.dx;
                     dy = currentDXY.dy;
-                    if (currentVelocity >= 0) {
+                    if (currentVelocity > 0) {
                         this.setState({ velocity: currentVelocity });
+                    } else if (currentVelocity <= 0) {
+                        clearInterval(interval);
+                        if (this.state.timerInterval) {
+                            clearInterval(this.state.timerInterval);
+                            this.setState({ timerInterval: null })
+                        }
                     }
                 }
 
 
             }, UPDATE_INTERVAL);
 
-            this.setState({ selectedBlackCoord: null, interval });
+            this.setState({ selectedBlackCoord: null, interval, timerInterval });
         }
     }
 
@@ -210,7 +243,10 @@ class Motion extends React.Component {
                         <TextField label="Velocity" type="number" value={this.state.velocity} sx={{ ml: 2, width: 125 }} disabled />
                         <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                             <Button variant="outlined" onClick={() => { window.location.reload(false); }} sx={{ ml: 3 }} size="large">Reset</Button>
-                            <Typography style={{ color: 'crimson', fontSize: '14px', marginLeft: 20 }}>{this.state.ballMessage}</Typography>
+                            {/* <Typography style={{ color: 'crimson', fontSize: '14px', marginLeft: 20 }}>{this.state.ballMessage}</Typography> */}
+                            <Typography style={{ marginLeft: 60, fontSize: 20 }}>
+                                {`${String(this.state.timer.minutes).padStart(2, '0')}:${String(this.state.timer.seconds).padStart(2, '0')}.${String(this.state.timer.milliseconds).padStart(3, '0')}`}
+                            </Typography>
                         </Box>
                     </Box>
                 </Box>
