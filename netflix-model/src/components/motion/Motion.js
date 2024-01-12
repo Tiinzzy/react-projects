@@ -56,7 +56,7 @@ class Motion extends React.Component {
             clearInterval(this.state.timerInterval);
         }
         if (this.state.interval) {
-            clearInterval(this.state.timerInterval);
+            clearInterval(this.state.interval);
         }
     }
 
@@ -72,9 +72,8 @@ class Motion extends React.Component {
             disableButton: false, ballMessage: '', systemStarted: false, interval: null, timer: { minutes: 0, seconds: 0, milliseconds: 0 },
             timerInterval: null, systemStarted: false
         })
-
         let svg = d3.select("#container");
-        svg.selectAll("circle").remove();
+        svg.selectAll("circle, line").remove(); 
     }
 
     handleGetMass(e) {
