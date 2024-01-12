@@ -18,8 +18,6 @@ export function getRedBallDirection(redCoord, blackCoord, miu, mass, initForce) 
     dx = Math.abs(Math.cos(alpha) * velocity) * (blackCoord.x > redCoord.x ? -1 : 1);
     dy = Math.abs(Math.sin(alpha) * velocity) * (blackCoord.y > redCoord.y ? -1 : 1);
 
-    console.log({ initForce, velocity, dx, dy, alpha: alpha / 3.14 * 180 });
-
     return { dx, dy };
 }
 

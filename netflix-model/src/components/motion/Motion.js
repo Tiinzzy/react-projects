@@ -29,12 +29,16 @@ class Motion extends React.Component {
             disableButton: false,
             ballMessage: '',
             systemStarted: false,
-            interval: null
+            interval: null,
+            timer: { time: 1, minutes: 0, seconds: 0, milliseconds: 0 },
+            timerInterval: null,
+            systemStarted: false
         }
         this.createSvg = this.createSvg.bind(this);
         this.updateSvg = this.updateSvg.bind(this);
         this.handleSvgClick = this.handleSvgClick.bind(this);
         this.selectColoredBalls = this.selectColoredBalls.bind(this);
+        this.state.resetMotion = this.resetMotion.bind(this);
     }
 
     componentDidMount() {
@@ -45,6 +49,31 @@ class Motion extends React.Component {
         if (!prevState.selectedBlackCoord && this.state.selectedBlackCoord) {
             this.selectColoredBalls();
         }
+    }
+
+    componentWillUnmount() {
+        if (this.state.timerInterval) {
+            clearInterval(this.state.timerInterval);
+        }
+        if (this.state.interval) {
+            clearInterval(this.state.interval);
+        }
+    }
+
+    resetMotion() {
+        if (this.state.timerInterval) {
+            clearInterval(this.state.timerInterval);
+        }
+        if (this.state.interval) {
+            clearInterval(this.state.timerInterval);
+        }
+        this.setState({
+            velocity: 0, initForce: 0, time: 1, g: 9.81, selectedRedCoord: null, selectedBlackCoord: null, massError: false,
+            disableButton: false, ballMessage: '', systemStarted: false, interval: null, timer: { time: 1, minutes: 0, seconds: 0, milliseconds: 0 },
+            timerInterval: null, systemStarted: false
+        })
+        let svg = d3.select("#container");
+        svg.selectAll("circle, line").remove();
     }
 
     handleGetMass(e) {
@@ -63,6 +92,26 @@ class Motion extends React.Component {
             if (this.state.interval !== null) {
                 clearInterval(this.state.interval);
             }
+            if (this.state.timerInterval) {
+                clearInterval(this.state.timerInterval);
+            }
+            this.setState({ timer: { time: 1, minutes: 0, seconds: 0, milliseconds: 0 } });
+            let timerInterval = setInterval(() => {
+                this.setState(prevState => {
+                    let { time, minutes, seconds, milliseconds } = prevState.timer;
+                    milliseconds += 10;
+                    if (milliseconds >= 1000) {
+                        milliseconds = 0;
+                        seconds += 1;
+                    }
+                    if (seconds >= 60) {
+                        seconds = 0;
+                        minutes += 1;
+                    }
+                    time += 1;
+                    return { timer: { time, minutes, seconds, milliseconds } };
+                });
+            }, 10);
 
             let { dx, dy } = getRedBallDirection(this.state.selectedRedCoord,
                 this.state.selectedBlackCoord,
@@ -72,8 +121,6 @@ class Motion extends React.Component {
 
             let currentVelocity = this.state.initForce / this.state.mass;
             let miu = this.state.miu;
-
-
             let interval = setInterval(() => {
 
                 if (currentVelocity > 0) {
@@ -91,22 +138,30 @@ class Motion extends React.Component {
                     this.setState({ selectedRedCoord: redCoord, systemStarted: true });
                     d3.select('#container').selectAll("line").remove();
 
-
-                    console.log(currentVelocity);
                     currentVelocity = getNewVelocity(currentVelocity, miu);
                     let currentDXY = getVelocityVector(currentVelocity, dx, dy);
                     dx = currentDXY.dx;
                     dy = currentDXY.dy;
+                    if (currentVelocity > 0) {
+                        this.setState({ velocity: currentVelocity });
+                    } else if (currentVelocity <= 0) {
+                        clearInterval(interval);
+                        if (this.state.timerInterval) {
+                            clearInterval(this.state.timerInterval);
+                            this.setState({ timerInterval: null })
+                        }
+                    }
                 }
-
-
             }, UPDATE_INTERVAL);
 
-            this.setState({ selectedBlackCoord: null, interval });
+            this.setState({ selectedBlackCoord: null, interval, timerInterval, systemStarted: true });
         }
     }
 
     handleSvgClick(x, y, ctrlKey) {
+        if (this.state.systemStarted) {
+            return;
+        }
         this.setState(prevState => {
             let selectedRedCoord = prevState.selectedRedCoord;
             let selectedBlackCoord = prevState.selectedBlackCoord;
@@ -129,6 +184,20 @@ class Motion extends React.Component {
 
     createSvg() {
         const svg = d3.select("#container");
+
+        svg.append("defs").append("marker")
+            .attr("id", "arrowhead")
+            .attr("viewBox", "-0 -5 10 10")
+            .attr("refX", 5)
+            .attr("refY", 0)
+            .attr("orient", "auto")
+            .attr("markerWidth", 8)
+            .attr("markerHeight", 8)
+            .attr("xoverflow", "visible")
+            .append("svg:path")
+            .attr("d", "M 0,-5 L 10 ,0 L 0,5")
+            .attr("fill", "#999");
+
         var points = [
             { xpoint: 0, ypoint: MAX_Y },
             { xpoint: MAX_X, ypoint: MAX_Y }
@@ -143,7 +212,9 @@ class Motion extends React.Component {
             .attr("fill", "white")
             .attr("stroke", "black");
         svg.on("click", (e) => {
-            this.handleSvgClick(e.offsetX, e.offsetY, e.ctrlKey);
+            if (!this.state.systemStarted) {
+                this.handleSvgClick(e.offsetX, e.offsetY, e.ctrlKey);
+            }
         }).on('mousemove', (e) => {
             if (!this.state.systemStarted && this.state.selectedRedCoord !== null && this.state.selectedBlackCoord === null) {
                 if (this.state.mousePointer) {
@@ -152,10 +223,11 @@ class Motion extends React.Component {
                         svg.append('line')
                             .attr('stroke', 'gray')
                             .attr('stroke-dasharray', '5 5')
-                            .attr('x1', this.state.selectedRedCoord.x)
-                            .attr('y1', this.state.selectedRedCoord.y)
-                            .attr('x2', e.offsetX)
-                            .attr('y2', e.offsetY);
+                            .attr('x1', e.offsetX)
+                            .attr('y1', e.offsetY)
+                            .attr('x2', this.state.selectedRedCoord.x)
+                            .attr('y2', this.state.selectedRedCoord.y)
+                            .attr("marker-start", "url(#arrowhead)");
                         this.setState({ initForce: getForce(this.state.selectedRedCoord, { x: e.offsetX, y: e.offsetY }), velocity: this.state.initForce / this.state.mass });
                     }
                 }
@@ -170,18 +242,20 @@ class Motion extends React.Component {
 
         if (redCoord) {
             svg.append("circle")
+                .attr("class", 'position-circle')
+                .attr("cx", redCoord.x)
+                .attr("cy", redCoord.y)
+                .attr("r", 2)
+                .attr("fill", "#fcb5df")
+                .attr("stroke", "#c90076")
+                .attr("stroke-width", 0.5);
+            svg.append("circle")
                 .attr("class", 'test')
                 .attr("cx", redCoord.x)
                 .attr("cy", redCoord.y)
                 .attr("r", 3 + Math.sqrt(this.state.mass))
-                .attr("fill", "red");
-            // svg.append("circle")
-            //     .attr("cx", redCoord.x)
-            //     .attr("cy", redCoord.y)
-            //     .attr("r", 2)
-            //     .attr("fill", "black");
+                .attr("fill", "#c90076");
         }
-
         if (blackCoord) {
             svg.append("circle")
                 .attr("class", 'test')
@@ -198,16 +272,19 @@ class Motion extends React.Component {
                 <Box style={{ alignItems: 'center', display: 'flex' }}>
                     <Box display='flex'>
                         <TextField label="Mass" type="number" value={this.state.mass}
-                            onChange={(e) => this.handleGetMass(e)} sx={{ width: 120 }} error={this.state.massError} />
+                            onChange={(e) => this.handleGetMass(e)} sx={{ width: 125 }} error={this.state.massError} />
                         <TextField label="μ" type="number" value={this.state.miu}
-                            onChange={(e) => this.handleGetMiu(e)} sx={{ ml: 2, width: 120 }} />
-                        <TextField label="Initial Force" type="number" value={this.state.initForce} sx={{ ml: 2, width: 120 }} disabled />
-                        <TextField label="g" type="number" value={this.state.g} sx={{ ml: 2, width: 120 }} disabled />
-                        <TextField label="Time" type="number" value={this.state.time} sx={{ ml: 2, width: 120 }} disabled />
-                        <TextField label="Velocity" type="number" value={this.state.velocity} sx={{ ml: 2, width: 120 }} disabled />
+                            onChange={(e) => this.handleGetMiu(e)} sx={{ ml: 2, width: 125 }} />
+                        <TextField label="Momentom Force" type="number" value={this.state.initForce} sx={{ ml: 2, width: 125 }} disabled />
+                        <TextField label="g" type="number" value={this.state.g} sx={{ ml: 2, width: 125 }} disabled />
+                        <TextField label="Momentom Time" type="number" value={this.state.time} sx={{ ml: 2, width: 125 }} disabled />
+                        <TextField label="Velocity" type="number" value={this.state.velocity} sx={{ ml: 2, width: 125 }} disabled />
                         <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <Button variant="outlined" onClick={() => { window.location.reload(false); }} sx={{ ml: 3 }} size="large">Reset</Button>
-                            <Typography style={{ color: 'crimson', fontSize: '14px', marginLeft: 20 }}>{this.state.ballMessage}</Typography>
+                            <Button variant="outlined" onClick={() => this.resetMotion()} sx={{ ml: 3 }} size="large">Reset</Button>
+                            {/* <Typography style={{ color: 'crimson', fontSize: '14px', marginLeft: 20 }}>{this.state.ballMessage}</Typography> */}
+                            <Typography style={{ marginLeft: 60, fontSize: 20, userSelect: 'none' }}>
+                                {`Time: ${this.state.timer.time}`}
+                            </Typography>
                         </Box>
                     </Box>
                 </Box>
