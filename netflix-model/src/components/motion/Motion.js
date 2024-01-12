@@ -29,7 +29,9 @@ class Motion extends React.Component {
             disableButton: false,
             ballMessage: '',
             systemStarted: false,
-            interval: null
+            interval: null,
+            elapsedTime: 0,
+            timerInterval: null,
         }
         this.createSvg = this.createSvg.bind(this);
         this.updateSvg = this.updateSvg.bind(this);
@@ -199,13 +201,13 @@ class Motion extends React.Component {
                 <Box style={{ alignItems: 'center', display: 'flex' }}>
                     <Box display='flex'>
                         <TextField label="Mass" type="number" value={this.state.mass}
-                            onChange={(e) => this.handleGetMass(e)} sx={{ width: 120 }} error={this.state.massError} />
+                            onChange={(e) => this.handleGetMass(e)} sx={{ width: 125 }} error={this.state.massError} />
                         <TextField label="μ" type="number" value={this.state.miu}
-                            onChange={(e) => this.handleGetMiu(e)} sx={{ ml: 2, width: 120 }} />
-                        <TextField label="Initial Force" type="number" value={this.state.initForce} sx={{ ml: 2, width: 120 }} disabled />
-                        <TextField label="g" type="number" value={this.state.g} sx={{ ml: 2, width: 120 }} disabled />
-                        <TextField label="Time" type="number" value={this.state.time} sx={{ ml: 2, width: 120 }} disabled />
-                        <TextField label="Velocity" type="number" value={this.state.velocity} sx={{ ml: 2, width: 120 }} disabled />
+                            onChange={(e) => this.handleGetMiu(e)} sx={{ ml: 2, width: 125 }} />
+                        <TextField label="Momentom Force" type="number" value={this.state.initForce} sx={{ ml: 2, width: 125 }} disabled />
+                        <TextField label="g" type="number" value={this.state.g} sx={{ ml: 2, width: 125 }} disabled />
+                        <TextField label="Momentom Time" type="number" value={this.state.time} sx={{ ml: 2, width: 125 }} disabled />
+                        <TextField label="Velocity" type="number" value={this.state.velocity} sx={{ ml: 2, width: 125 }} disabled />
                         <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                             <Button variant="outlined" onClick={() => { window.location.reload(false); }} sx={{ ml: 3 }} size="large">Reset</Button>
                             <Typography style={{ color: 'crimson', fontSize: '14px', marginLeft: 20 }}>{this.state.ballMessage}</Typography>
