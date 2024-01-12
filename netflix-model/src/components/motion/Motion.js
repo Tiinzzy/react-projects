@@ -223,11 +223,11 @@ class Motion extends React.Component {
                         svg.append('line')
                             .attr('stroke', 'gray')
                             .attr('stroke-dasharray', '5 5')
-                            .attr('x1', e.offsetX) // Start at the mouse pointer
-                            .attr('y1', e.offsetY) // Start at the mouse pointer
-                            .attr('x2', this.state.selectedRedCoord.x) // End at the red ball
-                            .attr('y2', this.state.selectedRedCoord.y) // End at the red ball
-                            .attr("marker-start", "url(#arrowhead)"); // Arrowhead at the start
+                            .attr('x1', e.offsetX)
+                            .attr('y1', e.offsetY) 
+                            .attr('x2', this.state.selectedRedCoord.x) 
+                            .attr('y2', this.state.selectedRedCoord.y) 
+                            .attr("marker-start", "url(#arrowhead)"); 
                         this.setState({ initForce: getForce(this.state.selectedRedCoord, { x: e.offsetX, y: e.offsetY }), velocity: this.state.initForce / this.state.mass });
                     }
                 }
