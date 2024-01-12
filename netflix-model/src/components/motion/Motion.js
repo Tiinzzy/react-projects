@@ -32,6 +32,7 @@ class Motion extends React.Component {
             interval: null,
             timer: { minutes: 0, seconds: 0, milliseconds: 0 },
             timerInterval: null,
+            systemStarted: false
         }
         this.createSvg = this.createSvg.bind(this);
         this.updateSvg = this.updateSvg.bind(this);
@@ -134,15 +135,16 @@ class Motion extends React.Component {
                         }
                     }
                 }
-
-
             }, UPDATE_INTERVAL);
 
-            this.setState({ selectedBlackCoord: null, interval, timerInterval });
+            this.setState({ selectedBlackCoord: null, interval, timerInterval, systemStarted: true });
         }
     }
 
     handleSvgClick(x, y, ctrlKey) {
+        if (this.state.systemStarted) {
+            return;
+        }
         this.setState(prevState => {
             let selectedRedCoord = prevState.selectedRedCoord;
             let selectedBlackCoord = prevState.selectedBlackCoord;
@@ -179,7 +181,9 @@ class Motion extends React.Component {
             .attr("fill", "white")
             .attr("stroke", "black");
         svg.on("click", (e) => {
-            this.handleSvgClick(e.offsetX, e.offsetY, e.ctrlKey);
+            if (!this.state.systemStarted) {
+                this.handleSvgClick(e.offsetX, e.offsetY, e.ctrlKey);
+            }
         }).on('mousemove', (e) => {
             if (!this.state.systemStarted && this.state.selectedRedCoord !== null && this.state.selectedBlackCoord === null) {
                 if (this.state.mousePointer) {
