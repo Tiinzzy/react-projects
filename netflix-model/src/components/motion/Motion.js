@@ -184,6 +184,20 @@ class Motion extends React.Component {
 
     createSvg() {
         const svg = d3.select("#container");
+
+        svg.append("defs").append("marker")
+            .attr("id", "arrowhead")
+            .attr("viewBox", "-0 -5 10 10")
+            .attr("refX", 5)
+            .attr("refY", 0)
+            .attr("orient", "auto")
+            .attr("markerWidth", 8)
+            .attr("markerHeight", 8)
+            .attr("xoverflow", "visible")
+            .append("svg:path")
+            .attr("d", "M 0,-5 L 10 ,0 L 0,5")
+            .attr("fill", "#999");
+
         var points = [
             { xpoint: 0, ypoint: MAX_Y },
             { xpoint: MAX_X, ypoint: MAX_Y }
@@ -209,10 +223,11 @@ class Motion extends React.Component {
                         svg.append('line')
                             .attr('stroke', 'gray')
                             .attr('stroke-dasharray', '5 5')
-                            .attr('x1', this.state.selectedRedCoord.x)
-                            .attr('y1', this.state.selectedRedCoord.y)
-                            .attr('x2', e.offsetX)
-                            .attr('y2', e.offsetY);
+                            .attr('x1', e.offsetX) // Start at the mouse pointer
+                            .attr('y1', e.offsetY) // Start at the mouse pointer
+                            .attr('x2', this.state.selectedRedCoord.x) // End at the red ball
+                            .attr('y2', this.state.selectedRedCoord.y) // End at the red ball
+                            .attr("marker-start", "url(#arrowhead)"); // Arrowhead at the start
                         this.setState({ initForce: getForce(this.state.selectedRedCoord, { x: e.offsetX, y: e.offsetY }), velocity: this.state.initForce / this.state.mass });
                     }
                 }
@@ -227,18 +242,20 @@ class Motion extends React.Component {
 
         if (redCoord) {
             svg.append("circle")
+                .attr("class", 'position-circle')
+                .attr("cx", redCoord.x)
+                .attr("cy", redCoord.y)
+                .attr("r", 2)
+                .attr("fill", "#fcb5df")
+                .attr("stroke", "#c90076")
+                .attr("stroke-width", 0.5);
+            svg.append("circle")
                 .attr("class", 'test')
                 .attr("cx", redCoord.x)
                 .attr("cy", redCoord.y)
                 .attr("r", 3 + Math.sqrt(this.state.mass))
-                .attr("fill", "red");
-            svg.append("circle")
-                .attr("cx", redCoord.x)
-                .attr("cy", redCoord.y)
-                .attr("r", 2)
-                .attr("fill", "#FF5BCB");
+                .attr("fill", "#c90076");
         }
-
         if (blackCoord) {
             svg.append("circle")
                 .attr("class", 'test')
