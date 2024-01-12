@@ -248,7 +248,7 @@ class Motion extends React.Component {
                         <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                             <Button variant="outlined" onClick={() => { window.location.reload(false); }} sx={{ ml: 3 }} size="large">Reset</Button>
                             {/* <Typography style={{ color: 'crimson', fontSize: '14px', marginLeft: 20 }}>{this.state.ballMessage}</Typography> */}
-                            <Typography style={{ marginLeft: 60, fontSize: 20 }}>
+                            <Typography style={{ marginLeft: 60, fontSize: 20, userSelect: 'none' }}>
                                 {`${String(this.state.timer.minutes).padStart(2, '0')}:${String(this.state.timer.seconds).padStart(2, '0')}.${String(this.state.timer.milliseconds).padStart(3, '0')}`}
                             </Typography>
                         </Box>
